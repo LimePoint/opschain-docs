@@ -2,8 +2,8 @@
 
 There are several key OpsChain concepts that are useful to comprehend in order to understand the tool and its uses.
 
-<p align="center">
-  <img alt="Data model of OpsChain concepts and how they relate to each other" src="opschain-concepts.svg">
+<p align='center'>
+  <img alt='Data model of OpsChain concepts and how they relate to each other' src='opschain-concepts.svg' />
 </p>
 
 ## Project

@@ -4,8 +4,8 @@ OpsChain provides a fully self contained environment consisting of the command l
 
 Each part of this environment is deployed using [Kubernetes](https://kubernetes.io/).
 
-<p align="center">
-  <img alt="OpsChain containers" src="opschain-release-containers.svg">
+<p align='center'>
+  <img alt='OpsChain containers' src='opschain-release-containers.svg' />
 </p>
 
 - **cli** is a command line client that can be used to interact with the API, packaged as a container for ease of use - with native clients available for Windows, macOS & Linux
