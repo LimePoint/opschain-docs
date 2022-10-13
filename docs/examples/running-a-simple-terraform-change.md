@@ -46,7 +46,7 @@ opschain environment list --project-code terraform
 
 ## Add the Terraform example as a remote to the project Git repository
 
-Follow [adding a project Git repository as a remote](../reference/project_git_repositories.md#adding-a-project-git-repository-as-a-remote) using the [OpsChain Terraform example repository](https://github.com/LimePoint/opschain-examples-terraform) remote URL `https://username:password@github.com/LimePoint/opschain-examples-terraform.git`.
+Follow [adding a project Git repository as a remote](/docs/reference/project-git-repositories.md#adding-a-project-git-repository-as-a-remote) using the [OpsChain Terraform example repository](https://github.com/LimePoint/opschain-examples-terraform) remote URL `https://username:password@github.com/LimePoint/opschain-examples-terraform.git`.
 
 ## Configure the target Kubernetes namespace
 
@@ -96,7 +96,7 @@ Create a new change for the current `origin/master` branch of your project and r
 opschain change create --project-code terraform --environment-code tform --git-remote-name origin  --git-rev master --action default --confirm
 ```
 
-The [steps](../reference/concepts/concepts.md#step) that comprise the change will be shown as well as their status.
+The [steps](/docs/reference/concepts/concepts.md#step) that comprise the change will be shown as well as their status.
 
 _Note: the first step in this change may take a long time as it downloads an nginx container image._
 
@@ -204,10 +204,10 @@ The example makes use of the [Terraform Kubernetes provider](https://registry.te
 
 ### Try a more advanced example
 
-- The [Ansible example](running_an_aws_ansible_change.md) demonstrates how to use OpsChain with Terraform, Ansible and AWS to build and configure a simple nginx instance on AWS
+- The [Ansible example](running-an-aws-ansible-change.md) demonstrates how to use OpsChain with Terraform, Ansible and AWS to build and configure a simple nginx instance on AWS
 
-- The [Confluent example](running_a_complex_change.md) demonstrates how to use OpsChain to build and deploy a multi-node [Confluent](https://www.confluent.io) environment
+- The [Confluent example](running-a-complex-change.md) demonstrates how to use OpsChain to build and deploy a multi-node [Confluent](https://www.confluent.io) environment
 
 ### Create your own project
 
-Try creating a new project using the steps above and instead of adding a remote, author your own commits. See the [reference documentation](../reference/README.md) and [developing your own resources](/docs/getting_started/developer.md#developing-resources) guide for more information.
+Try creating a new project using the steps above and instead of adding a remote, author your own commits. See the [reference documentation](/docs/category/reference) and [developing your own resources](/docs/getting-started/developer.md#developing-resources) guide for more information.

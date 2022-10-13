@@ -14,7 +14,7 @@ OpsChain can utilise an LDAP database for user authorisation and authentication.
 
 ## LDAP group membership caching
 
-The OpsChain [security model](restricting_user_access.md) uses the LDAP groups a user is a member of to restrict their access to projects and environments. For this reason, each request to the OpsChain API server necessitates an LDAP query. By default, OpsChain will cache a user's LDAP group membership for 1 minute to reduce the volume of LDAP requests.
+The OpsChain [security model](restricting-user-access.md) uses the LDAP groups a user is a member of to restrict their access to projects and environments. For this reason, each request to the OpsChain API server necessitates an LDAP query. By default, OpsChain will cache a user's LDAP group membership for 1 minute to reduce the volume of LDAP requests.
 
 ### Disable caching
 
@@ -56,7 +56,7 @@ _Note: This setting will be applied to the Kubernetes cluster when you [restart 
 
 ### Alter the OpsChain LDAP configuration
 
-See the [configuring OpsChain](configuring_opschain.md#ldap-configuration) guide for details of the LDAP configuration variables that can be adjusted to enable the use of an external LDAP server. Edit your `.env` file, adding the relevant LDAP options to override the default values supplied in `.env.internal`.
+See the [configuring OpsChain](configuring-opschain.md#ldap-configuration) guide for details of the LDAP configuration variables that can be adjusted to enable the use of an external LDAP server. Edit your `.env` file, adding the relevant LDAP options to override the default values supplied in `.env.internal`.
 
 _Note: An example [Active Directory configuration](#example-active-directory-configuration) appears at the end of this document._
 

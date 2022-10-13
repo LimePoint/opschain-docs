@@ -21,8 +21,8 @@ This guide assumes that you have performed the following steps from the installa
 
 - [Configured Docker Hub access](operations/installation.md#configure-docker-hub-access-optional)
 - [Downloaded the OpsChain CLI](reference/cli.md#installation)
-- [Created an OpsChain project](getting_started/README.md#create-an-opschain-project)
-- [Created a project Git repository](getting_started/developer.md#create-a-git-repository) and associated its remote with your OpsChain project.
+- [Created an OpsChain project](getting-started/README.md#create-an-opschain-project)
+- [Created a project Git repository](getting-started/developer.md#create-a-git-repository) and associated its remote with your OpsChain project.
 
 ### Navigate to the project Git repository
 
@@ -34,11 +34,11 @@ $ opschain dev
 [dev] $ bundle install
 ```
 
-_Note: The `opschain-action` commands below assume the OpsChain development environment is being run in the Git repository created as part of the [getting started - developer edition](getting_started/developer.md). If using a different project, modify these commands to reflect the OpsChain actions available._
+_Note: The `opschain-action` commands below assume the OpsChain development environment is being run in the Git repository created as part of the [getting started - developer edition](getting-started/developer.md). If using a different project, modify these commands to reflect the OpsChain actions available._
 
 #### Create a `step_context.json` (optional)
 
-The `opschain-action` command uses a `.opschain/step_context.json` file if it exists within the project Git repository working directory. For more information about the `step_context.json` file, see the [step runner reference guide](reference/concepts/step_runner.md#step-context-json).
+The `opschain-action` command uses a `.opschain/step_context.json` file if it exists within the project Git repository working directory. For more information about the `step_context.json` file, see the [step runner reference guide](reference/concepts/step-runner.md#step-context-json).
 
 ```bash
 $ mkdir -p .opschain
@@ -69,9 +69,9 @@ If your actions rely on [OpsChain context](reference/concepts/context.md) values
 
 ## Using the OpsChain development environment
 
-The `opschain-action` command can be used to run OpsChain actions the same way they are run by the step runner. See the [OpsChain development environment](getting_started/developer.md#opschain-development-environment) section of the getting started guide for instructions on how to list and run individual actions.
+The `opschain-action` command can be used to run OpsChain actions the same way they are run by the step runner. See the [OpsChain development environment](getting-started/developer.md#opschain-development-environment) section of the getting started guide for instructions on how to list and run individual actions.
 
-Unlike when actions are run as part of an OpsChain change, the OpsChain development environment does not persist changes to the project and environment properties to the OpsChain database. Instead, the properties changes are output into the `.opschain/step_result.json` file. For more information about the `step_result.json` file, see the [step runner reference guide](reference/concepts/step_runner.md#step-result-json).
+Unlike when actions are run as part of an OpsChain change, the OpsChain development environment does not persist changes to the project and environment properties to the OpsChain database. Instead, the properties changes are output into the `.opschain/step_result.json` file. For more information about the `step_result.json` file, see the [step runner reference guide](reference/concepts/step-runner.md#step-result-json).
 
 ### Child Steps
 
@@ -210,4 +210,4 @@ docker rmi 62651bfbd35e b05e297066d6
 
 ## What to do next
 
-Try [developing your own resources](getting_started/developer.md#developing-resources)
+Try [developing your own resources](getting-started/developer.md#developing-resources)

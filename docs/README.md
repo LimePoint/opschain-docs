@@ -25,7 +25,7 @@ A variety of example project Git repositories, many with step by step tutorials 
 
 Operations guides for OpsChain, including security, installation and upgrade guides.
 
-## [Containerised development environment](development_environment.md)
+## [Containerised development environment](development-environment.md)
 
 Understand the OpsChain containerised development environment.
 

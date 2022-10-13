@@ -44,7 +44,7 @@ OpsChain supports the following Kubernetes distributions on a single node only:
 
 OpsChain requires a minimum of 2GB of ram to function. We recommend 4GB if you intend to run our more advanced examples.
 
-OpsChain requires a minimum of 30GB of disk to function. We recommend 100GB if you intend to run our examples without having to perform [manual cleanup activities](maintenance/docker_image_cleanup.md#opschain-docker-image-cleanup) very frequently.
+OpsChain requires a minimum of 30GB of disk to function. We recommend 100GB if you intend to run our examples without having to perform [manual cleanup activities](/docs/operations/maintenance/container-image-cleanup.md#container-image-cleanup) very frequently.
 
 If using Docker for Mac the [configuration UI](https://docs.docker.com/desktop/mac/#advanced) allows you to adjust the ram and disk allocation for Docker. After changing the configuration you will need to restart the Docker service.
 
@@ -60,7 +60,7 @@ By default OpsChain will attempt to use `opschain-image-registry.local.gd` which
 
 [`hostctl`](https://guumaster.github.io/) can be used to achieve this with the `hostctl add domains opschain opschain-image-registry.local.gd` command.
 
-_Note: A hostname other than `opschain-image-registry.local.gd` can be used if desired - the value would need to be manually updated in the `.env` file and `values.yaml` file after the `opschain server configure` script below has been run. Alternatively the value could be added to a [`values.override.yaml` configuration override file](/docs/reference/cli.md#configuration-overrides) - [see an example](/config_file_examples/values.override.yaml.example)._
+_Note: A hostname other than `opschain-image-registry.local.gd` can be used if desired - the value would need to be manually updated in the `.env` file and `values.yaml` file after the `opschain server configure` script below has been run. Alternatively the value could be added to a [`values.override.yaml` configuration override file](/docs/reference/cli.md#configuration-overrides) - [see an example](/files/config_file_examples/values.override.yaml.example)._
 
 ## Installation
 
@@ -90,7 +90,7 @@ _Please [contact OpsChain support](/docs/support.md#how-to-contact-us) if you wo
 
 ### Install the OpsChain CLI
 
-OpsChain has native CLI binaries for Windows, macOS and Linux. See the [installation](../reference/cli.md#installation) section of our CLI reference guide to download and configure the `opschain` executable.
+OpsChain has native CLI binaries for Windows, macOS and Linux. See the [installation](/docs/reference/cli.md#installation) section of our CLI reference guide to download and configure the `opschain` executable.
 
 The OpsChain CLI is used to configure the OpsChain server installation.
 
@@ -114,7 +114,7 @@ _Note: all future `opschain server` commands must be run in the `~/opschain-conf
 opschain server deploy
 ```
 
-This will start the OpsChain server and its dependent services in separate Kubernetes pods. For more information on these containers see the [architecture overview](../reference/architecture.md).
+This will start the OpsChain server and its dependent services in separate Kubernetes pods. For more information on these containers see the [architecture overview](/docs/reference/architecture.md).
 
 The command may take several minutes to start, especially with slower internet connections as the OpsChain images are downloaded.
 
@@ -138,7 +138,7 @@ _Note: Please ensure there are no spaces included in the parameter you supply to
 
 ### Configure the OpsChain CLI's API access
 
-Create a CLI configuration file in your home directory based on the [example](/config_file_examples/opschainrc.example):
+Create a CLI configuration file in your home directory based on the [example](/files/config_file_examples/opschainrc.example):
 
 ```bash
 vi ~/.opschainrc
@@ -148,7 +148,7 @@ If you changed the username or password in the `create_user` command above, ensu
 
 In addition, the `apiBaseUrl` configuration in `~/.opschainrc` must be updated to reflect the external OpsChain API address. This address reflects the OpsChain listening port specified as part of the `opschain server configure` script. If you accepted the default setting, this will be `http://localhost:3000/`.
 
-Learn more about the `opschainrc` configuration in the [CLI configuration guide](../reference/cli.md#opschain-cli-configuration).
+Learn more about the `opschainrc` configuration in the [CLI configuration guide](/docs/reference/cli.md#opschain-cli-configuration).
 
 _Note: If you create a `.opschainrc` file in your current directory, this will be used in precedence to the version in your home directory._
 
@@ -165,7 +165,7 @@ security add-trusted-cert -k ~/Library/Keychains/login.keychain-db -p ssl opscha
 
 ### Configure Docker Hub access (optional)
 
-If you intend to use the OpsChain development environment (used when creating new action definitions) you will need to be logged in to [Docker Hub](https://hub.docker.com/) as the `opschaintrial` user (or, if you have an [enterprise licence for OpsChain](../reference/opschain_and_mintpress.md#enterprise-controllers-for-oracle), the `opschainenterprise` user). These are the same Docker credentials requested by the `opschain server configure` command.
+If you intend to use the OpsChain development environment (used when creating new action definitions) you will need to be logged in to [Docker Hub](https://hub.docker.com/) as the `opschaintrial` user (or, if you have an [enterprise licence for OpsChain](/docs/reference/opschain-and-mintpress.md#enterprise-controllers-for-oracle), the `opschainenterprise` user). These are the same Docker credentials requested by the `opschain server configure` command.
 
 ```bash
 docker login --username opschaintrial
@@ -180,5 +180,5 @@ docker login --username opschaintrial
 
 ## What to do next
 
-- (optional) OpsChain is supplied with an LDAP server for authentication. If you'd prefer to use your own LDAP server, follow the [OpsChain LDAP](opschain_ldap.md) guide to alter the OpsChain authentication configuration.
-- Return to the [getting started guide](../getting_started/README.md) to learn more about OpsChain.
+- (optional) OpsChain is supplied with an LDAP server for authentication. If you'd prefer to use your own LDAP server, follow the [OpsChain LDAP](opschain-ldap.md) guide to alter the OpsChain authentication configuration.
+- Return to the [getting started guide](../getting-started/README.md) to learn more about OpsChain.

@@ -64,7 +64,7 @@ opschain environment list --project-code ansible
 
 ## Add the Ansible example as a remote to the project Git repository
 
-Follow [adding a project Git repository as a remote](../reference/project_git_repositories.md#adding-a-project-git-repository-as-a-remote) using the [OpsChain Ansible example repository](https://github.com/LimePoint/opschain-examples-ansible) remote URL `https://username:password@github.com/LimePoint/opschain-examples-ansible.git`.
+Follow [adding a project Git repository as a remote](/docs/reference/project-git-repositories.md#adding-a-project-git-repository-as-a-remote) using the [OpsChain Ansible example repository](https://github.com/LimePoint/opschain-examples-ansible) remote URL `https://username:password@github.com/LimePoint/opschain-examples-ansible.git`.
 
 ### Clone the repository
 
@@ -77,7 +77,7 @@ cd opschain-examples-ansible
 
 ### Configure the AWS credentials
 
-To enable the OpsChain Runner to access your AWS account, configure the [AWS environment variables](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-envvars.html) in the runner. To do this, create the [environment variables](../reference/concepts/properties.md#environment-variables) as [properties](../reference/concepts/properties.md) linked to the `Ansible Environment`.
+To enable the OpsChain Runner to access your AWS account, configure the [AWS environment variables](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-envvars.html) in the runner. To do this, create the [environment variables](/docs/reference/concepts/properties.md#environment-variables) as [properties](/docs/reference/concepts/properties.md) linked to the `Ansible Environment`.
 
 1. Using the editor of your choice, open `project_properties.json` and insert your AWS Access Key ID and Secret Access Key. _Note: The AMI image used to create the EC2 instance for this example is associated with the us-west-2 region. For this reason, please do not alter the AWS_DEFAULT_REGION environment variable._
 
@@ -99,7 +99,7 @@ opschain change create --project-code ansible --environment-code ansbl --git-rem
 
 _Note: the first time you run a change from this project it may take a long time as it constructs the Runner image (with Terraform, Ansible and the AWS CLI)._
 
-The [steps](../reference/concepts/concepts.md#step) that comprise the change will be shown as well as their status.
+The [steps](/docs/reference/concepts/concepts.md#step) that comprise the change will be shown as well as their status.
 
 ### Verify change deployment
 
@@ -153,8 +153,8 @@ The example makes use of the [AWS provider](https://registry.terraform.io/provid
 
 ### Try a more advanced example
 
-The [Confluent example](running_a_complex_change.md) demonstrates how to use OpsChain to build and deploy a multi-node [Confluent](https://www.confluent.io) environment.
+The [Confluent example](running-a-complex-change.md) demonstrates how to use OpsChain to build and deploy a multi-node [Confluent](https://www.confluent.io) environment.
 
 ### Create your own project
 
-Try creating a new project using the steps above and instead of adding a remote, author your own commits. See the [reference documentation](../reference/README.md) and [developing your own resources](/docs/getting_started/developer.md#developing-resources) guide for more information.
+Try creating a new project using the steps above and instead of adding a remote, author your own commits. See the [reference documentation](/docs/category/reference) and [developing your own resources](/docs/getting-started/developer.md#developing-resources) guide for more information.

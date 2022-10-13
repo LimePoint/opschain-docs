@@ -23,7 +23,7 @@ After following this guide you should understand:
 
 ## OpsChain properties
 
-Within each action, OpsChain properties are available via `OpsChain.properties` (which will behave like a [Hashie Mash](https://github.com/hashie/hashie#mash)[^1])). The values available are the result of a deep merge of the [change's](concepts.md#change) [project's Git repository](../project_git_repositories.md) properties with the [project](concepts.md#project) and [environment](concepts.md#environment) level properties. If a property exists at multiple levels, project values will override repository values and environment values will override project and repository values.
+Within each action, OpsChain properties are available via `OpsChain.properties` (which will behave like a [Hashie Mash](https://github.com/hashie/hashie#mash)[^1])). The values available are the result of a deep merge of the [change's](concepts.md#change) [project's Git repository](../project-git-repositories.md) properties with the [project](concepts.md#project) and [environment](concepts.md#environment) level properties. If a property exists at multiple levels, project values will override repository values and environment values will override project and repository values.
 
 Properties can be accessed using dot or square bracket notation with string or symbol keys. These examples are equivalent:
 
@@ -71,7 +71,7 @@ Within each action, the result of merging these files will be available via `Ops
 #### Notes
 
 1. The repository properties are read only within each action (as OpsChain cannot modify the underlying Git repository to store any changes).
-2. Loading repository properties in the [OpsChain development environment](../../docker_development_environment.md) (`opschain dev`):
+2. Loading repository properties in the [OpsChain development environment](../../development-environment.md) (`opschain dev`):
    - running `opschain-action -AT` will raise explanatory exceptions if the schema or structure of these file(s) is invalid.
    - the `<environment code>.[json|toml|yaml]` files will be loaded by `opschain-action` if the `step_context.json` file includes the relevant context environment code. e.g.
 
@@ -494,6 +494,6 @@ _Note: Configuration options within `opschain.config.environments` can only be s
 
 | Configuration Option      | Description                                                                                                                                                                                             | Default value                                |
 |:--------------------------|:--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|:---------------------------------------------|
-| change_log_retention_days | The number of days to retain change logs. See [change log retention](../../operations/maintenance/data_retention.md#change-log-retention) for more information.                                         | unset, OpsChain will retain all change logs. |
-| event_retention_days      | The number of days to retain events. See [event retention](../../operations/maintenance/data_retention.md#event-retention) for more information                                                                          | unset, OpsChain will retain all events.       |
+| change_log_retention_days | The number of days to retain change logs. See [change log retention](../../operations/maintenance/data-retention.md#change-log-retention) for more information.                                         | unset, OpsChain will retain all change logs. |
+| event_retention_days      | The number of days to retain events. See [event retention](../../operations/maintenance/data-retention.md#event-retention) for more information                                                                          | unset, OpsChain will retain all events.       |
 | allow_parallel_changes    | For a given project, allow multiple changes to run within a single environment. See [change execution options](changes.md#change-execution-options) in the changes reference guide for more information | false                                        |

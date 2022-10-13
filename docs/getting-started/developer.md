@@ -20,7 +20,7 @@ This guide assumes that:
 - you have have access to a running OpsChain API server, either locally or network accessible. See the [getting started installation guide](../operations/installation.md) for more details
 - you have performed the [Docker Hub login step](../operations/installation.md#configure-docker-hub-access-optional) from the getting started installation guide
 - you have installed:
-  - the [OpsChain CLI](../reference/cli.md#installation)
+  - the [OpsChain CLI](/docs/reference/cli.md#installation)
   - [Docker](https://docs.docker.com/engine/install/)
   - [Docker Compose](https://docs.docker.com/compose/install/)
 
@@ -166,7 +166,7 @@ This command is automatically setup as a pre-commit hook for project Git reposit
 
 If you would like to commit code that fails linting (e.g. incomplete code) the Git `--no-verify` argument can be used when committing, e.g. `git commit --no-verify`.
 
-See the [OpsChain lint](../docker_development_environment.md#using-opschain-dev-lint) documentation to learn more.
+See the [OpsChain lint](../development-environment.md#using-opschain-dev-lint) documentation to learn more.
 
 #### Commit your action
 
@@ -307,7 +307,7 @@ Hello :-)
 
 Creating files in the short-lived OpsChain development container isn't the most useful - lets make the host where the resource type will create the file configurable. OpsChain provides some tools to make this more convenient.
 
-Add the `opschain-resource-types` Gem to your Gemfile (see the [included resource types guide](/docs/reference/included_resource_types.md) to learn more about this Gem):
+Add the `opschain-resource-types` Gem to your Gemfile (see the [included resource types guide](/docs/reference/included-resource-types.md) to learn more about this Gem):
 
 ```ruby
 # The following Gems are pre-installed on the OpsChain runner image
@@ -603,7 +603,7 @@ Doing this is considered a best practice - especially in a team environment wher
 
 ### Making the target host configurable
 
-By defining the target host as an [OpsChain property](../reference/concepts/properties.md) we allow the host to be overridden independently of the Git repository.
+By defining the target host as an [OpsChain property](/docs/reference/concepts/properties.md) we allow the host to be overridden independently of the Git repository.
 
 ```ruby
 infrastructure_host :test_host do
@@ -673,20 +673,20 @@ _Note: Before running the command below, ensure you have exited the OpsChain dev
 
 ### Learn more about OpsChain actions
 
-Read our more comprehensive [actions reference guide](../reference/concepts/actions.md#actions-reference-guide) to learn more about creating actions, resources, resource types and controllers.
+Read our more comprehensive [actions reference guide](/docs/reference/concepts/actions.md#actions-reference-guide) to learn more about creating actions, resources, resource types and controllers.
 
 ### Create OpsChain actions that need manual intervention
 
-Read more about [OpsChain wait steps](../reference/concepts/actions.md#wait-steps) to learn how to create changes that can pause and wait for human intervention before continuing.
+Read more about [OpsChain wait steps](/docs/reference/concepts/actions.md#wait-steps) to learn how to create changes that can pause and wait for human intervention before continuing.
 
 ### Learn more about the OpsChain step runner
 
-Read our more comprehensive [step runner guide](../reference/concepts/step_runner.md) to learn more about how OpsChain steps are executed - and how to install custom commands and dependencies.
+Read our more comprehensive [step runner guide](/docs/reference/concepts/step-runner.md) to learn more about how OpsChain steps are executed - and how to install custom commands and dependencies.
 
 ### Learn more about OpsChain properties
 
-Follow the [loading properties](../reference/concepts/properties.md#loading-properties) guide to try editing some [project](../reference/concepts/concepts.md#project) or [environment](../reference/concepts/concepts.md#environment) properties.
+Follow the [loading properties](/docs/reference/concepts/properties.md#loading-properties) guide to try editing some [project](/docs/reference/concepts/concepts.md#project) or [environment](/docs/reference/concepts/concepts.md#environment) properties.
 
 ### Try more advanced examples
 
-The [OpsChain examples](../examples/README.md) include a variety of tutorials and Git repository samples for you to explore.
+The [OpsChain examples](/docs/category/examples) include a variety of tutorials and Git repository samples for you to explore.

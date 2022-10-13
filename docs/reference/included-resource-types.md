@@ -54,7 +54,7 @@ Requiring `opschain-kubernetes` provides several resources for working with Kube
 
 ### Prerequisites
 
-The `kubectl` binary must be available in your runner environment and is not included by default. To install `kubectl`, a [custom Dockerfile](concepts/step_runner.md#custom-step-runner-dockerfiles) must be included in your project's `.opschain` directory.
+The `kubectl` binary must be available in your runner environment and is not included by default. To install `kubectl`, a [custom Dockerfile](concepts/step-runner.md#custom-step-runner-dockerfiles) must be included in your project's `.opschain` directory.
 
 Below is an example Dockerfile RUN directive for adding `kubectl` to your runner.
 
@@ -188,7 +188,7 @@ _Note: RubyTerraform supplies `vars` to Terraform on the command line via multip
 
 ### Prerequisites
 
-`opschain-terraform` does not include the Terraform binary. Customers wishing to use the resource type will need to install Terraform in their project's step runner. This can be done by using a [custom step runner Dockerfile](concepts/step_runner.md#custom-step-runner-dockerfiles). An example of this can be found in the [OpsChain Confluent example](https://github.com/LimePoint/opschain-examples-confluent/blob/75473f7fbac4150b3d5c583dfc52c6b22044552f/.opschain/Dockerfile#L8).
+`opschain-terraform` does not include the Terraform binary. Customers wishing to use the resource type will need to install Terraform in their project's step runner. This can be done by using a [custom step runner Dockerfile](concepts/step-runner.md#custom-step-runner-dockerfiles). An example of this can be found in the [OpsChain Confluent example](https://github.com/LimePoint/opschain-examples-confluent/blob/75473f7fbac4150b3d5c583dfc52c6b22044552f/.opschain/Dockerfile#L8).
 
 ### Automatic Terraform initialisation
 

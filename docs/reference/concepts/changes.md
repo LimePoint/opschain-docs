@@ -20,7 +20,7 @@ A change is the application of an action from a specific commit in the project's
 OpsChain changes can be created via the OpsChain CLI, or by directly POSTing to the API changes endpoint. To create an OpsChain change, the following information is required:
 
 - An OpsChain [project](concepts.md#project) and [environment](concepts.md#environment)
-- A [Git remote](git_remotes.md) and related Git reference (tag/branch/SHA)
+- A [Git remote](git-remotes.md) and related Git reference (tag/branch/SHA)
 - The OpsChain [action](actions.md) to execute
 
 _Note: For more information on using the CLI to create a change, see `opschain change create --help`. See OpsChain's API reference for more information on creating changes directly via the API (to see the API reference documentation, use a browser to access the API host)._

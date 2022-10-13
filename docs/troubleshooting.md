@@ -192,7 +192,7 @@ The `ref` (short for reference) method looks up the resource in the same way as 
 
 ### Git commit: `opschain: command not found`
 
-OpsChain automatically sets up the [`opschain dev lint` tool](docker_development_environment.md#using-the-opschain-linter) to detect issues in the project Git repositories.
+OpsChain automatically sets up the [`opschain dev lint` tool](development-environment.md#using-the-opschain-linter) to detect issues in the project Git repositories.
 
 If the command is not available on the path when committing the following error will be shown:
 

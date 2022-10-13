@@ -11,7 +11,7 @@ Before upgrading OpsChain, make sure you check the [changelog](/docs/changelog) 
 
 :::
 
-To upgrade OpsChain go to the location on your OpsChain host where you store your OpsChain server configuration (e.g. `~/opschain-configuration`), [download and install the latest CLI](../reference/cli.md#installation), and deploy the latest version of OpsChain (which will pull the latest images).
+To upgrade OpsChain go to the location on your OpsChain host where you store your OpsChain server configuration (e.g. `~/opschain-configuration`), [download and install the latest CLI](/docs/reference/cli.md#installation), and deploy the latest version of OpsChain (which will pull the latest images).
 
 ```bash
 cd ~/opschain-configuration # or the directory where you store your OpsChain server configuration
@@ -44,4 +44,4 @@ opschain server utils list_runner_image_tags
 opschain server utils 'remove_runner_image_tag[<tag_to_remove>]'
 ```
 
-The [internal registry garbage collection](maintenance/docker_image_cleanup.md#internal-registry-garbage-collection) will then remove these images from disk.
+The [internal registry garbage collection](/docs/operations/maintenance/container-image-cleanup.md#internal-registry-garbage-collection) will then remove these images from disk.

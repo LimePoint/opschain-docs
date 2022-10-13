@@ -18,7 +18,7 @@ After reading this guide you should understand:
   - composite resource types and resources
 - how to use the OpsChain logger
 
-_This reference guide covers concepts from the [developer getting started guide](../../getting_started/developer.md) in more depth. If this is your first experience developing with OpsChain it may be a better place to start._
+_This reference guide covers concepts from the [developer getting started guide](../../getting-started/developer.md) in more depth. If this is your first experience developing with OpsChain it may be a better place to start._
 
 ## Defining standalone actions
 
@@ -44,7 +44,7 @@ In addition to the action name, OpsChain's DSL allows you specify [prerequisite 
 
 ### Prerequisite actions
 
-Prerequisite actions will run in the same [step runner](step_runner.md) as the requested action. These behave like standard [Rake prerequisites](https://ruby.github.io/rake/doc/rakefile_rdoc.html#label-Tasks+with+Prerequisites).
+Prerequisite actions will run in the same [step runner](step-runner.md) as the requested action. These behave like standard [Rake prerequisites](https://ruby.github.io/rake/doc/rakefile_rdoc.html#label-Tasks+with+Prerequisites).
 
 ```ruby
 action go_to_work: ['wake_up', 'get_dressed'] do
@@ -60,7 +60,7 @@ action :get_dressed do
 end
 ```
 
-In the example above, all actions would run in the same [step runner](step_runner.md), in this order:
+In the example above, all actions would run in the same [step runner](step-runner.md), in this order:
 
 1. `wake_up`
 2. `get_dressed`
@@ -74,23 +74,23 @@ As noted in the prerequisite actions example above, an action with prerequisites
 action holiday: ['wake_up', 'get_dressed']
 ```
 
-Running the `holiday` action will execute the `wake_up` and `get_dressed` actions in a single [step runner](step_runner.md).
+Running the `holiday` action will execute the `wake_up` and `get_dressed` actions in a single [step runner](step-runner.md).
 
 Grouping actions on a single step runner comes with some advantages and disadvantages:
 
 ##### Advantages
 
-1. Improved performance - as there is an overhead to building and launching each [step runner](step_runner.md), grouping actions can improve overall change performance
-2. De-isolation - passing data between actions running in their own [step runners](step_runner.md) requires you to store the data in OpsChain's [properties](properties.md) (or in a data store accessible to both runners). Grouping actions on a single [step runner](step_runner.md) means the actions have access to the same file system and memory. This removes the need to store sensitive (or single use) information in [properties](properties.md)
+1. Improved performance - as there is an overhead to building and launching each [step runner](step-runner.md), grouping actions can improve overall change performance
+2. De-isolation - passing data between actions running in their own [step runners](step-runner.md) requires you to store the data in OpsChain's [properties](properties.md) (or in a data store accessible to both runners). Grouping actions on a single [step runner](step-runner.md) means the actions have access to the same file system and memory. This removes the need to store sensitive (or single use) information in [properties](properties.md)
 
 ##### Disadvantages
 
 1. Execution visibility - prerequisite steps are not displayed in OpsChain's change step tree. This reduces the visibility of their start and stop times, making it harder to follow the change's progress. Similarly, when viewing the change logs, there is no separator in the logs between each prerequisite action's log messages nor with the grouping action's log messages (if any)
-2. De-isolation - While it can be an advantage (as described above), care must be taken when deciding to combine actions on a single [step runner](step_runner.md). The modifications to the file system or memory that one action makes may have unintended effects if subsequent actions have been designed with an expectation that they will run in a "clean" [step runner](step_runner.md)
+2. De-isolation - While it can be an advantage (as described above), care must be taken when deciding to combine actions on a single [step runner](step-runner.md). The modifications to the file system or memory that one action makes may have unintended effects if subsequent actions have been designed with an expectation that they will run in a "clean" [step runner](step-runner.md)
 
 ### Child steps
 
-An action definition can include a list of other actions to run as child `steps`. After the parent's block has completed, these child steps will be added to the queue of actions to run. When an OpsChain worker becomes available, it will build and launch a [step runner](step_runner.md) to run the next action in the queue.
+An action definition can include a list of other actions to run as child `steps`. After the parent's block has completed, these child steps will be added to the queue of actions to run. When an OpsChain worker becomes available, it will build and launch a [step runner](step-runner.md) to run the next action in the queue.
 
 The `steps:` argument accepts:
 
@@ -114,7 +114,7 @@ action :do_something_else_after do
 end
 ```
 
-In the example above each action will run in its own [step runner](step_runner.md), in this order:
+In the example above each action will run in its own [step runner](step-runner.md), in this order:
 
 1. `do_something`
 2. `do_something_after`
@@ -132,7 +132,7 @@ An OpsChain wait step can only be added as part of a step's child steps, for exa
 action :do_something, steps: [:do_something_before_waiting, OpsChain.wait_step, :do_something_else_after_waiting]
 ```
 
-Another useful scenario for wait steps is when an [automated change rule](automated_changes.md) is used to create a change automatically, but a team member should then allow the change to proceed manually. To achieve this the OpsChain wait step can be used as the first child step of an action:
+Another useful scenario for wait steps is when an [automated change rule](automated-changes.md) is used to create a change automatically, but a team member should then allow the change to proceed manually. To achieve this the OpsChain wait step can be used as the first child step of an action:
 
 ```ruby
 action :do_something, steps: [:do_something_after] do
@@ -144,7 +144,7 @@ action :do_something_with_acknowledgement, steps: [OpsChain.wait_step, :do_somet
 
 _Note: all the sibling steps of a wait step will run immediately when using `run_as: :parallel` - the change will not continue on subsequently until it is manually continued. See the [troubleshooting guide](/docs/troubleshooting.md#opschain-change-parallel-steps-run-before-wait-step) for more info._
 
-The `opschain change continue` command can be used to continue a waiting change. Currently the `opschain change continue` command will continue all waiting steps for a change. The `/steps/{{step_id}}/continue` API endpoint can be used to continue a specific step, for example: `curl -X POST -u {{username}}:{{password}} localhost:3000/steps/{{step_id}}/continue`. See the [OpsChain REST API documentation](/docs/getting_started/README.md#review-the-rest-api-documentation) to learn more.
+The `opschain change continue` command can be used to continue a waiting change. Currently the `opschain change continue` command will continue all waiting steps for a change. The `/steps/{{step_id}}/continue` API endpoint can be used to continue a specific step, for example: `curl -X POST -u {{username}}:{{password}} localhost:3000/steps/{{step_id}}/continue`. See the [OpsChain REST API documentation](/docs/getting-started/README.md#review-the-rest-api-documentation) to learn more.
 
 _Note: OpsChain wait steps use the naming convention `opschain_wait_step_{{unique id}}` - do not use this naming convention in your steps unless you intend to create an OpsChain wait step._
 
@@ -347,7 +347,7 @@ OpsChain.logger.debug 'Debug message'
 
 ## Defining resource types & resources
 
-_If this is the first time you've looked at OpsChain resource types and resources, our [developer getting started guide](/docs/getting_started/developer.md) could be a good place to start._
+_If this is the first time you've looked at OpsChain resource types and resources, our [developer getting started guide](/docs/getting-started/developer.md) could be a good place to start._
 
 Resource types can be defined using the `resource_type` keyword:
 
@@ -895,8 +895,8 @@ _Notes:_
 
 ## What to do next
 
-Learn about the OpsChain [step runner](step_runner.md).
+Learn about the OpsChain [step runner](step-runner.md).
 
-Learn about the [Docker development environment](../../docker_development_environment.md).
+Learn about the [Docker development environment](../../development-environment.md).
 
-Try [developing your own resources](../../getting_started/developer.md#developing-resources).
+Try [developing your own resources](../../getting-started/developer.md#developing-resources).

@@ -39,7 +39,7 @@ action :default do
 end
 ```
 
-Running this example locally (in your [OpsChain development environment](../docker_development_environment.md)) will print the obfuscated output rather than the secret value:
+Running this example locally (in your [OpsChain development environment](../development-environment.md)) will print the obfuscated output rather than the secret value:
 
 ```bash
 $ opschain dev
@@ -52,4 +52,4 @@ $ opschain dev
 
 The MintPress enterprise controllers for Oracle are available for licenced customers via the OpsChain enterprise runner.
 
-See the [OpsChain enterprise runner](concepts/step_runner.md#opschain-enterprise-runner) section of the step runner reference guide to learn how to use to the OpsChain enterprise runner.
+See the [OpsChain enterprise runner](concepts/step-runner.md#opschain-enterprise-runner) section of the step runner reference guide to learn how to use to the OpsChain enterprise runner.

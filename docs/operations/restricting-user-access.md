@@ -50,7 +50,7 @@ _Note: this step assumes you are using the default `opschain` Kubernetes namespa
 
 ## Restricting project and environment access
 
-The following example assumes you have completed the [getting started](../getting_started/README.md) guide. The example security configuration makes use of projects and environments created as part of the [Terraform](../examples/running_a_simple_terraform_change.md), [Confluent](../examples/running_a_complex_change.md) and [Ansible](../examples/running_an_aws_ansible_change.md) examples. These will help to highlight the restrictions applied to OpsChain but are not necessary to complete the example.
+The following example assumes you have completed the [getting started](../getting-started/README.md) guide. The example security configuration makes use of projects and environments created as part of the [Terraform](/docs/examples/running-a-simple-terraform-change.md), [Confluent](/docs/examples/running-a-complex-change.md) and [Ansible](/docs/examples/running-an-aws-ansible-change.md) examples. These will help to highlight the restrictions applied to OpsChain but are not necessary to complete the example.
 
 ### List project environments
 

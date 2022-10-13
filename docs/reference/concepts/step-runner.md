@@ -48,7 +48,7 @@ After updating the `.env` file, follow the steps from the [upgrading guide](../.
 
 If your resources or actions rely on external software, the image used by your project for its step runner containers can be modified to add extra packages or executables. The image may also be modified to optimise the performance of build steps by performing tasks as part of the step image build rather than as part of the step execution.
 
-_Please note: The [Docker development environment](../../docker_development_environment.md#using-custom-runner-images) guide provides instructions on using a custom step runner image as your local OpsChain development environment._
+_Please note: The [Docker development environment](../../development-environment.md#using-custom-runner-images) guide provides instructions on using a custom step runner image as your local OpsChain development environment._
 
 #### Creating a custom step runner Dockerfile
 
