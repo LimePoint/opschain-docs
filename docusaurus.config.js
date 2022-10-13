@@ -52,7 +52,19 @@ const config = {
       },
       footer: {
         style: 'dark',
-        links: [],
+        links: [
+          {
+            title: 'Other',
+            items: [
+              {
+                html: '<a class=footer__link-item href=/files/LICENCE.md download=LICENCE.md target=_blank>OpsChain licence</a>',
+              },
+              {
+                html: '<a class=footer__link-item href=/files/THIRD-PARTY-SOFTWARE.txt download=THIRD-PARTY-SOFTWARE.txt target=_blank>Third party software licences</a>',
+              },
+            ],
+          },
+        ],
         copyright: `Copyright © ${new Date().getFullYear()} LimePoint Pty Ltd. All rights reserved.`,
       },
       prism: {
