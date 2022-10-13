@@ -1,4 +1,9 @@
-# Getting started
+---
+sidebar_position: 1
+description: Explore OpsChain's features.
+---
+
+# Using OpsChain
 
 [OpsChain](https://opschain.io) was developed to address the problem of managing change in a consistent and uniform way across on-premise, cloud, modern, and legacy platforms. Our objective is to unify people, process, and technology in order to simplify and reduce the operational complexities and costs of running and operating modern enterprise applications and systems in today's world.
 
@@ -432,9 +437,3 @@ The [reference documentation](../reference/README.md) provides in-depth descript
 ### Review the REST API documentation
 
 With your OpsChain server running, navigate to the [OpsChain REST API Documentation](http://localhost:3000/docs) to learn more about OpsChain's REST endpoints. Interacting directly with the OpsChain API server opens up more features and integration options than using the CLI alone.
-
-## Licence & authors
-
-- Author:: LimePoint (support@limepoint.com)
-
-See [LICENCE](/LICENCE.md)

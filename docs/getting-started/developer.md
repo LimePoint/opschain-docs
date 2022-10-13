@@ -1,4 +1,9 @@
-# Getting started - developer edition
+---
+sidebar_position: 2
+description: Learn about the `actions.rb` file, the heart OpsChain changes.
+---
+
+# Developer edition
 
 The `actions.rb` in the project Git repository is the core of an OpsChain change. After following this guide you should understand:
 
@@ -685,9 +690,3 @@ Follow the [loading properties](../reference/concepts/properties.md#loading-prop
 ### Try more advanced examples
 
 The [OpsChain examples](../examples/README.md) include a variety of tutorials and Git repository samples for you to explore.
-
-## Licence & authors
-
-- Author:: LimePoint (support@limepoint.com)
-
-See [LICENCE](/LICENCE.md)
