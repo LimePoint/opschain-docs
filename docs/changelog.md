@@ -1,3 +1,8 @@
+---
+sidebar_position: 100
+description: Learn about new releases of OpsChain, including new features and updates.
+---
+
 # Changelog
 
 ## [Unreleased] _(change to yyyy-mm-dd format before release, e.g. 2022-02-25)_

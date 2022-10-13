@@ -1,4 +1,8 @@
-# OpsChain demo
+---
+sidebar_position: 99
+---
+
+# SaaS demo instances
 
 Everyone has a combination of toolchains, and keeping track of changes and determining the state across a mix of DevOps tools is _HARD_. OpsChain is here to help!
 
@@ -36,7 +40,7 @@ Easy to troubleshoot changes:
 
 ## Getting started
 
-Keen to get started? We have a [getting started guide](/docs/getting_started/README.md) which lists technical requirements and helps you to get going. You will also find several examples of using OpsChain with [Terraform](https://github.com/LimePoint/opschain-examples-terraform), [Ansible](https://github.com/LimePoint/opschain-examples-ansible), [Confluent](https://github.com/LimePoint/opschain-examples-confluent) and [HashiCorp Vault](https://github.com/LimePoint/opschain-examples-vault) to try out.
+Keen to get started? We have a [getting started guide](/docs/getting-started/overview.md) which lists technical requirements and helps you to get going. You will also find several examples of using OpsChain with [Terraform](https://github.com/LimePoint/opschain-examples-terraform), [Ansible](https://github.com/LimePoint/opschain-examples-ansible), [Confluent](https://github.com/LimePoint/opschain-examples-confluent) and [HashiCorp Vault](https://github.com/LimePoint/opschain-examples-vault) to try out.
 
 ## We love feedback
 
@@ -59,9 +63,3 @@ We are based in Melbourne, Australia so typically, responses would be local busi
 If you encounter issues or have questions, send us an email at [opschain-support@limepoint.com](mailto:opschain-support@limepoint.com). Please include a description of what you are trying to do and what issues/errors you are encountering. Also, attach any relevant screenshots and OpsChain logfiles.
 
 Any defects raised will be triaged, and where possible, we will provide a workaround to bypass the issue. If it is a showstopper, we may also provide a bug fix or release that addresses the issue.
-
-## Licence & authors
-
-- Author:: LimePoint (support@limepoint.com)
-
-See [LICENCE](/LICENCE.md)

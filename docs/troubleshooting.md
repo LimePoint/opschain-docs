@@ -1,3 +1,7 @@
+---
+sidebar_position: 8
+---
+
 # Troubleshooting
 
 After following this guide you should understand:
@@ -294,9 +298,3 @@ The `opschain dev` subcommands rely on the `docker` executable to function.
 #### Solution - install the dev dependencies
 
 Install the CLI [dev dependencies](reference/cli.md#dev-subcommand-dependencies) and then run the command again.
-
-## Licence & authors
-
-- Author:: LimePoint (support@limepoint.com)
-
-See [LICENCE](/LICENCE.md)
