@@ -1,3 +1,8 @@
+---
+sidebar_position: 3
+description: Run a more complex change to provision a multi-node [Confluent](https://www.confluent.io) environment
+---
+
 # Running a complex change
 
 Run a more complex change that builds a multi-node [Confluent](https://www.confluent.io/) setup in your local Kubernetes installation.
@@ -239,9 +244,3 @@ The example makes use of the following packages
 ### Create your own project
 
 Try creating a new project using the steps above and instead of adding a remote, author your own commits. See the [reference documentation](../reference/README.md) and [developing your own resources](../getting_started/developer.md#developing-resources) guide for more information.
-
-## Licence & authors
-
-- Author:: LimePoint (support@limepoint.com)
-
-See [LICENCE](/LICENCE.md)

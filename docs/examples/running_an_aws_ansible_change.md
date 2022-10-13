@@ -1,3 +1,8 @@
+---
+sidebar_position: 2
+description: Run a simple change to use Terraform and Ansible to build an AWS EC2 host and configure nginx
+---
+
 # Running an AWS Ansible change
 
 Run a change that:
@@ -153,9 +158,3 @@ The [Confluent example](running_a_complex_change.md) demonstrates how to use Ops
 ### Create your own project
 
 Try creating a new project using the steps above and instead of adding a remote, author your own commits. See the [reference documentation](../reference/README.md) and [developing your own resources](/docs/getting_started/developer.md#developing-resources) guide for more information.
-
-## Licence & authors
-
-- Author:: LimePoint (support@limepoint.com)
-
-See [LICENCE](/LICENCE.md)

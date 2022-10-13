@@ -1,3 +1,8 @@
+---
+sidebar_position: 1
+description: Run a simple change to use Terraform to provision an AlmaLinux (RHEL-like) container
+---
+
 # Running a simple Terraform change
 
 Run a simple change that creates an nginx container in your local Kubernetes stack.
@@ -206,9 +211,3 @@ The example makes use of the [Terraform Kubernetes provider](https://registry.te
 ### Create your own project
 
 Try creating a new project using the steps above and instead of adding a remote, author your own commits. See the [reference documentation](../reference/README.md) and [developing your own resources](/docs/getting_started/developer.md#developing-resources) guide for more information.
-
-## Licence & authors
-
-- Author:: LimePoint (support@limepoint.com)
-
-See [LICENCE](/LICENCE.md)
