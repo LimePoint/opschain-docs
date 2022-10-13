@@ -1,3 +1,8 @@
+---
+sidebar_position: 10
+description: Details of OpsChain's archive feature and related CLI behaviour.
+---
+
 # Archiving projects & environments
 
 To ensure information about historical changes remains available for audit purposes, OpsChain provides the ability to archive unwanted projects and environments. After following this guide you should know:
@@ -80,9 +85,3 @@ Note: You will need to edit the example to replace:
   - `projects/<project code>` to unarchive a project
   - `projects/<project code>/environments/<environment code>` to unarchive an environment
   - `projects/<project code>/git_remotes/<git remote id>` to unarchive a git remote
-
-## Licence & authors
-
-- Author:: LimePoint (support@limepoint.com)
-
-See [LICENCE](/LICENCE.md)

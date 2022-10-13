@@ -1,9 +1,14 @@
+---
+sidebar_position: 1
+description: Introduces various concepts that will help you to understand the tool and its uses.
+---
+
 # OpsChain concepts
 
 There are several key OpsChain concepts that are useful to comprehend in order to understand the tool and its uses.
 
 <p align='center'>
-  <img alt='Data model of OpsChain concepts and how they relate to each other' src='opschain-concepts.svg' />
+  <img alt='Data model of OpsChain concepts and how they relate to each other' src={require('!url-loader!./opschain-concepts.svg').default} />
 </p>
 
 ## Project
@@ -153,9 +158,3 @@ An example controller is shown in the [actions reference guide](actions.md#contr
 OpsChain tracks the events performed as part of the OpsChain system.
 
 See the [OpsChain events](events.md) guide for more information.
-
-## Licence & authors
-
-- Author:: LimePoint (support@limepoint.com)
-
-See [LICENCE](/LICENCE.md)

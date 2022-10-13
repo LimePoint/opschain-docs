@@ -1,3 +1,8 @@
+---
+sidebar_position: 3
+description: Learn more about building container images from within your OpsChain actions.
+---
+
 # Building container images
 
 OpsChain step runners are executed in unprivileged containers to maintain security. This means that Docker, BuildKit, and Buildah cannot be run within an OpsChain step runner container.
@@ -119,9 +124,3 @@ Hello world
 ## Feedback
 
 We're planning to enhance OpsChain's abilities to build container images in the future. If this is a feature you're interested in, we would love to [hear from you](/docs/support.md#how-to-contact-us) so that we can learn more about your use case.
-
-## Licence & authors
-
-- Author:: LimePoint (support@limepoint.com)
-
-See [LICENCE](/LICENCE.md)

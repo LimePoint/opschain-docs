@@ -1,4 +1,9 @@
-# OpsChain context guide
+---
+sidebar_position: 5
+description: The context information available to your actions when running steps.
+---
+
+# Context
 
 The OpsChain context framework provides a read only set of values, describing the current step and the user who created the overall change. These values enable you to reuse code between projects and environments, conditionally performing logic based on when and where the step is being performed.
 
@@ -90,9 +95,3 @@ action main: ['enable_logging'] do
   .... main process
 end
 ```
-
-## Licence & authors
-
-- Author:: LimePoint (support@limepoint.com)
-
-See [LICENCE](/LICENCE.md)

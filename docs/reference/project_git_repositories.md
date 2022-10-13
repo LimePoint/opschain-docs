@@ -1,4 +1,9 @@
-# OpsChain project Git repositories guide
+---
+sidebar_position: 6
+description: A project Git repository is where you store the actions and related configuration.
+---
+
+# Project Git repositories
 
 A project Git repository is where you store the actions and related configuration to apply to the project's environments. OpsChain will read all action and resource definitions from the `actions.rb` file in the repository root directory. See the [actions reference guide](concepts/actions.md) and [developing your own resources](/docs/getting_started/developer.md#developing-resources) guide for further information about the contents of the `actions.rb` file.
 
@@ -85,9 +90,3 @@ Next update your server configuration's `.env` file to use the custom config map
 opschain server configure
 opschain server deploy
 ```
-
-## Licence & authors
-
-- Author:: LimePoint (support@limepoint.com)
-
-See [LICENCE](/LICENCE.md)

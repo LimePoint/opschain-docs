@@ -1,4 +1,9 @@
-# Step runner reference guide
+---
+sidebar_position: 9
+description: Learn more about how OpsChain runs steps within a step runner image.
+---
+
+# Step runner
 
 This guide covers how the OpsChain server executes actions within the OpsChain step runner.
 
@@ -257,9 +262,3 @@ The `steps/children` value contains the child steps (and execution strategy) the
 ### Log messages for step phases
 
 OpsChain includes log messages in your change logs to allow you to follow each step's progress as OpsChain builds its step runner and executes the step's action. These messages will log when the phase starts, initialises (if relevant), is completing (if relevant), and finishes. These log messages can be used to diagnose how much time the different phases of a change/step are taking.
-
-## Licence & authors
-
-- Author:: LimePoint (support@limepoint.com)
-
-See [LICENCE](/LICENCE.md)

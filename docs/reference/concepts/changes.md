@@ -1,4 +1,9 @@
-# Changes reference guide
+---
+sidebar_position: 2
+description: Learn about OpsChain changes, creating them, and managing their execution.
+---
+
+# Changes
 
 This guide covers OpsChain changes, creating them, managing their execution and limitations to be aware of. After reading this guide you should understand:
 
@@ -115,9 +120,3 @@ action :print_approver do
   OpsChain.logger.info "The change approver is: #{OpsChain.context.change.metadata.approver}"
 end
 ```
-
-## Licence & authors
-
-- Author:: LimePoint (support@limepoint.com)
-
-See [LICENCE](/LICENCE.md)

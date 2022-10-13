@@ -1,3 +1,8 @@
+---
+sidebar_position: 4
+description: The pre-defined resource types available in OpsChain.
+---
+
 # Included resource types
 
 A collection of resource types come pre-installed on the OpsChain step runner image, this guide covers what they are and how to use them.
@@ -218,9 +223,3 @@ The [OpsChain Terraform example project](https://github.com/LimePoint/opschain-e
 The [OpsChain AWS Ansible example project](https://github.com/LimePoint/opschain-examples-ansible) demonstrates how the OpsChain Infrastructure and OpsChain Terraform resource types can be combined with Ansible to deploy an nginx host on AWS.
 
 The [OpsChain Confluent example project](https://github.com/LimePoint/opschain-examples-confluent) demonstrates how the OpsChain Infrastructure and OpsChain Terraform resource types can be used together.
-
-## Licence & authors
-
-- Author:: LimePoint (support@limepoint.com)
-
-See [LICENCE](/LICENCE.md)

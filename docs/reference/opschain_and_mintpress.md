@@ -1,4 +1,9 @@
-# Using OpsChain and MintPress together
+---
+sidebar_position: 7
+description: OpsChain bundles the MintPress SDK and this guide is intended for existing MintPress customers.
+---
+
+# OpsChain and MintPress
 
 This document covers the relationship between OpsChain and MintPress.
 
@@ -48,9 +53,3 @@ $ opschain dev
 The MintPress enterprise controllers for Oracle are available for licenced customers via the OpsChain enterprise runner.
 
 See the [OpsChain enterprise runner](concepts/step_runner.md#opschain-enterprise-runner) section of the step runner reference guide to learn how to use to the OpsChain enterprise runner.
-
-## Licence & authors
-
-- Author:: LimePoint (support@limepoint.com)
-
-See [LICENCE](/LICENCE.md)

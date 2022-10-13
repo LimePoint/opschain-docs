@@ -1,4 +1,9 @@
-# OpsChain CLI reference
+---
+sidebar_position: 5
+description: Configuration details and features of the OpsChain CLI.
+---
+
+# OpsChain CLI
 
 This document provides information on obtaining, configuring and using the OpsChain CLI.
 
@@ -173,9 +178,3 @@ The override file is provided to Helm and will override values in the main `valu
 When upgrading or reconfiguring an existing installation, the server configuration command will not re-ask questions whose answers cannot change.
 
 If you would like to re-run the full server configuration remove/move the `.env` file (e.g. `mv .env .env.old`) and re-run `opschain server configure`.
-
-## Licence & authors
-
-- Author:: LimePoint (support@limepoint.com)
-
-See [LICENCE](/LICENCE.md)

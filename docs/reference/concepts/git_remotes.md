@@ -1,3 +1,8 @@
+---
+sidebar_position: 8
+description: Learn about managing remote Git repositories for your OpsChain projects.
+---
+
 # Git remotes
 
 This guide takes you through the operations required for managing remote Git repositories for your OpsChain projects.
@@ -102,9 +107,3 @@ If the Git remote has not been used by a change (or an automated change), OpsCha
 ### Deleting used Git remotes
 
 In order to maintain OpsChain's audit trail, if a Git remote has been used by a change, OpsChain will not delete the Git remote. Instead, the Git remote's credentials (user, password, ssh_key_data) will be removed from the database but the record will remain.
-
-## Licence & authors
-
-- Author:: LimePoint (support@limepoint.com)
-
-See [LICENCE](/LICENCE.md)

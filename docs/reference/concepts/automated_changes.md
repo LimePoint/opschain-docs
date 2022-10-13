@@ -1,4 +1,9 @@
-# Setting up automated changes
+---
+sidebar_position: 4
+description: Learn about automating the creation and execution of changes with OpsChain.
+---
+
+# Automated changes
 
 This guide takes you through creating automated changes in OpsChain.
 
@@ -80,9 +85,3 @@ opschain automated-change create --project-code demo --environment-code dev --gi
 ```
 
 If the `--new-commits-only=false` were changed to `--new-commits-only=true` then the new change would only be created if new commits had been added to `master`. If the `--repeat` argument were changed to `--repeat=false` then a single new change would be created at 7pm and then the automated change rule would be deleted - the change would be created once rather than daily.
-
-## Licence & authors
-
-- Author:: LimePoint (support@limepoint.com)
-
-See [LICENCE](/LICENCE.md)

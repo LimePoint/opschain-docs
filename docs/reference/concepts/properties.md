@@ -1,4 +1,9 @@
-# OpsChain properties guide
+---
+sidebar_position: 7
+description: Storing environment variables, files and key value pairs in the OpsChain properties framework.
+---
+
+# Properties
 
 The OpsChain properties framework provides a location to store:
 
@@ -492,9 +497,3 @@ _Note: Configuration options within `opschain.config.environments` can only be s
 | change_log_retention_days | The number of days to retain change logs. See [change log retention](../../operations/maintenance/data_retention.md#change-log-retention) for more information.                                         | unset, OpsChain will retain all change logs. |
 | event_retention_days      | The number of days to retain events. See [event retention](../../operations/maintenance/data_retention.md#event-retention) for more information                                                                          | unset, OpsChain will retain all events.       |
 | allow_parallel_changes    | For a given project, allow multiple changes to run within a single environment. See [change execution options](changes.md#change-execution-options) in the changes reference guide for more information | false                                        |
-
-## Licence & authors
-
-- Author:: LimePoint (support@limepoint.com)
-
-See [LICENCE](/LICENCE.md)

@@ -1,4 +1,9 @@
-# Actions reference guide
+---
+sidebar_position: 3
+description: Defining actions, resources and resource types in OpsChain.
+---
+
+# Actions reference
 
 This guide covers how to develop standalone and resource specific actions, how they integrate with the API server and options for utilising additional packages that are not in the standard OpsChain runner container.
 
@@ -895,9 +900,3 @@ Learn about the OpsChain [step runner](step_runner.md).
 Learn about the [Docker development environment](../../docker_development_environment.md).
 
 Try [developing your own resources](../../getting_started/developer.md#developing-resources).
-
-## Licence & authors
-
-- Author:: LimePoint (support@limepoint.com)
-
-See [LICENCE](/LICENCE.md)

@@ -1,4 +1,9 @@
-# OpsChain events
+---
+sidebar_position: 6
+description: Learn about the events OpsChain tracks for auditing and reporting purposes.
+---
+
+# Events
 
 This guide gives an overview of event tracking with OpsChain.
 
@@ -188,9 +193,3 @@ Events created internally by OpsChain can be identified by the `system` property
 ## Removing events
 
 Older OpsChain events can be removed, see the [OpsChain data retention](/docs/operations/maintenance/data_retention.md) guide for more details.
-
-## Licence & authors
-
-- Author:: LimePoint (support@limepoint.com)
-
-See [LICENCE](/LICENCE.md)
