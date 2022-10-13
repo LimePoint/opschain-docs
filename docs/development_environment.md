@@ -1,6 +1,10 @@
-# Docker development environment
+---
+sidebar_position: 5
+---
 
-The OpsChain Docker development environment enables you to list and run individual actions in a manner similar to a running change. After following this guide you should know how to:
+# Development environment
+
+The OpsChain Docker-based development environment enables you to list and run individual actions in a manner similar to a running change. After following this guide you should know how to:
 
 - create a `step_context.json` file to provide environment variables and properties for your action(s)
 - enter the interactive OpsChain development environment to:
@@ -207,9 +211,3 @@ docker rmi 62651bfbd35e b05e297066d6
 ## What to do next
 
 Try [developing your own resources](getting_started/developer.md#developing-resources)
-
-## Licence & authors
-
-- Author:: LimePoint (support@limepoint.com)
-
-See [LICENCE](/LICENCE.md)

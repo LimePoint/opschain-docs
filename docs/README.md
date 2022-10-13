@@ -20,9 +20,9 @@ A variety of example project Git repositories, many with step by step tutorials 
 
 Operations guides for OpsChain, including security, installation and upgrade guides.
 
-## [OpsChain Docker development environment](docker_development_environment.md)
+## [Containerised development environment](development_environment.md)
 
-Understand the OpsChain Docker development environment.
+Understand the OpsChain containerised development environment.
 
 ## [Developing your own resources](getting_started/developer.md#developing-resources)
 
