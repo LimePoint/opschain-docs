@@ -1,3 +1,8 @@
+---
+sidebar_position: 3
+description: Explore the available configuration options that can be included in the `.env` file.
+---
+
 # Configuring OpsChain
 
 This guide describes the various configuration options that can be included in your `.env` file, along with their default values.
@@ -61,9 +66,3 @@ The following variables can be manually set inside the OpsChain development envi
 | :--------------------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :------------ |
 | OPSCHAIN_ACTION_RUN_CHILDREN | Automatically run child steps in the local Docker development environment. See the [Docker development environment guide (child steps)](../docker_development_environment.md#child-steps) for more details. | false         |
 | OPSCHAIN_TRACE               | If set to true, additional logging will be generated when actions are run                                                                                                                                   | false         |
-
-## Licence & authors
-
-- Author:: LimePoint (support@limepoint.com)
-
-See [LICENCE](/LICENCE.md)

@@ -1,4 +1,9 @@
-# OpsChain data retention
+---
+sidebar_position: 2
+description: OpsChain configuration to automate the removal of old change logs and events.
+---
+
+# Data retention
 
 As part of system maintenance, it is recommended that the OpsChain change logs and event retention periods be enabled and configured to limit disk usage. After following this guide you should know how to:
 
@@ -72,9 +77,3 @@ Setting `OPSCHAIN_CLEAN_OLD_DATA_JOB_CRON=never` will prevent the log removal jo
 ## See also
 
 The OpsChain log aggregator can be configured to forward change logs to external log storage. See the [OpsChain change log forwarding](../log_forwarding.md) guide for details.
-
-## Licence & authors
-
-- Author:: LimePoint (support@limepoint.com)
-
-See [LICENCE](/LICENCE.md)

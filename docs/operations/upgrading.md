@@ -1,4 +1,15 @@
+---
+sidebar_position: 9
+description: Upgrading OpsChain to the latest release.
+---
+
 # Upgrading
+
+:::caution
+
+Before upgrading OpsChain, make sure you check the [changelog](/docs/changelog) for the relevant version.
+
+:::
 
 To upgrade OpsChain go to the location on your OpsChain host where you store your OpsChain server configuration (e.g. `~/opschain-configuration`), [download and install the latest CLI](../reference/cli.md#installation), and deploy the latest version of OpsChain (which will pull the latest images).
 
@@ -34,9 +45,3 @@ opschain server utils 'remove_runner_image_tag[<tag_to_remove>]'
 ```
 
 The [internal registry garbage collection](maintenance/docker_image_cleanup.md#internal-registry-garbage-collection) will then remove these images from disk.
-
-## Licence & authors
-
-- Author:: LimePoint (support@limepoint.com)
-
-See [LICENCE](/LICENCE.md)

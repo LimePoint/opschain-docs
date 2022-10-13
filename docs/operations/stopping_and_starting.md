@@ -1,3 +1,8 @@
+---
+sidebar_position: 7
+description: How to stop the OpsChain pods when not in use, and then restart them.
+---
+
 # Stopping and starting OpsChain
 
 This guide takes you through stopping and starting OpsChain without uninstalling.

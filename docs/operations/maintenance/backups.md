@@ -1,4 +1,9 @@
-# OpsChain backup & restore
+---
+sidebar_position: 3
+description: Learn more about creating backups for OpsChain.
+---
+
+# Backup & restore
 
 OpsChain by itself does not perform backup and disaster recovery procedures. This guide assumes that you will be using a backup tool to backup and restore your Kubernetes cluster resources.
 
@@ -27,9 +32,3 @@ Follow your backup tool's restore procedures if you need to restore a snapshot o
 ## See also
 
 Kubernetes backup options include [Velero](https://velero.io/), [Kasten K10](https://www.kasten.io/) and [Portworx](https://portworx.com/products/px-backup/). OpsChain does not make any recommendations on which backup tool you should use as it is outside the scope of our application.
-
-## Licence & authors
-
-- Author:: LimePoint (support@limepoint.com)
-
-See [LICENCE](/LICENCE.md)

@@ -1,4 +1,9 @@
-# OpsChain installation guide
+---
+sidebar_position: 1
+description: A guide to installing the OpsChain API server.
+---
+
+# Installation guide
 
 This guide takes you through installing and configuring OpsChain.
 
@@ -177,9 +182,3 @@ docker login --username opschaintrial
 
 - (optional) OpsChain is supplied with an LDAP server for authentication. If you'd prefer to use your own LDAP server, follow the [OpsChain LDAP](opschain_ldap.md) guide to alter the OpsChain authentication configuration.
 - Return to the [getting started guide](../getting_started/README.md) to learn more about OpsChain.
-
-## Licence & authors
-
-- Author:: LimePoint (support@limepoint.com)
-
-See [LICENCE](/LICENCE.md)

@@ -1,3 +1,8 @@
+---
+sidebar_position: 6
+description: Enable the OpsChain Authorisation Server and restrict user's access to OpsChain.
+---
+
 # Restricting user access
 
 Restricting access to OpsChain projects and environments allows you to control user access to view (or perform operations on) OpsChain objects (e.g. properties, changes, logs, etc.).
@@ -129,9 +134,3 @@ If an OpsChain user is assigned to multiple LDAP groups, the user is restricted 
 ## Cleaning up
 
 Once you have updated your configuration, terminate the `kubectl port-forward` processes started at the [beginning of this guide](#expose-opschain-ldap-and-authorisation-service-server-ports) (e.g. by hitting `ctrl-c` in each of those terminals).
-
-## Licence & authors
-
-- Author:: LimePoint (support@limepoint.com)
-
-See [LICENCE](/LICENCE.md)

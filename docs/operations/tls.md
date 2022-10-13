@@ -1,3 +1,8 @@
+---
+sidebar_position: 8
+description: How to configure TLS/HTTPS connectivity for OpsChain.
+---
+
 # TLS (Transport Layer Security)
 
 ## Accessing the OpsChain API via HTTPS

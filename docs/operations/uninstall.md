@@ -1,10 +1,19 @@
+---
+sidebar_position: 10
+description: Steps to perform to permanently remove OpsChain.
+---
+
 # Uninstalling OpsChain
 
 If at some point you decide that OpsChain is not for you and you no longer wish to continue using the services it provides, follow these steps to permanently remove OpsChain from your machine.
 
 ## Remove the OpsChain containers and data
 
-_Before uninstalling OpsChain we suggest [making a backup](maintenance/backups.md) in case you would like to restore any OpsChain data in the future._
+:::danger
+
+Before uninstalling OpsChain we suggest [making a backup](maintenance/backups.md) in case you would like to restore any OpsChain data in the future.
+
+:::
 
 Terminate and remove the running OpsChain containers (and associated data) by executing the following command:
 

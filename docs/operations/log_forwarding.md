@@ -1,4 +1,9 @@
-# OpsChain change log forwarding
+---
+sidebar_position: 5
+description: Configure OpsChain to send change logs to external log storage.
+---
+
+# Change log forwarding
 
 If required, OpsChain's log aggregator can be configured to also forward change logs to external log storage. After following this guide you should know how to:
 
@@ -87,9 +92,3 @@ logAggregator:
 ```
 
 _Note: The specific configuration to include in `additionalOutputConfig` will depend on the plugin `@type` used. Please see Fluentd's [config file syntax](https://docs.fluentd.org/configuration/config-file) guide, and the relevant plugin manual for further information._
-
-## Licence & authors
-
-- Author:: LimePoint (support@limepoint.com)
-
-See [LICENCE](/LICENCE.md)

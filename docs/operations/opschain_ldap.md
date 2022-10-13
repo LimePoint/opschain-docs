@@ -1,3 +1,8 @@
+---
+sidebar_position: 4
+description: Configure OpsChain's LDAP cache and learn how to connect OpsChain to an external LDAP/AD for user authentication and authorisation.
+---
+
 # OpsChain LDAP
 
 OpsChain can utilise an LDAP database for user authorisation and authentication. After following this guide you should know how to:
@@ -80,9 +85,3 @@ OPSCHAIN_LDAP_ADMIN=CN=Administrator,CN=Users,DC=myopschain,DC=io
 OPSCHAIN_LDAP_PASSWORD=AdministratorPassword!
 OPSCHAIN_LDAP_HC_USER=
 ```
-
-## Licence & authors
-
-- Author:: LimePoint (support@limepoint.com)
-
-See [LICENCE](/LICENCE.md)

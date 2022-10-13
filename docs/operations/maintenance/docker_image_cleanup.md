@@ -1,4 +1,9 @@
-# OpsChain Docker image cleanup
+---
+sidebar_position: 1
+description: Regular maintenance tasks to run (or schedule) on your OpsChain host to cleanup container images.
+---
+
+# Container image cleanup
 
 As part of regular system maintenance it is recommended that the OpsChain runner images are regularly pruned to limit disk usage. After following this guide you should know how to:
 
@@ -32,9 +37,3 @@ docker image prune --filter 'label=opschain.change_id=abc123'
 ### Internal registry garbage collection
 
 Step runner images are built whenever a change runs a step. OpsChain runs a garbage collection process to remove these images after 24 hours. If you need more control of this process please [contact us](/docs/support.md#how-to-contact-us).
-
-## Licence & authors
-
-- Author:: LimePoint (support@limepoint.com)
-
-See [LICENCE](/LICENCE.md)
