@@ -53,6 +53,10 @@ const config = {
             label: 'OpsChain CLI download',
             href: 'https://github.com/LimePoint/opschain/releases',
           },
+          {
+            label: 'OpsChain API reference',
+            href: 'pathname:///api-docs/',
+          },
         ],
       },
       footer: {
