@@ -54,6 +54,24 @@ const config = {
         style: 'dark',
         links: [
           {
+            title: 'Links',
+            items: [
+              {
+                label: 'LimePoint',
+                to: 'https://www.limepoint.com/',
+              },
+              {
+                label: 'OpsChain',
+                to: 'https://opschain.io/',
+              },
+              {
+                label: 'Blog',
+                to: 'https://www.limepoint.com/blog/tag/opschain',
+              },
+            ],
+          },
+          {},
+          {
             title: 'Other',
             items: [
               {
