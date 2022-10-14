@@ -5,23 +5,23 @@ description: Learn about new releases of OpsChain, including new features and up
 
 # Changelog
 
-## [Unreleased] _(change to yyyy-mm-dd format before release, e.g. 2022-02-25)_
+## [Unreleased] _(change to yyyy-mm-dd format before release, e.g. 2022-02-25)_ {#unreleased}
 
-### Added
+### Added {#unreleased-added}
 
 - OpsChain project Git remote credentials can now be updated using the `opschain project update-git-remote` command.
 - OpsChain project and environment properties can now be edited using the `opschain project edit-properties` and `opschain environment edit-properties` commands.
 
-### Fixed
+### Fixed {#unreleased-fixed}
 
 - The OpsChain CLI `opschain server deploy` command has been fixed on Windows.
   - **Breaking change** - the `.env` file has moved from using double quotes around values to single quotes to fix an issue with Windows paths containing special character sequences like `\n` - which was being treated as a newline.
     - If your .env file contains values containing `"`, they need to be unescaped and the surrounding `"` changed to `'`. Similarly, any value containing a `'` now needs to have the single quotes escaped. Rerunning a [full configuration](/docs/reference/cli.md#full-configuration) may be simpler.
 - Removed the text colour presentation from the masked fields in the `add-git-remote` and `list-git-remotes` command output when displayed in `json` or `yaml` format.
 
-## 2022-09-20
+## 2022-09-20 {#2022-09-20}
 
-### Changed
+### Changed {#2022-09-20-changed}
 
 - As part of OpsChain moving out of the trial phase, the default Kubernetes namespace has been updated to `opschain` and the documentation repository has been moved to [`opschain`](https://github.com/LimePoint/opschain).
 - Properties validation in OpsChain has been improved. Formerly properties validation was only applied when a step started running. Now, properties validation is also applied:
@@ -29,19 +29,19 @@ description: Learn about new releases of OpsChain, including new features and up
   - after an OpsChain action modifies project or environment properties. If the modifications cause the properties to fail validation, the change will error and detailed errors will be reported in the change logs.
 - The `change create --follow-logs` and `change show-logs` commands now support the `--output` argument, allowing you to output the logs in `text` (default) or `json` format.
 
-### Fixed
+### Fixed {#2022-09-20-fixed}
 
 - The OpsChain Helm chart no longer deploys a cluster role or cluster role binding for the OpsChain ingress service account. The role and binding are now included with the Kong v2.12.0 Helm deployment.
 
-## 2022-09-15
+## 2022-09-15 {#2022-09-15}
 
-### Important breaking change
+### Important breaking changes {#2022-09-15-important-breaking-changes}
 
 - The OpsChain step runner Dockerfile template has been changed. After upgrading, please use `opschain dev create-dockerfile` to create a copy of the new template in your project's `.opschain` folder and then reapply your customisations.
 - The OpsChain server management commands (`bin/*`) have been removed from the `opschain-trial` repository. They have been replaced by `opschain server` subcommands.
 - The `opschain_auth/security_configuration.json` file must be moved out of the `opschain_auth` folder and stored in the same folder as the `.env` and `values.yaml` files, e.g. `mv opschain_auth/security_configuration.json .`
 
-### Added
+### Added {#2022-09-15-added}
 
 - The OpsChain CLI now supports an optional `--output` argument for many operations, allowing you to display the command's output in different formats (e.g. YAML / JSON). See the relevant command's `--help` output for the available formats.
 - Default output format(s) can be configured via your `.opschainrc` file. See the [OpsChain CLI reference](/docs/reference/cli.md#opschain-cli-configuration-settings) for more information.
@@ -51,7 +51,7 @@ description: Learn about new releases of OpsChain, including new features and up
 - The OpsChain CLI has new subcommands for managing and configuring OpsChain server installations under `opschain server`, e.g. `opschain server configure` - [learn more](/docs/reference/cli.md#server-management).
 - The `opschain server` commands support a `values.override.yaml` file for automatically applying Helm customisations.
 
-### Changed
+### Changed {#2022-09-15-changed}
 
 - When the available log lines for a single request (via `/log_lines` with a filter or via `changes/<change_id>/log_lines`) exceeds the limit for a single request - a `more` link is provided to navigate to the next chunk.
 - Upgraded cert-manager to 1.9.1.
@@ -66,88 +66,88 @@ description: Learn about new releases of OpsChain, including new features and up
 - Upgraded Terraform 'hashicorp/aws' provider to 4.29.0 in the OpsChain Ansible example.
 - Upgraded BuildKit to v0.10.4.
 
-### Fixed
+### Fixed {#2022-09-15-fixed}
 
 - The `opschain dev build-runner-image` command now supplies the `OPSCHAIN_VERSION` build argument to Docker when building your custom step runner image.
 
-### Removed
+### Removed {#2022-09-15-removed}
 
 - **Breaking change** - The OpsChain CLI `opschain dev` commands no longer recognise the `OPSCHAIN_VERSION` environment variable when starting the development environment or building runner images. Ensure you have the corresponding version of the CLI to access the required OpsChain images, e.g. to use the `2022-08-16` OpsChain images, use the `2022-08-16` version of the CLI.
 - The `bin/opschain-*` commands have been removed from the `opschain-trial` repository - they have been replaced by the `opschain server` subcommands as described above. _Note: the `opschain server` commands do not need to be run in the `opschain-trial` directory. You can now move the existing configuration files (the `.env`, `values.yaml`, and `opschain_auth/security_configuration.json` files) into a folder of your choosing and run the commands from there. Please ensure as part of the move, that you move the `opschain_auth/security_configuration.json` file out of the `opschain_auth` folder per the instructions above (under "important breaking change")._
 
-## 2022-08-16
+## 2022-08-16 {#2022-08-16}
 
-### Important breaking change
+### Important breaking changes {#2022-08-16-important-breaking-changes}
 
 - OpsChain environments codes are no longer globally unique and can now be reused in different projects. With this change, the `/environments` API endpoint has been removed. Please use the `/projects/<project_code>/environments` endpoint for all future environment specific API access.
   - *_Note: Due to the endpoint changes, please ensure you are using the latest OpsChain CLI version._*
 
-## 2022-08-12
+## 2022-08-12 {#2022-08-12}
 
-### Fixed
+### Fixed {#2022-08-12-fixed}
 
 - The `error: cannot lock ref` error that occurred when multiple changes were executed for the same Git remote has been fixed.
 
-## 2022-08-10
+## 2022-08-10 {#2022-08-10}
 
-### Important breaking change
+### Important breaking changes {#2022-08-10-important-breaking-changes}
 
 - The OpsChain step runner Dockerfile template has been changed. After upgrading, please use `opschain dev create-dockerfile` to create a copy of the new template in your project's `.opschain` folder and then reapply your customisations.
 
-### Added
+### Added {#2022-08-10-added}
 
 - The OpsChain CLI now allows you to build a step runner image from your project's `.opschain/Dockerfile` via the `opschain dev build-runner-image` command. See [custom runner images](/docs/development-environment.md#custom-runner-images) for more details on using the image in your OpsChain development environment.
 
-### Changed
+### Changed {#2022-08-10-changed}
 
 - The `opschain project add-git-remote` command will now display the Git remote details rather than the text `Git remote added successfully`.
 
-### Fixed
+### Fixed {#2022-08-10-fixed}
 
 - The image registry garbage collector now handles error conditions that may have caused runner images to be garbage collected prematurely.
 - The `opschain change retry` command now follows the change logs when supplied with the `--follow-logs` argument.
 
-## 2022-07-26
+## 2022-07-26 {#2022-07-26}
 
 *This release is a bugfix for the 2022-07-20 release which is unusable. Please check the release notes for both releases before upgrading.*
 
-### Changed
+### Changed {#2022-07-26-changed}
 
 - The `opschain change create` command `--follow` argument has been renamed to `--follow-logs`.
 
-### Fixed
+### Fixed {#2022-07-26-fixed}
 
 - The 2022-07-20 release contained a bug that caused it to fail when upgrading existing instances. This release corrects the invalid migration and must be used in place of 2022-07-20.
 - The `opschain change create` command now exits with an error code for cancelled or failed changes when using the `--follow-logs` argument. This matches the functionality when this argument is not provided.
 
-## 2022-07-20
+## 2022-07-20 {#2022-07-20}
 
 *This release has a critical bug and should not be used. Please use release 2022-07-26 instead.**
 
-### Important breaking changes
+### Important breaking changes {#2022-07-20-important-breaking-changes}
 
 - The way OpsChain manages its local clone of your project Git repositories has changed to improve support for projects with multiple Git remotes. **You must re-add all active Git remotes for this release**.
   - Use the `opschain project list-git-remotes` command to identify your active Git remotes in each project.
   - Archive each Git remote using the `opschain project archive-git-remote` command.
   - Re-associate each Git remote with the project using the `opschain project add-git-remote` command.
 
-### Added
+### Added {#2022-07-20-added}
 
 - The `opschain change create` command now accepts a `--follow` argument, allowing you to follow the change logs rather than view the step tree.
 
-### Removed
+### Removed {#2022-07-20-removed}
 
 - The `Metadata` column has been removed from the `opschain change list` output. To view the metadata, use the `opschain change show` command.
 
-### Changed
+### Changed {#2022-07-20-changed}
 
 - When creating a change, OpsChain now validates the supplied Git remote and revision after the change has been created. If the supplied values are invalid, the change will complete with an error status and the change logs will provide further information.
 - Archiving a Git remote will now unschedule any automated change rules related to it.
 - Git remotes used by automated change rules can no longer be deleted. Deleting the related automated change rules is now a prerequisite to deleting the Git remote.
 
-## 2022-07-11
+## 2022-07-11 {#2022-07-11}
 
-### Changed
+### Changed {#2022-07-11-changed}
 
 - The OpsChain CLI now displays the user who continued a [wait step](/docs/reference/concepts/actions.md#wait-steps).
 - Upgraded Bundler to 2.3.17.
@@ -162,31 +162,31 @@ description: Learn about new releases of OpsChain, including new features and up
 - Upgraded Terraform 'hashicorp/aws' provider to 4.21.0 in the OpsChain Ansible example.
 - Upgraded Terraform 'hashicorp/kubernetes' provider to 2.12.1 in the OpsChain Confluent, Terraform, and Weblogic examples.
 
-### Fixed
+### Fixed {#2022-07-11-fixed}
 
 - OpsChain now supports project Git repositories with > 100 character paths.
 
-## 2022-06-29
+## 2022-06-29 {#2022-06-29}
 
-### Added
+### Added {#2022-06-29-added}
 
 - OpsChain project Git remotes can now be archived using the `opschain project archive-git-remote` command.
 - The OpsChain API project `git_remotes` endpoint now accepts `DELETE` requests. _Note: Git remotes  that are associated with changes will have their credentials cleared rather than being deleted._
 - Documentation has been added on Git remote operations. [Learn more](/docs/reference/concepts/git-remotes.md).
 
-### Changed
+### Changed {#2022-06-29-changed}
 
 - `PATCH` request on the project `git_remotes` endpoint is now only used for archiving/unarchiving an existing Git remote. Git remote creation has been moved to its `POST` request.
 - The `opschain project add-git-remote` command now replaces `opschain project set-git-remote`.
 
-## 2022-06-20
+## 2022-06-20 {#2022-06-20}
 
-### Added
+### Added {#2022-06-20-added}
 
 - `OpsChain.context.change.automated` is now populated in the [OpsChain context](/docs/reference/concepts/context.md) - indicating whether a change was created by an [automated change rule](/docs/reference/concepts/automated-changes.md).
 - The `automated` field is now included in the OpsChain changes API response - indicating whether a change was created by an [automated change rule](/docs/reference/concepts/automated-changes.md).
 
-### Changed
+### Changed {#2022-06-20-changed}
 
 - The OpsChain CLI now displays the provided command line argument values before prompting for any required values.
 - Upgraded all base images used by the OpsChain examples to AlmaLinux 8.6.
@@ -202,44 +202,44 @@ description: Learn about new releases of OpsChain, including new features and up
 - Upgraded the OpsChain base runner image to AlmaLinux 8.6.
 - Upgraded the CLI to Node.js v16.15.1.
 
-## 2022-06-08
+## 2022-06-08 {#2022-06-08}
 
-### Important breaking changes
+### Important breaking changes {#2022-06-08-important-breaking-changes}
 
 - OpsChain must be installed from scratch for this release. Follow the steps in the [uninstall guide](/docs/operations/uninstall.md) to remove OpsChain and then perform a [fresh install](/docs/operations/installation.md). The existing Git remotes can be re-used with the new installation.
 
-### Added
+### Added {#2022-06-08-added}
 
 - When the list of options for an argument contains a single value, the OpsChain CLI will now automatically select it.
 - OpsChain now tracks the Git remote used for a change explicitly.
 - OpsChain now tracks the Git remote used for an automated change rule explicitly.
 
-### Changed
+### Changed {#2022-06-08-changed}
 
 - **Breaking changes**
   - When creating a change the Git remote and revision must be specified individually via the `--git-remote-name` and `--git-rev` options.
   - When creating an automated change rule the Git remote and revision must be specified individually via the `--git-remote-name` and `--git-rev` options.
   - The `GIT_REV` build argument provided to custom project `Dockerfile`s no longer includes the remote name.
 
-### Fixed
+### Fixed {#2022-06-08-fixed}
 
 - [Wait steps](/docs/reference/concepts/actions.md#wait-steps) within namespaces now work as expected.
 - A sporadic bug whilst running changes or using `opschain dev` - `iseq_compile_each: unknown node (NODE_SCOPE) (SyntaxError)` - has been fixed.
 
-## 2022-05-25
+## 2022-05-25 {#2022-05-25}
 
-### Known issues
+### Known issues {#2022-05-25-known-issues}
 
 - OpsChain changes may fail with `BUG: error: failed to solve ...`. See the [troubleshooting guide](/docs/troubleshooting.md#opschain-change---bug-error-failed-to-solve) to learn how to resolve this issue.
 
-### Added
+### Added {#2022-05-25-added}
 
 - The `opschain change show-logs` command now supports the `--timestamps` option, to prefix each log line with the date and time it was logged.
 - OpsChain now supports [wait steps](/docs/reference/concepts/actions.md#wait-steps) - steps that pause a change execution and wait for a user to continue the change manually.
 - CLI version, server version and runner image can be retrieved via the `opschain info` CLI command.
 - An `/info` endpoint has been added to the OpsChain API to return the currently running version and runner image.
 
-### Changed
+### Changed {#2022-05-25-changed}
 
 - Upgraded Bundler to 2.3.12.
 - Upgraded Fluent Bit to v1.9.3.
@@ -253,19 +253,19 @@ description: Learn about new releases of OpsChain, including new features and up
 - Upgraded Kong to v2.8.1.
 - Upgraded Kong ingress controller to v2.3.1.
 
-### Fixed
+### Fixed {#2022-05-25-fixed}
 
 - Added the missing `OpsChain.repository.properties` method that is described in the Git repository section of the [properties guide](/docs/reference/concepts/properties.md#git-repository).
 - The project links in the Git remotes response body.
 - Fixed runner image building on macOS M1 hosts.
 
-## [2022-05-09]
+## [2022-05-09] {#2022-05-09}
 
-### Added
+### Added {#2022-05-09-added}
 
 - OpsChain project Git remotes can now be queried using the `opschain project list-git-remotes` command.
 
-### Changed
+### Changed {#2022-05-09-changed}
 
 - The `opschain-dev` command has been replaced with a new CLI command `opschain dev`. Execute `opschain dev --help` for more information.
 - the `opschain-lint` Git pre-commit hook has been updated and should be recreated in your project Git repositories. From within the OpsChain development environment, execute `rm -f .git/hooks/pre-commit && opschain-lint --setup`
@@ -274,30 +274,30 @@ description: Learn about new releases of OpsChain, including new features and up
   - the `opschain-lint` command has been replaced with a new OpsChain CLI command `opschain dev lint`.
   - The `opschain-utils dockerfile_template` command has been replaced with a new OpsChain CLI command `opschain dev create-dockerfile`
 
-### Fixed
+### Fixed {#2022-05-09-fixed}
 
 - Updates to properties made by parallel steps are now applied correctly.
 
-## [2022-05-05]
+## [2022-05-05] {#2022-05-05}
 
-### Added
+### Added {#2022-05-05-added}
 
 - Documentation has been added explaining how container image builds can be achieved with OpsChain. [Learn more](/docs/reference/building-container-images.md).
 - A link to the step's log lines is now included in the step JSON.
 - The `opschain change create` command now accepts the `--background` argument, allowing you to create changes and not follow their progress.
 
-### Fixed
+### Fixed {#2022-05-05-fixed}
 
 - The OpsChain licence has been fixed in the OpsChain development environment.
 
-## [2022-04-20]
+## [2022-04-20] {#2022-04-20}
 
-### Added
+### Added {#2022-04-20-added}
 
 - The OpsChain CLI request timeout can now be modified. [Learn more](/docs/reference/cli.md#opschain-cli-configuration-settings).
 - Log messages pertaining to the step phases. [Learn more](/docs/reference/concepts/step-runner.md#log-messages-for-step-phases).
 
-### Changed
+### Changed {#2022-04-20-changed}
 
 - The OpsChain CLI will now retry lookup requests (up to three times total) if they fail due to timeouts.
 - Upgraded Ruby to 2.7.6.
@@ -320,27 +320,27 @@ description: Learn about new releases of OpsChain, including new features and up
 
   _Use the `opschain-utils dockerfile_template` command to see the new Dockerfile format and ensure any custom project Dockerfiles are updated to reflect these changes._
 
-## [2022-04-11]
+## [2022-04-11] {#2022-04-11}
 
-### Added
+### Added {#2022-04-11-added}
 
 - The OpsChain CLI now supports [shell completion](/docs/reference/cli.md#shell-completion).
 - OpsChain now supports SSH authentication (in addition to password authentication) for Git remotes.
   - There is an SSH `known_hosts` file provided by OpsChain. See [the documentation](/docs/reference/project-git-repositories.md#ssh-git-remotes) if you need to know more about this file.
 
-### Changed
+### Changed {#2022-04-11-changed}
 
 - The `opschain project set-git-remote` arguments have been updated to support the new authentication options.
 - The OpsChain CLI examples for `set-properties` no longer use the `cli-files` folder as the native binary does not require it.
 
-## [2022-03-28]
+## [2022-03-28] {#2022-03-28}
 
-### Added
+### Added {#2022-03-28-added}
 
 - Documentation on the [change and step behaviour](/docs/reference/concepts/concepts.md#behaviour-when-a-child-step-fails) when a failure occurs in one of the child steps.
 - OpsChain action method validation can now be [disabled](/docs/reference/concepts/actions.md#controller-action-method-validation).
 
-### Changed
+### Changed {#2022-03-28-changed}
 
 - **Breaking changes**
   - OpsChain has moved from Docker Compose to Kubernetes. Only single node Kubernetes deployments are supported currently.
@@ -358,13 +358,13 @@ description: Learn about new releases of OpsChain, including new features and up
 - All base images used by the OpsChain examples upgraded to AlmaLinux 8.5
 - When running changes that include parallel child steps, if one of those children fails, the `opschain change create` command will continue running until all its siblings have finished.
 
-### Fixed
+### Fixed {#2022-03-28-fixed}
 
 - When following the change logs, OpsChain will display all the logs until the change completes - previously the final log messages may not have been shown.
 
-## [2022-03-01]
+## [2022-03-01] {#2022-03-01}
 
-### Added
+### Added {#2022-03-01-added}
 
 - The OpsChain hardware requirements are now [documented](/docs/operations/installation.md#hardwarevm-requirements).
 - The `opschain change show-logs` command now accepts a `--follow` argument to follow the logs until the change completes.
@@ -372,7 +372,7 @@ description: Learn about new releases of OpsChain, including new features and up
 - Added [Kubernetes resource types](/docs/reference/included-resource-types.md#opschain-kubernetes).
 - Added an [SSH key pair](/docs/reference/included-resource-types.md#opschain-ssh-key-pair) resource type.
 
-### Changed
+### Changed {#2022-03-01-changed}
 
 - Upgraded Rails to 7.
 - Upgraded Ruby to 2.7.5.
@@ -388,14 +388,14 @@ description: Learn about new releases of OpsChain, including new features and up
 - Update documentation on the [minimum requirements](/docs/reference/project-git-repositories.md#minimum-requirements) in the [OpsChain project Git repositories guide](/docs/reference/project-git-repositories.md#opschain-project-git-repositories-guide).
 - The OpsChain base runner image is now based on AlmaLinux 8.
 
-### Fixed
+### Fixed {#2022-03-01-fixed}
 
 - Properties raising `ActiveRecord::StaleObjectError` exception when parallel steps modify properties.
 - API worker now logs the full stack trace for `Failed processing step <step_name> (ProcessStepResultCommand::Error)` exception when patching properties fails.
 
-## [2021-11-12]
+## [2021-11-12] {#2021-11-12}
 
-### Added
+### Added {#2021-11-12-added}
 
 - Reference for all third party software licences used in our applications.
 - Document our [support policy](/docs/support.md). This includes the type of support we provide when using OpsChain, as well as details on how and when to contact our support team.
@@ -406,7 +406,7 @@ description: Learn about new releases of OpsChain, including new features and up
   - Custom runner base images now require ONBUILD steps to ensure the OpsChain licence is available to the runner. For further details see [image performance - base images](/docs/reference/concepts/step-runner.md#image-performance---base-images).
 - Documentation on how to [uninstall](/docs/operations/uninstall.md) OpsChain.
 
-### Changed
+### Changed {#2021-11-12-changed}
 
 - The `configure` script won't re-ask questions that can't change.
 - Upgraded Bundler to 2.2.30.
@@ -416,13 +416,13 @@ description: Learn about new releases of OpsChain, including new features and up
 - Upgraded Terraform 'hashicorp/aws' plugin to 3.63.0 in the OpsChain Ansible example.
 - The OpsChain step runner Docker image is now built with Docker BuildKit.
 
-### Removed
+### Removed {#2021-11-12-removed}
 
 - The LimePoint MintPress licence is no longer required to use OpsChain.
 
-## [2021-10-26]
+## [2021-10-26] {#2021-10-26}
 
-### Added
+### Added {#2021-10-26-added}
 
 - Change specific logs are now available from the `/changes/<change_id>/log_lines` API. The results can be filtered using the same filtering syntax as events.
 - The OpsChain DSL now supports
@@ -430,7 +430,7 @@ description: Learn about new releases of OpsChain, including new features and up
   - referencing composite resource properties by name within child resources - see [defining composite resources](/docs/reference/concepts/actions.md#defining-composite-resources--resource-types).
   - referencing resources by name from within actions and when setting properties - see [referencing resources](/docs/reference/concepts/actions.md#referencing-resources)
 
-### Changed
+### Changed {#2021-10-26-changed}
 
 - On startup, OpsChain now displays the publicly mapped port it is listening on.
 - Upgraded Bundler to 2.2.28.
@@ -449,35 +449,35 @@ description: Learn about new releases of OpsChain, including new features and up
   - the `resource_properties` resource method in the OpsChain DSL has been replaced with `properties`.
   - the OpsChain DSL `Scope` class has been restructured and is for internal use only.
 
-### Removed
+### Removed {#2021-10-26-removed}
 
 - **Breaking change** - the `/log_lines` endpoint no longer accepts the `change_id` URL parameter
 
-## [2021-09-28]
+## [2021-09-28] {#2021-09-28}
 
 You **must** run `configure` after upgrading to update the `.env` file with the log configuration update.
 
-### Added
+### Added {#2021-09-28-added}
 
 - `opschain-lint` is automatically added as a Git pre-commit hook for new project Git repositories.
 - The `configure` script now shows an error when it fails.
 - An OpsChain banner message is displayed once the API is ready.
 - OpsChain API documentation is now available from the API server [http://localhost:3000/docs](http://localhost:3000/docs).
 
-### Changed
+### Changed {#2021-09-28-changed}
 
 - The `configure` script now resolves the absolute path for the OPSCHAIN_DATA_DIR.
 - **Breaking change** - The OpsChain runner image has been split meaning the MintPress Oracle controllers are not available by default.
   - See the [enterprise controllers for Oracle](/docs/reference/opschain-and-mintpress.md#enterprise-controllers-for-oracle) guide for more details.
 
-### Fixed
+### Fixed {#2021-09-28-fixed}
 
 - Repeated invocations of the `configure` script on macOS have been fixed - they used to fail silently.
 - OpsChain runners on Windows and macOS were failing as the log configuration was wrong.
 
-## [2021-09-03]
+## [2021-09-03] {#2021-09-03}
 
-### Added
+### Added {#2021-09-03-added}
 
 - The OpsChain CLI can now:
   - be configured to output the step statuses as text rather than emoji. See the [CLI configuration guide](/docs/reference/cli.md#opschain-cli-configuration-settings) for more details.
@@ -501,12 +501,12 @@ You **must** run `configure` after upgrading to update the `.env` file with the 
 - OpsChain now provides an `opschain-lint` command for detecting issues with the OpsChain DSL. Learn more in the [Docker development environment](/docs/development-environment.md#using-opschain-lint) guide.
   - `opschain-lint` is run as part of the default Dockerfile for steps to detect errors sooner - this can be added to custom Dockerfiles, or a custom Dockerfile could be used to remove the linter if it is not desired.
 
-### Fixed
+### Fixed {#2021-09-03-fixed}
 
 - A rare logging error reported by the OpsChain worker - `(JSON::ParserError) (Excon::Error::Socket)`/`socat[323] E write(., ..., ...): Broken pipe` - has been fixed.
 - A rare Terraform error where the temporary var file was removed prior to Terraform completing has been fixed.
 
-### Changed
+### Changed {#2021-09-03-changed}
 
 - Upgraded Bundler to 2.2.26.
 - Upgraded Postgres to 13.4.
@@ -515,9 +515,9 @@ You **must** run `configure` after upgrading to update the `.env` file with the 
 - Upgraded Terraform 'kreuzwerker/docker' plugin to 2.15.0 in the OpsChain Confluent, Terraform & Weblogic examples.
 - Upgraded HashiCorp Vault to 1.8.2 in the OpsChain Vault example.
 
-## [2021-08-16]
+## [2021-08-16] {#2021-08-16}
 
-### Added
+### Added {#2021-08-16-added}
 
 - OpsChain now supports events. The `/events` endpoint can be used for reporting and auditing, see the [events](/docs/reference/concepts/events.md) guide for more details.
 - The list of configuration in the `.env` file is now documented in the [configuration options](/docs/operations/configuring-opschain.md) guide.
@@ -529,22 +529,22 @@ You **must** run `configure` after upgrading to update the `.env` file with the 
     - For example, `?filter[metadata_cr_eq]=CR73` would match all changes with the metadata `{ "cr": "CR73" }`.
     - See the [events filtering](/docs/reference/concepts/events.md#filtering-events) documentation for more details.
 
-### Changed
+### Changed {#2021-08-16-changed}
 
 - Simplified the `.env` file by moving default values to `.env.internal`
 - The OpsChain log aggregator no longer requires that port 24224 is available - it now uses a Docker managed random port
 
-### Fixed
+### Fixed {#2021-08-16-fixed}
 
 - A number of broken links in the documentation have been fixed
 
-## [2021-08-04]
+## [2021-08-04] {#2021-08-04}
 
-### Added
+### Added {#2021-08-04-added}
 
 - Support for alternative spelling of `mintpress.license` in the `configure` script.
 
-### Changed
+### Changed {#2021-08-04-changed}
 
 - The OpsChain change log retention guide has moved and been renamed to [OpsChain data retention](/docs/operations/maintenance/data-retention.md).
 - **Breaking change** - the `OPSCHAIN_ARCHIVE_LOG_LINES_JOB_CRON` config variable has been renamed to `OPSCHAIN_CLEAN_OLD_DATA_JOB_CRON`.
@@ -558,36 +558,36 @@ You **must** run `configure` after upgrading to update the `.env` file with the 
 - Upgraded Terraform kreuzwerker/docker plugin to 2.14.0 in the OpsChain Confluent, Terraform & Weblogic examples.
 - Upgraded HashiCorp Vault to 1.8.0 in the OpsChain Vault example.
 
-### Fixed
+### Fixed {#2021-08-04-fixed}
 
 - A bug with the configure script on macOS has been fixed - `./configure: line 90: ${env_file_contents}${var}=${!var@Q}\n: bad substitution`.
 
-## [2021-07-29]
+## [2021-07-29] {#2021-07-29}
 
-### Changed
+### Changed {#2021-07-29-changed}
 
 - OpsChain now caches user's LDAP group membership to reduce LDAP load. See [LDAP group membership caching](/docs/operations/opschain-ldap.md#LDAP-group-membership-caching) for more details.
 - **Breaking change** - Calling OpsChain API's with missing or invalid parameters now returns a 500 Internal Server Error, and more explicit error messages in the response body.
 - Upgraded MintPress Gems to 3.14.0.
 
-## [2021-07-19]
+## [2021-07-19] {#2021-07-19}
 
-### Added
+### Added {#2021-07-19-added}
 
 - OpsChain change logs can now be [forwarded to external storage](/docs/operations/log-forwarding.md).
 - OpsChain change logs can now be [cleaned up automatically](/docs/operations/maintenance/data-retention.md#change-log-retention).
 - When defining dependent steps in the OpsChain DSL the step name is now automatically qualified with the current namespace.
 - **Feature preview** - the platform native builds of the OpsChain CLI can now be [downloaded directly](/docs/reference/cli.md#opschain-native-cli).
 
-### Changed
+### Changed {#2021-07-19-changed}
 
 - File property paths are now [expanded](https://docs.ruby-lang.org/en/2.7.0/File.html#method-c-expand_path) before being written.
 - Running the `configure` script no longer removes unknown configuration options.
 - Any resources included in the value supplied to the `properties` resource DSL will have their controller assigned to the relevant property rather than the resource itself. This makes `properties` match the existing functionality for individually set properties.
 
-## [2021-07-08]
+## [2021-07-08] {#2021-07-08}
 
-### Added
+### Added {#2021-07-08-added}
 
 - The [Oracle WebLogic example](https://github.com/LimePoint/opschain-examples-weblogic) now includes a sample WAR file and related `deploy`, `redeploy` and `undeploy` actions.
 - A HashiCorp Vault example project repository is [now available](https://github.com/LimePoint/opschain-examples-vault).
@@ -596,7 +596,7 @@ You **must** run `configure` after upgrading to update the `.env` file with the 
 - The `opschain-action` command now supports the `OPSCHAIN_DRY_RUN` environment variable to see the full expected step tree without running the action.
 - OpsChain file properties now supports storing binary files with the new base64 format. See [file formats](/docs/reference/concepts/properties.md#file-formats) for more details.
 
-### Changed
+### Changed {#2021-07-08-changed}
 
 - Upgraded Terraform to 1.0.1 in the OpsChain examples.
 - Upgraded Terraform plugins in the OpsChain examples - see the commit history of each repository for details.
@@ -604,27 +604,27 @@ You **must** run `configure` after upgrading to update the `.env` file with the 
 - Upgraded OpsChain Auth Image Open Policy Agent 0.30.1.
 - Upgraded Bundler to 2.2.21.
 
-## [2021-06-24]
+## [2021-06-24] {#2021-06-24}
 
-### Added
+### Added {#2021-06-24-added}
 
 - `OpsChain.context` is now available to actions and controllers. See the [OpsChain context guide](/docs/reference/concepts/context.md) for more information.
 
-### Fixed
+### Fixed {#2021-06-24-fixed}
 
 - After waiting for the environment change lock, pending changes will be executed in the order they were created. Previously pending changes could start in any order.
 
-### Removed
+### Removed {#2021-06-24-removed}
 
 - **Breaking change** - The `opschain-auth` container is no longer bound to 8081 by default. This binding can be added by following the steps in the [restricting user access guide](/docs/operations/restricting-user-access.md#expose-opschain-ldap-and-authorisation-service-server-ports).
 
-## [2021-06-16]
+## [2021-06-16] {#2021-06-16}
 
-### Added
+### Added {#2021-06-16-added}
 
 - Docker build logs for the OpsChain step runner image are included in the change/step logs. They will be shown as part of the output of the `opschain change logs-show` command for new changes.
 
-### Changed
+### Changed {#2021-06-16-changed}
 
 - **Breaking change** - The [assign LDAP group](/docs/operations/restricting-user-access.md#assign-ldap-group) ldif example now creates a groupOfNames rather than a posixGroup to support RFC 4519.
   - To use this new group format, you will need to alter the OPSCHAIN_LDAP_GROUP_ATTRIBUTE value in your `.env` file from `memberOf` to `member`
@@ -638,9 +638,9 @@ You **must** run `configure` after upgrading to update the `.env` file with the 
 - `GIT_REV` is now an environment variable that is assigned (with the `git_rev` value of the change) when using the default step runner.
   - A `GIT_REV` ARG is now provided to custom Dockerfiles - this can be assigned to an environment variable (the custom Dockerfile template demonstrates how this can be done).
 
-## [2021-06-10]
+## [2021-06-10] {#2021-06-10}
 
-### Added
+### Added {#2021-06-10-added}
 
 - An Oracle WebLogic example project repository is [now available](https://github.com/LimePoint/opschain-examples-weblogic).
 - **Feature preview** - platform native builds of the OpsChain CLI are now available for Windows, macOS and Linux. Contact LimePoint support for access.
@@ -651,7 +651,7 @@ You **must** run `configure` after upgrading to update the `.env` file with the 
   - Step properties are immutable.
   - Project and environment properties can't be updated if they are in use by an active change.
 
-### Changed
+### Changed {#2021-06-10-changed}
 
 - Upgraded Terraform to 0.15.4 in the OpsChain examples.
 - Upgraded Terraform plugins in the OpsChain examples - see the commit history of each repository for details.
@@ -664,9 +664,9 @@ You **must** run `configure` after upgrading to update the `.env` file with the 
 
   _Note: You will need to recreate any users you had created in the OpsChain LDAP._
 
-## [2021-06-01]
+## [2021-06-01] {#2021-06-01}
 
-### Added
+### Added {#2021-06-01-added}
 
 - The ability to use custom Runner images in the OpsChain Docker development environment. Note that the custom Runner image must have been built as part of an OpsChain change.
   - **This change requires the `configure` command to be rerun.**
@@ -675,63 +675,63 @@ You **must** run `configure` after upgrading to update the `.env` file with the 
   - <a href='#' onclick={(e) => {alert('This document has been removed'); e.preventDefault()} }>OpsChain rootless Docker install</a> documentation.
   - [OpsChain backups](/docs/operations/maintenance/backups.md) documentation.
 
-## [2021-05-26]
+## [2021-05-26] {#2021-05-26}
 
-### Added
+### Added {#2021-05-26-added}
 
 - The OpsChain platform now includes an Authorisation Server allowing you to restrict user access to projects and environments. See [restricting user access](/docs/operations/restricting-user-access.md) for more information.
 - OpsChain changes can now be cancelled by using the `opschain change cancel` command.
 
-### Changed
+### Changed {#2021-05-26-changed}
 
 - **Breaking change** - The OpsChain CLI now uses kebab-case-arguments (rather than snake_case_arguments) so all multi word arguments have changed.
 
-## [2021-05-17]
+## [2021-05-17] {#2021-05-17}
 
-### Important breaking changes
+### Important breaking changes {#2021-05-17-important-breaking-changes}
 
 - the `opschain_db`, `opschain-ldap` and `opschain_project_git_repos` directories have been moved into a new `opschain_data` directory (`opschain_data` can be overridden as part of the `configure` process)
   - you **must** run `configure` after upgrading to reflect the new directory structure in your `.env` file.
 - due to the addition of the project code the OpsChain database needs to be removed and recreated.
   - the path to the project Git repositories has changed from `./opschain_project_git_repos/production/<uuid>` to `./opschain_data/opschain_project_git_repos/<uuid>`.
 
-### Added
+### Added {#2021-05-17-added}
 
 - a symbolic link is created as part of the project creation, allowing you to navigate to the project's Git repository via `./opschain_data/opschain_project_git_repos/<project code>`
 - **Breaking change** - projects now use (and require) a unique project code.
 - The OpsChain Terraform resource type now supports version 0.15.
 
-### Changed
+### Changed {#2021-05-17-changed}
 
 - Environment codes can now be up to 50 characters long.
 - **Breaking change** - the OpsChain CLI and API have been altered to use the project code as the project identifier rather than the project id.
 - The CLI output for the environment and project list commands has changed - the code field is now shown first and the ID is not shown.
 
-### Removed
+### Removed {#2021-05-17-removed}
 
 - The environment delete API has been removed.
 - **Breaking change** - Support for Terraform version 0.14 and lower has been removed from the OpsChain Terraform resource.
 
-## [2021-05-10]
+## [2021-05-10] {#2021-05-10}
 
-### Added
+### Added {#2021-05-10-added}
 
 - OpsChain now supports [automated deployments](/docs/reference/concepts/concepts.md#automated-change-rule) - a way to automatically create OpsChain changes in response to Git changes. See [setting up an automated deployment](/docs/reference/concepts/automated-changes.md) for more information.
 - OpsChain now supports [scheduled deployments](/docs/reference/concepts/concepts.md#automated-change-rule) - a way to automatically create OpsChain changes at a scheduled time.
 
-### Changed
+### Changed {#2021-05-10-changed}
 
 - OpsChain now allows properties to be sourced from a project's Git repository. See the updated [OpsChain properties guide](/docs/reference/concepts/properties.md) for more information.
 - OpsChain now does a Git [forced fetch](https://git-scm.com/docs/git-fetch#Documentation/git-fetch.txt---force) when fetching a project's Git repository. This means tags can be updated in the remote and reflected in the project Git repository.
 
-## [2021-04-27]
+## [2021-04-27] {#2021-04-27}
 
-### Added
+### Added {#2021-04-27-added}
 
 - An example project for [running an AWS Ansible change](/docs/examples/running-an-aws-ansible-change.md).
 - Helper methods available from within actions to store and remove files from project and environment properties. See [storing & removing files](/docs/reference/concepts/properties.md#storing--removing-files) for more details.
 
-### Changed
+### Changed {#2021-04-27-changed}
 
 - OpsChain environments are now locked such that only one change can be run in an environment at a time. Changes will sit in the `pending` state whilst waiting for the existing change to finish.
 - The OpsChain properties available via `OpsChain.properties` are frozen, ensuring users receive an error if they attempt to change them (as only `OpsChain.environment.properties` and `OpsChain.project.properties` are persisted)
@@ -749,37 +749,37 @@ You **must** run `configure` after upgrading to update the `.env` file with the 
 
   _Note: The `properties-show` and `properties-set` features can be used to download, upload your properties (allowing you to edit your properties locally)._
 
-### Fixed
+### Fixed {#2021-04-27-fixed}
 
 - Hide internal development tasks from the opschain-utils output.
 - OpsChain Runner showing "Connection refused - connect(2) for /var/run/docker.sock.opschain" after container restart.
 
-## [2021-03-31]
+## [2021-03-31] {#2021-03-31}
 
-### Added
+### Added {#2021-03-31-added}
 
 - An example project for [running a simple Terraform change](/docs/examples/running-a-simple-terraform-change.md).
 - The Getting Started guide now includes instructions for creating your own action.
 
-### Changed
+### Changed {#2021-03-31-changed}
 
 - The sample data provided as part of the Getting Started guide has been simplified.
 - The `.opschain/step_context.json` file is now optional when running `opschain-action` or `opschain-dev`.
 - The `terraform_config` resource type passes any `vars` ([Terraform input variables](https://www.terraform.io/docs/language/values/variables.html)) supplied to Terraform via a [var file](https://www.terraform.io/docs/language/values/variables.html#variable-definitions-tfvars-files).
 
-### Removed
+### Removed {#2021-03-31-removed}
 
 - The [Confluent example](https://github.com/LimePoint/opschain-examples-confluent) no longer provides the VarFile class as its functionality has been added to the `terraform_config` resource type.
 
-## [2021-03-22]
+## [2021-03-22] {#2021-03-22}
 
-### Added
+### Added {#2021-03-22-added}
 
 - The `opschain-resource-types` gem is now pre-installed in the OpsChain step runner image providing some [resource types](/docs/reference/included-resource-types.md) for the `mintpress-infrastructure` and `ruby-terraform` gems.
 
   _Please note the [prerequisites](/docs/reference/included-resource-types.md#prerequisites) for the Terraform resource._
 
-### Changed
+### Changed {#2021-03-22-changed}
 
 - Replaced `mintpress-infrastructure` resource types in the [Confluent example](https://github.com/LimePoint/opschain-examples-confluent) with those provided by the pre-installed `opschain-resource-types` gem in the OpsChain step runner image.
 - [Confluent example](https://github.com/LimePoint/opschain-examples-confluent) Properties
@@ -790,21 +790,21 @@ You **must** run `configure` after upgrading to update the `.env` file with the 
 
 - The Terraform binary is now installed in the custom step runner Dockerfile as part of the [OpsChain Confluent example](https://github.com/LimePoint/opschain-examples-confluent/blob/75473f7fbac4150b3d5c583dfc52c6b22044552f/.opschain/Dockerfile#L8)
 
-### Removed
+### Removed {#2021-03-22-removed}
 
 - Removed decryption support from example code until MintAESEncryption is fully supported.
 - Removed `BUNDLE_CIBUILDER__MINTPRESS_IO` var (from `.env.example`) since it is not used.
 - The Terraform binary has been removed from the OpsChain step runner image for parity with other tools which we support but don't bundle.
 - Terraform support has been removed from the `opschain-core` gem (Terraform support is now available via the `opschain-resource-types` gem).
 
-## [2021-03-09]
+## [2021-03-09] {#2021-03-09}
 
-### Added
+### Added {#2021-03-09-added}
 
 - Automatically expose [controller actions and properties](/docs/reference/concepts/actions.md#controller-actions-and-properties) in resource types and resources.
 - [upgrading.md](/docs/operations/upgrading.md) documentation.
 
-### Changed
+### Changed {#2021-03-09-changed}
 
 - Upgraded OpsChain log aggregator image Fluentd from version 1.11 to 1.12.1
 - Upgraded OpsChain LDAP image OpenLDAP from version 2.4.50 to 2.4.57
