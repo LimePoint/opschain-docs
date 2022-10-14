@@ -46,7 +46,7 @@ const config = {
         title: 'OpsChain',
         logo: {
           alt: 'OpsChain logo',
-          src: 'img/logo.svg',
+          src: 'img/logo.png',
         },
         items: [],
       },
