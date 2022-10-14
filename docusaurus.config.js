@@ -48,7 +48,12 @@ const config = {
           alt: 'OpsChain logo',
           src: 'img/logo.png',
         },
-        items: [],
+        items: [
+          {
+            label: 'OpsChain CLI download',
+            href: 'https://github.com/LimePoint/opschain/releases',
+          },
+        ],
       },
       footer: {
         style: 'dark',
