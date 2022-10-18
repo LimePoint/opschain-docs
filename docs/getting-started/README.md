@@ -436,4 +436,4 @@ The [reference documentation](/docs/category/reference) provides in-depth descri
 
 ### Review the REST API documentation
 
-View the [OpsChain REST API documentation](pathname:///api-docs/) to learn more about OpsChain's REST endpoints. Interacting directly with the OpsChain API server opens up more features and integration options than using the CLI alone.
+View the [OpsChain REST API documentation](pathname:///api-docs/) to learn more about OpsChain's REST endpoints. Interacting directly with the OpsChain API server opens up more features and integration options than using the CLI alone. The REST API documentation is also available on a running OpsChain instance at `/docs` - e.g. `http://localhost:3000/docs`.
