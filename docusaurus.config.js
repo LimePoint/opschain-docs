@@ -89,10 +89,14 @@ const config = {
               {
                 html: '<a class=footer__link-item href=/files/THIRD-PARTY-SOFTWARE.txt download=THIRD-PARTY-SOFTWARE.txt target=_blank>Third party software licences</a>',
               },
+              {
+                label: 'LimePoint EULA',
+                to: 'https://www.limepoint.com/wp-content/uploads/2021/10/2021.10.12-LimePoint-End-User-License-Agreement.pdf',
+              },
             ],
           },
         ],
-        copyright: `Copyright © ${new Date().getFullYear()} LimePoint Pty Ltd. All rights reserved.`,
+        copyright: `Copyright © ${new Date().getFullYear()} LimePoint Pty Ltd. All rights reserved.<br />Use of this website is governed by the <a style=color:inherit href=https://www.limepoint.com/wp-content/uploads/2021/10/2021.10.12-LimePoint-End-User-License-Agreement.pdf>LimePoint EULA</a>.`,
       },
       prism: {
         theme: lightCodeTheme,
