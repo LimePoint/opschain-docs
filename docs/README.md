@@ -11,7 +11,7 @@ hide_table_of_contents: true
 
 OpsChain can be used from Mac, Linux and Windows.
 
-OpsChain is deployed to Kubernetes. We can also provide a [SaaS demo instance](demo.md) - [contact us](https://opschain.io/) if you would like to demo OpsChain.
+OpsChain is deployed to Kubernetes. We can also provide a [SaaS demo instance](https://opschain.io/#learn-more) - [contact us](https://opschain.io/) if you would like to demo OpsChain.
 
 ## [Getting started](getting-started/README.md)
 
