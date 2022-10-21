@@ -4,32 +4,29 @@ import styles from './styles.module.css'
 
 const FeatureList = [
   {
-    title: 'Easy to Use',
-    Svg: require('@site/static/img/undraw_docusaurus_mountain.svg').default,
+    title: 'Understand why things happened',
+    Svg: require('@site/static/img/history.svg').default,
     description: (
       <>
-        Docusaurus was designed from the ground up to be easily installed and used to get your website up and running
-        quickly.
+        With OpsChain's reporting and tracking features – as well as a Git-based workflow – understand how and why changes happen in your computing environment.
       </>
     ),
   },
   {
-    title: 'Focus on What Matters',
-    Svg: require('@site/static/img/undraw_docusaurus_tree.svg').default,
+    title: 'Unify your tools and view of change',
+    Svg: require('@site/static/img/unify.svg').default,
     description: (
       <>
-        Docusaurus lets you focus on your docs, and we&apos;ll do the chores. Go ahead and move your docs into the{' '}
-        <code>docs</code> directory.
+        Track change across your different deployment tools by bringing them together for a better automation experience with OpsChain.
       </>
     ),
   },
   {
-    title: 'Powered by React',
-    Svg: require('@site/static/img/undraw_docusaurus_react.svg').default,
+    title: 'Ready to be extended',
+    Svg: require('@site/static/img/extend.svg').default,
     description: (
       <>
-        Extend or customize your website layout by reusing React. Docusaurus can be extended while reusing the same
-        header and footer.
+        Built API-first to integrated-with and be extended-by your existing tools and processes. Create your own extensions to make OpsChain more powerful.
       </>
     ),
   },
