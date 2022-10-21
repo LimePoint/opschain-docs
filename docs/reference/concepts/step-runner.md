@@ -44,13 +44,13 @@ Add `OPSCHAIN_RUNNER_NAME='runner-enterprise'` and set `OPSCHAIN_RUNNER_IMAGE='l
 
 After updating the `.env` file, follow the steps from the [upgrading guide](../../operations/upgrading.md) to apply this configuration and fetch the enterprise runner.
 
-### Custom step runner Dockerfiles
+## Custom step runner Dockerfiles
 
 If your resources or actions rely on external software, the image used by your project for its step runner containers can be modified to add extra packages or executables. The image may also be modified to optimise the performance of build steps by performing tasks as part of the step image build rather than as part of the step execution.
 
-_Please note: The [Docker development environment](../../development-environment.md#using-custom-runner-images) guide provides instructions on using a custom step runner image as your local OpsChain development environment._
+_Please note: The [Docker development environment](/docs/development-environment.md#using-custom-runner-images) guide provides instructions on using a custom step runner image as your local OpsChain development environment._
 
-#### Creating a custom step runner Dockerfile
+### Creating a custom step runner Dockerfile
 
 If your project Git repository contains a Dockerfile in `.opschain/Dockerfile`, this will be used to build the image for your project's step runner containers. It must be based on the default step runner image Dockerfile to ensure compatibility with OpsChain. To make a copy of the default step runner Dockerfile in your repository, execute the `opschain dev create-dockerfile` command:
 
@@ -73,7 +73,7 @@ _Notes:_
 1. _commits prior to this point won't use the custom Dockerfile because it is not present in the repository._
 2. _if you no longer wish to use the custom Dockerfile, `.opschain/Dockerfile` can be removed from the project repository._
 
-#### Customising the Dockerfile
+### Customising the Dockerfile
 
 This Dockerfile can be modified and committed like any other file in the project Git repository.
 
@@ -93,7 +93,7 @@ The build arguments supplied to [BuildKit](https://docs.docker.com/develop/devel
 
 The [Dockerfile reference](https://docs.docker.com/engine/reference/builder/) and the [best practices for writing Dockerfiles](https://docs.docker.com/develop/develop-images/dockerfile_best-practices/) guide provide more information about writing Dockerfiles.
 
-#### Supported customisations
+### Supported customisations
 
 Modifying the Dockerfile allows a lot of flexibility.
 
@@ -103,7 +103,61 @@ More advanced modifications (like modifying the `ENTRYPOINT`) are not supported 
 
 Custom Dockerfiles must be based on an OpsChain base runner image (i.e. `limepoint/opschain-runner` or `limepoint/opschain-enterprise-runner`) and we suggest using `FROM ${OPSCHAIN_BASE_RUNNER}` (as per the default Dockerfile) to achieve this.
 
-#### Image performance - base images
+### Secure build secrets
+
+During the initial deployment, OpsChain creates an empty `opschain-build-env` Kubernetes secret. Any key value pairs added to this secret will be made available as environment variables to commands run via `opschain-exec` in your Dockerfile.
+
+For example, if your custom step runner requires a utility from an AWS S3 drive, you can add your AWS credentials as key value pairs to the `opschain-build-env` secret:
+
+```yaml
+AWS_ACCESS_KEY_ID: QUtSQVFJQVpRUTdTRE9BSTM3NkYK
+AWS_SECRET_ACCESS_KEY: djNLWll5RWtrbTd2NzBrOUFzRG04ZEFUQ1pZT0xMYWVsNXFwSWZFQwo=
+```
+
+_Note: Per Kubernetes requirements, the values in the secret must be base64 encoded._
+
+These environment variables will then be available to the `aws` CLI (when run via `opschain-exec`), so it can authenticate to copy the utility:
+
+```dockerfile
+RUN opschain-exec aws s3 cp s3://source-bucket-name/customer-utility /opt/opschain/customer-utility
+```
+
+#### Project & environment build secrets
+
+If more granular control over build secrets is required, OpsChain allows you to override the default `opschain-build-env` secret and configure specific Kubernetes secrets to supply to your image build. For example, adding the following to the project and environment properties will cause OpsChain to provide the key value pairs in the `project-build-secrets-1`, `project-build-secrets-2` and `environment-build-secrets` secrets as environment variables to `opschain-exec`:
+
+_Project properties:_
+
+```json
+{
+  "opschain": {
+    "config": {
+      "build_secrets": ["project-build-secrets-1", "project-build-secrets-2"]
+    }
+  }
+}
+```
+
+_Environment properties:_
+
+```json
+{
+  "opschain": {
+    "config": {
+      "build_secrets": ["environment-build-secrets"]
+    }
+  }
+}
+```
+
+_Notes:_
+
+1. _Secrets are loaded in the order listed in your configuration, project secrets, then environment secrets. If an environment variable exists in multiple Kubernetes secrets, the value from the most recently loaded secret will be supplied to the image build_
+2. _If you have configured `build_secrets` in your project or environment configuration, the default `opschain-build-env` secret will not be supplied to your image build. To include the `opschain-build-env` secret, simply add `opschain-build-env` into your list of `build_secrets`_
+
+See the [using secrets in your image build](/docs/examples/using-secrets-in-your-image-build.md) example for more information.
+
+### Image performance - base images
 
 OpsChain runs the image build for every step within a change.
 

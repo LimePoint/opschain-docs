@@ -92,12 +92,29 @@ Within each action, the result of merging these files will be available via `Ops
 
 Properties stored in the database are encrypted prior to being written to disk such that they are encrypted-at-rest. Within each action, project properties are available via `OpsChain.project.properties`. Similarly environment properties are available via `OpsChain.environment.properties`.
 
-#### Loading properties
+#### Editing properties
 
-The OpsChain CLI allows you to set properties at the project or environment level. First create a JSON file to import. E.g.
+The OpsChain CLI allows you to edit properties at the project or environment level with the `edit-properties` subcommand.
 
 ```bash
-$ cat << EOF > my_opschain_properties.json
+# edit project properties
+opschain project edit-properties --project-code <project code>
+
+# edit environment properties
+opschain environment edit-properties --project-code <project code> --environment-code <environment_code>
+```
+
+The OpsChain CLI will download the latest properties for the project or environment specified and open them in the `editor` configured in your `.opschainrc`. After making changes to the properties, save the file and exit the editor. The OpsChain CLI will then upload the new properties to the API server. If errors are identified in the JSON structure or the properties fail validation, the editor will be re-opened with the error message displayed, allowing you to fix the reported errors and retry the upload.
+
+If the error message displayed in the editor reflects that the properties have been changed by another user, you will need to re-run the `edit-properties` command so it can download the latest properties to apply your changes to. To cancel the current `edit-properties` process, simply exit the editor without making any changes to the current state of the file. If necessary, before exiting the editor, you can save your changes to a different file name for future reference.
+
+#### Loading properties from a file
+
+The OpsChain CLI `set-properties` subcommand allows you to replace the current project or environment properties with the contents of a JSON file.
+
+```bash
+# create a properties JSON file to upload
+cat << EOF > my_opschain_properties.json
 {
   "basic_prop": "some value",
   "parent_prop": {
@@ -105,19 +122,17 @@ $ cat << EOF > my_opschain_properties.json
   }
 }
 EOF
-```
 
-Now import the properties against the project:
-
-```bash
+# set project properties
 opschain project set-properties --project-code <project code> --file-path my_opschain_properties.json --confirm
-```
 
-or environment:
-
-```bash
+# set environment properties
 opschain environment set-properties --project-code <project code> --environment-code <environment_code> --file-path my_opschain_properties.json --confirm
 ```
+
+If you have an existing JSON you wish to use as the properties for a project or environment and you are certain that the existing properties are empty (or can be overwritten), this is an efficient way to populate the properties. You'll see some of our [OpsChain examples](/docs/category/examples) use `set-properties` to setup the initial project or environment properties.
+
+**Whenever possible, use `edit-properties` rather than `set-properties` to ensure concurrent changes to the properties are not overwritten.**
 
 _Note: If the environment or project properties are in use by an active change, the API server will reject the set-properties request. This ensures OpsChain can guarantee the properties state throughout the life of the change._
 
@@ -492,8 +507,9 @@ The `opschain.config` section of the properties allow you to change the OpsChain
 
 _Note: Configuration options within `opschain.config.environments` can only be set in project properties and are applicable to all environments within the project. All other configuration options can be set at project or environment level, with environment configuration overriding project configuration._
 
-| Configuration Option      | Description                                                                                                                                                                                             | Default value                                |
-|:--------------------------|:--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|:---------------------------------------------|
-| change_log_retention_days | The number of days to retain change logs. See [change log retention](../../operations/maintenance/data-retention.md#change-log-retention) for more information.                                         | unset, OpsChain will retain all change logs. |
-| event_retention_days      | The number of days to retain events. See [event retention](../../operations/maintenance/data-retention.md#event-retention) for more information                                                                          | unset, OpsChain will retain all events.       |
-| allow_parallel_changes    | For a given project, allow multiple changes to run within a single environment. See [change execution options](changes.md#change-execution-options) in the changes reference guide for more information | false                                        |
+| Configuration Option       | Description                                                                                                                                                                                                                                                                                                                              | Default value                                                                    |
+|:---------------------------|:-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|:---------------------------------------------------------------------------------|
+| build_secrets              | A list of [Kubernetes secrets](https://kubernetes.io/docs/concepts/configuration/secret/) containing environment variables to supply to the OpsChain build service when building the [step runner image](concepts.md#step-runner-image) image. See [using secure credentials](step-runner.md#secure-build-secrets) for more information. | unset, OpsChain will supply the `opschain-build-env` secret to the build service |
+| change_log_retention_days  | The number of days to retain change logs. See [change log retention](/docs/operations/maintenance/data-retention.md#change-log-retention) for more information.                                                                                                                                                                          | unset, OpsChain will retain all change logs.                                     |
+| event_retention_days       | The number of days to retain events. See [event retention](/docs/operations/maintenance/data-retention.md#event-retention) for more information                                                                                                                                                                                          | unset, OpsChain will retain all events.                                          |
+| allow_parallel_changes     | For a given project, allow multiple changes to run within a single environment. See [change execution options](changes.md#change-execution-options) in the changes reference guide for more information                                                                                                                                  | false                                                                            |

@@ -11,6 +11,13 @@ description: Learn about new releases of OpsChain, including new features and up
 
 - OpsChain project Git remote credentials can now be updated using the `opschain project update-git-remote` command.
 - OpsChain project and environment properties can now be edited using the `opschain project edit-properties` and `opschain environment edit-properties` commands.
+- OpsChain now allows you to supply build secrets to the step runner image build process. See [secure build secrets](docs/reference/concepts/step-runner.md#secure-build-secrets) for more information. _Note: these secrets are provided at build time only and are not available at runtime. [Let us know](mailto:opschain-support@limepoint.com) if you're interested in using these secrets at runtime too._
+- All OpsChain commands that support the `--output` argument now accept JSONPath queries in the format `--output jsonpath='$.jsonpath.query'`.
+  - See the underlying JSONPath implementation documentation for details about the [supported syntax](https://www.npmjs.com/package/jsonpath-plus#user-content-syntax-through-examples), or try the [demo tool](https://jsonpath-plus.github.io/JSONPath/demo/).
+
+### Changed
+
+- The properties PATCH API now accepts an optional `version` attribute. If supplied, the API will ensure that the properties are only updated if the version matches the current version of the properties. This is useful when multiple users are editing the properties concurrently.
 
 ### Fixed {#unreleased-fixed}
 

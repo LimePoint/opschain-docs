@@ -53,7 +53,7 @@ The OpsChain properties guide highlights a number of limitations that must be ta
 
 ### Change execution options
 
-By default, OpsChain will only allow a single change to execute for each project environment. This aims to reduce the likelihood that the limitations described above will impact running changes. However, if the actions in your project's Git repository perform logic that can be run concurrently within a single environment, and they interact with the database properties in a manner that will not be impacted by the limitations, you can configure the project to allow concurrent changes within the project's environments. To do this, set the `allow_parallel_changes` option to `true` in your project's properties as follows:
+By default, OpsChain will only allow a single change to execute for each project environment. This aims to reduce the likelihood that the limitations described above will impact running changes. However, if the actions in your project's Git repository perform logic that can be run concurrently within a single environment, and they interact with the database properties in a manner that will not be impacted by the limitations, you can configure the project to allow concurrent changes within the project's environments. To do this, use the `opschain project edit-properties` command to set the `allow_parallel_changes` option to `true` in your project's properties:
 
 ```json
 {

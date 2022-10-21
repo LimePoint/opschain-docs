@@ -3,6 +3,7 @@
 apiBaseUrl = http://localhost:3000/
 username = opschain
 password = password
+editor = nano
 
 ; modify the API request timeout (in milliseconds)
 ; requestTimeout = 30000

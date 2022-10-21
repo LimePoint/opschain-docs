@@ -322,15 +322,13 @@ The `--follow` argument added here means that the OpsChain CLI will continue sho
 
 #### Change the WAR file to deploy
 
-As mentioned earlier, the war file to deploy is contained in the [`properties.json`](https://github.com/LimePoint/opschain-getting-started/blob/master/.opschain/properties.json) file in the project Git repository. Editing and committing the updated file would allow the war file name to be overridden. Alternatively, an override value for the `war_file` property can be added to the project or environment properties. Download the current project properties JSON:
+As mentioned earlier, the war file to deploy is contained in the [`properties.json`](https://github.com/LimePoint/opschain-getting-started/blob/master/.opschain/properties.json) file in the project Git repository. Editing and committing the updated file would allow the war file name to be overridden. Alternatively, an override value for the `war_file` property can be added to the project or environment properties. Edit the project properties and add the `war_file` property:
 
 ```bash
-opschain project show-properties > project_properties.json
+opschain project edit-properties
 ```
 
-Edit the file, adding the `war_file` property as follows:
-
-```text
+```json
 {
   "opschain": {
     "env": {
@@ -341,12 +339,6 @@ Edit the file, adding the `war_file` property as follows:
   "instance_id": "i-0123abc45de6fg789",
   "war_file": "acme_website_v1.1.war"
 }
-```
-
-Replace the project properties with the contents of the updated JSON.
-
-```bash
-opschain project set-properties --file-path project_properties.json --confirm
 ```
 
 Create a new change to deploy the WAR to the test environment and watch the change logs as the change progresses:
