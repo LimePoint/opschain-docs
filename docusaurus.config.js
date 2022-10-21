@@ -50,6 +50,10 @@ const config = {
         },
         items: [
           {
+            label: 'OpsChain overview',
+            to: '/docs/',
+          },
+          {
             label: 'OpsChain CLI download',
             href: 'https://github.com/LimePoint/opschain/releases',
           },
