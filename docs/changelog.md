@@ -18,6 +18,19 @@ description: Learn about new releases of OpsChain, including new features and up
 ### Changed
 
 - The properties PATCH API now accepts an optional `version` attribute. If supplied, the API will ensure that the properties are only updated if the version matches the current version of the properties. This is useful when multiple users are editing the properties concurrently.
+- Upgraded cert-manager to 1.10.0.
+- Upgraded Fluent Bit to v1.9.9.
+- Upgraded OpsChain log aggregator image to Fluentd 1.15.2.
+- Upgraded Kong to v3.0.0.
+- Upgraded Kong Helm chart to v2.13.1.
+- Upgraded Kong Ingress Controller to v2.7.0.
+- Upgraded OPA to v0.45.0.
+- Upgraded BuildKit to v0.10.5.
+- Upgraded Terraform to 1.3.2 in the OpsChain examples.
+- Upgraded Terraform 'hashicorp/aws' provider to 4.35.0 in the OpsChain Ansible example.
+- Upgraded Terraform 'hashicorp/kubernetes' provider to 2.14.0 in the OpsChain Confluent, Terraform, and WebLogic examples.
+- Upgraded HashiCorp Vault to 1.12.0 in the OpsChain Vault example.
+- Upgraded Confluent to 6.2.7 in the OpsChain Confluent example.
 
 ### Fixed {#unreleased-fixed}
 

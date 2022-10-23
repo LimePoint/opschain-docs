@@ -81,7 +81,7 @@ OpsChain depends on [`cert-manager`](https://cert-manager.io/) to manage its int
 ```bash
 helm repo add jetstack https://charts.jetstack.io
 helm repo update
-helm upgrade --install cert-manager jetstack/cert-manager --namespace cert-manager --create-namespace --version v1.9.1 --set installCRDs=true
+helm upgrade --install cert-manager jetstack/cert-manager --namespace cert-manager --create-namespace --version v1.10.0 --set installCRDs=true
 ```
 
 `cert-manager` is now ready for OpsChain to use - no additional `cert-manager` configuration is required.
