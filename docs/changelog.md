@@ -5,9 +5,9 @@ description: Learn about new releases of OpsChain, including new features and up
 
 # Changelog
 
-## [Unreleased] _(change to yyyy-mm-dd format before release, e.g. 2022-02-25)_ {#unreleased}
+## 2022-10-24 {#2022-10-24}
 
-### Added {#unreleased-added}
+### Added {#2022-10-24-added}
 
 - OpsChain project Git remote credentials can now be updated using the `opschain project update-git-remote` command.
 - OpsChain project and environment properties can now be edited using the `opschain project edit-properties` and `opschain environment edit-properties` commands.
@@ -32,7 +32,7 @@ description: Learn about new releases of OpsChain, including new features and up
 - Upgraded HashiCorp Vault to 1.12.0 in the OpsChain Vault example.
 - Upgraded Confluent to 6.2.7 in the OpsChain Confluent example.
 
-### Fixed {#unreleased-fixed}
+### Fixed {#2022-10-24-fixed}
 
 - The OpsChain CLI `opschain server deploy` command has been fixed on Windows.
   - **Breaking change** - the `.env` file has moved from using double quotes around values to single quotes to fix an issue with Windows paths containing special character sequences like `\n` - which was being treated as a newline.
