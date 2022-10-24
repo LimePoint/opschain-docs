@@ -23,7 +23,6 @@ description: Learn about new releases of OpsChain, including new features and up
 - Upgraded OpsChain log aggregator image to Fluentd 1.15.2.
 - Upgraded Kong to v3.0.0.
 - Upgraded Kong Helm chart to v2.13.1.
-- Upgraded Kong Ingress Controller to v2.7.0.
 - Upgraded OPA to v0.45.0.
 - Upgraded BuildKit to v0.10.5.
 - Upgraded Terraform to 1.3.2 in the OpsChain examples.
