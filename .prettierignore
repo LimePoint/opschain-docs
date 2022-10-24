@@ -1,0 +1,14 @@
+**/package.json
+**/package-lock.json
+**/*.md
+**/thirdparty/**
+**/node_modules/**
+**/*.yml
+**/*.html
+**/*.rb
+**/*.svg
+/tmp/**
+/coverage/**
+/.npm/anonymous-cli-metrics.json
+/.docusaurus
+/build

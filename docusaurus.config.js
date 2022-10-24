@@ -1,23 +1,19 @@
 // @ts-check
 // Note: type annotations allow type checking and IDEs autocompletion
 
-const lightCodeTheme = require('prism-react-renderer/themes/github');
-const darkCodeTheme = require('prism-react-renderer/themes/dracula');
+const lightCodeTheme = require('prism-react-renderer/themes/github')
+const darkCodeTheme = require('prism-react-renderer/themes/dracula')
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
-  title: 'My Site',
-  tagline: 'Dinosaurs are cool',
-  url: 'https://your-docusaurus-test-site.com',
+  title: 'OpsChain documentation',
+  tagline:
+    'Connect, automate, and orchestrate people, processes, and tools across your on-premise and cloud platforms.',
+  url: 'https://docs.opschain.io',
   baseUrl: '/',
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
   favicon: 'img/favicon.ico',
-
-  // GitHub pages deployment config.
-  // If you aren't using GitHub pages, you don't need these.
-  organizationName: 'facebook', // Usually your GitHub org/user name.
-  projectName: 'docusaurus', // Usually your repo name.
 
   // Even if you don't use internalization, you can use this field to set useful
   // metadata like html lang. For example, if your site is Chinese, you may want
@@ -34,18 +30,8 @@ const config = {
       ({
         docs: {
           sidebarPath: require.resolve('./sidebars.js'),
-          // Please change this to your repo.
-          // Remove this to remove the "edit this page" links.
-          editUrl:
-            'https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/',
         },
-        blog: {
-          showReadingTime: true,
-          // Please change this to your repo.
-          // Remove this to remove the "edit this page" links.
-          editUrl:
-            'https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/',
-        },
+        blog: false,
         theme: {
           customCss: require.resolve('./src/css/custom.css'),
         },
@@ -57,23 +43,23 @@ const config = {
     /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
     ({
       navbar: {
-        title: 'My Site',
+        title: 'OpsChain',
         logo: {
-          alt: 'My Site Logo',
-          src: 'img/logo.svg',
+          alt: 'OpsChain logo',
+          src: 'img/logo.png',
         },
         items: [
           {
-            type: 'doc',
-            docId: 'intro',
-            position: 'left',
-            label: 'Tutorial',
+            label: 'OpsChain overview',
+            to: '/docs/',
           },
-          {to: '/blog', label: 'Blog', position: 'left'},
           {
-            href: 'https://github.com/facebook/docusaurus',
-            label: 'GitHub',
-            position: 'right',
+            label: 'OpsChain CLI download',
+            href: 'https://github.com/LimePoint/opschain/releases',
+          },
+          {
+            label: 'OpsChain API reference',
+            href: 'pathname:///api-docs/',
           },
         ],
       },
@@ -81,52 +67,47 @@ const config = {
         style: 'dark',
         links: [
           {
-            title: 'Docs',
+            title: 'Links',
             items: [
               {
-                label: 'Tutorial',
-                to: '/docs/intro',
-              },
-            ],
-          },
-          {
-            title: 'Community',
-            items: [
-              {
-                label: 'Stack Overflow',
-                href: 'https://stackoverflow.com/questions/tagged/docusaurus',
+                label: 'LimePoint',
+                to: 'https://www.limepoint.com/',
               },
               {
-                label: 'Discord',
-                href: 'https://discordapp.com/invite/docusaurus',
+                label: 'OpsChain',
+                to: 'https://opschain.io/',
               },
-              {
-                label: 'Twitter',
-                href: 'https://twitter.com/docusaurus',
-              },
-            ],
-          },
-          {
-            title: 'More',
-            items: [
               {
                 label: 'Blog',
-                to: '/blog',
+                to: 'https://www.limepoint.com/blog/tag/opschain',
+              },
+            ],
+          },
+          {},
+          {
+            title: 'Other',
+            items: [
+              {
+                html: '<a class=footer__link-item href=/files/LICENCE.md download=LICENCE.md target=_blank>OpsChain licence</a>',
               },
               {
-                label: 'GitHub',
-                href: 'https://github.com/facebook/docusaurus',
+                html: '<a class=footer__link-item href=/files/THIRD-PARTY-SOFTWARE.txt download=THIRD-PARTY-SOFTWARE.txt target=_blank>Third party software licences</a>',
+              },
+              {
+                label: 'LimePoint EULA',
+                to: 'https://www.limepoint.com/wp-content/uploads/2021/10/2021.10.12-LimePoint-End-User-License-Agreement.pdf',
               },
             ],
           },
         ],
-        copyright: `Copyright © ${new Date().getFullYear()} My Project, Inc. Built with Docusaurus.`,
+        copyright: `Copyright © ${new Date().getFullYear()} LimePoint Pty Ltd. All rights reserved.<br />Use of this website is governed by the <a style=color:inherit href=https://www.limepoint.com/wp-content/uploads/2021/10/2021.10.12-LimePoint-End-User-License-Agreement.pdf>LimePoint EULA</a>.`,
       },
       prism: {
         theme: lightCodeTheme,
         darkTheme: darkCodeTheme,
       },
     }),
-};
+  plugins: [[require.resolve('@easyops-cn/docusaurus-search-local'), { hashed: true }]],
+}
 
-module.exports = config;
+module.exports = config
