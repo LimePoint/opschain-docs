@@ -5,23 +5,23 @@ description: Learn about new releases of OpsChain, including new features and up
 
 # Changelog
 
-## [Unreleased] _(change to yyyy-mm-dd format before release, e.g. 2022-02-25)_
+## 2022-11-29 {#2022-11-29}
 
-### Important breaking changes {#Unreleased-important-breaking-changes}
+### Important breaking changes {#2022-11-29-important-breaking-changes}
 
 - With the exception of the OpsChain LDAP image, all OpsChain container images now start as a non-root user (including the step runner). After upgrading, please use `opschain dev create-dockerfile` to create a copy of the new step runner Dockerfile template in your project's `.opschain` folder and then reapply your customisations.
 - The format to supply unauthorised environments to the OpsChain OPA security provider (in `security_configuration.json`) has changed. [Learn more](/docs/operations/restricting-user-access#update-the-security-configuration).
 
-### Added {#Unreleased-added}
+### Added {#2022-11-29-added}
 
 - [Instructions for restarting the build service when its certificate renews every 90 days](/docs/operations/maintenance/build-service-certificate-renewals.md).
 
-### Changed {#Unreleased-changed}
+### Changed {#2022-11-29-changed}
 
 - The API worker processes will now wait up to one hour to complete any running actions when shutting down. This grace period can also be [customised via a Helm value](/docs/operations/workers.md#graceful-shutdown).
 - The project and environment `--description` argument is now optional. If not supplied on the command line it will not be requested and the project/environment will be created with an empty description.
 
-### Fixed {#Unreleased-fixed}
+### Fixed {#2022-11-29-fixed}
 
 - A sporadic bug when running `opschain change create` - `undefined method git_remote for nil:NilClass (NoMethodError)` - has been fixed.
 - The `opschain dev build-runner-image` command now explicitly enables the use of BuildKit to match how image builds are performed for runner containers.
