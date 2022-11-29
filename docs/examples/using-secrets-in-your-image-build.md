@@ -10,7 +10,7 @@ This example describes how to use Kubernetes secrets in your project's step runn
 _Notes:_
 
 1. _[Kubernetes secrets](https://kubernetes.io/docs/concepts/configuration/secret/) are, by default, stored unencrypted in the Kubernetes cluster's underlying data store (etcd). See the [good practices for Kubernetes secrets](https://kubernetes.io/docs/concepts/security/secrets-good-practices/) guide for information on how to encrypt them at rest and further restrict user access to them._
-2. _This guide is for use by non-SaaS OpsChain customers only. [Let us know](mailto:opschain-support@limepoint.com) if you're interested in using build secrets in your SaaS implementation._
+2. _This guide is for use by non-SaaS OpsChain customers only. [Let us know](mailto:opschain-support@limepoint.com) if you're interested in using build secrets in your SaaS instance._
 
 ## Prerequisites
 
@@ -19,17 +19,17 @@ _Notes:_
 - A working understanding of [Kubernetes secrets](https://kubernetes.io/docs/concepts/configuration/secret/)
 - A [fork](https://docs.github.com/en/get-started/quickstart/fork-a-repo) of the [sample repo](https://github.com/LimePoint/opschain-getting-started) to follow this example in. See the [developer getting started guide](/docs/getting-started/developer.md#create-a-git-repository) for more information.
 
-## Example Setup
+## Example setup
 
 ### Create a project & environments
 
 Start by creating a project and two environments to use for this example:
 
 ```bash
-opschain project create --code secret --name 'Secret example' -d '' -y
+opschain project create --code secret --name 'Secret example' -y
 export opschain_projectCode=secret # the rest of this guide assumes this environment variable is set
-opschain environment create -d '' --code dev --name Development -y
-opschain environment create -d '' --code prod --name Production  -y
+opschain environment create --code dev --name Development -y
+opschain environment create --code prod --name Production  -y
 ```
 
 ### Add a project Git remote

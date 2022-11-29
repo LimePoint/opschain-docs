@@ -5,6 +5,28 @@ description: Learn about new releases of OpsChain, including new features and up
 
 # Changelog
 
+## [Unreleased] _(change to yyyy-mm-dd format before release, e.g. 2022-02-25)_
+
+### Important breaking changes {#Unreleased-important-breaking-changes}
+
+- With the exception of the OpsChain LDAP image, all OpsChain container images now start as a non-root user (including the step runner). After upgrading, please use `opschain dev create-dockerfile` to create a copy of the new step runner Dockerfile template in your project's `.opschain` folder and then reapply your customisations.
+- The format to supply unauthorised environments to the OpsChain OPA security provider (in `security_configuration.json`) has changed. [Learn more](/docs/operations/restricting-user-access#update-the-security-configuration).
+
+### Added {#Unreleased-added}
+
+- [Instructions for restarting the build service when its certificate renews every 90 days](/docs/operations/maintenance/build-service-certificate-renewals.md).
+
+### Changed {#Unreleased-changed}
+
+- The API worker processes will now wait up to one hour to complete any running actions when shutting down. This grace period can also be [customised via a Helm value](/docs/operations/workers.md#graceful-shutdown).
+- The project and environment `--description` argument is now optional. If not supplied on the command line it will not be requested and the project/environment will be created with an empty description.
+
+### Fixed {#Unreleased-fixed}
+
+- A sporadic bug when running `opschain change create` - `undefined method git_remote for nil:NilClass (NoMethodError)` - has been fixed.
+- The `opschain dev build-runner-image` command now explicitly enables the use of BuildKit to match how image builds are performed for runner containers.
+- `opschain server deploy` now ensures that the version of the OpsChain Helm chart used to deploy OpsChain aligns with the CLI version.
+
 ## 2022-10-24 {#2022-10-24}
 
 ### Added {#2022-10-24-added}
@@ -15,7 +37,7 @@ description: Learn about new releases of OpsChain, including new features and up
 - All OpsChain commands that support the `--output` argument now accept JSONPath queries in the format `--output jsonpath='$.jsonpath.query'`.
   - See the underlying JSONPath implementation documentation for details about the [supported syntax](https://www.npmjs.com/package/jsonpath-plus#user-content-syntax-through-examples), or try the [demo tool](https://jsonpath-plus.github.io/JSONPath/demo/).
 
-### Changed
+### Changed {#2022-10-24-changed}
 
 - The properties PATCH API now accepts an optional `version` attribute. If supplied, the API will ensure that the properties are only updated if the version matches the current version of the properties. This is useful when multiple users are editing the properties concurrently.
 - Upgraded cert-manager to 1.10.0.
@@ -72,7 +94,7 @@ description: Learn about new releases of OpsChain, including new features and up
 
 ### Changed {#2022-09-15-changed}
 
-- When the available log lines for a single request (via `/log_lines` with a filter or via `changes/<change_id>/log_lines`) exceeds the limit for a single request - a `more` link is provided to navigate to the next chunk.
+- When the available log lines for a single request (via `/log_lines` with a filter or via `/changes/<change_id>/log_lines`) exceeds the limit for a single request - a `more` link is provided to navigate to the next chunk.
 - Upgraded cert-manager to 1.9.1.
 - Upgraded Fluent Bit to v1.9.8.
 - Upgraded HashiCorp Vault to 1.11.3 in the OpsChain Vault example.
@@ -141,7 +163,7 @@ description: Learn about new releases of OpsChain, including new features and up
 
 ## 2022-07-20 {#2022-07-20}
 
-*This release has a critical bug and should not be used. Please use release 2022-07-26 instead.**
+**This release has a critical bug and should not be used. Please use release 2022-07-26 instead.**
 
 ### Important breaking changes {#2022-07-20-important-breaking-changes}
 

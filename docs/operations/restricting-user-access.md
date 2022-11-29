@@ -70,16 +70,18 @@ When OpsChain is started, it initialises its security configuration from the `se
     "ldap-group-1": ["ansible"]
   },
   "group_unauthorised_environments": {
-    "ldap-group-1": ["dev"],
-    "ldap-group-2": ["local", "tform"]
+    "ldap-group-1": ["terraform.dev"],
+    "ldap-group-2": ["ansible.local", "vault.dev"]
   }
 }
 ```
 
 The JSON above will:
 
-1. restrict users in `ldap-group-1` from all OpsChain objects related to the `ansible` project and all objects related to the `dev` environment
-2. restrict users in `ldap-group-2` from all OpsChain objects related to the `local` and `tform` environments
+1. restrict users in `ldap-group-1` from all OpsChain objects related to the `ansible` project
+2. restrict users in `ldap-group-1` from all OpsChain objects related to the `dev` environment in the `terraform` project
+3. restrict users in `ldap-group-2` from all OpsChain objects related to the `local` environment in the `ansible` project
+4. restrict users in `ldap-group-2` from all OpsChain objects related to the `dev` environment in the `vault` project
 
 _Note: The `security_configuration.json` file is case sensitive - all keys and codes must be lowercase._
 

@@ -80,7 +80,7 @@ If you need to manage Kubernetes resources in another cluster, or don't want to 
 
 To use an alternative kubeconfig path set the [KUBECONFIG](https://kubernetes.io/docs/concepts/configuration/organize-cluster-access-kubeconfig/#the-kubeconfig-environment-variable) environment variable via [OpsChain properties](concepts/properties.md#environment-variables).
 
-### Resource Types
+### Resource types
 
 #### kubernetes_resource
 

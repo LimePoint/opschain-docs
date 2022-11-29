@@ -232,8 +232,7 @@ The `step_context.json` file has the following structure:
     "properties": {
       "project_property": "value",
       "files": {
-        "sample-file": {
-          "path": "/path/to/file.txt",
+        "/path/to/file.txt": {
           "mode": "0600",
           "content": "contents of the file"
         }
@@ -247,8 +246,7 @@ The `step_context.json` file has the following structure:
     "properties": {
       "environment_property": "value",
       "files": {
-        "different-file": {
-          "path": "/path/to/another_file.txt",
+        "/path/to/another_file.txt": {
           "mode": "0600",
           "content": "contents of the file"
         }

@@ -161,7 +161,7 @@ To show some of the more advanced features of OpsChain, we will run another OpsC
 Add another OpsChain environment, using the `opschain environment create` command again, so that we promote our change from `Test` to `Production`:
 
 ```bash
-opschain environment create --project-code web --code prod --name 'Production' --description '' --confirm
+opschain environment create --project-code web --code prod --name 'Production' --confirm
 ```
 
 #### Configure a default project
