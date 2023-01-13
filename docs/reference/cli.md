@@ -38,6 +38,21 @@ The `opschain dev` subcommands depend on Docker. The `docker` executable must be
 
 The open source [Docker Engine](https://docs.docker.com/engine/) package can be used on supported platforms. The open source upstream [Moby](https://mobyproject.org/) package can be used as an alternative on supported platforms. [Docker Desktop](https://www.docker.com/products/docker-desktop/) - or an alternative like [Rancher Desktop](https://rancherdesktop.io/), [Colima](https://github.com/abiosoft/colima), or [Multipass](https://multipass.run/docs/docker-tutorial) (among others) - can be used on platforms without native Docker/Moby support.
 
+#### Configure Docker Hub access
+
+To use the OpsChain development environment you will need log in to [Docker Hub](https://hub.docker.com/) as the `opschaintrial` user (or, if you have an [enterprise licence for OpsChain](/docs/reference/opschain-and-mintpress.md#enterprise-controllers-for-oracle), the `opschainenterprise` user). These are the same Docker credentials requested by the `opschain server configure` command.
+
+```bash
+docker login --username opschaintrial
+```
+
+TIP: use the DOCKER_CONFIG environment variable if you need to use multiple Docker Hub logins.
+
+```bash
+export DOCKER_CONFIG="$(pwd)/.docker" # this would need to be exported in all terminals where OpsChain is being used
+docker login --username opschaintrial
+```
+
 ### Server subcommand dependencies
 
 The OpsChain CLI `opschain server` subcommands depend on [Helm](https://helm.sh/docs/intro/install/) and [kubectl](https://kubernetes.io/docs/tasks/tools/#kubectl). These commands must be accessible on the PATH, and they must be configured to work with your target Kubernetes cluster.
@@ -55,6 +70,14 @@ The configuration file supports INI or JSON (with comments) formats.
 The OpsChain CLI configuration is loaded by the `rc` package. The [`rc` documentation](https://www.npmjs.com/package/rc#standards) specifies the locations where the configuration file can be placed - the `appname` is `opschain`.
 
 _On Windows the `USERPROFILE` directory is used as the home directory._
+
+#### Specifying the CLI configuration file
+
+The `opschain_config` environment variable can be set to make the CLI use a specific configuration file. E.g.
+
+```bash
+opschain_config=./production.opschainrc opschain info
+```
 
 ### OpsChain CLI configuration settings
 

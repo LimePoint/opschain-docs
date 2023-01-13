@@ -190,6 +190,14 @@ end
 
 The `ref` (short for reference) method looks up the resource in the same way as [referencing previous resources](reference/concepts/actions.md#referencing-resources).
 
+### Null bytes in log messages
+
+OpsChain does not support storing null bytes in log message due to an underlying database limitation.
+
+OpsChain replaces all instances of null bytes with a replacement character [U+FFFD](https://en.wikipedia.org/wiki/Specials_(Unicode_block)#Replacement_character) in the log instead. This value would be returned when fetching the log message.
+
+Please [contact us](/docs/support.md#how-to-contact-us) if you have any issues with this limitation or need any extra information.
+
 ### Git commit: `opschain: command not found`
 
 OpsChain automatically sets up the [`opschain dev lint` tool](development-environment.md#using-the-opschain-linter) to detect issues in the project Git repositories.
@@ -298,3 +306,22 @@ The `opschain dev` subcommands rely on the `docker` executable to function.
 #### Solution - install the dev dependencies
 
 Install the CLI [dev dependencies](reference/cli.md#dev-subcommand-dependencies) and then run the command again.
+
+### OpsChain Gemfile conflicting with existing Gemfile
+
+If using OpsChain with a Ruby project, the OpsChain Gemfile may conflict with the existing Gemfile in the repo - for example it may include dependency conflicts, or it may slow down the OpsChain steps as additional dependencies are installed that aren't required by the OpsChain step.
+
+#### Solution - use the `BUNDLE_GEMFILE` configuration
+
+To avoid the conflict, OpsChain can be configured to look for the Gemfile at a different path - e.g. `.opschain/Gemfile` - to avoid conflicting with the main repo Gemfile.
+
+To do so, add `ENV BUNDLE_GEMFILE=/opt/opschain/.opschain/Gemfile` to your project's [custom runner image](/docs/development-environment.md#custom-runner-images) before the `RUN bundle install` lines. Adjust the path as required. Also then ensure you create the OpsChain Gemfile at the new path in the repo. An example of the Dockerfile may be:
+
+```dockerfile
+...
+USER opschain
+ENV BUNDLE_GEMFILE=/opt/opschain/.opschain/Gemfile
+RUN --mount=type=secret,required=true,id=env_context_json,uid=10001,gid=10001,target=/opt/opschain/.opschain/step_context.json \
+    opschain-exec bundle install
+...
+```

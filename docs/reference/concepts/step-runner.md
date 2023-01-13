@@ -103,11 +103,34 @@ More advanced modifications (like modifying the `ENTRYPOINT`) are not supported 
 
 Custom Dockerfiles must be based on an OpsChain base runner image (i.e. `limepoint/opschain-runner` or `limepoint/opschain-enterprise-runner`) and we suggest using `FROM ${OPSCHAIN_BASE_RUNNER}` (as per the default Dockerfile) to achieve this.
 
-### Secure build secrets
+### Secure secrets
 
-During the initial deployment, OpsChain creates an empty `opschain-build-env` Kubernetes secret. Any key value pairs added to this secret will be made available as environment variables to commands run via `opschain-exec` in your Dockerfile.
+OpsChain allows users to leverage Kubernetes secrets to load sensitive information into the execution of steps and changes as environment variables.
 
-For example, if your custom step runner requires a utility from an AWS S3 drive, you can add your AWS credentials as key value pairs to the `opschain-build-env` secret:
+When a property and a secret both define the same environment variable, the secret value will be used.
+
+#### Secure build secrets
+
+OpsChain uses the [`build_secrets` configuration from the project and environment](properties.md#project--environment-configuration) to load Kubernetes secrets into the step image build. Any environment variables configured in the corresponding Kubernetes secrets are made available as environment variables to commands run via `opschain-exec` in your Dockerfile.
+
+For example, if your custom step runner requires a utility from an AWS S3 drive, you can add your AWS credentials as key value pairs to the `opschain-build-env` secret (the default secret created for use by OpsChain image builds):
+
+```yaml
+AWS_ACCESS_KEY_ID: QUtSQVFJQVpRUTdTRE9BSTM3NkYK
+AWS_SECRET_ACCESS_KEY: djNLWll5RWtrbTd2NzBrOUFzRG04ZEFUQ1pZT0xMYWVsNXFwSWZFQwo=
+```
+
+These environment variables will then be available to the `aws` CLI (when run via `opschain-exec`), so it can authenticate to copy the utility, for example:
+
+```dockerfile
+RUN opschain-exec aws s3 cp s3://source-bucket-name/customer-utility /opt/opschain/customer-utility
+```
+
+#### Secure runner secrets
+
+OpsChain uses the [`runner_secrets` configuration from the project and environment](properties.md#project--environment-configuration) to load Kubernetes secrets into the step runner container during step execution. Any environment variables configured in the corresponding Kubernetes secrets are exported as environment variables when starting the step runner container.
+
+For example, if your step copies a file into an AWS S3 drive, you can add your AWS credentials as key value pairs to the `opschain-runner-env` secret:
 
 ```yaml
 AWS_ACCESS_KEY_ID: QUtSQVFJQVpRUTdTRE9BSTM3NkYK
@@ -116,15 +139,19 @@ AWS_SECRET_ACCESS_KEY: djNLWll5RWtrbTd2NzBrOUFzRG04ZEFUQ1pZT0xMYWVsNXFwSWZFQwo=
 
 _Note: Per Kubernetes requirements, the values in the secret must be base64 encoded._
 
-These environment variables will then be available to the `aws` CLI (when run via `opschain-exec`), so it can authenticate to copy the utility:
+These environment variables will then be available to the `aws` CLI when run as part of the OpsChain action, for example:
 
-```dockerfile
-RUN opschain-exec aws s3 cp s3://source-bucket-name/customer-utility /opt/opschain/customer-utility
+```ruby
+action :copy_utility do
+  sh 'aws s3 cp build.war s3://destination-bucket-name/build.war'
+end
 ```
 
-#### Project & environment build secrets
+#### Project & environment secret configuration
 
-If more granular control over build secrets is required, OpsChain allows you to override the default `opschain-build-env` secret and configure specific Kubernetes secrets to supply to your image build. For example, adding the following to the project and environment properties will cause OpsChain to provide the key value pairs in the `project-build-secrets-1`, `project-build-secrets-2` and `environment-build-secrets` secrets as environment variables to `opschain-exec`:
+If more granular control over build or runner secrets is required, OpsChain allows you to configure specific secrets to supply to changes in an environment.
+
+For example, adding the following to the project and environment properties will cause OpsChain to provide the key value pairs in the `project-build-secrets-1`, `project-build-secrets-2` and `environment-build-secrets` secrets as environment variables to `opschain-exec` during the image build:
 
 _Project properties:_
 
@@ -152,10 +179,11 @@ _Environment properties:_
 
 _Notes:_
 
-1. _Secrets are loaded in the order listed in your configuration, project secrets, then environment secrets. If an environment variable exists in multiple Kubernetes secrets, the value from the most recently loaded secret will be supplied to the image build_
-2. _If you have configured `build_secrets` in your project or environment configuration, the default `opschain-build-env` secret will not be supplied to your image build. To include the `opschain-build-env` secret, simply add `opschain-build-env` into your list of `build_secrets`_
+1. _Secrets are loaded in the order listed in your configuration - first all project secrets are loaded and then all environment secrets, in the order specified. If an environment variable exists in multiple Kubernetes secrets, the value from the most recently loaded secret will be supplied_
+2. _If you have configured `build_secrets` in your project or environment configuration, the environment variables in the `opschain-build-env` secret will not be supplied to your image build. To include them, simply add `opschain-build-env` to the project or environment `build_secrets` configuration_
+3. _If you have configured `runner_secrets` in your project or environment configuration, the environment variables in the `opschain-runner-env` secret will not be supplied to your step runner. To include them, simply add `opschain-runner-env` to the project or environment `runner_secrets` configuration_
 
-See the [using secrets in your image build](/docs/examples/using-secrets-in-your-image-build.md) example for more information.
+See the [using secrets in your image build](/docs/examples/using-secrets-in-your-change.md) example for more information.
 
 ### Image performance - base images
 
@@ -194,16 +222,14 @@ OpsChain relies on configuration done as part of the base runner image to work. 
 
 Ensure that you rebuild your custom image after upgrading OpsChain.
 
-[Contact us](mailto:opschain-support@limepoint.com) if you would like to express your interest in this feature.
-
 ## API - step runner integration
 
 When running the step runner, OpsChain includes:
 
 1. the project's Git repository, reset to the requested revision, in the `/opt/opschain` directory
-2. the project and environment [properties](properties.md) to be used by the step, in the `/opt/opschain/.opschain/step_context.json` file
+2. an `/opt/opschain/.opschain/step_context.json` file, containing the step's project and environment properties along with the current step's context values
 
-Upon completion, the step will produce a `/opt/opschain/.opschain/step_result.json` file to be processed by the API server, detailing:
+Upon completion, the step will produce an `/opt/opschain/.opschain/step_result.json` file to be processed by the API server, detailing:
 
 1. any changes to the project and environment [properties](properties.md) the action has performed
 2. the merged set of properties used by the action
@@ -211,63 +237,17 @@ Upon completion, the step will produce a `/opt/opschain/.opschain/step_result.js
 
 ### Step context JSON
 
-#### File structure
+The `step_context.json` file supplied to the step includes the following sections:
 
-The `step_context.json` file has the following structure:
-
-```text
-{
-  "context": {
-    "project": {
-      "code": "demo",
-      "name": "Demo Project",
-      ...
-    },
-    "environment": ...
-    "change": ...
-    "step": ...,
-    "user": ...
-  },
-  "project": {
-    "properties": {
-      "project_property": "value",
-      "files": {
-        "/path/to/file.txt": {
-          "mode": "0600",
-          "content": "contents of the file"
-        }
-      },
-      "env": {
-        "VARIABLE_NAME": "variable value"
-      }
-    }
-  },
-  "environment": {
-    "properties": {
-      "environment_property": "value",
-      "files": {
-        "/path/to/another_file.txt": {
-          "mode": "0600",
-          "content": "contents of the file"
-        }
-      },
-      "env": {
-        "VARIABLE_NAME": "variable value"
-      }
-    }
-  }
-}
-```
-
-#### File content - step context
-
-The `context` values are derived from the current step. The [OpsChain context guide](context.md) provides more details on the values available.
-
-The `project/properties` value is the output from `opschain project show-properties --project-code <project code>`.
-
-The `environment/properties` value is the output from `opschain environment show-properties --project-code <project code> --environment-code <environment code>`
+| JSON path                | Description                                                                                                                                            |
+|--------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `context`                | The step context values for the current step - see the [OpsChain context guide](context.md) for more details                                           |
+| `project/properties`     | The [properties](properties.md) output from `opschain project show-properties --project-code <project code>`                                           |
+| `environment/properties` | The [properties](properties.md) output from `opschain environment show-properties --project-code <project code> --environment-code <environment code>` |
 
 _Replace the `<project code>` and `<environment code>` in the commands above with the values for the project and environment related to the change._
+
+A sample `step_context.json` file is available to view [here](/files/samples/step_context.json).
 
 ### Step result JSON
 

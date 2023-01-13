@@ -2,10 +2,11 @@
 sidebar_position: 5
 description: The context information available to your actions when running steps.
 ---
+import SampleContextValues from '/files/samples/sample-context-values.md'
 
 # Context
 
-The OpsChain context framework provides a read only set of values, describing the current step and the user who created the overall change. These values enable you to reuse code between projects and environments, conditionally performing logic based on when and where the step is being performed.
+The OpsChain context framework provides a read only set of values. These values enable you to reuse code between projects and environments, conditionally performing logic based on when and where the step is being performed.
 
 After reading this guide you should understand:
 
@@ -14,57 +15,17 @@ After reading this guide you should understand:
 
 ## OpsChain context
 
-Within each action, OpsChain context values are available via `OpsChain.context` (which will behave like a [Hashie Mash](https://github.com/hashie/hashie#mash)[^1])). The `OpsChain.context` includes the following keys:
+Within each action, OpsChain context values are available via `OpsChain.context` (which will behave like a [Hashie Mash](https://github.com/hashie/hashie#mash)). The `OpsChain.context` includes the following information:
 
-- `OpsChain.context.project` - project for the currently running step
-- `OpsChain.context.environment` - environment for the currently running step
-- `OpsChain.context.change` - change the currently running step belongs to
-- `OpsChain.context.step` - currently running step
-- `OpsChain.context.user` - user who submitted the change
+| Context key   | Description                                                                                                                                                                  |
+|---------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `project`     | The [project](concepts.md#project) for the currently running step[^api_docs]                                                                                                 |
+| `environment` | The [environment](concepts.md#environment) for the currently running step[^api_docs]                                                                                         |
+| `change`      | The [change](concepts.md#change) the currently running step belongs to[^api_docs]                                                                                            |
+| `step`        | The currently running [step](concepts.md#step)[^api_docs]                                                                                                                    |
+| `user`        | Information about the user who submitted the change<br />  `name` - the user who submitted the change<br />  `groups` - an array of LDAP groups that the user is a member of |
 
-### Nested attributes
-
-#### Change information
-
-The [`project`](concepts.md#project), [`environment`](concepts.md#environment), [`change`](concepts.md#change) and [`step`](concepts.md#step) keys contain the same attributes as those available to you from the relevant API endpoint. To see all the attributes available, create and run the following action in your project:
-
-```ruby
-action :print_context do
-  puts OpsChain.context.to_yaml
-end
-```
-
-The logs from this change will include all of the context attributes available to you. E.g.
-
-```yaml
----
-project:
-  code: demo
-  name: Demo Project
-  ...
-environment: ...
-change: ...
-step: ...
-user:
-  name: 'opschain'
-  groups: []
-```
-
-#### User information
-
-The `user` key includes two attributes:
-
-- `name` - The user who submitted the change
-- `groups` - An array of LDAP groups that this user is a member of (if any)
-
-If the current step was associated with a change submitted by the `opschain` user, and `opschain` was a member of the `administrators` and `developers` groups, `OpsChain.context.user` would contain:
-
-```ruby
-{
-  name: 'opschain',
-  groups: ['administrators', 'developers']
-}
-```
+[^api_docs]: The attributes available within these context keys are the same as those available to you from the relevant API endpoint. See the [OpsChain API documentation](https://docs.opschain.io/api-docs/) for more details.
 
 ## Accessing the context information
 
@@ -95,3 +56,9 @@ action main: ['enable_logging'] do
   .... main process
 end
 ```
+
+### Sample context values
+
+Below is an example of the values available to an action via `OpsChain.context` (formatted as yaml):
+
+<SampleContextValues />

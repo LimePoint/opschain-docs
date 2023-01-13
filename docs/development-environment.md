@@ -67,6 +67,8 @@ If your actions rely on [OpsChain context](reference/concepts/context.md) values
 ...
 ```
 
+A sample `step_context.json` file is available to view [here](/files/samples/step_context.json).
+
 ## Using the OpsChain development environment
 
 The `opschain-action` command can be used to run OpsChain actions the same way they are run by the step runner. See the [OpsChain development environment](getting-started/developer.md#opschain-development-environment) section of the getting started guide for instructions on how to list and run individual actions.
@@ -149,10 +151,10 @@ When run manually, the linter tests all not-ignored files in the Git repository.
 
 ### Building the image
 
-If your project uses a custom Dockerfile (`.opschain/Dockerfile`) you can use the OpsChain CLI to create a base Docker image for `opschain dev`. The `opschain dev build-runner-image` command will build the image and tag it as `customer_runner:latest`. If you would prefer a different image tag, include the optional `--tag` argument when running the command:
+If your project uses a custom Dockerfile (`.opschain/Dockerfile`) you can use the OpsChain CLI to create a base Docker image for `opschain dev`. The `opschain dev build-runner-image` command will build the image and tag it as `repository_runner:latest`. If you would prefer a different image tag, include the optional `--tag` argument when running the command:
 
 ```bash
-[host] $ opschain dev build-runner-image --tag my_custom_runner:1.0.0
+[host] $ opschain dev build-runner-image --tag my_repository_runner:1.0.0
 ```
 
 #### Bundler credentials
@@ -164,7 +166,7 @@ If your `.opschain/Dockerfile` uses OpsChain environment variables to supply cre
 You can use the custom image as follows:
 
 ```bash
-[host] $ OPSCHAIN_RUNNER_IMAGE=my_custom_runner:1.0.0 opschain dev
+[host] $ OPSCHAIN_RUNNER_IMAGE=my_repository_runner:1.0.0 opschain dev
 ```
 
 _Note: Modify the OPSCHAIN_RUNNER_IMAGE value to reflect the tag of your custom image._
@@ -172,7 +174,7 @@ _Note: Modify the OPSCHAIN_RUNNER_IMAGE value to reflect the tag of your custom 
 To make the change permanent the OPSCHAIN_RUNNER_IMAGE can be specified in your shell config file, e.g.:
 
 ```bash
-[host] $ echo export OPSCHAIN_RUNNER_IMAGE=\"my_custom_runner:1.0.0\" >> ~/.zshrc # or ~/.bashrc if using bash
+[host] $ echo export OPSCHAIN_RUNNER_IMAGE=\"my_repository_runner:1.0.0\" >> ~/.zshrc # or ~/.bashrc if using bash
 [host] $ exec zsh # reload the shell config by starting a new session (replace zsh with bash as appropriate)
 ```
 
@@ -207,6 +209,26 @@ Take note of the image ids of the older images and remove them as follows:
 # (from the filtered "docker images" command above)
 docker rmi 62651bfbd35e b05e297066d6
 ```
+
+## Running commands as root
+
+In some cases, you might want to run commands that require root privileges inside the development environment (e.g. installing a package). However, the `opschain` user does not have root privileges so there are limitations on what you can do inside the step runner container.
+
+To run commands as root in an OpsChain development environment container, use the `docker exec` command. First, identify the ID of the container that you wish to run the commands in by using the following command:
+
+```bash
+docker ps --filter label=opschain-dev
+```
+
+Next, exec into the container as the root user:
+
+```bash
+docker exec -ti -u 0 <container_id> /bin/bash
+```
+
+Replace <container_id> with the appropriate container ID from the results of the previous command. You now have an interactive Bash shell running as root inside this container and can perform any command you need.
+
+When complete, update your project's `Dockerfile` to reflect any changes that are required in your project's step [runner image](#custom-runner-images). _Tip: Use the `history` command to see the commands you have executed while running as root, making a note of any additional packages or filesystem changes you have made._
 
 ## What to do next
 

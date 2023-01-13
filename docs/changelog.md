@@ -5,6 +5,45 @@ description: Learn about new releases of OpsChain, including new features and up
 
 # Changelog
 
+## 2023-01-13 {#2023-01-13}
+
+### Important breaking changes {#2023-01-13-important-breaking-changes}
+
+- Upgraded to Ruby 3.1.2, please update the `.ruby_version` in your project Git repositories to reflect this change.
+- Upgraded MintPress Gems to [3.15.0](https://docs.limepoint.com/mintpress/release-notes/mint-press-3-15-0-release-notes).
+
+### Added {#2023-01-13-added}
+
+- Documentation on [running commands as root in `opschain dev`](/docs/development-environment#running-commands-as-root).
+- When defining a controller based resource type, the array supplied to the `action_methods:` keyword, can now include hashes providing the action name and description). Similarly, the controller `resource_type_actions` class method can now include hashes. [Learn more](docs/reference/concepts/actions.md#controller)
+- Documentation has been added showing how to use a specific configuration file with the CLI. [Learn more](/docs/reference/cli.md#specifying-the-cli-configuration-file).
+
+### Changed {#2023-01-13-changed}
+
+- The image built by `opschain dev build-runner-image` is now assigned the image tag `repository_runner:latest` by default.
+- Upgraded Kong to v3.1.0.
+- Upgraded Kong Helm chart to v2.14.0.
+- Upgraded Kong ingress controller to v2.8.1.
+- Upgraded Que to 2.2.0.
+- Upgraded cert-manager to 1.10.2.
+- Upgraded Fluent Bit to v2.0.8.
+- Upgraded OpsChain log aggregator image to Fluentd 1.15.3.
+- Upgraded PostgreSQL to 14.6.
+- Upgraded OPA to v0.48.0.
+- Upgraded BuildKit to v0.11.0.
+- The `ruby-terraform` Gem version supported by the `opschain-resource-types` Gem has been updated to v1.7.0.
+- Upgraded Terraform to 1.3.7 in the OpsChain examples.
+- Upgraded Terraform 'hashicorp/aws' provider to 4.49.0 in the OpsChain Ansible example.
+- Upgraded Terraform 'hashicorp/kubernetes' provider to 2.16.1 in the OpsChain Confluent, Terraform, and WebLogic examples.
+- Upgraded HashiCorp Vault to 1.12.2 in the OpsChain Vault example.
+- Upgraded all base images used by the OpsChain examples to AlmaLinux 8.7.
+- Upgraded the OpsChain base runner image to AlmaLinux 8.7.
+
+### Fixed {#2023-01-13-fixed}
+
+- `opschain dev build-runner-image` no longer aborts if Git repository files have been deleted but not yet committed.
+- OpsChain replaces the null bytes in log messages with U+FFFD. See the [troubleshooting guide](/docs/troubleshooting.md#null-bytes-in-log-messages) to learn why this is necessary.
+
 ## 2022-11-29 {#2022-11-29}
 
 ### Important breaking changes {#2022-11-29-important-breaking-changes}

@@ -356,6 +356,7 @@ resource_type :city do
   property :name
   property :weather
 
+  desc 'Output how the weather looks in the city'
   action :report_weather do
     puts "The weather in #{name} looks #{weather}"
   end
@@ -375,7 +376,10 @@ These resources will automatically include the `name` and `weather` properties, 
 
 `The weather in Melbourne looks cold`
 
-_Note: The resource type name (`city`) and resource name (`melbourne`) should conform to ruby variable naming standards. This means the name can include alphanumeric characters and the underscore character however it cannot start with a number or a capital letter. This ensures it can be easily referenced from other ruby code or the command line._
+_Notes:_
+
+1. _The resource type name (`city`) and resource name (`melbourne`) should conform to ruby variable naming standards. This means the name can include alphanumeric characters and the underscore character however it cannot start with a number or a capital letter. This ensures it can be easily referenced from other ruby code or the command line._
+2. _The action description assigned via the `desc` keyword in the example above is optional. When working in the [OpsChain development environment](../../development-environment.md), project actions with a description can be listed with the `opschain-action -T` command. To view all actions (with or without a description) the `opschain-action -AT` command can be used. This is useful as internal actions can be hidden by omitting a description, but are discoverable if needed._
 
 ### Controller
 
@@ -407,7 +411,11 @@ resource_type :city do
 end
 ```
 
-_Note: the `action_methods` keyword will expose each controller method supplied to it as an action on the resource._
+_Notes:_
+
+1. _The `action_methods` keyword will expose each controller method supplied to it as an action on the resource._
+2. _If you would like to provide descriptions for your controller actions, the array supplied to the `action_methods` keyword can include a [Ruby hash](https://ruby-doc.org/core-2.7.0/Hash.html) for each method. E.g. `action_methods: [{ name: :report_weather, description: 'Output how the weather looks in the city' }]`.
+3. _If your controller contains multiple actions, `action_methods:` can be supplied a mixture of actions with and without descriptions as required. E.g. `action_methods: [{ name: :report_weather, description: 'Output how the weather looks in the city' }, :action_without_description]`_
 
 Resources created from this `city` resource type would have the same actions (and same action output) as those created from the earlier type definition.
 
@@ -451,7 +459,17 @@ end
 
 Once again, resources created from this `city` resource type would have the same actions (and same action output) as those created from the earlier type definitions.
 
-_Note: If you supply the `action_methods:` parameter when defining the resource type's controller, the controller's `resource_type_actions` will be ignored and only those methods passed to `action_methods:` will be exposed._
+_Notes:_
+
+1. _If you supply the `action_methods:` parameter when defining the resource type's controller, the controller's `resource_type_actions` will be ignored and only those methods passed to `action_methods:` will be exposed._
+2. _As per the values that can be supplied to the `action_methods:` keyword described in the previous example, the controller's `resource_type_actions` class method can return an array containing a mixture of action names and descriptive hashes. E.g._
+
+```ruby
+  def self.resource_type_actions
+    [{ name: :action_with_description, description: 'An action with a description' }, :action_without_description]
+  end
+end
+```
 
 ##### Controller action method validation
 

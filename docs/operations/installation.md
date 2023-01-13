@@ -81,7 +81,7 @@ OpsChain depends on [`cert-manager`](https://cert-manager.io/) to manage its int
 ```bash
 helm repo add jetstack https://charts.jetstack.io
 helm repo update
-helm upgrade --install cert-manager jetstack/cert-manager --namespace cert-manager --create-namespace --version v1.10.0 --set installCRDs=true
+helm upgrade --install cert-manager jetstack/cert-manager --namespace cert-manager --create-namespace --version v1.10.2 --set installCRDs=true
 ```
 
 `cert-manager` is now ready for OpsChain to use - no additional `cert-manager` configuration is required.
@@ -163,20 +163,9 @@ security add-trusted-cert -k ~/Library/Keychains/login.keychain-db -p ssl opscha
 # Remember to restart Docker Desktop once these commands have completed
 ```
 
-### Configure Docker Hub access (optional)
+### OpsChain development environment setup (optional)
 
-If you intend to use the OpsChain development environment (used when creating new action definitions) you will need to be logged in to [Docker Hub](https://hub.docker.com/) as the `opschaintrial` user (or, if you have an [enterprise licence for OpsChain](/docs/reference/opschain-and-mintpress.md#enterprise-controllers-for-oracle), the `opschainenterprise` user). These are the same Docker credentials requested by the `opschain server configure` command.
-
-```bash
-docker login --username opschaintrial
-```
-
-TIP: use the DOCKER_CONFIG environment variable if you need to use multiple Docker Hub logins.
-
-```bash
-export DOCKER_CONFIG="$(pwd)/.docker" # this would need to be exported in all terminals where OpsChain is being used
-docker login --username opschaintrial
-```
+If you intend to use the OpsChain development environment (used when creating new action definitions) you will need to setup the [CLI dev subcommand dependencies](/docs/reference/cli.md#dev-subcommand-dependencies).
 
 ## What to do next
 

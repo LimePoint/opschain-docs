@@ -212,6 +212,8 @@ opschain environment set-properties --environment-code prod --file-path prod_pro
 
 The project properties provide default values to use when running changes in any environment in the project. The production environment properties override these defaults with production specific values.
 
+_Note: this example uses OpsChain properties for simplicity. OpsChain properties are stored encrypted at rest and are tracked for auditability, but it may be preferable to use [OpsChain secrets](/docs/examples/using-secrets-in-your-change) for sensitive information like AWS access keys._
+
 ### Advanced change example
 
 Our project team utilise a custom `artifact_deploy.sh` script to deploy their website's WAR file to the target web server. They've found it difficult to keep track of:

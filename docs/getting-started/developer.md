@@ -18,9 +18,8 @@ If you have not already done so, we suggest completing the main [getting started
 This guide assumes that:
 
 - you have have access to a running OpsChain API server, either locally or network accessible. See the [getting started installation guide](../operations/installation.md) for more details
-- you have performed the [Docker Hub login step](../operations/installation.md#configure-docker-hub-access-optional) from the getting started installation guide
 - you have installed:
-  - the [OpsChain CLI](/docs/reference/cli.md#installation)
+  - the [OpsChain CLI](/docs/reference/cli.md#installation) - including setting up all the [dev dependencies](/docs/reference/cli.md#dev-subcommand-dependencies)
   - [Docker](https://docs.docker.com/engine/install/)
   - [Docker Compose](https://docs.docker.com/compose/install/)
 
@@ -419,7 +418,7 @@ $ docker exec target cat /tmp/testing
 Hello :-)
 ```
 
-This example leverages the MintPress `InfrastructureHost` and `Transport` classes which can transparently execute code on remote or local hosts. View the [MintPress documentation](https://docs.limepoint.com/mintpress/examples/interacting-with-transport/) for these classes to learn more about the powerful functions they provide - if you need credentials to access this documentation contact [OpsChain support](mailto:opschain-support@limepoint.com).
+This example leverages the MintPress `InfrastructureHost` and `Transport` classes which can transparently execute code on remote or local hosts. View the [MintPress documentation](https://docs.limepoint.com/v3.14.0/mintpress/examples/interacting-with-transport/) for these classes to learn more about the powerful functions they provide - if you need credentials to access this documentation contact [OpsChain support](mailto:opschain-support@limepoint.com).
 
 To complete the new `file` resource example, update the contents of your `actions.rb` as follows:
 
