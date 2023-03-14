@@ -79,7 +79,7 @@ const config = {
               },
               {
                 label: 'Blog',
-                to: 'https://www.limepoint.com/blog/tag/opschain',
+                to: 'https://opschain.io/blog',
               },
             ],
           },
@@ -95,7 +95,7 @@ const config = {
               },
               {
                 label: 'LimePoint EULA',
-                to: 'https://www.limepoint.com/wp-content/uploads/2021/10/2021.10.12-LimePoint-End-User-License-Agreement.pdf',
+                to: 'https://opschain.io/eula',
               },
             ],
           },
