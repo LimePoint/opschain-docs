@@ -49,10 +49,10 @@ By default, archived resources are included in the results returned from the API
 
 #### Result filtering
 
-If required, the API endpoints allow you to use result filtering (described in more detail in [the events guide](events.md#filtering-events)) to return only active projects or environments. To do this, append the filter `filter[archived_eq]=false` to your API request. e.g.
+If required, the API endpoints allow you to use result filtering (described in more detail in [API filtering & sorting guide](../api-filtering.md)) to return only active projects or environments. To do this, append the filter `filter[archived_eq]=false` to your API request. e.g.
 
 ```text
-http://localhost:3000/projects?filter[archived_eq]=false`
+http://localhost:3000/api/projects?filter[archived_eq]=false`
 ```
 
 ### Changes and automated change rules
@@ -66,7 +66,7 @@ Automated change rules that exist for an archived environment will be disabled a
 Archiving a resource is intended as a one way process and the CLI does not provide an option to unarchive them. In the event that you need to unarchive a project or environment, you will need to interact directly with the API server. The following example patch request will unarchive the `dev` environment in the `demo` project:
 
 ```bash
-curl -u opschain:password -X PATCH http://localhost:3000/projects/demo/environments/dev -H "Accept: application/vnd.api+json" -H "Content-Type: application/vnd.api+json" --data-binary @- <<DATA
+curl -u opschain:password -X PATCH http://localhost:3000/api/projects/demo/environments/dev -H "Accept: application/vnd.api+json" -H "Content-Type: application/vnd.api+json" --data-binary @- <<DATA
 {
   "data": {
     "attributes": {
@@ -81,7 +81,7 @@ Note: You will need to edit the example to replace:
 
 - `opschain:password` with your username and password
 - `localhost:3000` with the OpsChain host and port
-- `projects/demo/environments/dev` with the appropriate path for the archived resource. e.g.
-  - `projects/<project code>` to unarchive a project
-  - `projects/<project code>/environments/<environment code>` to unarchive an environment
-  - `projects/<project code>/git_remotes/<git remote id>` to unarchive a git remote
+- `api/projects/demo/environments/dev` with the appropriate path for the archived resource. e.g.
+  - `api/projects/<project code>` to unarchive a project
+  - `api/projects/<project code>/environments/<environment code>` to unarchive an environment
+  - `api/projects/<project code>/git_remotes/<git remote id>` to unarchive a git remote

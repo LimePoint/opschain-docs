@@ -81,7 +81,7 @@ OpsChain depends on [`cert-manager`](https://cert-manager.io/) to manage its int
 ```bash
 helm repo add jetstack https://charts.jetstack.io
 helm repo update
-helm upgrade --install cert-manager jetstack/cert-manager --namespace cert-manager --create-namespace --version v1.10.2 --set installCRDs=true
+helm upgrade --install cert-manager jetstack/cert-manager --namespace cert-manager --create-namespace --version v1.11.0 --set installCRDs=true
 ```
 
 `cert-manager` is now ready for OpsChain to use - no additional `cert-manager` configuration is required.
@@ -146,7 +146,7 @@ vi ~/.opschainrc
 
 If you changed the username or password in the `create_user` command above, ensure you modify the `.opschainrc` file to reflect your changes.
 
-In addition, the `apiBaseUrl` configuration in `~/.opschainrc` must be updated to reflect the external OpsChain API address. This address reflects the OpsChain listening port specified as part of the `opschain server configure` script. If you accepted the default setting, this will be `http://localhost:3000/`.
+In addition, the `apiBaseUrl` configuration in `~/.opschainrc` must be updated to reflect the external OpsChain API address. This address reflects the OpsChain listening port specified as part of the `opschain server configure` script. If you accepted the default setting, this will be `http://localhost:3000`.
 
 Learn more about the `opschainrc` configuration in the [CLI configuration guide](/docs/reference/cli.md#opschain-cli-configuration).
 

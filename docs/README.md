@@ -7,11 +7,9 @@ hide_table_of_contents: true
 
 [OpsChain](https://opschain.io) was developed to address the problem of managing change in a consistent and uniform way across on-premise, cloud, modern, and legacy platforms. Our objective is to unify people, process, and technology in order to simplify and reduce the operational complexities and costs of running and operating modern enterprise applications and systems in today's world.
 
-[Learn more about how OpsChain can help your organisation.](https://opschain.io/why)
-
 OpsChain can be used from Mac, Linux and Windows.
 
-OpsChain is deployed to Kubernetes. We can also provide a [SaaS demo instance](https://opschain.io/#learn-more) - [contact us](https://opschain.io/) if you would like to demo OpsChain.
+OpsChain is deployed to Kubernetes. We can also provide a SaaS demo instance - [contact us](https://opschain.io/contact-us) if you would like to demo OpsChain.
 
 ## [Getting started](getting-started/README.md)
 

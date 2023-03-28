@@ -1,5 +1,5 @@
 ---
-sidebar_position: 7
+sidebar_position: 8
 description: OpsChain bundles the MintPress SDK and this guide is intended for existing MintPress customers.
 ---
 

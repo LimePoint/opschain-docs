@@ -414,6 +414,12 @@ The majority of OpsChain CLI commands accept an optional `--output` argument, al
 
 ## What to do next
 
+### Visit the OpsChain web UI
+
+Access your OpsChain server in a web browser to see your changes in the OpsChain web UI (e.g. at `http://localhost:3000/` if using the default port on a local installation).  We plan for the web UI to continue to evolve and have additional features in future releases.
+
+Please [contact us](/docs/support#how-to-contact-us) if you have any feedback, we'd love to hear it.
+
 ### Learn more about OpsChain actions
 
 Follow the [developer getting started guide](developer.md) and add more advanced actions to the sample project (this guide is targeted at readers with some software development experience, although it is not mandatory).
@@ -428,4 +434,4 @@ The [reference documentation](/docs/category/reference) provides in-depth descri
 
 ### Review the REST API documentation
 
-View the [OpsChain REST API documentation](pathname:///api-docs/) to learn more about OpsChain's REST endpoints. Interacting directly with the OpsChain API server opens up more features and integration options than using the CLI alone. The REST API documentation is also available on a running OpsChain instance at `/docs` - e.g. `http://localhost:3000/docs`.
+View the [OpsChain REST API documentation](pathname:///api-docs/) to learn more about OpsChain's REST endpoints. Interacting directly with the OpsChain API server opens up more features and integration options than using the CLI alone. The REST API documentation is also available on a running OpsChain instance at `/api-docs` - e.g. `http://localhost:3000/api-docs`.

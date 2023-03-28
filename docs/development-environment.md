@@ -149,29 +149,36 @@ When run manually, the linter tests all not-ignored files in the Git repository.
 
 ## Custom runner images
 
-### Building the image
+If your project uses a custom Dockerfile (`.opschain/Dockerfile`), the OpsChain CLI allows you to use it as the basis for your OpsChain development environment.
 
-If your project uses a custom Dockerfile (`.opschain/Dockerfile`) you can use the OpsChain CLI to create a base Docker image for `opschain dev`. The `opschain dev build-runner-image` command will build the image and tag it as `repository_runner:latest`. If you would prefer a different image tag, include the optional `--tag` argument when running the command:
+### Bundler credentials
 
-```bash
-[host] $ opschain dev build-runner-image --tag my_repository_runner:1.0.0
-```
+If your custom Dockerfile uses OpsChain environment variables to supply credentials when running bundler, create a [step context JSON](#create-a-step_contextjson-optional) file in the `.opschain` directory that includes the relevant values and this will be used when building your image.
 
-#### Bundler credentials
+### Building and using a custom runner image
 
-If your `.opschain/Dockerfile` uses OpsChain environment variables to supply credentials when running bundler, create a [step context JSON](#create-a-step_contextjson-optional) file in the `.opschain` directory that includes the relevant values and this will be used when building your image.
-
-### Using the image
-
-You can use the custom image as follows:
+To build a Docker image from your project's Dockerfile and then use the image for your OpsChain development environment, execute the following command:
 
 ```bash
-[host] $ OPSCHAIN_RUNNER_IMAGE=my_repository_runner:1.0.0 opschain dev
+[host] $ opschain dev --build-runner-image --tag my_repository_runner:1.0.0
 ```
 
-_Note: Modify the OPSCHAIN_RUNNER_IMAGE value to reflect the tag of your custom image._
+As part of this process, the CLI will tag the newly built image with the supplied tag.
 
-To make the change permanent the OPSCHAIN_RUNNER_IMAGE can be specified in your shell config file, e.g.:
+_Notes:_
+
+1. _If the `--tag` argument is not supplied with the `--build-runner-image` argument, the newly built image will be assigned the default tag `repository_runner:latest`._
+2. _When the CLI tags the newly built image (with the supplied tag or the default tag) the tag will be removed from any existing image with that tag._
+
+### Using a custom runner image
+
+Once built, you can use a custom runner image (without rebuilding it) by supplying the tag to the `opschain dev` command:
+
+```bash
+[host] $ opschain dev --tag my_repository_runner:1.0.0
+```
+
+Alternatively, you can use the `OPSCHAIN_RUNNER_IMAGE` environment variable to specify the tag of the custom runner image. To make the change permanent specify OPSCHAIN_RUNNER_IMAGE in your shell config file, e.g.:
 
 ```bash
 [host] $ echo export OPSCHAIN_RUNNER_IMAGE=\"my_repository_runner:1.0.0\" >> ~/.zshrc # or ~/.bashrc if using bash

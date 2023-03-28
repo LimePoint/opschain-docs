@@ -144,13 +144,13 @@ action :do_something_with_acknowledgement, steps: [OpsChain.wait_step, :do_somet
 
 _Note: all the sibling steps of a wait step will run immediately when using `run_as: :parallel` - the change will not continue on subsequently until it is manually continued. See the [troubleshooting guide](/docs/troubleshooting.md#opschain-change-parallel-steps-run-before-wait-step) for more info._
 
-The `opschain change continue` command can be used to continue a waiting change. Currently the `opschain change continue` command will continue all waiting steps for a change. The `/steps/{{step_id}}/continue` API endpoint can be used to continue a specific step, for example: `curl -X POST -u {{username}}:{{password}} localhost:3000/steps/{{step_id}}/continue`. See the [OpsChain REST API documentation](/docs/getting-started/README.md#review-the-rest-api-documentation) to learn more.
+The `opschain change continue` command can be used to continue a waiting change. Currently the `opschain change continue` command will continue all waiting steps for a change. The `api/steps/{{step_id}}/continue` API endpoint can be used to continue a specific step, for example: `curl -X POST -u {{username}}:{{password}} localhost:3000/api/steps/{{step_id}}/continue`. See the [OpsChain REST API documentation](/docs/getting-started/README.md#review-the-rest-api-documentation) to learn more.
 
 _Note: OpsChain wait steps use the naming convention `opschain_wait_step_{{unique id}}` - do not use this naming convention in your steps unless you intend to create an OpsChain wait step._
 
 ##### Step continuation auditing
 
-Information about step continuation can be viewed by using the [events endpoint](events.md). The continue action will be recorded with the type `api:steps:continue` (these can be fetched via the API by requesting `/events?filter[type_eq]=api:steps:continue`). The username of the user who continued the step is available in the API response.
+Information about step continuation can be viewed by using the [events endpoint](events.md). The continue action will be recorded with the type `api:steps:continue` (these can be fetched via the API by requesting `api/events?filter[type_eq]=api:steps:continue`). The username of the user who continued the step is available in the API response.
 
 Please [let us know](mailto:opschain-support@limepoint.com) if you would like to suggest improvements in this area.
 

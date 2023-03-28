@@ -1,5 +1,5 @@
 ---
-sidebar_position: 5
+sidebar_position: 6
 description: Configuration details and features of the OpsChain CLI.
 ---
 
@@ -146,12 +146,12 @@ Then reload your shell, e.g. by running `exec zsh`. Now the CLI will support tab
 
 ## OpsChain CLI container image
 
-The OpsChain CLI is also distributed as a container image, `limepoint/opschain-cli:${OPSCHAIN_VERSION}`. The OPSCHAIN_VERSION used should match the server installation version - if unknown this can be seen via the `/info` API endpoint.
+The OpsChain CLI is also distributed as a container image, `limepoint/opschain-cli:${OPSCHAIN_VERSION}`. The OPSCHAIN_VERSION used should match the server installation version - if unknown this can be seen via the `api/info` API endpoint.
 
 Some examples of how the CLI image can be used are shown below:
 
 ```bash
-OPSCHAIN_VERSION="$(curl --user opschain:password 'http://localhost:3000/info' | jq -r .data.attributes.version)" # modify the API address and credentials as required, or enter the value manually if known
+OPSCHAIN_VERSION="$(curl --user opschain:password 'http://localhost:3000/api/info' | jq -r .data.attributes.version)" # modify the API address and credentials as required, or enter the value manually if known
 docker run -ti -v ~/.opschainrc:/.opschainrc limepoint/opschain-cli:${OPSCHAIN_VERSION} environment ls
 # with files:
 docker run -ti -v $(pwd):$(pwd) -v ~/.opschainrc:$(pwd)/.opschainrc -w $(pwd) limepoint/opschain-cli:${OPSCHAIN_VERSION} environment set-properties -f ./properties.json

@@ -5,6 +5,45 @@ description: Learn about new releases of OpsChain, including new features and up
 
 # Changelog
 
+## [2023-03-29] - release candidate
+
+### Important breaking changes {#2023-03-29-important-breaking-changes}
+
+- All API endpoints have been prefixed with `/api`. For example, `http://localhost:3000/changes` is now `http://localhost:3000/api/changes`.
+  - Please ensure any calls to the API are updated to use the new endpoints.
+- The OpsChain runner images have been upgraded to Ruby 3.1.3.
+  - Please ensure the `.ruby-version` in your project Git repositories is updated to `ruby-3.1.3`.
+
+### Added {#2023-03-29-added}
+
+- The build service now automatically restarts when its certificate is renewed.
+- OpsChain now includes a web UI. We expect the web UI to continue to evolve and thus change as features are added. [Contact us](/docs/support#how-to-contact-us) if you have any feedback.
+  - This release includes the ability to:
+    - view a list of changes.
+    - search changes.
+    - view a list of automated changes.
+    - view the details of a change, including a graphical representation of the change execution.
+
+### Changed {#2023-03-29-changed}
+
+- The API documentation has been moved from `/docs` to `/api-docs`.
+- When accessing `/` the new prototype UI will be shown rather than the API docs. Access the API docs directly via `/api-docs`.
+- The changes API (`api/changes`) now allows filtering by nested metadata values. [Learn more](/docs/reference/concepts/changes.md#query-changes-by-metadata).
+- The automated change rules API (`api/automated_change_rules`) now supports filtering and sorting. [Learn more](/docs/reference/api-filtering.md)
+- Upgraded cert-manager to 1.11.0.
+- Upgraded BuildKit to v0.11.3.
+- Upgraded Confluent to 6.2.9 in the OpsChain Confluent example.
+- Upgraded Kong to v3.1.1.
+- Upgraded Kong Helm chart to v2.16.0.
+- Upgraded Terraform 'hashicorp/aws' provider to 4.56.0 in the OpsChain Ansible example.
+- Upgraded Terraform 'hashicorp/kubernetes' provider to 2.18.1 in the OpsChain Confluent, Terraform, and WebLogic examples.
+- Upgraded Terraform to 1.3.9 in the OpsChain examples.
+- Upgraded PostgreSQL to 14.7.
+- Upgraded OpsChain log aggregator image to Fluentd 1.15.3-1.2.
+- Upgraded Fluent Bit to v2.0.9.
+- Upgraded OPA to v0.49.2.
+- Upgraded Kubectl version to v1.25.6.
+
 ## 2023-01-13 {#2023-01-13}
 
 ### Important breaking changes {#2023-01-13-important-breaking-changes}

@@ -103,13 +103,22 @@ opschain change create -p project -e environment -m prod_change_metadata.json -a
 
 ### Query changes by metadata
 
-The output from the API can now be filtered using [`jq`](https://github.com/stedolan/jq) to only display those changes whose approver matches the value we specified in the metadata:
+The change API allows you to filter the results to only display those changes whose approver matches the value we specified in the metadata:
 
 ```bash
-curl http://opschain:password@localhost:3000/changes | jq -r '.data[] | select(.attributes.metadata.approver == "A. Manager")'
+curl -G --user "{{username}}:{{password}}" 'http://localhost:3000/api/changes' --data-urlencode 'filter[metadata_approver_eq]=A. Manager'
 ```
 
-_Note: Update the username, password, host and port to reflect your OpsChain server configuration._
+_Notes:_
+
+1. _Update the username, password, host and port to reflect your OpsChain server configuration._
+2. _If you wish to filter on a nested metadata value, separate the keys with a comma. For example, to find all changes with metadata `{ "nested": { "key": "some_value } }`, you could use the following filter:_
+
+```bash
+curl -G --user "{{username}}:{{password}}" 'http://localhost:3000/api/changes' --data-urlencode 'filter[metadata_nested,key_eq]=some_value'
+```
+
+For more information on filtering the change list output, see the [API filtering & sorting guide](../api-filtering.md).
 
 ### Using metadata in actions
 

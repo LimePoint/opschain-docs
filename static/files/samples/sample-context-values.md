@@ -34,10 +34,12 @@ step:
   id: 37fdf12f-aff3-4134-8926-a2321cef5acf
   status_code: running
   action: deploy
+  created_at: '2020-05-20T10:00:00.000Z'
   started_at: '2020-05-20T10:00:05.000Z'
   finished_at:
   step_type: standard
   approvers: []
+  child_execution_strategy: sequential
 user:
   name: mary
   groups:

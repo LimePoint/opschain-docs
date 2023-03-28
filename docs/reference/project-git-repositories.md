@@ -1,5 +1,5 @@
 ---
-sidebar_position: 6
+sidebar_position: 7
 description: A project Git repository is where you store the actions and related configuration.
 ---
 

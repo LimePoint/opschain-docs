@@ -1,5 +1,5 @@
 ---
-sidebar_position: 3
+sidebar_position: 4
 description: Learn more about building container images from within your OpsChain actions.
 ---
 

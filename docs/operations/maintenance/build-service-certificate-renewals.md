@@ -3,7 +3,9 @@ sidebar_position: 4
 description: An important periodic maintenance task for the OpsChain build service.
 ---
 
-# Build service certificate renewal
+# Build service certificate renewal (deprecated)
+
+_Note: This manual maintenance is only required in OpsChain 2023-01-13 and older._
 
 The internal OpsChain container build service uses [mutal TLS](https://en.wikipedia.org/wiki/Mutual_authentication#mTLS) certificates for all communication.
 

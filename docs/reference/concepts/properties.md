@@ -148,19 +148,19 @@ opschain environment show-properties --project-code <project code> --environment
 The CLI does not currently support viewing prior versions of the properties. To do this you will need to interact directly with the OpsChain API server. The project API location:
 
 ```text
-http://<host>:3000/projects/<project code>
+http://<host>:3000/api/projects/<project code>
 ```
 
 The environment API location (the link below will respond with all environments for the project specified - review the output for the environment of interest):
 
 ```text
-http://<host>:3000/projects/<project code>/environments
+http://<host>:3000/api/projects/<project code>/environments
 ```
 
 The relevant API response will contain a link to the properties associated with that object in `/data/relationships/properties/links/related`. This will return the current properties values, including the current version number (in `/data/attributes/version`). To request a different version of the properties, simply append `/versions/VERSION_NUMBER` to the url. E.g.
 
 ```text
-http://<host>>:3000/properties/<properties id>/versions/7
+http://<host>>:3000/api/properties/<properties id>/versions/7
 ```
 
 ## Properties content

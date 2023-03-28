@@ -202,7 +202,7 @@ It can be useful for troubleshooting to know which [properties](/docs/reference/
 opschain change show-properties --change-id $change_id
 ```
 
-More detailed information about the specific versions of environment and project [properties](/docs/reference/concepts/properties.md) supplied to each [step](/docs/reference/concepts/concepts.md#step) of the change is available directly from the API server. Using your browser, navigate to `http://localhost:3000/changes/CHANGE_ID` _(where CHANGE_ID is the ID of the change)_. In the API response, each [step](/docs/reference/concepts/concepts.md#step) has a reference to the project and environment [properties](/docs/reference/concepts/properties.md) versions supplied to the [step](/docs/reference/concepts/concepts.md#step).
+More detailed information about the specific versions of environment and project [properties](/docs/reference/concepts/properties.md) supplied to each [step](/docs/reference/concepts/concepts.md#step) of the change is available directly from the API server. Using your browser, navigate to `http://localhost:3000/api/changes/CHANGE_ID` _(where CHANGE_ID is the ID of the change)_. In the API response, each [step](/docs/reference/concepts/concepts.md#step) has a reference to the project and environment [properties](/docs/reference/concepts/properties.md) versions supplied to the [step](/docs/reference/concepts/concepts.md#step).
 
 ## Create a change to remove Confluent
 

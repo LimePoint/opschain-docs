@@ -51,7 +51,7 @@ opschain project archive-git-remote --project-code <project code> --name <remote
 The following API only commands will require you to supply the Git remote ID in the URL. To identify the required id, query the Git remotes endpoint for the project:
 
 ```bash
-curl -u opschain:password http://localhost:3000/projects/demo/git_remotes | jq
+curl -u opschain:password http://localhost:3000/api/projects/demo/git_remotes | jq
 ```
 
 Note: You will need to edit the example to replace:
@@ -67,7 +67,7 @@ Similar to [unarchiving projects and environments](archiving.md#unarchiving-proj
 The following command will unarchive a Git remote with ID `cfebaf57-42c3-4df6-bf1d-4ae6f9094ec1` from the `demo` project.
 
 ```bash
-curl -u opschain:password -X PATCH http://localhost:3000/projects/demo/git_remotes/cfebaf57-42c3-4df6-bf1d-4ae6f9094ec1 -H "Accept: application/vnd.api+json" -H "Content-Type: application/vnd.api+json" --data-binary @- <<DATA
+curl -u opschain:password -X PATCH http://localhost:3000/api/projects/demo/git_remotes/cfebaf57-42c3-4df6-bf1d-4ae6f9094ec1 -H "Accept: application/vnd.api+json" -H "Content-Type: application/vnd.api+json" --data-binary @- <<DATA
 {
   "data": {
     "attributes": {
@@ -92,7 +92,7 @@ You can use the API server's Git remote delete endpoint in the event you wish to
 The following command will delete a Git remote with ID `cfebaf57-42c3-4df6-bf1d-4ae6f9094ec1` from the `demo` project.
 
 ```bash
-curl -u opschain:password -X DELETE http://localhost:3000/projects/demo/git_remotes/cfebaf57-42c3-4df6-bf1d-4ae6f9094ec1 -H "Accept: application/vnd.api+json" -H "Content-Type: application/vnd.api+json"
+curl -u opschain:password -X DELETE http://localhost:3000/api/projects/demo/git_remotes/cfebaf57-42c3-4df6-bf1d-4ae6f9094ec1 -H "Accept: application/vnd.api+json" -H "Content-Type: application/vnd.api+json"
 ```
 
 - `cfebaf57-42c3-4df6-bf1d-4ae6f9094ec1` with the Git remote ID (must be in an archived state)
