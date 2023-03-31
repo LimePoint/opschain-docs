@@ -79,6 +79,7 @@ opschain project set-properties -p <your project code> -f /tmp/updated_project_p
 
 When creating a change, OpsChain allows you to associate additional metadata with a change. This metadata can then be used:
 
+- when searching for changes (via the web UI)
 - when reporting on and searching the change history (via the API)
 - from within your `actions.rb` actions
 
@@ -103,7 +104,9 @@ opschain change create -p project -e environment -m prod_change_metadata.json -a
 
 ### Query changes by metadata
 
-The change API allows you to filter the results to only display those changes whose approver matches the value we specified in the metadata:
+You can query changes by metadata via the search field in the [OpsChain web UI](/docs/getting-started/#visit-the-opschain-web-ui). Metadata searching via the web UI is based on simple string matching. Please [let us know](mailto:opschain-support@limepoint.com) if you're interested in more advanced searching.
+
+When querying changes via the change API, you can use OpsChain's [API filtering](../api-filtering.md) feature to limit the response to changes whose approver matches the value we specified in the metadata, e.g.:
 
 ```bash
 curl -G --user "{{username}}:{{password}}" 'http://localhost:3000/api/changes' --data-urlencode 'filter[metadata_approver_eq]=A. Manager'

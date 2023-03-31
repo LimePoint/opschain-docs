@@ -122,7 +122,7 @@ Once the parameters have been entered, the change will be created and started, a
 
 Your very first OpsChain change will likely take several minutes to execute as OpsChain needs to perform additional processes internally.
 
-The CLI will report on the status of the change as it progresses, and will exit once the change has completed.
+The CLI will report on the status of the change as it progresses, and will exit once the change has completed. The change can also be seen in the [OpsChain web UI](#visit-the-opschain-web-ui) which shows the change's steps as they are executed, and the logs generated throughout the change execution.
 
 ### View change logs
 
@@ -138,6 +138,8 @@ Our very simple first change has just logged `Hello world` - we can also see inf
 
 _Note: If you wish to view the logs as your change executes, specify the `--follow-logs` option when [creating the change](#create-and-run-a-change). This option can also be supplied to the `opschain change show-logs` command to follow an existing change._
 
+Alternatively, you can also view and follow the change logs via the [OpsChain web UI](#visit-the-opschain-web-ui).
+
 ### Viewing all changes executed in an environment
 
 OpsChain helps teams work together to manage change. One of the features that OpsChain provides to that end is to keep track of which changes have already been executed in an environment.
@@ -149,6 +151,8 @@ opschain change list --project-code web --environment-code test
 ```
 
 The resulting table will list all the changes run in the `Test` environment, in particular the change we just ran. The table doesn't provide much value with a single change, however in a team environment where multiple users are running changes, the change list allows users to know what changes their team have executed.
+
+For a better look and feel, you can view these same changes in the [Opschain web UI](#visit-the-opschain-web-ui), filtering the project to `Website` and the environment to `Test` if necessary.
 
 ### Setup OpsChain to run more advanced sample changes
 
@@ -404,6 +408,8 @@ To view the newly configured rules, use the `automated-change list` command.
 opschain automated-change list --environment-code test
 ```
 
+You can also view the automated change rules via the [OpsChain web UI](#visit-the-opschain-web-ui).
+
 #### Git commits
 
 Note the `--new-commits-only=false` parameter used in the rule creation commands above. This instructs OpsChain to always create a change on the cron schedule. If `--new-commits-only=true` were used instead, OpsChain would continue to follow the specified cron schedule, but would only create a change if new commits were present in the project Git repository. With this feature, OpsChain can be used to automatically promote code changes on a schedule that suits your team. For example, you could configure a rule to automatically promote new commits in `master` to a test environment. Have your developers work in feature branches and their merge to `master` will also promote the code to test - at a time that suits your team, or straight away. See the [automated change rules guide](/docs/reference/concepts/automated-changes.md) for more details.
@@ -416,7 +422,11 @@ The majority of OpsChain CLI commands accept an optional `--output` argument, al
 
 ### Visit the OpsChain web UI
 
-Access your OpsChain server in a web browser to see your changes in the OpsChain web UI (e.g. at `http://localhost:3000/` if using the default port on a local installation).  We plan for the web UI to continue to evolve and have additional features in future releases.
+In addition to the CLI, OpsChain also provides a read only web interface that allows you to view the change that OpsChain manages in your organisation.
+
+The OpsChain web UI is available by accessing the address of your OpsChain server in a web browser - if using the default installation options then this would be at [http://localhost:3000/](http://localhost:3000/). It uses the same username and password as the CLI.
+
+_Note: Currently, the web UI provides a read only view and does not replace all the CLI's functionality._
 
 Please [contact us](/docs/support#how-to-contact-us) if you have any feedback, we'd love to hear it.
 

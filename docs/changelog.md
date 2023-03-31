@@ -5,26 +5,26 @@ description: Learn about new releases of OpsChain, including new features and up
 
 # Changelog
 
-## [2023-03-29] - release candidate
+## [2023-03-31] {#2023-03-31}
 
-### Important breaking changes {#2023-03-29-important-breaking-changes}
+### Important breaking changes {#2023-03-31-important-breaking-changes}
 
 - All API endpoints have been prefixed with `/api`. For example, `http://localhost:3000/changes` is now `http://localhost:3000/api/changes`.
   - Please ensure any calls to the API are updated to use the new endpoints.
 - The OpsChain runner images have been upgraded to Ruby 3.1.3.
   - Please ensure the `.ruby-version` in your project Git repositories is updated to `ruby-3.1.3`.
 
-### Added {#2023-03-29-added}
+### Added {#2023-03-31-added}
 
 - The build service now automatically restarts when its certificate is renewed.
-- OpsChain now includes a web UI. We expect the web UI to continue to evolve and thus change as features are added. [Contact us](/docs/support#how-to-contact-us) if you have any feedback.
+- OpsChain's web UI has been released. [Learn more](https://opschain.io/docs/whats-new/#31-march-2023) about its features. We expect the web UI to continue to evolve and thus change as features are added. [Contact us](/docs/support#how-to-contact-us) if you have any feedback.
   - This release includes the ability to:
     - view a list of changes.
     - search changes.
     - view a list of automated changes.
     - view the details of a change, including a graphical representation of the change execution.
 
-### Changed {#2023-03-29-changed}
+### Changed {#2023-03-31-changed}
 
 - The API documentation has been moved from `/docs` to `/api-docs`.
 - When accessing `/` the new prototype UI will be shown rather than the API docs. Access the API docs directly via `/api-docs`.
@@ -43,6 +43,11 @@ description: Learn about new releases of OpsChain, including new features and up
 - Upgraded Fluent Bit to v2.0.9.
 - Upgraded OPA to v0.49.2.
 - Upgraded Kubectl version to v1.25.6.
+
+### Fixed {#2023-03-31-fixed}
+
+- The GitHub RSA keys in the SSH `known_hosts` file in the runner have been updated following [the GitHub announcement](https://github.blog/2023-03-23-we-updated-our-rsa-ssh-host-key/).
+  - [View the documentation](/docs/reference/project-git-repositories#customising-the-ssh-known_hosts-file) if you need to modify the contents of this file.
 
 ## 2023-01-13 {#2023-01-13}
 
