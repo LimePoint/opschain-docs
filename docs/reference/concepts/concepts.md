@@ -62,10 +62,12 @@ When retrying a change, the existing change is duplicated as a new change and st
 
 As steps are rerun from the start we suggest only retrying changes/steps that are idempotent.
 
-_Notes:_
+:::note
 
-1. _When OpsChain retries a change, it will retry it using the code from the Git sha stored with the original change. If you wish to retry an action using updated project Git repository code, a new change must be created to specify the new Git sha._
-2. _The logs for the original change are not included when using the `show-logs` command. They can still be seen in the original change._
+1. When OpsChain retries a change, it will retry it using the code from the Git sha stored with the original change. If you wish to retry an action using updated project Git repository code, a new change must be created to specify the new Git sha.
+2. The logs for the original change are not included when using the `show-logs` command. They can still be seen in the original change.
+
+:::
 
 ## Automated change rule
 

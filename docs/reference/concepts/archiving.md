@@ -19,7 +19,9 @@ The OpsChain CLI provides the `archive` command, that can be applied to a `proje
 opschain project archive
 ```
 
-_Note: Projects and environments cannot be archived if they contain a queued or running change. Please ensure all relevant changes are complete (or cancelled) prior to executing the command._
+:::info
+Projects and environments cannot be archived if they contain a queued or running change. Please ensure all relevant changes are complete (or cancelled) prior to executing the command.
+:::
 
 ## Affect on OpsChain
 

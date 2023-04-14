@@ -22,7 +22,9 @@ apiWorker:
   terminationGracePeriodSeconds: 7200 # two hours
 ```
 
-_Note: this reconfiguration will only apply to actions started within the newly started worker instances. Any in-progress actions running when this value is applied will be subject to the previous grace period._
+:::note
+This reconfiguration will only apply to actions started within the newly started worker instances. Any in-progress actions running when this value is applied will be subject to the previous grace period.
+:::
 
 ## Performing maintenance
 

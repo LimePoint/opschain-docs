@@ -35,11 +35,13 @@ OpsChain.properties[:server][:setting]
 OpsChain.properties['server']['setting']
 ```
 
-_Notes:_
+:::note
 
-1. _You will not be able to use dot notation to access a property with the same name as a method on the properties object (for example `keys`). In this case you must use square bracket notation instead._
-2. _Any arrays in the properties will be overwritten during a deep merge (use JSON objects with keys instead to ensure they are merged)_
-3. _The `OpsChain.properties` structure is read only. Please see [modifiable properties](#modifiable-properties) below for information on making changes to the environment or project properties._
+1. You will not be able to use dot notation to access a property with the same name as a method on the properties object (for example `keys`). In this case you must use square bracket notation instead.
+2. Any arrays in the properties will be overwritten during a deep merge (use JSON objects with keys instead to ensure they are merged).
+3. The `OpsChain.properties` structure is read only. Please see [modifiable properties](#modifiable-properties) below for information on making changes to the environment or project properties.
+
+:::
 
 ### Comparison with OpsChain context
 
@@ -49,7 +51,9 @@ The OpsChain context is automatically populated by OpsChain with information abo
 
 Rather than manually putting change related values - e.g. the environment code, project code, action name, etc. - into your properties, consider whether you could use the OpsChain context instead.
 
+:::tip
 See the [OpsChain context guide](context.md) if you would like to learn more about the OpsChain context framework.
+:::
 
 ## Storage options
 
@@ -134,7 +138,9 @@ If you have an existing JSON you wish to use as the properties for a project or 
 
 **Whenever possible, use `edit-properties` rather than `set-properties` to ensure concurrent changes to the properties are not overwritten.**
 
-_Note: If the environment or project properties are in use by an active change, the API server will reject the set-properties request. This ensures OpsChain can guarantee the properties state throughout the life of the change._
+:::info
+If the environment or project properties are in use by an active change, the API server will reject the set-properties request. This ensures OpsChain can guarantee the properties state throughout the life of the change.
+:::
 
 #### Viewing properties
 
@@ -205,7 +211,8 @@ The following code will set the project `server_name` property, creating or upda
 OpsChain.project.properties.server_name = 'server1.limepoint.com'
 ```
 
-_Note. As properties behave like a Hashie::Mash, creating multiple levels of property nesting in a single command requires you to supply a hash as the value. E.g._
+:::note
+As properties behave like a Hashie::Mash, creating multiple levels of property nesting in a single command requires you to supply a hash as the value. E.g._
 
 ```ruby
 OpsChain.project.properties.parent = { child: { grandchild: 'value' } }
@@ -217,6 +224,8 @@ Once created, nested properties can be updated as follows:
 OpsChain.project.properties.parent.child.grandchild = 'new value'
 ```
 
+:::
+
 ##### Deleting properties
 
 To delete the grandchild property described above, use the following command:
@@ -225,11 +234,14 @@ To delete the grandchild property described above, use the following command:
 OpsChain.project.properties.parent.child.delete(:grandchild)
 ```
 
-_Note. This would leave the parent and child keys in the project properties. To delete the entire tree, use the following command:_
+:::note
+This would leave the parent and child keys in the project properties. To delete the entire tree, use the following command:
 
 ```ruby
 OpsChain.project.properties.delete(:parent)
 ```
+
+:::
 
 ##### Example
 
@@ -241,7 +253,9 @@ Changes that take advantage of the `:parallel` [change execution strategy](actio
 
 When each step starts, the current state of the project and environment properties (in the OpsChain database) is supplied to the step's action(s). This means steps that run concurrently will start with the same set of properties. At the completion of each step, any changes made to the project and/or environment properties by the action, are reflected in a [JSON Patch](http://jsonpatch.com/) applicable to the relevant source properties. The JSON Patch(es) are returned from the step runner to the OpsChain API and applied to the current state of the database properties. It is up to the action developer to ensure any changes made to properties by concurrent steps are compatible with each other.
 
-_Note: OpsChain recommends that you do not modify properties from within concurrent steps. However, if this is a requirement, ensuring the modifications apply to unrelated sections of the OpsChain properties will mitigate the risk. The following sections describe various types of properties changes and the possible errors you may encounter. For simplicity, the examples all show concurrent steps created within a single change using the `:parallel` child step execution strategy. Steps executing from changes that have been submitted concurrently can run into similar limitations._
+:::caution
+OpsChain recommends that you do not modify properties from within concurrent steps. However, if this is a requirement, ensuring the modifications apply to unrelated sections of the OpsChain properties will mitigate the risk. The following sections describe various types of properties changes and the possible errors you may encounter. For simplicity, the examples all show concurrent steps created within a single change using the `:parallel` child step execution strategy. Steps executing from changes that have been submitted concurrently can run into similar limitations.
+:::
 
 ##### Modifying different properties
 
@@ -505,7 +519,9 @@ The `opschain.config` section of the properties allow you to change the OpsChain
 }
 ```
 
-_Note: Configuration options within `opschain.config.environments` can only be set in project properties and are applicable to all environments within the project. All other configuration options can be set at project or environment level, with environment configuration overriding project configuration._
+:::info
+Configuration options within `opschain.config.environments` can only be set in project properties and are applicable to all environments within the project. All other configuration options can be set at project or environment level, with environment configuration overriding project configuration.
+:::
 
 | Configuration Option       | Description                                                                                                                                                                                                                                                                                                                              | Default value                                                                    |
 |:---------------------------|:-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|:---------------------------------------------------------------------------------|

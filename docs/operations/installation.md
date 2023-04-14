@@ -37,8 +37,11 @@ OpsChain supports the following Kubernetes distributions on a single node only:
 
 - macOS - Docker Desktop Community 3.1.0 and above
 - Linux - the latest stable [`k3s`](https://k3s.io/) with the [Docker container runtime selected](https://rancher.com/docs/k3s/latest/en/advanced/#using-docker-as-the-container-runtime)
-- Windows Subsystem for Linux (WSL) - the latest Docker Desktop release (installed in the WSL environment). Note:
-  - _For a better CLI experience we suggest using a modern terminal (like the [Windows Terminal from the Microsoft Store](https://aka.ms/terminal) or a WSL terminal)._
+- Windows Subsystem for Linux (WSL) - the latest Docker Desktop release (installed in the WSL environment).
+
+:::tip Windows Subsystem for Linux (WSL)
+For a better CLI experience we suggest using a modern terminal (like the [Windows Terminal from the Microsoft Store](https://aka.ms/terminal) or a WSL terminal).
+:::
 
 ### Hardware/VM requirements
 
@@ -50,7 +53,9 @@ If using Docker for Mac the [configuration UI](https://docs.docker.com/desktop/m
 
 If using Docker for Windows the [WSL configuration](https://docs.microsoft.com/en-us/windows/wsl/wsl-config#global-configuration-options-with-wslconfig) (or the per [distribution configuration](https://docs.microsoft.com/en-us/windows/wsl/wsl-config#per-distribution-configuration-options-with-wslconf)) allows you to modify the ram allocation. There is no need to adjust the disk allocation. If WSL is already running it will need to be restarted.
 
-_Note: When using macOS or Windows we suggest ensuring that your Docker installation is not allocated too much of your system ram - or the rest of your system may struggle. As a rough guide, we suggest not allocating more than 50% of your system ram._
+:::tip
+When using macOS or Windows we suggest ensuring that your Docker installation is not allocated too much of your system ram - or the rest of your system may struggle. As a rough guide, we suggest not allocating more than 50% of your system ram.
+:::
 
 ### Image registry hostname (Linux only)
 
@@ -60,7 +65,9 @@ By default OpsChain will attempt to use `opschain-image-registry.local.gd` which
 
 [`hostctl`](https://guumaster.github.io/) can be used to achieve this with the `hostctl add domains opschain opschain-image-registry.local.gd` command.
 
-_Note: A hostname other than `opschain-image-registry.local.gd` can be used if desired - the value would need to be manually updated in the `.env` file and `values.yaml` file after the `opschain server configure` script below has been run. Alternatively the value could be added to a [`values.override.yaml` configuration override file](/docs/reference/cli.md#configuration-overrides) - [see an example](/files/config_file_examples/values.override.yaml.example)._
+:::note
+A hostname other than `opschain-image-registry.local.gd` can be used if desired - the value would need to be manually updated in the `.env` file and `values.yaml` file after the `opschain server configure` script below has been run. Alternatively the value could be added to a [`values.override.yaml` configuration override file](/docs/reference/cli.md#configuration-overrides) - [see an example](/files/config_file_examples/values.override.yaml.example).
+:::
 
 ## Installation
 
@@ -86,7 +93,9 @@ helm upgrade --install cert-manager jetstack/cert-manager --namespace cert-manag
 
 `cert-manager` is now ready for OpsChain to use - no additional `cert-manager` configuration is required.
 
-_Please [contact OpsChain support](/docs/support.md#how-to-contact-us) if you would like the option to use OpsChain without installing `cert-manager`._
+:::note
+Please [contact OpsChain support](/docs/support.md#how-to-contact-us) if you would like the option to use OpsChain without installing `cert-manager`.
+:::
 
 ### Install the OpsChain CLI
 
@@ -106,7 +115,9 @@ opschain server configure
 
 You will be asked to confirm whether you would like to use certain features and provide your credentials for the OpsChain installation.
 
-_Note: all future `opschain server` commands must be run in the `~/opschain-configuration` (or equivalent) directory to ensure that the right configuration is used._
+:::caution
+All future `opschain server` commands must be run in the `~/opschain-configuration` (or equivalent) directory to ensure that the right configuration is used.
+:::
 
 ### Deploy the OpsChain containers
 
@@ -131,10 +142,12 @@ Once the `opschain server deploy` script has returned you can continue with the 
 The OpsChain API server requires a valid username and password. To create a user, execute:
 
 ```bash
-opschain server utils "create_user['opschain','password']"
+opschain server utils "create_user[opschain,password]"
 ```
 
-_Note: Please ensure there are no spaces included in the parameter you supply to `opschain server utils`._
+:::caution No spaces
+Please ensure there are no spaces included in the parameter you supply to `opschain server utils`.
+:::
 
 ### Configure the OpsChain CLI's API access
 
@@ -150,18 +163,23 @@ In addition, the `apiBaseUrl` configuration in `~/.opschainrc` must be updated t
 
 Learn more about the `opschainrc` configuration in the [CLI configuration guide](/docs/reference/cli.md#opschain-cli-configuration).
 
-_Note: If you create a `.opschainrc` file in your current directory, this will be used in precedence to the version in your home directory._
+:::info
+If you create a `.opschainrc` file in your current directory, this will be used in precedence to the version in your home directory.
+:::
 
 ### Setup the custom CA (macOS only)
 
-On macOS, to ensure that the OpsChain registry certificate is trusted by Kubernetes the following setup is required (_*Note: Once this setup is complete you must restart Docker Desktop*_).
+On macOS, to ensure that the OpsChain registry certificate is trusted by Kubernetes the following setup is required:
 
 ```bash
 kubectl -n opschain get secret opschain-ca-key-pair -o jsonpath="{.data.ca\.crt}" | base64 -d > opschain-ca.pem
 security add-trusted-cert -k ~/Library/Keychains/login.keychain-db -p ssl opschain-ca.pem
 # You will be prompted for your admin password in a macOS dialog
-# Remember to restart Docker Desktop once these commands have completed
 ```
+
+:::caution Restart Docker Desktop
+You must restart Docker Desktop to complete the custom CA setup.
+:::
 
 ### OpsChain development environment setup (optional)
 

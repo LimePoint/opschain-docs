@@ -48,7 +48,9 @@ After updating the `.env` file, follow the steps from the [upgrading guide](../.
 
 If your resources or actions rely on external software, the image used by your project for its step runner containers can be modified to add extra packages or executables. The image may also be modified to optimise the performance of build steps by performing tasks as part of the step image build rather than as part of the step execution.
 
-_Please note: The [Docker development environment](/docs/development-environment.md#using-custom-runner-images) guide provides instructions on using a custom step runner image as your local OpsChain development environment._
+:::tip
+The [Docker development environment](/docs/development-environment.md#using-custom-runner-images) guide provides instructions on using a custom step runner image as your local OpsChain development environment.
+:::
 
 ### Creating a custom step runner Dockerfile
 
@@ -68,10 +70,12 @@ git add .opschain/Dockerfile
 git commit -m "Adding a custom Dockerfile."
 ```
 
-_Notes:_
+:::note
 
-1. _commits prior to this point won't use the custom Dockerfile because it is not present in the repository._
-2. _if you no longer wish to use the custom Dockerfile, `.opschain/Dockerfile` can be removed from the project repository._
+1. commits prior to this point won't use the custom Dockerfile because it is not present in the repository.
+2. if you no longer wish to use the custom Dockerfile, `.opschain/Dockerfile` can be removed from the project repository.
+
+:::
 
 ### Customising the Dockerfile
 
@@ -137,7 +141,9 @@ AWS_ACCESS_KEY_ID: QUtSQVFJQVpRUTdTRE9BSTM3NkYK
 AWS_SECRET_ACCESS_KEY: djNLWll5RWtrbTd2NzBrOUFzRG04ZEFUQ1pZT0xMYWVsNXFwSWZFQwo=
 ```
 
-_Note: Per Kubernetes requirements, the values in the secret must be base64 encoded._
+:::note
+Per Kubernetes requirements, the values in the secret must be base64 encoded.
+:::
 
 These environment variables will then be available to the `aws` CLI when run as part of the OpsChain action, for example:
 
@@ -177,11 +183,13 @@ _Environment properties:_
 }
 ```
 
-_Notes:_
+:::note
 
-1. _Secrets are loaded in the order listed in your configuration - first all project secrets are loaded and then all environment secrets, in the order specified. If an environment variable exists in multiple Kubernetes secrets, the value from the most recently loaded secret will be supplied_
-2. _If you have configured `build_secrets` in your project or environment configuration, the environment variables in the `opschain-build-env` secret will not be supplied to your image build. To include them, simply add `opschain-build-env` to the project or environment `build_secrets` configuration_
-3. _If you have configured `runner_secrets` in your project or environment configuration, the environment variables in the `opschain-runner-env` secret will not be supplied to your step runner. To include them, simply add `opschain-runner-env` to the project or environment `runner_secrets` configuration_
+1. Secrets are loaded in the order listed in your configuration - first all project secrets are loaded and then all environment secrets, in the order specified. If an environment variable exists in multiple Kubernetes secrets, the value from the most recently loaded secret will be supplied
+2. If you have configured `build_secrets` in your project or environment configuration, the environment variables in the `opschain-build-env` secret will not be supplied to your image build. To include them, simply add `opschain-build-env` to the project or environment `build_secrets` configuration
+3. If you have configured `runner_secrets` in your project or environment configuration, the environment variables in the `opschain-runner-env` secret will not be supplied to your step runner. To include them, simply add `opschain-runner-env` to the project or environment `runner_secrets` configuration
+
+:::
 
 See the [using secrets in your image build](/docs/examples/using-secrets-in-your-change.md) example for more information.
 
@@ -245,7 +253,9 @@ The `step_context.json` file supplied to the step includes the following section
 | `project/properties`     | The [properties](properties.md) output from `opschain project show-properties --project-code <project code>`                                           |
 | `environment/properties` | The [properties](properties.md) output from `opschain environment show-properties --project-code <project code> --environment-code <environment code>` |
 
-_Replace the `<project code>` and `<environment code>` in the commands above with the values for the project and environment related to the change._
+:::note
+Replace the `<project code>` and `<environment code>` in the commands above with the values for the project and environment related to the change.
+:::
 
 A sample `step_context.json` file is available to view [here](/files/samples/step_context.json).
 

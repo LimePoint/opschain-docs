@@ -23,7 +23,9 @@ These can be used from OpsChain as normal.
 
 A Kaniko instance can be used from an OpsChain step runner as normal.
 
-_Note: The default `opschain-runner` [service account](https://kubernetes.io/docs/tasks/configure-pod-container/configure-service-account/) does not have permission to create pods within Kubernetes, hence new Kaniko containers cannot be created with the default setup. You can update the `opschain-runner` service account's roles ([see an example](https://github.com/LimePoint/opschain-examples-confluent/blob/master/k8s/namespace.yaml)), however care should be taken when adding permissions to the runner as this may create security issues.._
+:::info
+The default `opschain-runner` [service account](https://kubernetes.io/docs/tasks/configure-pod-container/configure-service-account/) does not have permission to create pods within Kubernetes, hence new Kaniko containers cannot be created with the default setup. You can update the `opschain-runner` service account's roles ([see an example](https://github.com/LimePoint/opschain-examples-confluent/blob/master/k8s/namespace.yaml)), however care should be taken when adding permissions to the runner as this may create security issues.
+:::
 
 ### Using Docker
 
@@ -57,7 +59,9 @@ Then in the OpsChain properties add the configuration for the Docker host to use
 
 Now the `docker` command can be used within the step runner, but the actual commands will be run using the remote Docker host.
 
-_Note: Docker volumes are mounted from the host running the daemon, so uses of Docker volumes will not mount paths from the OpsChain step runner, which may be confusing. Build contexts are transparently copied to the remote host._
+:::note
+Docker volumes are mounted from the host running the daemon, so uses of Docker volumes will not mount paths from the OpsChain step runner, which may be confusing. Build contexts are transparently copied to the remote host.
+:::
 
 ### Using BuildKit
 

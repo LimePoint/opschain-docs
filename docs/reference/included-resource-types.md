@@ -22,7 +22,9 @@ The table below outlines the file to `require` in your resource definition and t
 | [`opschain-ssh-key-pair`](#opschain-ssh-key-pair)     | `ssh_key_pair`           | Generate an SSH public/private key pair and optionally stores the key files in OpsChain properties                                                               |
 | [`opschain-terraform`](#opschain-terraform)           | `terraform_config`       | Exposes the [RubyTerraform](https://github.com/infrablocks/ruby_terraform/tree/v1.7.0) Gem                                                                       |
 
-_Note: Contact [LimePoint](mailto:opschain-support@limepoint.com) to obtain the password required to access the MintPress Reference Documentation._
+:::info
+Contact [LimePoint](mailto:opschain-support@limepoint.com) to obtain the password required to access the MintPress Reference Documentation.
+:::
 
 ### Usage
 
@@ -168,11 +170,11 @@ The `ssh_key_pair` resource type provides the following actions:
 | `create`            | Creates an SSH public/private key pair inside the `key_path` folder with the filenames specified by `public_key`/`private_key` and optionally stores the files in OpsChain properties. <br/>_Note: If the `private_key` or `public_key` exists in the `key_path`, they will be overwritten_. |
 | `create_if_missing` | Validates that the `private_key` and `public_key` exists in the `key_path`. If either is missing, generates a new key pair and optionally stores the key pair in the OpsChain properties.                                                                                                    |
 
-#### Notes on key storage
-
+:::note Notes on key storage
 The SSH key pair will be generated inside the OpsChain step runner container. By default the key pair will be stored in the OpsChain environment properties, making them accessible to future changes run in this environment (and subsequent steps in the current change). If you wish to use the key pair in other environments within the project, set the `store_in` resource property to `:project`. The key pair will then be stored in the OpsChain project properties and available to all changes run in that project.
 
 If you do not wish to store the key pair in the OpsChain properties, `store_in` can be set to `nil`. _Please note: If you do not store the generated keys in OpsChain properties, they will cease to exist when the step runner container is removed. For this reason, ensure the step stores the keys (e.g. in [Hashicorp Vault](https://www.vaultproject.io), as a [Kubernetes secret](https://kubernetes.io/docs/concepts/configuration/secret/), on another server, etc..) to allow them to be used in the future._
+:::
 
 ## Examples
 
@@ -184,7 +186,9 @@ Requiring `opschain-terraform` provides the `terraform_config` resource type. Th
 
 Please see the [RubyTerraform module documentation](https://infrablocks.github.io/ruby_terraform/RubyTerraform.html) for further information about the available actions and their parameters.
 
-_Note: RubyTerraform supplies `vars` to Terraform on the command line via multiple `-var` parameters. OpsChain overrides this logic by placing the [input variables](https://www.terraform.io/docs/language/values/variables.html) in a [var file](https://www.terraform.io/docs/language/values/variables.html#variable-definitions-tfvars-files) and supplying this to Terraform via the `-var-file` parameter to avoid encountering any command line length issues._
+:::note
+RubyTerraform supplies `vars` to Terraform on the command line via multiple `-var` parameters. OpsChain overrides this logic by placing the [input variables](https://www.terraform.io/docs/language/values/variables.html) in a [var file](https://www.terraform.io/docs/language/values/variables.html#variable-definitions-tfvars-files) and supplying this to Terraform via the `-var-file` parameter to avoid encountering any command line length issues.
+:::
 
 ### Prerequisites
 
@@ -198,7 +202,9 @@ The `terraform_config` resource type will automatically execute `terraform init`
 
 The `terraform_config` resource type will automatically store the `terraform.tfstate` file in the environment properties after running any Terraform action. This ensures that the file is available to subsequent steps in your change.
 
-_Note: If the `state_out` property of Terraform is used, the resource type does not automatically store the file. Please use the [`store_file!` feature](concepts/properties.md#storing--removing-files) (after moving the file to the desired location) to store the file._
+:::note
+If the `state_out` property of Terraform is used, the resource type does not automatically store the file. Please use the [`store_file!` feature](concepts/properties.md#storing--removing-files) (after moving the file to the desired location) to store the file.
+:::
 
 ### Command argument defaults
 
@@ -210,7 +216,9 @@ Default values will be supplied for the following RubyTerraform command argument
 | chdir        | `pwd`         | The root directory of your project Git repository within the OpsChain step runner.                                                                                         |
 | input        | false         | Indicates that Terraform should not attempt to prompt for input, and instead expect all necessary values to be provided by either configuration files or the command line. |
 
-_Note: Resources can override these values if required._
+:::tip
+Resources can override these values if required.
+:::
 
 ### Terraform automation environment variable
 

@@ -42,11 +42,17 @@ The following command will create an automated change rule that will create an O
 opschain automated-change create --project-code demo --environment-code dev --git-remote-name origin --git-rev master --new-commits-only --action hello_world --cron-schedule '* * * * *' --repeat --confirm
 ```
 
-_If the current commit that `master` points to hasn't been used in a change for the `hello_world` action in the `dev` environment then a new change will be created straight away as part of this automated change rule._
+:::note
+If the current commit that `master` points to hasn't been used in a change for the `hello_world` action in the `dev` environment then a new change will be created straight away as part of this automated change rule.
+:::
 
 Follow the steps from the [adding a new action](/docs/getting-started/developer.md#adding-a-new-action) guide (or make a change to the existing `hello_world` action) to create the new commit for OpsChain to deploy.
 
-Run the OpsChain change list command to list changes in this environment. _Note: it can take a minute for the OpsChain worker to detect the Git updates and create the new change_.
+Run the OpsChain change list command to list changes in this environment.
+
+:::note
+It can take a minute for the OpsChain worker to detect the Git updates and create the new change.
+:::
 
 ```bash
 opschain change list --project-code demo --environment-code dev
@@ -64,7 +70,9 @@ Automated change rules configured in an environment can be listed by using the `
 opschain automated-change list --project-code demo --environment-code dev
 ```
 
+:::tip
 Take note of the ID shown as it will be used to delete the automated change rule.
+:::
 
 ## Deleting an automated change rule
 

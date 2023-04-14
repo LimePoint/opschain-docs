@@ -46,7 +46,9 @@ The most likely cause of this issue is an invalid or expired licence file, altho
 kubetail -n opschain --since 0
 ```
 
-_Note: if you would like to view the logs of a single service, include the service name in the command e.g. `kubetail opschain-api -n opschain --since 0`. A complete list of the OpsChain services is available via `kubectl get deployments -n opschain`._
+:::tip
+If you would like to view the logs of a single service, include the service name in the command e.g. `kubetail opschain-api -n opschain --since 0`. A complete list of the OpsChain services is available via `kubectl get deployments -n opschain`.
+:::
 
 #### Expired / invalid licence
 

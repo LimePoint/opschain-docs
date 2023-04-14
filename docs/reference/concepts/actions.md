@@ -18,7 +18,9 @@ After reading this guide you should understand:
   - composite resource types and resources
 - how to use the OpsChain logger
 
-_This reference guide covers concepts from the [developer getting started guide](../../getting-started/developer.md) in more depth. If this is your first experience developing with OpsChain it may be a better place to start._
+:::tip
+This reference guide covers concepts from the [developer getting started guide](../../getting-started/developer.md) in more depth. If this is your first experience developing with OpsChain it may be a better place to start.
+:::
 
 ## Defining standalone actions
 
@@ -36,7 +38,9 @@ end
 
 In the example above, the action's name is `hello_world`, and the action's block instructs OpsChain to log "hello world" as an informational message (see [OpsChain Logger](#opschain-logger) for more information on using OpsChain's logger).
 
-_Note: You must `require 'opschain'` at the top of your `actions.rb` file to allow you to use the features described in this reference guide._
+:::info
+You must `require 'opschain'` at the top of your `actions.rb` file to allow you to use the features described in this reference guide.
+:::
 
 ## Sequencing actions
 
@@ -142,11 +146,15 @@ end
 action :do_something_with_acknowledgement, steps: [OpsChain.wait_step, :do_something]
 ```
 
-_Note: all the sibling steps of a wait step will run immediately when using `run_as: :parallel` - the change will not continue on subsequently until it is manually continued. See the [troubleshooting guide](/docs/troubleshooting.md#opschain-change-parallel-steps-run-before-wait-step) for more info._
+:::info
+All the sibling steps of a wait step will run immediately when using `run_as: :parallel` - the change will not continue on subsequently until it is manually continued. See the [troubleshooting guide](/docs/troubleshooting.md#opschain-change-parallel-steps-run-before-wait-step) for more info.
+:::
 
 The `opschain change continue` command can be used to continue a waiting change. Currently the `opschain change continue` command will continue all waiting steps for a change. The `api/steps/{{step_id}}/continue` API endpoint can be used to continue a specific step, for example: `curl -X POST -u {{username}}:{{password}} localhost:3000/api/steps/{{step_id}}/continue`. See the [OpsChain REST API documentation](/docs/getting-started/README.md#review-the-rest-api-documentation) to learn more.
 
-_Note: OpsChain wait steps use the naming convention `opschain_wait_step_{{unique id}}` - do not use this naming convention in your steps unless you intend to create an OpsChain wait step._
+:::caution
+OpsChain wait steps use the naming convention `opschain_wait_step_{{unique id}}` - do not use this naming convention in your steps unless you intend to create an OpsChain wait step.
+:::
 
 ##### Step continuation auditing
 
@@ -158,10 +166,12 @@ Please [let us know](mailto:opschain-support@limepoint.com) if you would like to
 
 OpsChain allows you to dynamically alter a parent's child steps from within the action's block.
 
-_Notes:_
+:::note
 
-- _The step tree displayed by the CLI when running a change will not reflect dynamic child steps until the parent action executes_
-- _the `append_child_steps` and `replace_child_steps` methods accept any value that can be supplied via the `steps:` argument when defining an action (see the valid argument values under [child steps](#child-steps))_
+- the step tree displayed by the CLI when running a change will not reflect dynamic child steps until the parent action executes
+- the `append_child_steps` and `replace_child_steps` methods accept any value that can be supplied via the `steps:` argument when defining an action (see the valid argument values under [child steps](#child-steps))
+
+:::
 
 ##### Append child steps
 
@@ -206,7 +216,9 @@ In the example above actions would run in this order:
 2. `do_a_different_thing`
 3. `do_another_thing`
 
-_Note: Care must be taken when directly modifying the `child_steps` value, as this will override all standard OpsChain step handling functionality for the current step runner and may have unintended consequences._
+:::caution
+Care must be taken when directly modifying the `child_steps` value, as this will override all standard OpsChain step handling functionality for the current step runner and may have unintended consequences.
+:::
 
 ##### Accessing child steps
 
@@ -222,13 +234,17 @@ end
 
 In the example above, `check_for_child_step` will log an informational message if the `prereq_with_conditional_step` prerequisite has added the `conditional_step` action into the child steps of `check_for_child_step`
 
-_Note: Modifying the child steps list via any method other than the append and replace methods described above is not supported._
+:::caution
+Modifying the child steps list via any method other than the append and replace methods described above is not supported.
+:::
 
 ### Child execution strategy
 
 The action definition includes an optional `run_as:` parameter. By default it is set to `sequential`, meaning the action's child steps will run sequentially across the OpsChain workers.
 
-_Note: Only `sequential` and `parallel` (as strings or Ruby symbols) are valid values for the `run_as:` parameter._
+:::info
+Only `sequential` and `parallel` (as strings or Ruby symbols) are valid values for the `run_as:` parameter.
+:::
 
 #### Parallel child step execution
 
@@ -253,16 +269,20 @@ In the example above actions would run in this order:
 1. `do_something`
 2. `do_something_after` and `do_something_else_after`
 
-_Notes:_
+:::note
 
-- _Parallel task execution is limited by the number of available OpsChain workers_
-- _Care must be taken when modifying properties from within parallel steps. See the [changing properties in parallel steps](properties.md#changing-properties-in-parallel-steps) section of the [OpsChain properties guide](properties.md#opschain-properties-guide) for more information_
+- Parallel task execution is limited by the number of available OpsChain workers
+- Care must be taken when modifying properties from within parallel steps. See the [changing properties in parallel steps](properties.md#changing-properties-in-parallel-steps) section of the [OpsChain properties guide](properties.md#opschain-properties-guide) for more information
+
+:::
 
 #### Modifying the child execution strategy
 
 When using [dynamic child steps](#dynamic-child-steps), it may be necessary to override the child step execution strategy. This is performed by assigning the new value to `OpsChain.child_execution_strategy`.
 
-_Note: The override value will be used as the execution strategy for all child steps of the action. E.g._
+:::info
+The override value will be used as the execution strategy for all child steps of the action.
+:::
 
 ```ruby
 action :conditional_strategy, steps: ['do_something_after', 'do_something_else_after'], run_as: :parallel do
@@ -347,7 +367,9 @@ OpsChain.logger.debug 'Debug message'
 
 ## Defining resource types & resources
 
-_If this is the first time you've looked at OpsChain resource types and resources, our [developer getting started guide](/docs/getting-started/developer.md) could be a good place to start._
+:::tip
+If this is the first time you've looked at OpsChain resource types and resources, our [developer getting started guide](/docs/getting-started/developer.md) could be a good place to start.
+:::
 
 Resource types can be defined using the `resource_type` keyword:
 
@@ -376,10 +398,64 @@ These resources will automatically include the `name` and `weather` properties, 
 
 `The weather in Melbourne looks cold`
 
-_Notes:_
+:::note
 
-1. _The resource type name (`city`) and resource name (`melbourne`) should conform to ruby variable naming standards. This means the name can include alphanumeric characters and the underscore character however it cannot start with a number or a capital letter. This ensures it can be easily referenced from other ruby code or the command line._
-2. _The action description assigned via the `desc` keyword in the example above is optional. When working in the [OpsChain development environment](../../development-environment.md), project actions with a description can be listed with the `opschain-action -T` command. To view all actions (with or without a description) the `opschain-action -AT` command can be used. This is useful as internal actions can be hidden by omitting a description, but are discoverable if needed._
+1. The resource type name (`city`) and resource name (`melbourne`) should conform to ruby variable naming standards. This means the name can include alphanumeric characters and the underscore character however it cannot start with a number or a capital letter. This ensures it can be easily referenced from other ruby code or the command line.
+2. The action description assigned via the `desc` keyword in the example above is optional. When working in the [OpsChain development environment](../../development-environment.md), project actions with a description can be listed with the `opschain-action -T` command. To view all actions (with or without a description) the `opschain-action -AT` command can be used. This is useful as internal actions can be hidden by omitting a description, but are discoverable if needed.
+
+:::
+
+### Lazy property evaluation
+
+By default, property values are assigned to resources when the `actions.rb` is first loaded. If a property's value is slow to resolve, (e.g. the result of an API response) then this can have a dramatic effect on the `actions.rb` evaluation time - which is done during every step in a change.
+
+For example, to resolve the `city` resources in the `actions.rb` below, OpsChain will need to make two calls to the weather bureau API (to derive the weather for Sydney and Melbourne):
+
+```ruby
+city :melbourne do
+  name 'Melbourne'
+  weather WeatherBureauAPI.get_melbourne_weather
+end
+
+city :sydney do
+  name 'Sydney'
+  weather WeatherBureauAPI.get_sydney_weather
+end
+```
+
+The two API calls will be made irrespective of what action is being run from the file. To avoid calling the API unnecessarily, OpsChain provides the `lazy` keyword to instruct OpsChain to derive the property value when the property is first used:
+
+```ruby
+city :melbourne do
+  name 'Melbourne'
+  weather lazy { WeatherBureauAPI.get_melbourne_weather }
+end
+
+city :sydney do
+  name 'Sydney'
+  weather lazy { WeatherBureauAPI.get_sydney_weather }
+end
+```
+
+Now a call to the weather bureau API for a city's weather will only be made if an action requests the value of its `weather` property.
+
+:::info Identifying the lazy property's Ruby class
+The [`is_a?`](https://ruby-doc.org/core/Object.html#method-i-is_a-3F), [`kind_of?`](https://ruby-doc.org/core/Object.html#method-i-kind_of-3F) and [`instance_of?`](https://ruby-doc.org/core/Object.html#method-i-instance_of-3F) Ruby methods allow you to test the class of an object. Prior to resolving the lazy property's value, these will all respond with `true` when supplied the argument `LazyPropertyValue` e.g.
+
+```ruby
+weather.is_a?(LazyPropertyValue) # => true
+weather.is_a?(String) # => false
+```
+
+Once the lazy property has been resolved (by calling any other method on the lazy property), the `is_a?`, `kind_of?` and `instance_of?` methods will apply to the resolved value.
+
+```ruby
+whether.nil?
+weather.is_a?(LazyPropertyValue) # => false
+weather.is_a?(String) # => true
+```
+
+:::
 
 ### Controller
 
@@ -411,18 +487,22 @@ resource_type :city do
 end
 ```
 
-_Notes:_
+:::note
 
-1. _The `action_methods` keyword will expose each controller method supplied to it as an action on the resource._
-2. _If you would like to provide descriptions for your controller actions, the array supplied to the `action_methods` keyword can include a [Ruby hash](https://ruby-doc.org/core-2.7.0/Hash.html) for each method. E.g. `action_methods: [{ name: :report_weather, description: 'Output how the weather looks in the city' }]`.
-3. _If your controller contains multiple actions, `action_methods:` can be supplied a mixture of actions with and without descriptions as required. E.g. `action_methods: [{ name: :report_weather, description: 'Output how the weather looks in the city' }, :action_without_description]`_
+1. The `action_methods` keyword will expose each controller method supplied to it as an action on the resource.
+2. If you would like to provide descriptions for your controller actions, the array supplied to the `action_methods` keyword can include a [Ruby hash](https://ruby-doc.org/core-2.7.0/Hash.html) for each method. E.g. `action_methods: [{ name: :report_weather, description: 'Output how the weather looks in the city' }]`.
+3. If your controller contains multiple actions, `action_methods:` can be supplied a mixture of actions with and without descriptions as required. E.g. `action_methods: [{ name: :report_weather, description: 'Output how the weather looks in the city' }, :action_without_description]`
+
+:::
 
 Resources created from this `city` resource type would have the same actions (and same action output) as those created from the earlier type definition.
 
-Notes:
+:::note
 
 - The class constructor must accept a single [Ruby hash](https://ruby-doc.org/core-2.7.0/Hash.html) parameter, which will include each of the resource properties defined on the resource. This hash is the resource's `properties` at the time the controller is constructed.
 - The action methods must not require parameters.
+
+:::
 
 #### Controller actions and properties
 
@@ -459,10 +539,10 @@ end
 
 Once again, resources created from this `city` resource type would have the same actions (and same action output) as those created from the earlier type definitions.
 
-_Notes:_
+:::note
 
-1. _If you supply the `action_methods:` parameter when defining the resource type's controller, the controller's `resource_type_actions` will be ignored and only those methods passed to `action_methods:` will be exposed._
-2. _As per the values that can be supplied to the `action_methods:` keyword described in the previous example, the controller's `resource_type_actions` class method can return an array containing a mixture of action names and descriptive hashes. E.g._
+1. If you supply the `action_methods:` parameter when defining the resource type's controller, the controller's `resource_type_actions` will be ignored and only those methods passed to `action_methods:` will be exposed.
+2. As per the values that can be supplied to the `action_methods:` keyword described in the previous example, the controller's `resource_type_actions` class method can return an array containing a mixture of action names and descriptive hashes. E.g.
 
 ```ruby
   def self.resource_type_actions
@@ -470,6 +550,8 @@ _Notes:_
   end
 end
 ```
+
+:::
 
 ##### Controller action method validation
 
@@ -513,7 +595,9 @@ end
 
 Using this `city` resource type, resources will include the `report_weather` and `send_postcard` actions.
 
-_Note: If you define a resource type action with the same name as a controller action_method, OpsChain will run the controller action, then the resource_type action._
+:::note
+If you define a resource type action with the same name as a controller action_method, OpsChain will run the controller action, then the resource_type action.
+:::
 
 #### Accessing the controller
 
@@ -695,7 +779,9 @@ The `state_capital` action uses:
 - the `properties` keyword to incorporate the value of the `melbourne` resource's `name` property in the message
 - the `controller` keyword to call the `report_weather` method on `melbourne`'s controller
 
-_Note: Within an `action` block, OpsChain does not allow calling other resource's actions directly (e.g. `melbourne.send_postcard` can not be used from the `state_capital` action above). If the `send_postcard` action is required from other resources, it should be moved to a method in the resource type's controller, making it accessible via the `controller` keyword._
+:::info
+Within an `action` block, OpsChain does not allow calling other resource's actions directly (e.g. `melbourne.send_postcard` can not be used from the `state_capital` action above). If the `send_postcard` action is required from other resources, it should be moved to a method in the resource type's controller, making it accessible via the `controller` keyword.
+:::
 
 ### Setting multiple properties
 
@@ -906,10 +992,12 @@ This would define the following actions:
 - `melbourne:collingwood:local_team:barrack`
 - `melbourne:barrack_all` - this will call the `local_team:barrack` action on the `city` composite's children (`richmond` and `collingwood`).
 
-_Notes:_
+:::note
 
-- _Each team's `barrack` action makes use of the `country` property defined on the parent `city` composite resource type_
-- _`actions` can't be created directly inside the `each_child` block, and instead must be on a resource_
+- Each team's `barrack` action makes use of the `country` property defined on the parent `city` composite resource type
+- `actions` can't be created directly inside the `each_child` block, and instead must be on a resource
+
+:::
 
 ## What to do next
 

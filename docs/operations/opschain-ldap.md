@@ -52,13 +52,17 @@ By default, OpsChain will use the LDAP server in the `opschain-ldap` pod for use
     enabled: false
 ```
 
-_Note: This setting will be applied to the Kubernetes cluster when you [restart OpsChain API](#restart-opschain-api) after altering the LDAP configuration._
+:::note
+This setting will be applied to the Kubernetes cluster when you [restart OpsChain API](#restart-opschain-api) after altering the LDAP configuration.
+:::
 
 ### Alter the OpsChain LDAP configuration
 
 See the [configuring OpsChain](configuring-opschain.md#ldap-configuration) guide for details of the LDAP configuration variables that can be adjusted to enable the use of an external LDAP server. Edit your `.env` file, adding the relevant LDAP options to override the default values supplied in `.env.internal`.
 
-_Note: An example [Active Directory configuration](#example-active-directory-configuration) appears at the end of this document._
+:::info
+An example [Active Directory configuration](#example-active-directory-configuration) appears at the end of this document.
+:::
 
 ### Restart OpsChain API
 

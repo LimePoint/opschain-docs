@@ -46,7 +46,9 @@ kubectl port-forward -n opschain deploy/opschain-ldap 389
 # open a new terminal
 ```
 
-_Note: this step assumes you are using the default `opschain` Kubernetes namespace for OpsChain._
+:::info
+This step assumes you are using the default `opschain` Kubernetes namespace for OpsChain.
+:::
 
 ## Restricting project and environment access
 
@@ -83,7 +85,9 @@ The JSON above will:
 3. restrict users in `ldap-group-2` from all OpsChain objects related to the `local` environment in the `ansible` project
 4. restrict users in `ldap-group-2` from all OpsChain objects related to the `dev` environment in the `vault` project
 
-_Note: The `security_configuration.json` file is case sensitive - all keys and codes must be lowercase._
+:::caution case sensitive
+The `security_configuration.json` file is case sensitive - all keys and codes must be lowercase.
+:::
 
 Upload the new configuration to the authorisation server:
 
@@ -105,7 +109,9 @@ objectclass: groupOfNames
 member: uid=opschain,ou=users,dc=opschain,dc=io
 ```
 
-_Note: You can connect to the LDAP server at `localhost:389`. The administrator username and password are available in your `.env` file - see the `OPSCHAIN_LDAP_ADMIN` and `OPSCHAIN_LDAP_PASSWORD` values._
+:::tip
+You can connect to the LDAP server at `localhost:389`. The administrator username and password are available in your `.env` file - see the `OPSCHAIN_LDAP_ADMIN` and `OPSCHAIN_LDAP_PASSWORD` values.
+:::
 
 ### Confirm access restrictions
 
@@ -129,7 +135,9 @@ If an OpsChain user is assigned to multiple LDAP groups, the user is restricted 
 
 1. The `security_configuration.json` is read each time OpsChain is started (`docker-compose up`). POSTing the file to the server (using the `curl` command listed above) allows this configuration to be changed without needing to restart OpsChain.
 
-    _Note: Changes POSTed to the server that are not replicated in the `security_configuration.json` file will be lost on OpsChain restart._
+    :::caution
+    Changes POSTed to the server that are not replicated in the `security_configuration.json` file will be lost on OpsChain restart.
+    :::
 
 2. Issuing a GET request to the `http://localhost:8181/v1/data` endpoint will return the current configuration.
 

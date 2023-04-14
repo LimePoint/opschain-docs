@@ -10,10 +10,12 @@ This example describes how to use Kubernetes secrets in your change. After follo
 - how OpsChain's build secrets configuration can be used to securely pass secrets to your step runner image build
 - how OpsChain's runner secrets configuration can be used to export environment variables in your step
 
-_Notes:_
+:::tip
 
-1. _[Kubernetes secrets](https://kubernetes.io/docs/concepts/configuration/secret/) are, by default, stored unencrypted in the Kubernetes cluster's underlying data store (etcd). See the [good practices for Kubernetes secrets](https://kubernetes.io/docs/concepts/security/secrets-good-practices/) guide for information on how to encrypt them at rest and further restrict user access to them_
-2. _This guide is for use by non-SaaS OpsChain customers only. [Let us know](mailto:opschain-support@limepoint.com) if you're interested in using secrets in your SaaS instance_
+1. [Kubernetes secrets](https://kubernetes.io/docs/concepts/configuration/secret/) are, by default, stored unencrypted in the Kubernetes cluster's underlying data store (etcd). See the [good practices for Kubernetes secrets](https://kubernetes.io/docs/concepts/security/secrets-good-practices/) guide for information on how to encrypt them at rest and further restrict user access to them.
+2. This guide is for use by non-SaaS OpsChain customers only. [Let us know](mailto:opschain-support@limepoint.com) if you're interested in using secrets in your SaaS instance.
+
+:::
 
 ## Prerequisites
 
@@ -48,7 +50,9 @@ opschain project add-git-remote --name origin \
   --confirm
 ```
 
-_Tip: you can use SSH authentication if it's easier for you._
+:::tip
+You can use SSH authentication if it's easier for you.
+:::
 
 ### Create a branch for the example
 
@@ -149,7 +153,9 @@ The key value pairs configured in the `opschain-build-env` Kubernetes secret are
       BUNDLE_GITHUB__COM: ghp_zWISaqpAk1mwCrTZl9SKsNVFDekp4f2wgfvx==
     ```
 
-    _Note: As we are not actually accessing a secure Gem in this example, there is no need to generate a new access token - you can use the dummy access token in the example yaml above._
+    :::tip
+    As we are not actually accessing a secure Gem in this example, there is no need to generate a new access token - you can use the dummy access token in the example yaml above.
+    :::
 
 3. Re-run the `show_environment` action and verify:
 
@@ -212,7 +218,9 @@ To see this in action, let's start by adding some project level credentials to o
     $ kubectl apply -f custom-project-secrets.yaml
     ```
 
-    _Note: alter the namespace if you are using a different namespace for your OpsChain installation._
+    :::tip
+    Alter the namespace if you are using a different namespace for your OpsChain installation.
+    :::
 
 2. Update the `secret` project's configuration to include the Kubernetes secret:
 
@@ -263,7 +271,9 @@ Just like [properties](../reference/concepts/properties.md), OpsChain's secret m
     $ kubectl apply -f dev-secrets.yaml
     ```
 
-    _Note: alter the namespace if you are using a different namespace for your OpsChain installation._
+    :::tip
+    Alter the namespace if you are using a different namespace for your OpsChain installation.
+    :::
 
 2. Update your dev environment configuration to use the new `dev-secrets` secret:
 
@@ -314,8 +324,10 @@ As shown above, adding `build_secrets` or `runner_secrets` to your project or en
     opschain change create --environment-code dev --action show_environment--git-remote-name origin --git-rev secret-example --follow-logs --confirm
     ```
 
-## Notes
+:::note
 
-- The `build_secrets` configuration is only used when building the image. The secrets are not available to OpsChain actions
-- The `runner_secrets` configuration is only used when running the action. The secrets are not available when building the image
-- When a property and a secret both define the same environment variable, the secret value will be used
+- the `build_secrets` configuration is only used when building the image. The secrets are not available to OpsChain actions
+- the `runner_secrets` configuration is only used when running the action. The secrets are not available when building the image
+- when a property and a secret both define the same environment variable, the secret value will be used
+
+:::

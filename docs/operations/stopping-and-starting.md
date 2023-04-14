@@ -18,7 +18,9 @@ The pods that make up the OpsChain installation can be stopped to halt the OpsCh
 
 The `opschain server stop` CLI subcommand will reduce all the Kubernetes replicas to zero to stop all the OpsChain pods.
 
-_Warning: Do not use the `opschain server stop` command whilst steps and changes are being executed by OpsChain._
+:::caution
+Do not use the `opschain server stop` command whilst steps and changes are being executed by OpsChain.
+:::
 
 ## Starting OpsChain
 

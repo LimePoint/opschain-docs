@@ -5,6 +5,42 @@ description: Learn about new releases of OpsChain, including new features and up
 
 # Changelog
 
+## [2023-04-14] {#2023-04-14}
+
+### Important breaking changes {#2023-04-14-changed}
+
+- The OpsChain runner images have been upgraded to Ruby 3.1.4.
+  - Please ensure the `.ruby-version` in your project Git repositories is updated to `ruby-3.1.4`.
+
+### Added {#2023-04-14-added}
+
+- Introduced a new `lazy` DSL keyword to allow resource property values to be derived at runtime rather than when OpsChain parses the project's `actions.rb` file. See [lazy property evaluation](/docs/reference/concepts/actions.md#lazy-property-evaluation) for more information.
+
+### Changed {#2023-04-14-changed}
+
+- When a CLI `list` command returns no records, and the `output` type is JSON:
+  - the CLI will now output `[]` rather than an empty result.
+  - if a JSONPath query is supplied the CLI will now exit with an error code 2 rather than 0.
+- Upgraded Bundler to 2.4.10.
+- Upgraded BuildKit to v0.11.5.
+- Upgraded Kong Helm chart to v2.16.5.
+- Upgraded Kong ingress controller to v2.8.2.
+- Upgraded Terraform 'hashicorp/aws' provider to 4.61.0 in the OpsChain Ansible example.
+- Upgraded Terraform 'hashicorp/kubernetes' provider to 2.19.0 in the OpsChain Confluent, Terraform, and WebLogic examples.
+- Upgraded Terraform to 1.4.4 in the OpsChain examples.
+- Upgraded OpsChain log aggregator image to Fluentd 1.16.0-1.0.
+- Upgraded Fluent Bit to v2.0.10.
+- Upgraded OPA to v0.51.0.
+- Upgraded Kubectl version to v1.25.8.
+
+### Fixed {#2023-04-14-fixed}
+
+- The `opschain change cancel` command output has been fixed - previously it would output an error (`Error: Couldn't DELETE Change`) but the change would be cancelled.
+- The `opschain change create` step tree has been fixed - previously it would not update as the change progressed.
+- OpsChain GUI
+  - The root step connections failing to display when the tree is first constructed has been fixed
+  - The parallel children icon temporarily disappearing from the parent step when it starts running has been fixed
+
 ## [2023-03-31] {#2023-03-31}
 
 ### Important breaking changes {#2023-03-31-important-breaking-changes}
@@ -27,7 +63,7 @@ description: Learn about new releases of OpsChain, including new features and up
 ### Changed {#2023-03-31-changed}
 
 - The API documentation has been moved from `/docs` to `/api-docs`.
-- When accessing `/` the new prototype UI will be shown rather than the API docs. Access the API docs directly via `/api-docs`.
+- When accessing `/` the new web UI will be shown rather than the API docs. Access the API docs directly via `/api-docs`.
 - The changes API (`api/changes`) now allows filtering by nested metadata values. [Learn more](/docs/reference/concepts/changes.md#query-changes-by-metadata).
 - The automated change rules API (`api/automated_change_rules`) now supports filtering and sorting. [Learn more](/docs/reference/api-filtering.md)
 - Upgraded cert-manager to 1.11.0.

@@ -61,10 +61,13 @@ OpsChain changes run actions from a project's Git repository.
 
 OpsChain actions can be developed interactively in the OpsChain development environment, accessed via the `opschain dev` CLI subcommand.
 
-_Note: Throughout the documentation, the following prefixes for bash commands will be used to denote where the command should be run._
+:::tip
+Throughout the documentation, the following prefixes for bash commands will be used to denote where the command should be run.
 
-- _`[host] $` execute the command on your local host_
-- _`[dev] $` execute the command inside the OpsChain development environment_
+- `[host] $` execute the command on your local host
+- `[dev] $` execute the command inside the OpsChain development environment
+
+:::
 
 ### Developing actions locally
 
@@ -90,7 +93,9 @@ You can run this action in the development environment by using the `opschain-ac
 Hello world
 ```
 
-_Note: Once an action is ready, the `opschain change create` command should be used to execute it via the OpsChain server to gain the collaboration and auditing benefits that OpsChain provides. This also allows the change to run with secure network access that can be granted to the OpsChain server, without giving that network access directly to developers._
+:::tip
+Once an action is ready, the `opschain change create` command should be used to execute it via the OpsChain server to gain the collaboration and auditing benefits that OpsChain provides. This also allows the change to run with secure network access that can be granted to the OpsChain server, without giving that network access directly to developers.
+:::
 
 ### Adding a new action
 
@@ -155,7 +160,9 @@ Hello world
 Goodbye world
 ```
 
-_Tip: Add `export OPSCHAIN_ACTION_RUN_CHILDREN=true` to your host's shell configuration (e.g. `~/.zshrc`) to avoid needing to set it each time you start the development environment._
+:::tip
+Add `export OPSCHAIN_ACTION_RUN_CHILDREN=true` to your host's shell configuration (e.g. `~/.zshrc`) to avoid needing to set it each time you start the development environment.
+:::
 
 #### OpsChain lint pre-commit hook
 
@@ -575,9 +582,12 @@ end
 
 Then simplify the resource type in the `actions.rb`:
 
+:::info
+Note that the order is important, if we swapped the following lines this would fail with `NoMethodError: undefined method` host' for #<OpsChain::Dsl::ResourceConfiguration:0x0000000003b15208>`
+:::
+
 ```ruby
 resource_type :file do
-  # note that the order is important, if we swapped the following lines this would fail with `NoMethodError: undefined method `host' for #<OpsChain::Dsl::ResourceConfiguration:0x0000000003b15208>`
   controller FileController
   host test_host
 end
@@ -641,7 +651,9 @@ An example properties file could be:
 }
 ```
 
-_Note: The values would need to be updated to match a server that the OpsChain API could access._
+:::note
+The values would need to be updated to match a server that the OpsChain API could access.
+:::
 
 #### Commit your updates
 
@@ -662,7 +674,9 @@ It includes the `actions.rb` with resources and actions, the `file` resource typ
 
 ## Remove `target` container and `opschain-getting-started` network
 
-_Note: Before running the command below, ensure you have exited the OpsChain development environment._
+:::note
+Before running the command below, ensure you have exited the OpsChain development environment.
+:::
 
 ```bash
 [host] $ docker-compose down

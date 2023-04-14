@@ -79,7 +79,10 @@ cd opschain-examples-ansible
 
 To enable the OpsChain Runner to access your AWS account, configure the [AWS environment variables](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-envvars.html) in the runner. To do this, create the [environment variables](/docs/reference/concepts/properties.md#environment-variables) as [properties](/docs/reference/concepts/properties.md) linked to the `Ansible Environment`.
 
-1. Using the editor of your choice, open `project_properties.json` and insert your AWS Access Key ID and Secret Access Key. _Note: The AMI image used to create the EC2 instance for this example is associated with the us-west-2 region. For this reason, please do not alter the AWS_DEFAULT_REGION environment variable._
+1. Using the editor of your choice, open `project_properties.json` and insert your AWS Access Key ID and Secret Access Key.
+    :::info
+    The AMI image used to create the EC2 instance for this example is associated with the us-west-2 region. For this reason, please do not alter the AWS_DEFAULT_REGION environment variable.
+    :::
 
 2. Import the project properties:
 
@@ -87,7 +90,9 @@ To enable the OpsChain Runner to access your AWS account, configure the [AWS env
     opschain project set-properties --project-code ansible --file-path project_properties.json --confirm
     ```
 
-    _Note: If required, your AWS credentials can be stored at an environment level to enable different credentials to be used when deploying to different environments (e.g. Production/Development)._
+    :::info
+    If required, your AWS credentials can be stored at an environment level to enable different credentials to be used when deploying to different environments (e.g. Production/Development).
+    :::
 
 ### Create a change
 
@@ -97,7 +102,9 @@ Create a new change for the current `origin/master` branch of your project and r
 opschain change create --project-code ansible --environment-code ansbl --git-remote-name origin --git-rev master --action default --confirm
 ```
 
-_Note: the first time you run a change from this project it may take a long time as it constructs the Runner image (with Terraform, Ansible and the AWS CLI)._
+:::tip
+The first time you run a change from this project it may take a long time as it constructs the Runner image (with Terraform, Ansible and the AWS CLI).
+:::
 
 The [steps](/docs/reference/concepts/concepts.md#step) that comprise the change will be shown as well as their status.
 
@@ -125,7 +132,9 @@ The EC2 instance, security group and key pair can be removed by running:
 opschain change create --project-code ansible --environment-code ansbl --git-remote-name origin --git-rev master --action destroy --confirm
 ```
 
-_Note: the AWS Console pages described in the [verify change deployment](#verify-change-deployment) steps above can be used to confirm the aws resources have been removed/terminated._
+:::tip
+The AWS Console pages described in the [verify change deployment](#verify-change-deployment) steps above can be used to confirm the aws resources have been removed/terminated.
+:::
 
 ## Notes on the Ansible example
 

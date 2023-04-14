@@ -52,7 +52,9 @@ Follow [adding a project Git repository as a remote](/docs/reference/project-git
 
 ### Using your own Kubernetes cluster
 
-_If you are using a SaaS demo instance of OpsChain see the section below._
+:::note
+If you are using a SaaS demo instance of OpsChain see the section below.
+:::
 
 If this example, and your OpsChain API server, are running on your own Kubernetes cluster, you will need to create a namespace and a role that grants the opschain-runner service account, permissions to create the example resources. You can do this by applying the manifest included in this repo.
 
@@ -62,7 +64,9 @@ kubectl apply -f k8s/namespace.yaml
 
 This will create an `opschain-terraform` namespace, and assign relevant permissions to the `opschain-runner` role to allow it to create and destroy the nginx deployment in it.
 
-_Note: this step assumes you are using the default `opschain` Kubernetes namespace for OpsChain. You must modify the `ServiceAccount` namespace in `k8s/namespace.yaml` if this is not the case._
+:::tip
+This step assumes you are using the default `opschain` Kubernetes namespace for OpsChain. You must modify the `ServiceAccount` namespace in `k8s/namespace.yaml` if this is not the case.
+:::
 
 ### Using the examples namespace provided as part of your OpsChain SaaS demo
 
@@ -98,9 +102,13 @@ opschain change create --project-code terraform --environment-code tform --git-r
 
 The [steps](/docs/reference/concepts/concepts.md#step) that comprise the change will be shown as well as their status.
 
-_Note: the first step in this change may take a long time as it downloads an nginx container image._
+:::info
+The first step in this change may take a long time as it downloads an nginx container image.
+:::
 
-**Use the `opschain change show-logs` command to see the log output from the change (including any failures).**
+:::tip
+Use the `opschain change show-logs` command to see the log output from the change (including any failures).
+:::
 
 ## Verify the change
 
@@ -137,7 +145,9 @@ Note this value (`localhost`, in the example above) as we will use it to view th
 
 Navigate to the nginx welcome page via `http://<load balancer hostname or ip address>:8080` to confirm the successful deployment.
 
-_Note: Replace `<load balancer hostname or ip address>` with the relevant value returned in the Terraform output from the previous step. This will depend on your Kubernetes cluster load balancer implementation._
+:::tip
+Replace `<load balancer hostname or ip address>` with the relevant value returned in the Terraform output from the previous step. This will depend on your Kubernetes cluster load balancer implementation.
+:::
 
 ## Create a change to remove nginx
 
@@ -147,7 +157,9 @@ This change will use Terraform's `destroy` action to remove the Kubernetes resou
 opschain change create --project-code terraform --environment-code tform --git-remote-name origin --git-rev master --action destroy --confirm
 ```
 
-_Note: the [verify the change](#verify-the-change) steps above can be re-run to verify that nginx has been removed from Kubernetes._
+::tip
+The [verify the change](#verify-the-change) steps above can be re-run to verify that nginx has been removed from Kubernetes.
+:::
 
 ## Customise deployment settings
 

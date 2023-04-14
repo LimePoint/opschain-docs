@@ -10,9 +10,7 @@ If at some point you decide that OpsChain is not for you and you no longer wish 
 ## Remove the OpsChain containers and data
 
 :::danger
-
 Before uninstalling OpsChain we suggest [making a backup](maintenance/backups.md) in case you would like to restore any OpsChain data in the future.
-
 :::
 
 Terminate and remove the running OpsChain containers (and associated data) by executing the following command:

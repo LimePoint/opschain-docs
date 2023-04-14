@@ -15,7 +15,9 @@ This document covers the relationship between OpsChain and MintPress.
 
 OpsChain bundles a subset of the MintPress SDK into the OpsChain runner. The SDK Gems can be used by adding them to your project Gemfile and then requiring them in your `actions.rb` file. The complete MintPress SDK, including the enterprise Oracle Gems, is available on the [OpsChain enterprise runner](#enterprise-controllers-for-oracle), available to customers with an existing MintPress licence.
 
-_If you require the enterprise Oracle Gems, please contact [LimePoint](mailto:opschain-support@limepoint.com)._
+:::info
+If you require the enterprise Oracle Gems, please contact [LimePoint](mailto:opschain-support@limepoint.com).
+:::
 
 ### Example: using the `Mint::Secret` class in OpsChain
 
@@ -52,4 +54,6 @@ $ opschain dev
 
 The MintPress enterprise controllers for Oracle are available for licenced customers via the OpsChain enterprise runner.
 
+:::tip
 See the [OpsChain enterprise runner](concepts/step-runner.md#opschain-enterprise-runner) section of the step runner reference guide to learn how to use to the OpsChain enterprise runner.
+:::

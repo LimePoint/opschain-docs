@@ -39,7 +39,9 @@ OpsChain.context[:project][:code]
 OpsChain.context['project']['code']
 ```
 
-_Note: The `OpsChain.context` structure is read only._
+:::note
+The `OpsChain.context` structure is read only.
+:::
 
 ## Example usage
 

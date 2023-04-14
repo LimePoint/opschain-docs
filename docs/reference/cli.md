@@ -11,7 +11,11 @@ When configuring the CLI, please note that some of the options described are opt
 
 ## Installation
 
-The OpsChain CLI binary can be downloaded from the `opschain` repository on [GitHub](https://github.com/LimePoint/opschain/releases). Ensure the native build matches the version of OpsChain that you are using. We suggest moving the binary to a location in your `PATH` to ensure it is easily accessible.
+The OpsChain CLI binary can be downloaded from the `opschain` repository on [GitHub](https://github.com/LimePoint/opschain/releases).
+
+:::tip
+Ensure the native build matches the version of OpsChain that you are using. We suggest moving the binary to a location in your `PATH` to ensure it is easily accessible.
+:::
 
 ### macOS & Linux configuration
 
@@ -27,10 +31,9 @@ macOS and Linux users will also need to make it executable:
 chmod +x opschain
 ```
 
-### Notes
-
-- On macOS you may need to trust the OpsChain CLI binary as it is not currently signed. See [the Apple documentation](https://support.apple.com/en-au/guide/mac-help/mh40616/mac) for details
-- The native binaries offer support for the latest version of the respective OS (older versions of the respective OS may work)
+:::note
+The native binaries offer support for the latest version of the respective OS (older versions of the respective OS may work).
+:::
 
 ### Dev subcommand dependencies
 
@@ -46,12 +49,15 @@ To use the OpsChain development environment you will need log in to [Docker Hub]
 docker login --username opschaintrial
 ```
 
-TIP: use the DOCKER_CONFIG environment variable if you need to use multiple Docker Hub logins.
+:::tip
+Use the DOCKER_CONFIG environment variable if you need to use multiple Docker Hub logins.
 
 ```bash
 export DOCKER_CONFIG="$(pwd)/.docker" # this would need to be exported in all terminals where OpsChain is being used
 docker login --username opschaintrial
 ```
+
+:::
 
 ### Server subcommand dependencies
 
@@ -69,7 +75,9 @@ The configuration file supports INI or JSON (with comments) formats.
 
 The OpsChain CLI configuration is loaded by the `rc` package. The [`rc` documentation](https://www.npmjs.com/package/rc#standards) specifies the locations where the configuration file can be placed - the `appname` is `opschain`.
 
-_On Windows the `USERPROFILE` directory is used as the home directory._
+:::info
+On Windows the `USERPROFILE` directory is used as the home directory.
+:::
 
 #### Specifying the CLI configuration file
 
@@ -111,7 +119,9 @@ The OpsChain CLI displays all timestamps in the timezone configured on the local
 
 ## Using the OpsChain CLI with a proxy
 
-_Note: this is only required if you are using an OpsChain server that needs to be accessed via a proxy. It is not mandatory._
+:::info
+This is only required if you are using an OpsChain server that needs to be accessed via a proxy. It is not mandatory.
+:::
 
 The OpsChain CLI supports using a http(s) proxy by setting the relevant environment variables:
 
@@ -125,7 +135,9 @@ opschain change ls # or any other command
 
 ## Disabling TLS/SSL certificate verification
 
-_Note: this is only required if you are using an OpsChain server that uses a non-trusted certificate. It is not mandatory._
+:::info
+This is only required if you are using an OpsChain server that uses a non-trusted certificate. It is not mandatory.
+:::
 
 The OpsChain CLI can be configured to ignore TLS/SSL certificate verification errors as follows:
 
@@ -186,7 +198,9 @@ The `opschain server` subcommands can be run on Linux, macOS and Windows.
 
 On Windows, we suggest using a modern terminal like the [Windows Terminal from the Microsoft Store](https://aka.ms/terminal). The Powershell terminal and Command Prompt are also supported in a best-effort manner.
 
-_We suggest avoiding Git Bash with the OpsChain CLI as it renders the prompts incorrectly._
+:::tip
+We suggest avoiding Git Bash with the OpsChain CLI as it renders the prompts incorrectly.
+:::
 
 #### Configuration overrides
 

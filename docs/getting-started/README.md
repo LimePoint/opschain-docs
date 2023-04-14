@@ -21,15 +21,17 @@ The latest version of the CLI can be downloaded from the [`opschain` repository]
 
 Download the release for your platform. Once downloaded, we suggest renaming the binary to `opschain` (e.g. `mv opschain-* opschain`), and it will need to be made executable if using Linux, macOS, or WSL - e.g. `chmod +x opschain`.
 
+:::tip
 We suggest putting the executable somewhere on your `PATH` to allow it to be executed without specifying the full path - e.g. `sudo mv opschain /usr/local/bin/opschain`.
-
-_Note: On macOS you may need to trust the OpsChain CLI binary as it is not currently signed. See [the Apple documentation](https://support.apple.com/en-au/guide/mac-help/mh40616/mac) for details._
+:::
 
 ### Configure the OpsChain CLI
 
 Create a `.opschainrc` in your home directory (e.g. `~/.opschainrc` on Linux, macOS, or WSL) based on the [example](/files/config_file_examples/opschainrc.example) - be sure to update the `apiBaseUrl` to point to your OpsChain server installation, and the `username` and `password` configuration for your user account. On Windows - not within WSL - the configuration file should be placed in the `USERPROFILE` directory. See the [CLI configuration locations](/docs/reference/cli.md#cli-configuration-locations) guide if you would like to learn more.
 
-_Note: If you create a `.opschainrc` file in your current working directory, it will be used instead of the version in your home directory._
+:::note
+If you create a `.opschainrc` file in your current working directory, it will be used instead of the version in your home directory.
+:::
 
 Run the `opschain info` subcommand to verify that the server is accessible - it will include the server version if it is able to connect to the OpsChain server.
 
@@ -61,8 +63,11 @@ OpsChain's uses Git to manage the configuration and code associated with changes
 
 Add the `opschain-getting-started` Git repository as a Git remote for your new project:
 
+:::info
+To avoid potentially storing the repository credentials in the shell history the `--user` and `--password` arguments can be omitted and filled in when prompted.
+:::
+
 ```bash
-# Note: to avoid potentially storing the repository credentials in the shell history the `--user` and `--password` arguments can be omitted and filled in when prompted
 # Option 1: Using password authentication:
 $ opschain project add-git-remote \
   --project-code web \
@@ -83,7 +88,9 @@ $ opschain project add-git-remote \
   --confirm
 ```
 
-_Note: You can use the GitHub personal access token you created while following the [installation guide](../operations/installation.md#create-a-github-personal-access-token) if using a local OpsChain install._
+:::note
+You can use the GitHub personal access token you created while following the [installation guide](../operations/installation.md#create-a-github-personal-access-token) if using a local OpsChain install.
+:::
 
 #### Create an OpsChain environment
 
@@ -116,7 +123,9 @@ Action (optional): hello_world
 Create this change? Yes
 ```
 
-_Note: these parameters can be provided as arguments too, run `opschain change create --help` to learn more._
+:::tip
+These parameters can be provided as arguments too, run `opschain change create --help` to learn more.
+:::
 
 Once the parameters have been entered, the change will be created and started, and the OpsChain CLI will report on the status of the change as it progresses.
 
@@ -136,7 +145,9 @@ opschain change show-logs --change-id xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
 
 Our very simple first change has just logged `Hello world` - we can also see information about the change as OpsChain processed it.
 
-_Note: If you wish to view the logs as your change executes, specify the `--follow-logs` option when [creating the change](#create-and-run-a-change). This option can also be supplied to the `opschain change show-logs` command to follow an existing change._
+:::tip
+If you wish to view the logs as your change executes, specify the `--follow-logs` option when [creating the change](#create-and-run-a-change). This option can also be supplied to the `opschain change show-logs` command to follow an existing change.
+:::
 
 Alternatively, you can also view and follow the change logs via the [OpsChain web UI](#visit-the-opschain-web-ui).
 
@@ -174,7 +185,9 @@ OpsChain allows you to configure environment variables that will supply default 
 export opschain_projectCode=web
 ```
 
-_Note: This setting can be overridden by specifying a `--project-code` explicitly on the command line. It can also be set in your [CLI configuration](/docs/reference/cli.md#opschain-cli-configuration-settings) if you are always working in the same project._
+:::tip
+This setting can be overridden by specifying a `--project-code` explicitly on the command line. It can also be set in your [CLI configuration](/docs/reference/cli.md#opschain-cli-configuration-settings) if you are always working in the same project.
+:::
 
 #### Create OpsChain properties
 
@@ -214,7 +227,9 @@ opschain environment set-properties --environment-code prod --file-path prod_pro
 
 The project properties provide default values to use when running changes in any environment in the project. The production environment properties override these defaults with production specific values.
 
-_Note: this example uses OpsChain properties for simplicity. OpsChain properties are stored encrypted at rest and are tracked for auditability, but it may be preferable to use [OpsChain secrets](/docs/examples/using-secrets-in-your-change) for sensitive information like AWS access keys._
+:::info
+This example uses OpsChain properties for simplicity. OpsChain properties are stored encrypted at rest and are tracked for auditability, but it may be preferable to use [OpsChain secrets](/docs/examples/using-secrets-in-your-change) for sensitive information like AWS access keys.
+:::
 
 ### Advanced change example
 
@@ -252,10 +267,12 @@ The beginning of the log shows the output from the image builder as it builds th
 - a war file to deploy (more on this later)
 - the `instance_id` value from the project properties
 
-_Notes:_
+:::note
 
-1. _Contextual references need not be displayed in the logs and are displayed for example purposes only._
-2. _In contrast to the simple actions used throughout this guide, various [example projects](/docs/category/examples) are available to demonstrate how OpsChain can affect real change on local and cloud servers._
+1. Contextual references need not be displayed in the logs and are displayed for example purposes only.
+2. In contrast to the simple actions used throughout this guide, various [example projects](/docs/category/examples) are available to demonstrate how OpsChain can affect real change on local and cloud servers.
+
+:::
 
 #### View change properties
 
@@ -373,7 +390,9 @@ Our project team uses a cloud service provider for their webserver hosting. To s
 opschain change create --environment-code test --action stop_instance --git-remote-name origin --git-rev master --confirm
 ```
 
-Note: The hypothetical cloud provider's CLI makes use of an `ACCESS_KEY_ID` and `SECRET_ACCESS_KEY` in the user's Linux environment to authorise CLI commands. As each action runs inside an isolated container, OpsChain allows you to define [environment variables](/docs/reference/concepts/properties.md#environment-variables) in your properties that will automatically be set in the container before the action is executed.
+:::note
+The hypothetical cloud provider's CLI makes use of an `ACCESS_KEY_ID` and `SECRET_ACCESS_KEY` in the user's Linux environment to authorise CLI commands. As each action runs inside an isolated container, OpsChain allows you to define [environment variables](/docs/reference/concepts/properties.md#environment-variables) in your properties that will automatically be set in the container before the action is executed.
+:::
 
 ```bash
 opschain change show-logs --change-id xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
@@ -422,11 +441,13 @@ The majority of OpsChain CLI commands accept an optional `--output` argument, al
 
 ### Visit the OpsChain web UI
 
+:::info
+Currently, the web UI provides a read only view and does not replace all the CLI's functionality.
+:::
+
 In addition to the CLI, OpsChain also provides a read only web interface that allows you to view the change that OpsChain manages in your organisation.
 
 The OpsChain web UI is available by accessing the address of your OpsChain server in a web browser - if using the default installation options then this would be at [http://localhost:3000/](http://localhost:3000/). It uses the same username and password as the CLI.
-
-_Note: Currently, the web UI provides a read only view and does not replace all the CLI's functionality._
 
 Please [contact us](/docs/support#how-to-contact-us) if you have any feedback, we'd love to hear it.
 

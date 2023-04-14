@@ -11,8 +11,11 @@ This guide takes you through the operations required for managing remote Git rep
 
 Creating a new Git remote can be done via the CLI.
 
+:::tip
+To avoid potentially storing the repository credentials in the shell history the `--user` and `--password` arguments can be omitted and filled in when prompted
+:::
+
 ```bash
-# Note: to avoid potentially storing the repository credentials in the shell history the `--user` and `--password` arguments can be omitted and filled in when prompted
 # Example 1: Using password authentication:
 $ opschain project add-git-remote --project-code <project code> --name origin --user '{username}' --password '{password / personal access token}' --url 'https://github.com/LimePoint/{repository name}.git'
 
@@ -54,11 +57,14 @@ The following API only commands will require you to supply the Git remote ID in 
 curl -u opschain:password http://localhost:3000/api/projects/demo/git_remotes | jq
 ```
 
-Note: You will need to edit the example to replace:
+:::note
+You will need to edit the example to replace:
 
 - `opschain:password` with your username and password
 - `localhost:3000` with the OpsChain host and port
 - `demo` with your target project code
+
+:::
 
 ### Unarchiving a Git remote
 
@@ -78,12 +84,15 @@ curl -u opschain:password -X PATCH http://localhost:3000/api/projects/demo/git_r
 DATA
 ```
 
-Note: You will need to edit the example to replace:
+:::note
+You will need to edit the example to replace:
 
 - `cfebaf57-42c3-4df6-bf1d-4ae6f9094ec1` with the Git remote ID
 - `opschain:password` with your username and password
 - `localhost:3000` with the OpsChain host and port
 - `demo` with your target project code
+
+:::
 
 ## Deleting a Git remote
 

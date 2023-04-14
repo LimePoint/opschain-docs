@@ -23,7 +23,11 @@ OpsChain changes can be created via the OpsChain CLI, or by directly POSTing to 
 - A [Git remote](git-remotes.md) and related Git reference (tag/branch/SHA)
 - The OpsChain [action](actions.md) to execute
 
-_Note: For more information on using the CLI to create a change, see `opschain change create --help`. See OpsChain's API reference for more information on creating changes directly via the API (to see the API reference documentation, use a browser to access the API host)._
+:::tip Creating changes
+For more information on using the CLI to create a change, see `opschain change create --help`.
+
+To learn how to create changes via the API, see OpsChain's API reference by accessing the API host with your browser.
+:::
 
 ## Change properties
 
@@ -41,11 +45,14 @@ As each step in your change is constructed, OpsChain will supply it with the lat
 
 A step will be created for the change action, with additional steps created for each child action. The [child execution strategy](actions.md#child-execution-strategy) specified by each action will determine whether its child actions are executed serially or in parallel.
 
-_Note: The number of OpsChain worker nodes configured when the OpsChain server is deployed provides a hard limit on the number of steps that OpsChain can execute at a time. For example, with 3 worker nodes, OpsChain can run:_
+:::info
+The number of OpsChain worker nodes configured when the OpsChain server is deployed provides a hard limit on the number of steps that OpsChain can execute at a time. For example, with 3 worker nodes, OpsChain can run:
 
-- _3 parallel steps from a single change_
-- _3 individual steps from 3 distinct changes_
-- _2 parallel steps from one change, and one step from another_
+- 3 parallel steps from a single change
+- 3 individual steps from 3 distinct changes
+- 2 parallel steps from one change, and one step from another
+
+:::
 
 ### Limitations
 
@@ -68,12 +75,15 @@ By default, OpsChain will only allow a single change to execute for each project
 }
 ```
 
-_Note: if you have `jq` installed you can use the following command to set the option programmatically:_
+:::note
+If you have `jq` installed you can use the following command to set the option programmatically:
 
 ```bash
 opschain project show-properties -p <your project code> | jq '.opschain.config.environments += { "allow_parallel_changes": true }' > /tmp/updated_project_properties.json
 opschain project set-properties -p <your project code> -f /tmp/updated_project_properties.json -y
 ```
+
+:::
 
 ## Change metadata
 
@@ -112,16 +122,20 @@ When querying changes via the change API, you can use OpsChain's [API filtering]
 curl -G --user "{{username}}:{{password}}" 'http://localhost:3000/api/changes' --data-urlencode 'filter[metadata_approver_eq]=A. Manager'
 ```
 
-_Notes:_
+:::note
 
-1. _Update the username, password, host and port to reflect your OpsChain server configuration._
-2. _If you wish to filter on a nested metadata value, separate the keys with a comma. For example, to find all changes with metadata `{ "nested": { "key": "some_value } }`, you could use the following filter:_
+1. Update the username, password, host and port to reflect your OpsChain server configuration.
+2. If you wish to filter on a nested metadata value, separate the keys with a comma. For example, to find all changes with metadata `{ "nested": { "key": "some_value } }`, you could use the following filter:
 
 ```bash
 curl -G --user "{{username}}:{{password}}" 'http://localhost:3000/api/changes' --data-urlencode 'filter[metadata_nested,key_eq]=some_value'
 ```
 
+:::
+
+:::tip
 For more information on filtering the change list output, see the [API filtering & sorting guide](../api-filtering.md).
+:::
 
 ### Using metadata in actions
 

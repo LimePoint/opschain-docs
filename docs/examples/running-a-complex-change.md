@@ -72,7 +72,9 @@ kubectl apply -f k8s/namespace.yaml
 
 This will create an `opschain-confluent` namespace, and assign relevant permissions to the `opschain-runner` role to allow it to create and destroy the Confluent deployment in it.
 
-_Note: this step assumes you are using the default `opschain` Kubernetes namespace for OpsChain. You must modify the `ServiceAccount` namespace in `k8s/namespace.yaml` if this is not the case._
+:::note
+This step assumes you are using the default `opschain` Kubernetes namespace for OpsChain. You must modify the `ServiceAccount` namespace in `k8s/namespace.yaml` if this is not the case.
+:::
 
 ### Build the base image
 
@@ -84,7 +86,9 @@ docker build -t confluent-base:latest .
 
 The base image includes the installation files for Oracle Java 1.8 and Confluent 6.2, as well as minor changes to the `pam.d` configuration to support containerisation (see the `Dockerfile` in the project root for further details).
 
-_Note: The base image is a basic Linux host running the OpenSSH daemon, allowing it to accept remote connections from OpsChain and should not be used as a basis for real world implementation._
+:::caution
+The base image is a basic Linux host running the OpenSSH daemon, allowing it to accept remote connections from OpsChain and should not be used as a basis for real world implementation.
+:::
 
 ### OpsChain properties
 
@@ -129,7 +133,9 @@ This set of properties will:
 - override the project level property:
   - `log.retention.check.interval.ms` - set to 1234876
 
-Note: project or environment [properties](/docs/reference/concepts/properties.md) set dynamically in the [action](/docs/reference/concepts/concepts.md#action) will only be updated against the project or environment if the [action](/docs/reference/concepts/concepts.md#action) completes successfully (i.e. if a [step](/docs/reference/concepts/concepts.md#step) has an error, the [properties](/docs/reference/concepts/properties.md) are not updated).
+:::note
+Project or environment [properties](/docs/reference/concepts/properties.md) set dynamically in the [action](/docs/reference/concepts/concepts.md#action) will only be updated against the project or environment if the [action](/docs/reference/concepts/concepts.md#action) completes successfully (i.e. if a [step](/docs/reference/concepts/concepts.md#step) has an error, the [properties](/docs/reference/concepts/properties.md) are not updated).
+:::
 
 ## Create a change
 
@@ -147,7 +153,9 @@ Manually copy and set the change ID as a variable, you'll need it for the next s
 change_id=XXXXX
 ```
 
-**Use the `opschain change show-logs` command to see the log output from the change (including any failures). Use the `--follow` argument to watch the logs as the change progresses.**
+:::tip
+Use the `opschain change show-logs` command to see the log output from the change (including any failures). Use the `--follow` argument to watch the logs as the change progresses.
+:::
 
 ## Verify the change
 
@@ -161,7 +169,9 @@ kubectl get all -n opschain-confluent
 
 The namespace will include two **brokers**, a **zookeeper**, and a **control-center**.
 
-_Note the use of a `broker` statefulset to create the brokers, with a headless `kafka` service to provide access to them._
+:::note
+Note the use of a `broker` statefulset to create the brokers, with a headless `kafka` service to provide access to them.
+:::
 
 ### Check control center settings
 
@@ -202,7 +212,9 @@ It can be useful for troubleshooting to know which [properties](/docs/reference/
 opschain change show-properties --change-id $change_id
 ```
 
+:::tip Viewing properties supplied to a step
 More detailed information about the specific versions of environment and project [properties](/docs/reference/concepts/properties.md) supplied to each [step](/docs/reference/concepts/concepts.md#step) of the change is available directly from the API server. Using your browser, navigate to `http://localhost:3000/api/changes/CHANGE_ID` _(where CHANGE_ID is the ID of the change)_. In the API response, each [step](/docs/reference/concepts/concepts.md#step) has a reference to the project and environment [properties](/docs/reference/concepts/properties.md) versions supplied to the [step](/docs/reference/concepts/concepts.md#step).
+:::
 
 ## Create a change to remove Confluent
 
@@ -212,7 +224,9 @@ This change will use Terraform's `destroy` action to remove the Kubernetes resou
 opschain change create --project-code confluent --environment-code local --git-remote-name origin --git-rev master --action destroy --confirm
 ```
 
-_Note: the [verify the change](#verify-the-change) steps above can be re-run to verify that Confluent has been removed from Kubernetes._
+:::tip
+The [verify the change](#verify-the-change) steps above can be re-run to verify that Confluent has been removed from Kubernetes.
+:::
 
 ### Remove Kubernetes resources
 

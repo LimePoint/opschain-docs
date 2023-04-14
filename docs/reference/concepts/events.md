@@ -13,13 +13,17 @@ After following this guide you should know:
 - how to query events via the API
 - how to create custom events using the API
 
-_Note: All the examples in this guide assume the OpsChain API server is running on your local machine. Replace `localhost` with your OpsChain server name if connecting to a remote OpsChain server._
+:::tip
+All the examples in this guide assume the OpsChain API server is running on your local machine. Replace `localhost` with your OpsChain server name if connecting to a remote OpsChain server.
+:::
 
 ## Overview
 
 Any API request that modifies data in OpsChain will be tracked for auditing and reporting purposes. In future versions OpsChain will track more events, please [let us know](mailto:opschain-support@limepoint.com) if there are particular events you would like tracked.
 
-_Note: OpsChain does not track API requests to the `api/events` API itself._
+:::info
+OpsChain does not track API requests to the `api/events` API itself.
+:::
 
 The data provided within the `attributes` section of the event API response varies depending on the type of event.
 
@@ -64,13 +68,17 @@ The query to the `api/events` endpoint can be filtered by providing the relevant
 
 For example, the following query will return up to 100 events that were created after 2021-01-01.
 
-_Note: By default, the response is limited to only 10 events, and there is a hard limit of 1000 events. The response status code will be 206 Partial Content when the response has been truncated by the limit._
+:::info
+By default, the response is limited to only 10 events, and there is a hard limit of 1000 events. The response status code will be 206 Partial Content when the response has been truncated by the limit.
+:::
 
 ```bash
 curl --globoff --user "{{username}}:{{password}}" 'http://localhost:3000/api/events?filter[created_at_gt]=2021-01-01T01:00:00.000000Z&limit=100'
 ```
 
-_Note: The `--globoff` argument is required when using the filtering queries using `curl`._
+:::note
+The `--globoff` argument is required when using the filtering queries using `curl`.
+:::
 
 #### Filtering examples
 
@@ -80,7 +88,9 @@ The API filtering and sorting guide includes a variety of [examples](../api-filt
 
 Below are some more complex examples of querying the `api/events` API.
 
-_Note: the examples require the `jq` and `curl` utilities, and have been tested with Zsh and Bash 4._
+:::note
+The examples require the `jq` and `curl` utilities, and have been tested with Zsh and Bash 4.
+:::
 
 #### Waiting for an event to occur
 

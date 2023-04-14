@@ -5,7 +5,9 @@ description: An important periodic maintenance task for the OpsChain build servi
 
 # Build service certificate renewal (deprecated)
 
-_Note: This manual maintenance is only required in OpsChain 2023-01-13 and older._
+:::note
+This manual maintenance is only required in OpsChain 2023-01-13 and older.
+:::
 
 The internal OpsChain container build service uses [mutal TLS](https://en.wikipedia.org/wiki/Mutual_authentication#mTLS) certificates for all communication.
 
@@ -42,4 +44,6 @@ kubectl wait --for=condition=Available deploy/opschain-build-service --timeout 5
 kubectl scale deploy opschain-api-worker --replicas $REPLICAS
 ```
 
-_Note: If you have actions that may take longer than one hour to complete, you can customise the time that the workers will wait to stop before being killed. See the [OpsChain workers operations guide](/docs/operations/workers.md) for instructions on configuring this grace period._
+:::tip
+If you have actions that may take longer than one hour to complete, you can customise the time that the workers will wait to stop before being killed. See the [OpsChain workers operations guide](/docs/operations/workers.md) for instructions on configuring this grace period.
+:::

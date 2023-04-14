@@ -34,7 +34,9 @@ $ opschain dev
 [dev] $ bundle install
 ```
 
-_Note: The `opschain-action` commands below assume the OpsChain development environment is being run in the Git repository created as part of the [getting started - developer edition](getting-started/developer.md). If using a different project, modify these commands to reflect the OpsChain actions available._
+:::tip
+The `opschain-action` commands below assume the OpsChain development environment is being run in the Git repository created as part of the [getting started - developer edition](getting-started/developer.md). If using a different project, modify these commands to reflect the OpsChain actions available.
+:::
 
 #### Create a `step_context.json` (optional)
 
@@ -81,7 +83,9 @@ Unlike when actions are run as part of an OpsChain change, the OpsChain developm
 
 Within the OpsChain development environment (accessed via `opschain dev`), the `opschain-action` command can be used to view the expected step tree for an action. Using the `OPSCHAIN_DRY_RUN` environment variable means the step tree will be output without any of the actions running.
 
-_Note: The steps listed may not be accurate during execution because the step information may change dynamically._
+:::info
+The steps listed may not be accurate during execution because the step information may change dynamically.
+:::
 
 ```bash
 [dev] $ OPSCHAIN_DRY_RUN=true opschain-action deploy_in_maintenance_mode
@@ -101,12 +105,14 @@ To enable `opschain-action` to run child steps automatically, configure the `OPS
 [dev] $ OPSCHAIN_ACTION_RUN_CHILDREN=true opschain-action deploy_in_maintenance_mode
 ```
 
-_Notes:_
+:::note
 
-1. _The `OPSCHAIN_ACTION_RUN_CHILDREN` variable_:
-   - _can be set in your shell's configuration, e.g. your `.zshrc`, to persist the config_
-   - _is only applicable when using `opschain-action` in the development environment and has no affect on actions running within an OpsChain change_
-2. _The `run_as:` `:serial`/`:parallel` flags are ignored by `opschain-action` when running in the development environment. Child steps will always be executed sequentially._
+1. The `OPSCHAIN_ACTION_RUN_CHILDREN` variable:
+   - can be set in your shell's configuration, e.g. your `.zshrc`, to persist the config
+   - is only applicable when using `opschain-action` in the development environment and has no affect on actions running within an OpsChain change
+2. The `run_as:` `:serial`/`:parallel` flags are ignored by `opschain-action` when running in the development environment. Child steps will always be executed sequentially.
+
+:::
 
 ##### Manual execution
 
@@ -124,7 +130,9 @@ OpsChain provides a linting tool for detecting issues in project Git repositorie
 [dev] $ opschain-lint --setup
 ```
 
-_Note: The pre-commit hook will automatically ignore untracked files._
+:::note
+The pre-commit hook will automatically ignore untracked files.
+:::
 
 If you would like to commit code that fails linting (e.g. incomplete code) the Git `--no-verify` argument can be used when committing, e.g. `git commit --no-verify`.
 
@@ -165,10 +173,12 @@ To build a Docker image from your project's Dockerfile and then use the image fo
 
 As part of this process, the CLI will tag the newly built image with the supplied tag.
 
-_Notes:_
+:::note
 
-1. _If the `--tag` argument is not supplied with the `--build-runner-image` argument, the newly built image will be assigned the default tag `repository_runner:latest`._
-2. _When the CLI tags the newly built image (with the supplied tag or the default tag) the tag will be removed from any existing image with that tag._
+1. If the `--tag` argument is not supplied with the `--build-runner-image` argument, the newly built image will be assigned the default tag `repository_runner:latest`.
+2. When the CLI tags the newly built image (with the supplied tag or the default tag) the tag will be removed from any existing image with that tag.
+
+:::
 
 ### Using a custom runner image
 
@@ -199,7 +209,9 @@ When running OpsChain actions within the OpsChain development environment you ca
 
 The OpsChain development environment container uses the OpsChain step runner image. Upgrading the CLI will cause a new version of the image to be downloaded. To recover the space used by these older images, the `docker rmi` command can be used to remove them.
 
-_Note: The following commands assume you are not using the OPSCHAIN_RUNNER_IMAGE to specify your runner image._
+:::note
+The following commands assume you are not using the OPSCHAIN_RUNNER_IMAGE to specify your runner image.
+:::
 
 To list the runner images on your machine, execute the following:
 
@@ -210,10 +222,11 @@ docker images --filter "reference=${OPSCHAIN_BASE_RUNNER}:*"
 
 Take note of the image ids of the older images and remove them as follows:
 
+:::note
+The image ids below are for example purposes only. Replace them with the image ids of the no longer required runner images (from the filtered "docker images" command above)
+:::
+
 ```bash
-# The image ids below are for example purposes only.
-# Replace them with the image ids of the no longer required runner images
-# (from the filtered "docker images" command above)
 docker rmi 62651bfbd35e b05e297066d6
 ```
 
@@ -235,7 +248,11 @@ docker exec -ti -u 0 <container_id> /bin/bash
 
 Replace <container_id> with the appropriate container ID from the results of the previous command. You now have an interactive Bash shell running as root inside this container and can perform any command you need.
 
-When complete, update your project's `Dockerfile` to reflect any changes that are required in your project's step [runner image](#custom-runner-images). _Tip: Use the `history` command to see the commands you have executed while running as root, making a note of any additional packages or filesystem changes you have made._
+When complete, update your project's `Dockerfile` to reflect any changes that are required in your project's step [runner image](#custom-runner-images).
+
+:::tip
+Use the `history` command to see the commands you have executed while running as root, making a note of any additional packages or filesystem changes you have made.
+:::
 
 ## What to do next
 

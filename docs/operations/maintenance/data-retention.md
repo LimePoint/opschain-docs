@@ -27,8 +27,11 @@ Setting the change log storage retention configuration means that any logs older
 
 The global retention setting is used if a project or environment configuration is not present. It can be set by setting the `OPSCHAIN_CHANGE_LOG_RETENTION_DAYS` and/or `OPSCHAIN_EVENT_RETENTION_DAYS` environment variables in the `.env` file.
 
+:::note
+Update OPSCHAIN_CHANGE_LOG_RETENTION_DAYS or OPSCHAIN_EVENT_RETENTION_DAYS  in your `.env` to the desired value - adding the key if it is not present.
+:::
+
 ```bash
-# update OPSCHAIN_CHANGE_LOG_RETENTION_DAYS or OPSCHAIN_EVENT_RETENTION_DAYS to the desired value, add the key if it is not present
 vi .env
 opschain server configure
 opschain server deploy
