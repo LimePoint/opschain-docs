@@ -4,7 +4,7 @@ sidebar_position: 7
 
 # Support
 
-This page details the support policy in relation to the OpsChain product under the terms of the [LimePoint End User License Agreement (EULA)](https://www.limepoint.com/wp-content/uploads/2021/10/2021.10.12-LimePoint-End-User-License-Agreement.pdf).
+This page details the support policy in relation to the OpsChain product under the terms of the [LimePoint End User License Agreement (EULA)](https://opschain.io/eula).
 
 ## Business hours
 

@@ -13,7 +13,7 @@ export default function Root({children}) {
       <Popup open={eulaAgreed === 'no'} modal closeOnDocumentClick={false} closeOnEscape={false} lockScroll={true}>
         <h3>LimePoint EULA</h3>
         <p>
-          This website may only be used by you for the limited purpose of using LimePoint’s products licenced to you and subject to LimePoint’s standard <Link to='https://www.limepoint.com/wp-content/uploads/2021/10/2021.10.12-LimePoint-End-User-License-Agreement.pdf'>End User Licence Agreement</Link> (or, if applicable, other terms agreed with LimePoint).
+          This website may only be used by you for the limited purpose of using LimePoint’s products licenced to you and subject to LimePoint’s standard <Link to='https://opschain.io/eula'>End User Licence Agreement</Link> (or, if applicable, other terms agreed with LimePoint).
         </p>
         <button className='button button--primary button--lg' onClick={() => setEulaAgreed(new Date())}>
           Agree

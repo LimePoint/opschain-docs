@@ -5,6 +5,18 @@ description: Learn about new releases of OpsChain, including new features and up
 
 # Changelog
 
+## [2023-05-05] {#2023-05-05}
+
+### Added {#2023-05-05-added}
+
+- OpsChain can now be configured to send a notification when a change has failed using [Apprise](https://github.com/caronc/apprise). [Learn more](/docs/operations/notifications#notifications-configuration).
+- The logs for an individual step within a change can now be viewed via the OpsChain GUI by clicking on the step details icon for the relevant step on the change details page.
+
+### Changed {#2023-05-05-changed}
+
+- Upgraded BuildKit to v0.11.6
+- The macOS CLI is now distributed in a DMG archive and is notarised.
+
 ## [2023-04-14] {#2023-04-14}
 
 ### Important breaking changes {#2023-04-14-changed}

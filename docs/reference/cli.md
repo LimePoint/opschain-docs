@@ -17,23 +17,27 @@ The OpsChain CLI binary can be downloaded from the `opschain` repository on [Git
 Ensure the native build matches the version of OpsChain that you are using. We suggest moving the binary to a location in your `PATH` to ensure it is easily accessible.
 :::
 
-### macOS & Linux configuration
+:::note
+The native binaries offer support for the latest version of the respective OS (older versions of the respective OS may work).
+:::
 
-Throughout the documentation we refer to the CLI as `opschain`. For macOS and Linux users we suggest renaming the binary to reflect the common name (and save some future typing):
+### Linux setup
+
+Throughout the documentation we refer to the CLI as `opschain`. For Linux users we suggest renaming the binary to reflect the common name (and save some future typing):
 
 ```bash
 mv opschain-* opschain
 ```
 
-macOS and Linux users will also need to make it executable:
+Linux users need to ensure that the CLI is executable:
 
 ```bash
 chmod +x opschain
 ```
 
-:::note
-The native binaries offer support for the latest version of the respective OS (older versions of the respective OS may work).
-:::
+### macOS setup
+
+On macOS the OpsChain CLI needs to be extracted from the `opschain-macos.dmg` archive before use - i.e. drag and drop it to the desired destination, for example `~/bin`.
 
 ### Dev subcommand dependencies
 
@@ -96,6 +100,7 @@ The `.opschainrc` file must be valid JSON and supports the following configurati
 | `apiBaseUrl`      | no       | OpsChain API server URL                                                                                                                                                                                                                                                                                                                                                                                                                          |
 | `username`        | no       | OpsChain API username                                                                                                                                                                                                                                                                                                                                                                                                                            |
 | `password`        | no       | OpsChain API password                                                                                                                                                                                                                                                                                                                                                                                                                            |
+| `editor`          | no       | editor used to edit properties                                                                                                                                                                                                                                                                                                                                                                                                                   |
 | `requestTimeout`  | yes      | modify the API request timeout (in milliseconds), increase this for slow servers/networks                                                                                                                                                                                                                                                                                                                                                        |
 | `stepEmoji`       | yes      | show emoji for the step status, default `true` - set to `false` to display status as text                                                                                                                                                                                                                                                                                                                                                        |
 | `projectCode`     | yes      | default OpsChain project code used for commands                                                                                                                                                                                                                                                                                                                                                                                                  |

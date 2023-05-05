@@ -32,6 +32,10 @@ E.g.
 curl --user 'opschain:password' 'http://localhost:3000/api/projects' -G --data-urlencode 'filter[sorts]=archived desc'
 ```
 
+:::tip Avoid storing credentials
+To avoid potentially storing credentials in the shell history the password can be omitted and filled in when prompted.
+:::
+
 ### Combining filters
 
 If you wish to include multiple filters, you can use the `--data-urlencode` parameter multiple times. The following example filters for any archived projects with a description containing `prod`.

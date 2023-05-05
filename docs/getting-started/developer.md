@@ -698,7 +698,7 @@ Read our more comprehensive [step runner guide](/docs/reference/concepts/step-ru
 
 ### Learn more about OpsChain properties
 
-Follow the [loading properties](/docs/reference/concepts/properties.md#loading-properties) guide to try editing some [project](/docs/reference/concepts/concepts.md#project) or [environment](/docs/reference/concepts/concepts.md#environment) properties.
+Follow the [properties](/docs/reference/concepts/properties.md) guide to try editing some [project](/docs/reference/concepts/concepts.md#project) or [environment](/docs/reference/concepts/concepts.md#environment) properties.
 
 ### Try more advanced examples
 
