@@ -17,9 +17,15 @@ If you do not have access to an OpsChain API server, follow the [installation gu
 
 The OpsChain CLI allows you to interact with the OpsChain API server and is required to run the examples in this guide. If you followed the OpsChain server [installation guide](../operations/installation.md) then you can skip this section as it has already covered these steps.
 
-The latest version of the CLI can be downloaded from the [`opschain` repository](https://github.com/LimePoint/opschain/releases).
+The latest version of the CLI can be downloaded from the [`opschain` repository](https://github.com/LimePoint/opschain/releases). Download the appropriate release for your platform.
 
-Download the release for your platform. Once downloaded, we suggest renaming the binary to `opschain` (e.g. `mv opschain-* opschain`), and it will need to be made executable if using Linux, macOS, or WSL - e.g. `chmod +x opschain`.
+### Linux/WSL setup
+
+We suggest renaming the binary to `opschain` (e.g. `mv opschain-* opschain`), and it will need to be made executable if using Linux or WSL - e.g. `chmod +x opschain`.
+
+### macOS setup
+
+The OpsChain CLI needs to be extracted from the `opschain-macos.dmg` archive before use - i.e. open the archive and drag and drop the opschain file to the desired destination, for example ~/bin.
 
 :::tip
 We suggest putting the executable somewhere on your `PATH` to allow it to be executed without specifying the full path - e.g. `sudo mv opschain /usr/local/bin/opschain`.

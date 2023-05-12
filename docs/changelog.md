@@ -5,6 +5,12 @@ description: Learn about new releases of OpsChain, including new features and up
 
 # Changelog
 
+## [2023-05-12]
+
+### Added {#2023-05-12-added}
+
+- The CLI can now be configured to invoke a command to determine the API password rather than storing it in the configuration directly. [Learn more.](/docs/reference/cli.md#opschain-cli-configuration-settings)
+
 ## [2023-05-05] {#2023-05-05}
 
 ### Added {#2023-05-05-added}
