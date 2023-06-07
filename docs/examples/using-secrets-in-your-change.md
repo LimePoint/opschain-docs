@@ -10,7 +10,7 @@ This example describes how to use Kubernetes secrets in your change. After follo
 - how OpsChain's build secrets configuration can be used to securely pass secrets to your step runner image build
 - how OpsChain's runner secrets configuration can be used to export environment variables in your step
 
-:::tip
+:::tip TIPS
 
 1. [Kubernetes secrets](https://kubernetes.io/docs/concepts/configuration/secret/) are, by default, stored unencrypted in the Kubernetes cluster's underlying data store (etcd). See the [good practices for Kubernetes secrets](https://kubernetes.io/docs/concepts/security/secrets-good-practices/) guide for information on how to encrypt them at rest and further restrict user access to them.
 2. This guide is for use by non-SaaS OpsChain customers only. [Let us know](mailto:opschain-support@limepoint.com) if you're interested in using secrets in your SaaS instance.
@@ -222,7 +222,7 @@ To see this in action, let's start by adding some project level credentials to o
     Alter the namespace if you are using a different namespace for your OpsChain installation.
     :::
 
-2. Update the `secret` project's configuration to include the Kubernetes secret:
+2. Update the `secret` project's `opschain` properties to include the Kubernetes secret:
 
     ```bash
     opschain project edit-properties -p secret
@@ -231,10 +231,8 @@ To see this in action, let's start by adding some project level credentials to o
     ```json
     {
       "opschain": {
-        "config": {
-          "build_secrets": ["custom-project-secrets"],
-          "runner_secrets": ["custom-project-secrets"]
-        }
+        "env:build_secrets": ["custom-project-secrets"],
+        "env:runner_secrets": ["custom-project-secrets"]
       }
     }
     ```
@@ -252,7 +250,7 @@ To see this in action, let's start by adding some project level credentials to o
 
 ### Environment secrets
 
-Just like [properties](../reference/concepts/properties.md), OpsChain's secret model allows you to override project level configuration at the environment level. Lets add some developer credentials to our `dev` environment, so the production credentials are not visible to the development team.
+Just like [properties](../reference/concepts/properties.md), OpsChain's secret model allows you to override project level secrets at the environment level. Lets add some developer credentials to our `dev` environment, so the production credentials are not visible to the development team.
 
 1. Create a Kubernetes secret containing specific credentials for the development team:
 
@@ -275,7 +273,7 @@ Just like [properties](../reference/concepts/properties.md), OpsChain's secret m
     Alter the namespace if you are using a different namespace for your OpsChain installation.
     :::
 
-2. Update your dev environment configuration to use the new `dev-secrets` secret:
+2. Update your dev environment `opschain` properties to use the new `dev-secrets` secret:
 
     ```bash
     opschain environment edit-properties -p secret -e dev
@@ -284,10 +282,8 @@ Just like [properties](../reference/concepts/properties.md), OpsChain's secret m
     ```json
     {
       "opschain": {
-        "config": {
-          "build_secrets": ["dev-secrets"],
-          "runner_secrets": ["dev-secrets"]
-        }
+        "env:build_secrets": ["dev-secrets"],
+        "env:runner_secrets": ["dev-secrets"]
       }
     }
     ```
@@ -300,9 +296,9 @@ Just like [properties](../reference/concepts/properties.md), OpsChain's secret m
 
 ### Including the default secrets
 
-As shown above, adding `build_secrets` or `runner_secrets` to your project or environment configuration disables the default secrets from being supplied to the relevant part of the step. If your project or environment requires the default secrets, simply add the relevant secret to your project configuration:
+As shown above, adding `env:build_secrets` or `env:runner_secrets` to your project or environment `opschain` properties disables the default secrets from being supplied to the relevant part of the step. If your project or environment requires the default secrets, simply add the relevant secret to your project configuration:
 
-1. For example, edit the project properties and add the `opschain-build-env` secret to the `build_secrets`:
+1. For example, edit the project properties and add the `opschain-build-env` secret to the `env:build_secrets`:
 
     ```bash
     opschain project edit-properties -p secret
@@ -311,9 +307,7 @@ As shown above, adding `build_secrets` or `runner_secrets` to your project or en
     ```json
     {
       "opschain": {
-        "config": {
-          "build_secrets": ["opschain-build-env", "custom-project-secrets"]
-        }
+        "env:build_secrets": ["opschain-build-env", "custom-project-secrets"]
       }
     }
     ```
@@ -324,10 +318,10 @@ As shown above, adding `build_secrets` or `runner_secrets` to your project or en
     opschain change create --environment-code dev --action show_environment--git-remote-name origin --git-rev secret-example --follow-logs --confirm
     ```
 
-:::note
+:::note NOTES
 
-- the `build_secrets` configuration is only used when building the image. The secrets are not available to OpsChain actions
-- the `runner_secrets` configuration is only used when running the action. The secrets are not available when building the image
+- the `env:build_secrets` are only used when building the image. The secrets are not available to OpsChain actions
+- the `env:runner_secrets` are only used when running the action. The secrets are not available when building the image
 - when a property and a secret both define the same environment variable, the secret value will be used
 
 :::

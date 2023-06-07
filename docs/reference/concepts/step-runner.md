@@ -1,5 +1,5 @@
 ---
-sidebar_position: 9
+sidebar_position: 10
 description: Learn more about how OpsChain runs steps within a step runner image.
 ---
 
@@ -70,7 +70,7 @@ git add .opschain/Dockerfile
 git commit -m "Adding a custom Dockerfile."
 ```
 
-:::note
+:::note NOTES
 
 1. commits prior to this point won't use the custom Dockerfile because it is not present in the repository.
 2. if you no longer wish to use the custom Dockerfile, `.opschain/Dockerfile` can be removed from the project repository.
@@ -115,7 +115,7 @@ When a property and a secret both define the same environment variable, the secr
 
 #### Secure build secrets
 
-OpsChain uses the [`build_secrets` configuration from the project and environment](properties.md#project--environment-configuration) to load Kubernetes secrets into the step image build. Any environment variables configured in the corresponding Kubernetes secrets are made available as environment variables to commands run via `opschain-exec` in your Dockerfile.
+By default, OpsChain will supply the key value pairs configured in the `opschain-build-env` Kubernetes secret into the step runner image build. These are made available as environment variables to commands run via `opschain-exec` in your Dockerfile.
 
 For example, if your custom step runner requires a utility from an AWS S3 drive, you can add your AWS credentials as key value pairs to the `opschain-build-env` secret (the default secret created for use by OpsChain image builds):
 
@@ -130,9 +130,11 @@ These environment variables will then be available to the `aws` CLI (when run vi
 RUN opschain-exec aws s3 cp s3://source-bucket-name/customer-utility /opt/opschain/customer-utility
 ```
 
+More granular control over the secrets that are supplied to the image build is available by configuring the `env:build_secrets` configuration in the project or environment [properties](properties.md#secrets). See [project and environment configuration](#project--environment-secret-configuration) for more information.
+
 #### Secure runner secrets
 
-OpsChain uses the [`runner_secrets` configuration from the project and environment](properties.md#project--environment-configuration) to load Kubernetes secrets into the step runner container during step execution. Any environment variables configured in the corresponding Kubernetes secrets are exported as environment variables when starting the step runner container.
+By default, OpsChain will supply the key value pairs configured in the `opschain-runner-env` Kubernetes secret into the step runner container. These will be exported as environment variables when starting the step runner container.
 
 For example, if your step copies a file into an AWS S3 drive, you can add your AWS credentials as key value pairs to the `opschain-runner-env` secret:
 
@@ -153,9 +155,11 @@ action :copy_utility do
 end
 ```
 
+More granular control over the secrets that are supplied to the step runner container is available by configuring the `env:runner_secrets` configuration in the project or environment[properties](properties.md#secrets). See [project and environment configuration](#project--environment-secret-configuration) for more information.
+
 #### Project & environment secret configuration
 
-If more granular control over build or runner secrets is required, OpsChain allows you to configure specific secrets to supply to changes in an environment.
+OpsChain allows you to configure specific secrets to supply to changes in an environment by configuring the `env:build_secrets` and `env:runner_secrets` configuration options in your project or environment [properties](properties.md#secrets).
 
 For example, adding the following to the project and environment properties will cause OpsChain to provide the key value pairs in the `project-build-secrets-1`, `project-build-secrets-2` and `environment-build-secrets` secrets as environment variables to `opschain-exec` during the image build:
 
@@ -164,9 +168,7 @@ _Project properties:_
 ```json
 {
   "opschain": {
-    "config": {
-      "build_secrets": ["project-build-secrets-1", "project-build-secrets-2"]
-    }
+    "env:build_secrets": ["project-build-secrets-1", "project-build-secrets-2"]
   }
 }
 ```
@@ -176,19 +178,21 @@ _Environment properties:_
 ```json
 {
   "opschain": {
-    "config": {
-      "build_secrets": ["environment-build-secrets"]
-    }
+    "env:build_secrets": ["environment-build-secrets"]
   }
 }
 ```
 
-:::note
+:::note NOTES
 
-1. Secrets are loaded in the order listed in your configuration - first all project secrets are loaded and then all environment secrets, in the order specified. If an environment variable exists in multiple Kubernetes secrets, the value from the most recently loaded secret will be supplied
-2. If you have configured `build_secrets` in your project or environment configuration, the environment variables in the `opschain-build-env` secret will not be supplied to your image build. To include them, simply add `opschain-build-env` to the project or environment `build_secrets` configuration
-3. If you have configured `runner_secrets` in your project or environment configuration, the environment variables in the `opschain-runner-env` secret will not be supplied to your step runner. To include them, simply add `opschain-runner-env` to the project or environment `runner_secrets` configuration
+1. Project and environment secrets are loaded in the order they are specified in your configuration - project secrets then environment secrets. If an environment variable exists in multiple Kubernetes secrets, the value from the most recently loaded secret will be supplied
+2. If you have configured `env:build_secrets` in your project or environment configuration, the environment variables in the `opschain-build-env` secret will not be supplied to your image build. To include them, simply add `opschain-build-env` to the project or environment `env:build_secrets` configuration
+3. If you have configured `env:runner_secrets` in your project or environment configuration, the environment variables in the `opschain-runner-env` secret will not be supplied to your step runner. To include them, simply add `opschain-runner-env` to the project or environment `env:runner_secrets` configuration
 
+:::
+
+:::caution
+The `env:build_secrets` and `env:runner_secrets` configuration options cannot be set in [repository properties](properties.md#git-repository). If either option is configured in your project's repository properties, it will be ignored.
 :::
 
 See the [using secrets in your image build](/docs/examples/using-secrets-in-your-change.md) example for more information.

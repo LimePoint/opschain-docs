@@ -105,7 +105,7 @@ To enable `opschain-action` to run child steps automatically, configure the `OPS
 [dev] $ OPSCHAIN_ACTION_RUN_CHILDREN=true opschain-action deploy_in_maintenance_mode
 ```
 
-:::note
+:::note NOTES
 
 1. The `OPSCHAIN_ACTION_RUN_CHILDREN` variable:
    - can be set in your shell's configuration, e.g. your `.zshrc`, to persist the config
@@ -173,7 +173,7 @@ To build a Docker image from your project's Dockerfile and then use the image fo
 
 As part of this process, the CLI will tag the newly built image with the supplied tag.
 
-:::note
+:::note NOTES
 
 1. If the `--tag` argument is not supplied with the `--build-runner-image` argument, the newly built image will be assigned the default tag `repository_runner:latest`.
 2. When the CLI tags the newly built image (with the supplied tag or the default tag) the tag will be removed from any existing image with that tag.

@@ -35,7 +35,7 @@ OpsChain.properties[:server][:setting]
 OpsChain.properties['server']['setting']
 ```
 
-:::note
+:::note NOTES
 
 1. You will not be able to use dot notation to access a property with the same name as a method on the properties object (for example `keys`). In this case you must use square bracket notation instead.
 2. Any arrays in the properties will be overwritten during a deep merge (use JSON objects with keys instead to ensure they are merged).
@@ -72,25 +72,32 @@ If more than one of these files exist in the repository, they will be merged tog
 
 Within each action, the result of merging these files will be available via `OpsChain.repository.properties`.
 
-#### Notes
+:::tip
+The repository properties are read only within each action (as OpsChain cannot modify the underlying Git repository to store any changes).
+:::
 
-1. The repository properties are read only within each action (as OpsChain cannot modify the underlying Git repository to store any changes).
-2. Loading repository properties in the [OpsChain development environment](../../development-environment.md) (`opschain dev`):
-   - running `opschain-action -AT` will raise explanatory exceptions if the schema or structure of these file(s) is invalid.
-   - the `<environment code>.[json|toml|yaml]` files will be loaded by `opschain-action` if the `step_context.json` file includes the relevant context environment code. e.g.
+:::caution
+[Build and runner secrets](step-runner.md#secure-secrets) can only be configured in [database](#database) properties. If `env:build_secrets` or `env:runner_secrets` configuration is included in your repository properties it will be ignored.
+:::
 
-    ```yaml
-    {
-      "context": {
-        ...
-        "environment": {
-          "code": "<environment code>",
-          ...
-        }
-      },
+#### OpsChain development environment
+
+Repository properties will be loaded (and validated) each time the `opschain-action` command is executed inside the [OpsChain development environment](../../development-environment.md). Running `opschain-action -AT` to list available actions will raise explanatory exceptions if the schema or structure of the properties file(s) is invalid.
+
+If your repository includes environment specific properties (`<environment code>.[json|toml|yaml]`) files you will need to configure your `step_context.json` to reflect the relevant environment code in the context. e.g.
+
+```yaml
+{
+  "context": {
+    ...
+    "environment": {
+      "code": "<environment code>",
       ...
     }
-    ```
+  },
+  ...
+}
+```
 
 ### Database
 
@@ -501,32 +508,17 @@ Each [step](concepts.md#step) [action](concepts.md#action) is executed using the
 
 An example of setting environment variables can be seen in the [Ansible example](https://github.com/LimePoint/opschain-examples-ansible). The [`project_properties.json`](https://github.com/LimePoint/opschain-examples-ansible/blob/master/project_properties.json) contains the credentials to be able to successfully login to your AWS account.
 
-### Project / environment configuration
+### Secrets
 
-The `opschain.config` section of the properties allow you to change the OpsChain configuration for the project or environment the properties are assigned to. The following configuration options can be set in your properties JSON:
+[Kubernetes secrets](https://kubernetes.io/docs/concepts/configuration/secret/) can be used to store secure key value pairs. By default, the key value pairs in the `opschain-build-env` secret are supplied to the OpsChain build service when building the [step runner image](concepts.md#step-runner-image). Similarly, the key value pairs in the `opschain-runner-env` secret are supplied to the OpsChain runner container when running each change step. To override these defaults, the `opschain.env:build_secrets` and `opschain.env:runner_secrets` can be configured as follows:
 
 ```json
 {
   "opschain": {
-    "config": {
-      "change_log_retention_days": -- see table below --,
-      "event_retention_days": -- see table below --,
-      "environments": {
-        "allow_parallel_changes": -- see table below --
-      }
-    }
+    "env:build_secrets": ["my-build-secrets"],
+    "env:runner_secrets": ["my-runner-secrets"]
   }
 }
 ```
 
-:::info
-Configuration options within `opschain.config.environments` can only be set in project properties and are applicable to all environments within the project. All other configuration options can be set at project or environment level, with environment configuration overriding project configuration.
-:::
-
-| Configuration Option       | Description                                                                                                                                                                                                                                                                                                                              | Default value                                                                    |
-|:---------------------------|:-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|:---------------------------------------------------------------------------------|
-| build_secrets              | A list of [Kubernetes secrets](https://kubernetes.io/docs/concepts/configuration/secret/) containing environment variables to supply to the OpsChain build service when building the [step runner image](concepts.md#step-runner-image). See [secure build secrets](step-runner.md#secure-build-secrets) for more information.           | `["opschain-build-env"]`                                                         |
-| runner_secrets             | A list of [Kubernetes secrets](https://kubernetes.io/docs/concepts/configuration/secret/) containing environment variables to supply to the OpsChain runner container. See [secure runner secrets](step-runner.md#secure-runner-secrets) for more information.                                                                           | `["opschain-runner-env"]`                                                        |
-| change_log_retention_days  | The number of days to retain change logs. See [change log retention](/docs/operations/maintenance/data-retention.md#change-log-retention) for more information.                                                                                                                                                                          | unset, OpsChain will retain all change logs.                                     |
-| event_retention_days       | The number of days to retain events. See [event retention](/docs/operations/maintenance/data-retention.md#event-retention) for more information                                                                                                                                                                                          | unset, OpsChain will retain all events.                                          |
-| allow_parallel_changes     | For a given project, allow multiple changes to run within a single environment. See [change execution options](changes.md#change-execution-options) in the changes reference guide for more information                                                                                                                                  | false                                                                            |
+See the [step runner reference guide](step-runner.md#project--environment-secret-configuration) for more information on configuring secrets for the [step runner image build](step-runner.md#secure-build-secrets) and [step execution](step-runner.md#secure-runner-secrets).

@@ -185,7 +185,7 @@ opschain environment create --project-code web --code prod --name 'Production' -
 
 #### Configure a default project
 
-OpsChain allows you to configure environment variables that will supply default values to the CLI. As the remainder of this guide utilises the `web` project, lets configure it as the default for our current session:
+OpsChain allows you to configure environment variables that will supply default values to the CLI. As the remainder of this guide utilises the `web` project, let's configure it as the default for our current session:
 
 ```bash
 export opschain_projectCode=web
@@ -273,7 +273,7 @@ The beginning of the log shows the output from the image builder as it builds th
 - a war file to deploy (more on this later)
 - the `instance_id` value from the project properties
 
-:::note
+:::note NOTES
 
 1. Contextual references need not be displayed in the logs and are displayed for example purposes only.
 2. In contrast to the simple actions used throughout this guide, various [example projects](/docs/category/examples) are available to demonstrate how OpsChain can affect real change on local and cloud servers.
@@ -311,7 +311,7 @@ EOF
 
 #### Run the production change
 
-Rather than use the CLI in interactive mode, lets create the production change by supplying the parameters on the command line.
+Rather than use the CLI in interactive mode, let's create the production change by supplying the parameters on the command line.
 
 ```bash
 opschain change create --environment-code prod --action deploy_war --git-remote-name origin --git-rev master --metadata-path prod_change_metadata.json --confirm
@@ -337,7 +337,7 @@ opschain change show --change-id xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
 
 #### View the production logs and properties
 
-Lets look at the logs from the production deployment and see how the production specific properties changed the deployment.
+Let's look at the logs from the production deployment and see how the production specific properties changed the deployment.
 
 ```bash
 opschain change show-logs --change-id xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx --follow
@@ -376,9 +376,80 @@ opschain change create --environment-code test --action deploy_war --git-remote-
 
 Notice how the updated WAR file has been used when running the `artifact_deploy.sh` script.
 
+### Human approvals for changes
+
+:::note
+This section of the getting started guide assumes you are able to make LDAP group changes. If not, then you can read along but won't be able to follow all the steps.
+:::
+
+OpsChain supports change approval workflows that can be configured by project or environment.
+
+Let's configure our production environment in the `web` project to require approval from any member of the `qa` LDAP group before our change is executed.
+
+```bash
+opschain environment edit-settings -e prod
+```
+
+```json
+{
+  "requires_approval_from": "qa"
+}
+```
+
+Create a new change in the production environment - note that it will wait until approved:
+
+```bash
+opschain change create --environment-code prod --action deploy_war --git-remote-name origin --git-rev master --confirm
+```
+
+The change will initialise but will then enter the `waiting_for_approval` state whilst waiting for human approval.
+
+Open another terminal and attempt to approve the change:
+
+```bash
+$ opschain change approve --change-id xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+...
+Failed to approve step xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx.
+You do not have permission to approve this step.
+```
+
+Our user is not a member of the `qa` group in LDAP and hence can't approve this change.
+
+Use the OpsChain CLI utility to add the user to the group (the command below assumes that your user account is called `opschain`, modify as required):
+
+```bash
+$ opschain server utils "add_user_to_group[opschain,qa]"
+Success
+```
+
+:::caution No spaces
+Please ensure there are no spaces included in the parameter you supply to `opschain server utils`.
+:::
+
+:::note
+This command works with the inbuilt LDAP server, and requires `kubectl` access to the OpsChain server installation. If you don't have this access then you won't be able to complete this section of the guide.
+
+If you are using a different LDAP server you will need to add the user to the `qa` group with the tools you normally use to manage your LDAP.
+
+Even if you are unable to perform the require LDAP changes, we still suggesting reading through these steps so that you understand the feature.
+:::
+
+Now that our user has been added to the `qa` LDAP group, let's approve the change:
+
+```bash
+$ opschain change approve --change-id xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+Change xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx approved.
+```
+
+The change will now progress as normal.
+
+The user that approved the change can be seen via the `opschain change show` command.
+
+This change approval flow makes it safer to roll out changes by providing governance and oversight with low friction.
+
 ### Combining tools
 
-With OpsChain's DSL and Ruby integration you can develop actions to do almost anything. Take advantage of the best tool for every task and combine tools to manage change in the way that best suits your business. Imagine the web server needs to be placed into maintenance mode prior to deploying the new WAR file, then restored to active service afterwards. OpsChain allows you to combine these steps into a single automated change. Lets run a multi-step change to see how OpsChain manages this process:
+With OpsChain's DSL and Ruby integration you can develop actions to do almost anything. Take advantage of the best tool for every task and combine tools to manage change in the way that best suits your business. Imagine the web server needs to be placed into maintenance mode prior to deploying the new WAR file, then restored to active service afterwards. OpsChain allows you to combine these steps into a single automated change. Let's run a multi-step change to see how OpsChain manages this process:
 
 ```bash
 opschain change create --environment-code test --action deploy_in_maintenance_mode --git-remote-name origin --git-rev master --confirm
@@ -416,7 +487,7 @@ Automated change rules accept a [cron expression](https://crontab.guru/) that pr
 
 ##### Add automated change rules
 
-To save the project team manual effort and enable them to consistently realise the cost savings of stopping their test instance overnight, lets configure some test environment rules, to execute `stop_instance` each evening, and `start_instance` each morning.
+To save the project team manual effort and enable them to consistently realise the cost savings of stopping their test instance overnight, let's configure some test environment rules, to execute `stop_instance` each evening, and `start_instance` each morning.
 
 ```bash
 opschain automated-change create --environment-code test --git-remote-name origin --git-rev master --action stop_instance --cron-schedule '0 0 20 * * *' --new-commits-only=false --repeat --confirm

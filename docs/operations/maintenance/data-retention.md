@@ -17,18 +17,18 @@ By default, OpsChain retains all change logs and events; i.e. it does not automa
 
 ### Event retention
 
-Setting the event retention configuration means that events older than the configured number of days will be removed.
+Configuring the event retention setting means that events older than the configured number of days will be removed.
 
 ### Change log retention
 
-Setting the change log storage retention configuration means that any logs older than the configured number of days will be removed. The logs are removed based on the change finish time. After a change's logs have been removed, any request for those logs (for example using `opschain change show-logs`) will return an error rather than the logs.
+Configuring the change log storage retention setting means that any logs older than the configured number of days will be removed. The logs are removed based on the change finish time. After a change's logs have been removed, any request for those logs (for example using `opschain change show-logs`) will return an error rather than the logs.
 
 ### Global
 
-The global retention setting is used if a project or environment configuration is not present. It can be set by setting the `OPSCHAIN_CHANGE_LOG_RETENTION_DAYS` and/or `OPSCHAIN_EVENT_RETENTION_DAYS` environment variables in the `.env` file.
+The global retention setting is used if a project or environment setting is not present. It can be configured by setting the `OPSCHAIN_CHANGE_LOG_RETENTION_DAYS` and/or `OPSCHAIN_EVENT_RETENTION_DAYS` environment variables in the `.env` file.
 
 :::note
-Update OPSCHAIN_CHANGE_LOG_RETENTION_DAYS or OPSCHAIN_EVENT_RETENTION_DAYS  in your `.env` to the desired value - adding the key if it is not present.
+Update OPSCHAIN_CHANGE_LOG_RETENTION_DAYS or OPSCHAIN_EVENT_RETENTION_DAYS in your `.env` to the desired value - adding the key if it is not present.
 :::
 
 ```bash
@@ -39,25 +39,24 @@ opschain server deploy
 
 ### Project/environment
 
-The global retention setting can be overridden by creating a `change_log_retention_days` or a `event_retention_days` config property within the project or environment properties. As with all properties, environment configuration values will override project configuration values.
+The global retention setting can be overridden by creating a `change_log_retention_days` or an `event_retention_days` setting within the appropriate project or environment. Similar to [properties](../../reference/concepts/properties.md), environment settings will override project settings.
 
-Below is an example of setting this configuration via the [OpsChain properties](/docs/reference/concepts/properties.md):
+Use the `opschain project|environment edit-settings` command to edit the project or environment settings. Below is an example JSON to configure the retention settings:
 
 ```json
 {
-  "opschain": {
-    "config": {
-      "change_log_retention_days": 30,
-      "event_retention_days": 7
-    }
-  },
+  "change_log_retention_days": 30,
+  "event_retention_days": 7,
   ...
 }
 ```
 
-Load the configuration into OpsChain using the `opschain project|environment set-properties` command.
+:::note NOTES
 
-The configuration can explicitly be set to `null` to disable log removal in this project or environment, overriding a higher level setting.
+-Setting the retention days to `0` will mean the change logs or events will be removed each time the removal job runs.
+-Setting can retention days to `null` will disable log or event removal in this project or environment, overriding a higher level setting.
+
+:::
 
 ## Removal job configuration
 

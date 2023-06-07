@@ -102,16 +102,18 @@ since="$(date --iso-8601=ns)"
 event='api:changes:create'
 
 while true; do
-  response="$(curl -s -G --user "${user}" http://localhost:3000/api/events --data-urlencode "filter[created_at_gt]=${since}")"
-  matches="$(jq --arg event "${event}" '.data | map(select(.attributes.type == $event))' <<<"${response}")"
-  if jq -e 'length > 0' <<<"${matches}" >/dev/null; then
-    echo "${matches}"
+  response="$(curl -s -G --user "${user}" http://localhost:3000/api/events --data-urlencode "filter[created_at_gt]=${since}" --data-urlencode "filter[type_eq]=${event}")"
+  if jq -e '.data | length > 0' <<<"${response}" >/dev/null; then
+    echo "${response}"
     break
   fi
-  since="$(jq -r --arg since "${since}" '.data[-1].attributes.created_at // $since' <<<"${response}")"
   sleep 1
 done
 ```
+
+:::tip
+Don't forget to add `--data-urlencode "filter[system_true]=yes"` if you wish to wait for a `system` event.
+:::
 
 #### Paginating through events
 
@@ -165,6 +167,9 @@ Currently, the following system events are supported. These values will be prese
 - `api:projects:update`
 - `api:projects:destroy`
 - `api:properties:update`
+- `api:settings:update`
+- `api:steps:approve`
+- `api:steps:approve:denied`
 - `api:steps:continue`
 
 Custom (i.e. user created) events can have any `type` as it is specified when the event is created.

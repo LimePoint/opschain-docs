@@ -1,5 +1,5 @@
 ---
-sidebar_position: 10
+sidebar_position: 11
 description: Details of OpsChain's archive feature and related CLI behaviour.
 ---
 

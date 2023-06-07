@@ -5,6 +5,32 @@ description: Learn about new releases of OpsChain, including new features and up
 
 # Changelog
 
+## [2023-06-07]
+
+### Important breaking changes {#2023-06-07-important-breaking-changes}
+
+- The properties API no longer returns the version in the JSONAPI `meta` (e.g. `{ meta: { version: 1 } }`) . It is now available in the `data` (e.g. `{ data: { attributes: { version: 1, data: ... } } }`).
+- OpsChain project and environment properties can no longer include configuration under `{ opschain: { config: ... } }`.
+  - The list of Kubernetes secrets to include in the environment during build and runtime are now configured in `{ opschain: { 'env:build_secrets': [<secret names>], 'env:runner_secrets': [<secret names>], ... } }`. See [secrets](reference/concepts/properties.md#secrets) for more information.
+  - The project / environment settings that were previously configured under `{ opschain: { config: ... } }` are now configured in the [project and environment settings](reference/concepts/settings.md).
+
+### Added {#2023-06-07-added}
+
+- OpsChain settings are now available via the `/api/settings/<settings_id>` endpoint. Current and prior versions of the settings are available via the `/api/settings/<settings_id>/versions` endpoint. The link to a project or environment's settings is available via the `settings` `relationship` in the JSON:API response for the relevant project or environment.
+- The CLI now provides `show-settings`, `set-settings` and `edit-settings` subcommands for projects and environments.
+- OpsChain changes now support human approvals. Learn more in the [getting started guide.](/docs/getting-started/README.md#human-approvals-for-changes)
+  - The step API response now includes the `requires_approval_from` and `approved_by` information for the step.
+  - The change API response now includes the `requires_approval_from` and `approved_by` information for the change's root step.
+
+### Changed {#2023-06-07-changed}
+
+- **Breaking change** - The `approvers` value in the step API response has been renamed to `continued_by`.
+
+### Fixed {#2023-06-07-fixed}
+
+- Fixed a bug where changes could not be created with a Git SHA - they could still be created with a tag or a branch.
+- Fixed a bug where listing actions in the OpsChain development environment would fail if any of its resource's controller's constructors require OpsChain properties environment variables.
+
 ## [2023-05-12]
 
 ### Added {#2023-05-12-added}
@@ -25,7 +51,7 @@ description: Learn about new releases of OpsChain, including new features and up
 
 ## [2023-04-14] {#2023-04-14}
 
-### Important breaking changes {#2023-04-14-changed}
+### Important breaking changes {#2023-04-14-important-breaking-changes}
 
 - The OpsChain runner images have been upgraded to Ruby 3.1.4.
   - Please ensure the `.ruby-version` in your project Git repositories is updated to `ruby-3.1.4`.

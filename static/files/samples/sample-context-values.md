@@ -25,11 +25,13 @@ change:
     custom:
       change: metadata
   automated: false
+  approved_by: []
   environment_name: Receivables
   project_name: Finance
   git_remote_name: origin
   git_rev: bug-fix
   commit_sha: 5213c76dad01ac0d87c2c900d46778675d4dc760
+  requires_approval_from:
 step:
   id: 37fdf12f-aff3-4134-8926-a2321cef5acf
   status_code: running
@@ -38,8 +40,10 @@ step:
   started_at: '2020-05-20T10:00:05.000Z'
   finished_at:
   step_type: standard
-  approvers: []
+  approved_by: []
+  continued_by: []
   child_execution_strategy: sequential
+  requires_approval_from:
 user:
   name: mary
   groups:

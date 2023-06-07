@@ -60,18 +60,14 @@ The OpsChain properties guide highlights a number of limitations that must be ta
 
 ### Change execution options
 
-By default, OpsChain will only allow a single change to execute for each project environment. This aims to reduce the likelihood that the limitations described above will impact running changes. However, if the actions in your project's Git repository perform logic that can be run concurrently within a single environment, and they interact with the database properties in a manner that will not be impacted by the limitations, you can configure the project to allow concurrent changes within the project's environments. To do this, use the `opschain project edit-properties` command to set the `allow_parallel_changes` option to `true` in your project's properties:
+By default, OpsChain will only allow a single change to execute for each project environment. This aims to reduce the likelihood that the limitations described above will impact running changes. However, if the actions in your project's Git repository perform logic that can be run concurrently within a single environment, and they interact with the database properties in a manner that will not be impacted by the limitations, you can configure the project to allow concurrent changes within the project's environments. To do this, use the `opschain project edit-settings` command to set the `allow_parallel_changes` setting to `true` in your project's settings:
 
 ```json
 {
-  "opschain": {
-    "config": {
-      "environments": {
-        "allow_parallel_changes": true
-      }
-    }
-  },
   ...
+  "environments": {
+    "allow_parallel_changes": true
+  }
 }
 ```
 
@@ -79,8 +75,8 @@ By default, OpsChain will only allow a single change to execute for each project
 If you have `jq` installed you can use the following command to set the option programmatically:
 
 ```bash
-opschain project show-properties -p <your project code> | jq '.opschain.config.environments += { "allow_parallel_changes": true }' > /tmp/updated_project_properties.json
-opschain project set-properties -p <your project code> -f /tmp/updated_project_properties.json -y
+opschain project show-settings -p <project code> | jq '.environments += { "allow_parallel_changes": true }' > /tmp/updated_project_settings.json
+opschain project set-settings -p <project code> -f /tmp/updated_project_settings.json -y
 ```
 
 :::
@@ -122,7 +118,7 @@ When querying changes via the change API, you can use OpsChain's [API filtering]
 curl -G --user "{{username}}:{{password}}" 'http://localhost:3000/api/changes' --data-urlencode 'filter[metadata_approver_eq]=A. Manager'
 ```
 
-:::note
+:::note NOTES
 
 1. Update the username, password, host and port to reflect your OpsChain server configuration.
 2. If you wish to filter on a nested metadata value, separate the keys with a comma. For example, to find all changes with metadata `{ "nested": { "key": "some_value } }`, you could use the following filter:

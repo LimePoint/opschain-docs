@@ -29,11 +29,15 @@
         }
       },
       "automated": false,
+      "approved_by": [
+
+      ],
       "environment_name": "Receivables",
       "project_name": "Finance",
       "git_remote_name": "origin",
       "git_rev": "bug-fix",
-      "commit_sha": "5213c76dad01ac0d87c2c900d46778675d4dc760"
+      "commit_sha": "5213c76dad01ac0d87c2c900d46778675d4dc760",
+      "requires_approval_from": null
     },
     "step": {
       "id": "37fdf12f-aff3-4134-8926-a2321cef5acf",
@@ -43,10 +47,14 @@
       "started_at": "2020-05-20 10:00:05 UTC",
       "finished_at": null,
       "step_type": "standard",
-      "approvers": [
+      "approved_by": [
 
       ],
-      "child_execution_strategy": "sequential"
+      "continued_by": [
+
+      ],
+      "child_execution_strategy": "sequential",
+      "requires_approval_from": null
     },
     "user": {
       "name": "mary",

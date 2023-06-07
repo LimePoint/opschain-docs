@@ -34,12 +34,12 @@
   --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.3);
 }
 
-h2#configuration-variables~h4 {
+h2#configuration-variables~h4, h2#setting-descriptions~h4 {
   font-weight: 900;
   margin-bottom: 0.5rem;
 }
 
-h2#configuration-variables~h4+p {
+h2#configuration-variables~h4+p, h2#setting-descriptions~h4+p {
   font-size: 0.95rem;
   margin-top: 0.5rem;
   margin-bottom: 0.5rem;
@@ -47,12 +47,12 @@ h2#configuration-variables~h4+p {
   color: var(--ifm-color-content-secondary);
 }
 
-h2#configuration-variables~h4+p em {
+h2#configuration-variables~h4+p em, h2#setting-descriptions~h4+p em {
   font-weight: normal;
   color: var(--ifm-color-content);
 }
 
-h2#configuration-variables~p+h4 {
+h2#configuration-variables~p+h4, h2#setting-descriptions~p+h4 {
   border-top: 1px solid var(--ifm-table-border-color);
   padding-top: 1.5rem;
 }

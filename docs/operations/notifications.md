@@ -11,17 +11,15 @@ If you would like OpsChain to provide notification for other change events, plea
 
 ## Notifications configuration
 
-OpsChain allows notifications to be sent to any endpoint supported by [Apprise](https://github.com/caronc/apprise). This includes common endpoints like Slack, Microsoft Teams, email servers, and many more. To enable notifications, update your project or environment properties to include the failure notification `target_url`:
+OpsChain allows notifications to be sent to any endpoint supported by [Apprise](https://github.com/caronc/apprise). This includes common endpoints like Slack, Microsoft Teams, email servers, and many more. To enable notifications, update your project or environment settings to include the failure notification `target_url`:
+
+`opschain project|environment edit-settings`
 
 ```json
 {
-  "opschain": {
-    "config": {
-      "notifications": {
-        "failure": {
-          "target_url": "{{target url}}"
-        }
-      }
+  "notifications": {
+    "failure": {
+      "target_url": "{{target url}}"
     }
   },
   ...
@@ -41,7 +39,7 @@ apprise -vv --title='Test message' "{{target url}}" # e.g. slack://TokenA/TokenB
 
 :::caution Credential visibility
 
-Note that any other users that have permission to access this configuration (i.e. access to this project and environment) can view the credentials stored in the config.
+Note that any users that have permission to access these settings (i.e. access to this project and environment) can view the credentials stored in the `target_url`. See the [restricting user access](restricting-user-access.md) guide for information on limiting user access to projects and environments.
 
 The credentials are encrypted at rest, so they will not be viewable by anyone who does not have permission.
 
@@ -60,13 +58,9 @@ Slack's incoming webhook URL can be used to receive messages from OpsChain. Comp
 
 ```json
 {
-  "opschain": {
-    "config": {
-      "notifications": {
-        "failure": {
-          "target_url": "https://hooks.slack.com/services/{{TokenA}}/{{TokenB}}/{{TokenC}}"
-        }
-      }
+  "notifications": {
+    "failure": {
+      "target_url": "https://hooks.slack.com/services/{{TokenA}}/{{TokenB}}/{{TokenC}}"
     }
   },
   ...
@@ -87,13 +81,9 @@ If you are using an email service supported natively by [Apprise](https://github
 
 ```json
 {
-  "opschain": {
-    "config": {
-      "notifications": {
-        "failure": {
-          "target_url": "mailto://{{user}}:{{app_password}}@gmail.com?to={{receivingAddress@example.com}}"
-        }
-      }
+  "notifications": {
+    "failure": {
+      "target_url": "mailto://{{user}}:{{app_password}}@gmail.com?to={{receivingAddress@example.com}}"
     }
   },
   ...
