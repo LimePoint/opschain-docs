@@ -35,7 +35,7 @@ See the OpsChain [change reference guide](changes.md) guide for more information
 
 Changes, and the steps that make them up, transition between states as they execute.
 
-Changes are created in the `pending` state and are in this state until they start execution. A change stays in the `pending` state while waiting for any existing changes in the same environment to finish. A step stays in the `pending` state until its prerequisites are complete. If a prerequisite step fails any dependent steps will remain in the `pending` state and will not transition further.
+When a change is created, its state is set to `initializing` whilst the Git commit is validated. Once the Git commit details are validated, the change moves to the `pending` state. A change remains in the `pending` state while waiting for any existing changes in the same environment to finish (this behaviour can be overridden using [change execution options](changes.md#change-execution-options)). A step remains in the `pending` state until its prerequisites are complete. If a step fails, any steps in the same change that are still `pending` will be set to the `aborted` state.
 
 When a change starts executing it enters the `queued` state. Changes and steps stay in the `queued` state while they are waiting for an OpsChain worker to start executing them (e.g. if all workers are already busy).
 

@@ -20,6 +20,10 @@ opschain server deploy
 # we suggest committing your config to Git after upgrade
 ```
 
+:::warning
+If the opschain-build-service appears stuck in a pending state during an upgrade, please check this troubleshooting guide: [opschain-build-service stuck in pending state](/docs/troubleshooting.md#opschain-build-service-pod-stuck-in-pending-state-during-an-upgrade)
+:::
+
 ## Configure overrides
 
 Any configuration modifications that need to be applied to `values.yaml` during the upgrade can be stored in a `values.override.yaml` file in the same directory.

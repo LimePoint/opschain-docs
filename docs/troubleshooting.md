@@ -327,3 +327,22 @@ RUN --mount=type=secret,required=true,id=env_context_json,uid=10001,gid=10001,ta
     opschain-exec bundle install
 ...
 ```
+
+### OpsChain build service pod stuck in 'pending' state during an upgrade
+
+If the configuration option [OPSCHAIN_BUILD_SERVICE_ROOTLESS](operations/configuring-opschain.md#opschain_image_build_rootless) is set to true and the `opschain-build-service` pod is stuck in a 'pending' state during an upgrade, it may be that the `fuse-device-plugin-daemonset` daemonset is not running or requires a restart. This pod is responsible for making the required FUSE devices on the node, available to the `opschain-build-service` pod when running in rootless mode.
+
+If this is the case, the `opschain-build-service` pod will show events similar to the following:
+
+```bash
+Warning  FailedScheduling  22m                  default-scheduler  0/1 nodes are available: 1 Insufficient github.com/fuse. preemption: 0/1 nodes are available: 1 No preemption victims found for incoming pod.
+Warning  FailedScheduling  6m23s (x7 over 22m)  default-scheduler  0/1 nodes are available: 1 Insufficient github.com/fuse. preemption: 0/1 nodes are available: 1 No preemption victims found for incoming pod.
+```
+
+#### Solution - restart the `fuse-device-plugin-daemonset` daemonset
+
+To restart the `fuse-device-plugin-daemonset` daemonset, run the following command:
+
+```bash
+kubectl rollout restart daemonset/fuse-device-plugin-daemonset -n opschain
+```

@@ -5,6 +5,56 @@ description: Learn about new releases of OpsChain, including new features and up
 
 # Changelog
 
+## [2023-08-02]
+
+### Important breaking changes {#2023-08-02-important-breaking-changes}
+
+- Modifiable database properties are no longer accessible via `OpsChain.environment.properties` and `OpsChain.project.properties`. Use the `OpsChain.properties_for(:environment)` and `OpsChain.properties_for(:project)` methods instead. See the [properties reference](reference/concepts/properties.md#modifiable-properties) for more information.
+- Repository properties are no longer accessible via `OpsChain.repository.properties`. Use the `OpsChain.repository_properties` method instead. See the [properties reference](reference/concepts/properties.md#git-repository) for more information.
+- `OpsChain.context` no longer contains `project` and `environment` directly. These can now be accessed via `OpsChain.context.parents`, e.g.`OpsChain.context.parents.project`.
+- The format to prevent access to projects and environments in the OpsChain OPA security provider (in `security_configuration.json`) has changed. [Learn more](/docs/operations/restricting-user-access#update-the-security-configuration).
+- The changes get API no longer supports the `environment_{{attribute}}` filter, instead `parent_{{attribute}}` can be used. See the [query examples](/docs/reference/api-filtering.md#query-examples) to see the updated environment filter example.
+
+### Added {#2023-08-02-added}
+
+- Multi-project Git repositories can now include project specific [repository properties](/docs/reference/concepts/properties.md#git-repository).
+- The project and environment specific repository properties can now be accessed via `OpsChain.repository_properties_for(:environment)` and `OpsChain.repository_properties_for(:project)`. See the [properties reference](reference/concepts/properties.md#parent-specific-repository-properties) for more information.
+- `OpsChain.properties_for` has been added for use in `actions.rb`, see the [properties reference](reference/concepts/properties.md#modifiable-properties) for more information.
+- Step specific logs are now available from the `/steps/<step_id>/log_lines` API. The results can be filtered using the same filtering syntax as change log lines or events.
+- Events are now created when an automated change rule fails. Learn more in the [automated changes documentation](reference/concepts/automated-changes.md#automated-change-rule-events).
+
+### Changed {#2023-08-02-changed}
+
+- Upgraded OpsChain DB image to PostgreSQL 14.8.
+- Upgraded OpsChain ingress image to Kong 3.3.0.
+- Upgraded OpsChain log aggregator image to Fluentd v1.16.1-1.0.
+- Upgraded OpsChain runner images to Fluent Bit 2.0.14.
+- Upgraded BuildKit to 0.12.0.
+- Upgraded Kong Helm chart to 2.24.0.
+- Upgraded Kong ingress controller to 2.10.3.
+- Upgraded OpsChain Ansible example to Terraform 'hashicorp/aws' provider 5.8.0.
+- Upgraded OpsChain Ansible, Confluent, Terraform and Weblogic examples to Terraform 1.5.3.
+- Upgraded OpsChain Confluent example to Confluent 6.2.11.
+- Upgraded OpsChain Confluent, Terraform and Weblogic examples to Terraform 'hashicorp/kubernetes' provider 2.22.0.
+- Upgraded OpsChain Vault example to Vault 1.14.0.
+- Upgraded OpsChain auth image to OPA 0.54.0.
+- Upgraded OpsChain kubectl image to kubectl v1.27.3.
+- Upgraded cert-manager to v1.12.2.
+- **Breaking change** - The `project_properties_versions` and `environment_properties_versions` relationships are no longer returned in the `/step` or `/change` API response bodies. They have been replaced by the `properties_versions` collection which includes all the properties versions that were active when the relevant step started. See the [API reference documentation](https://docs.opschain.io/api-docs/#tag/Steps) to see an example of the new response format.
+- When a change or step fails, any un-executed steps in the same change will be set to the `aborted` state instead of remaining in the `pending` state.
+- The `api:environments:*` events have been renamed to `api:nodes:*`.
+- **Breaking change** - The [OpsChain getting started repo](https://github.com/LimePoint/opschain-getting-started) has been updated to reflect the changes to `OpsChain.context`.
+
+### Removed {#2023-08-02-removed}
+
+- `OpsChain.project` and `OpsChain.environment` are no longer available in an `actions.rb`. Use the new `OpsChain.properties_for` method instead.
+- `OpsChain.context.project` and `OpsChain.context.environment` are no longer available in an `actions.rb`. They are now accessed via `OpsChain.context.parents` instead, e.g. `OpsChain.context.parents.project`.
+
+### Fixed {#2023-08-02-fixed}
+
+- Fixed a bug where one change failing may result in multiple notifications being sent.
+- Fixed a bug where commit-based automated change rules could keep creating new changes, even when no new commits were created.
+
 ## [2023-06-07]
 
 ### Important breaking changes {#2023-06-07-important-breaking-changes}

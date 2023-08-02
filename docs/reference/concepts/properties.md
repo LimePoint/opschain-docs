@@ -64,15 +64,18 @@ OpsChain will look for the following files in your project's Git repository:
 1. `.opschain/properties.json`
 2. `.opschain/properties.toml`
 3. `.opschain/properties.yaml`
-4. `.opschain/environments/<environment code>.json`
-5. `.opschain/environments/<environment code>.toml`
-6. `.opschain/environments/<environment code>.yaml`
+4. `.opschain/projects/<project code>.json`
+5. `.opschain/projects/<project code>.toml`
+6. `.opschain/projects/<project code>.yaml`
+7. `.opschain/environments/<environment code>.json`
+8. `.opschain/environments/<environment code>.toml`
+9. `.opschain/environments/<environment code>.yaml`
 
-If more than one of these files exist in the repository, they will be merged together in the order listed above. When two files define the same property/value, the latter file's value will override the former. E.g. if `.opschain/properties.toml` and `.opschain/environments/<environment code>.json` both contain the same property, the value from `.opschain/environments/<environment code>.json` will be used.
+If multiple files exist in the repository, they will be merged together in the order listed above. Where multiple files define the same property/value, the latter file's value will override the former. E.g. if `.opschain/properties.toml` and `.opschain/environments/<environment code>.json` both contain the same property, the value from `.opschain/environments/<environment code>.json` will be used.
 
-Within each action, the result of merging these files will be available via `OpsChain.repository.properties`.
+Within each action, the result of merging the properties in these files will be available via `OpsChain.repository_properties`.
 
-:::tip
+:::note
 The repository properties are read only within each action (as OpsChain cannot modify the underlying Git repository to store any changes).
 :::
 
@@ -80,15 +83,27 @@ The repository properties are read only within each action (as OpsChain cannot m
 [Build and runner secrets](step-runner.md#secure-secrets) can only be configured in [database](#database) properties. If `env:build_secrets` or `env:runner_secrets` configuration is included in your repository properties it will be ignored.
 :::
 
+#### Parent specific repository properties
+
+The project or environment specific Git repository properties can be accessed via `OpsChain.repository_properties_for(:environment)` or `OpsChain.repository_properties_for(:project)` respectively.
+
+:::note
+If multiple files exist for a given project or environment code (e.g. `.opschain/environments/dev.json` and `.opschain/environments/dev.toml`) then `OpsChain.repository_properties_for(:environment)` will merge the properties in these files and return the result.
+
+Access to the individual file contents is not available via the `repository_properties_for` API. Requiring access to the individual files may indicate a brittle properties implementation. If access is required then the individual files can be read manually using normal Ruby APIs, e.g. `File.read` etc.
+:::
+
 #### OpsChain development environment
 
 Repository properties will be loaded (and validated) each time the `opschain-action` command is executed inside the [OpsChain development environment](../../development-environment.md). Running `opschain-action -AT` to list available actions will raise explanatory exceptions if the schema or structure of the properties file(s) is invalid.
 
-If your repository includes environment specific properties (`<environment code>.[json|toml|yaml]`) files you will need to configure your `step_context.json` to reflect the relevant environment code in the context. e.g.
+If you wish to use environment or project specific repository properties in the development environment (`<project code>.{json,toml,yaml}` or `<environment code>.{json,toml,yaml}`) files you will need to configure your `step_context.json` to reflect the relevant project or environment code in the context. e.g.
 
 ```yaml
 {
   "context": {
+    "project": {
+      "code": "<project code>",
     ...
     "environment": {
       "code": "<environment code>",
@@ -101,7 +116,7 @@ If your repository includes environment specific properties (`<environment code>
 
 ### Database
 
-Properties stored in the database are encrypted prior to being written to disk such that they are encrypted-at-rest. Within each action, project properties are available via `OpsChain.project.properties`. Similarly environment properties are available via `OpsChain.environment.properties`.
+Properties stored in the database are encrypted prior to being written to disk such that they are encrypted-at-rest. Within each action, project properties are available via `OpsChain.properties_for(:project)`. Similarly, environment properties are available via `OpsChain.properties_for(:environment)`. Actions can modify these properties at runtime and any changes will be persisted to the database (see [modifiable properties](#modifiable-properties) below).
 
 #### Editing properties
 
@@ -191,11 +206,11 @@ end
 
 #### Modifiable properties
 
-In addition to the read only values available from `OpsChain.properties`, the project and environment specific properties are available via:
+In addition to the read only values available from `OpsChain.properties`, the project and environment specific database properties are available via:
 
 ```ruby
-OpsChain.project.properties
-OpsChain.environment.properties
+OpsChain.properties_for(:project)
+OpsChain.properties_for(:environment)
 ```
 
 These are exposed to allow you to add, remove and update properties, with any modifications saved on [step](concepts.md#step) completion. The modified project and environment properties are then available to any subsequent [steps](concepts.md#step) or [changes](concepts.md#change).
@@ -205,7 +220,7 @@ The object returned by `OpsChain.properties` is the merged set of properties and
 ```ruby
 puts OpsChain.properties.example # ''
 props = OpsChain.properties
-OpsChain.project.properties.example = 'hello'
+OpsChain.properties_for(:project).example = 'hello'
 puts OpsChain.properties.example # 'hello'
 puts props.example # '' - this value was not updated
 ```
@@ -215,20 +230,20 @@ puts props.example # '' - this value was not updated
 The following code will set the project `server_name` property, creating or updating it as applicable:
 
 ```ruby
-OpsChain.project.properties.server_name = 'server1.limepoint.com'
+OpsChain.properties_for(:project).server_name = 'server1.limepoint.com'
 ```
 
 :::note
-As properties behave like a Hashie::Mash, creating multiple levels of property nesting in a single command requires you to supply a hash as the value. E.g._
+As properties behave like a `Hashie::Mash`, creating multiple levels of property nesting in a single command requires you to supply a hash as the value. E.g.
 
 ```ruby
-OpsChain.project.properties.parent = { child: { grandchild: 'value' } }
+OpsChain.properties_for(:project).parent = { child: { grandchild: 'value' } }
 ```
 
 Once created, nested properties can be updated as follows:
 
 ```ruby
-OpsChain.project.properties.parent.child.grandchild = 'new value'
+OpsChain.properties_for(:project).parent.child.grandchild = 'new value'
 ```
 
 :::
@@ -238,14 +253,14 @@ OpsChain.project.properties.parent.child.grandchild = 'new value'
 To delete the grandchild property described above, use the following command:
 
 ```ruby
-OpsChain.project.properties.parent.child.delete(:grandchild)
+OpsChain.properties_for(:project).parent.child.delete(:grandchild)
 ```
 
 :::note
 This would leave the parent and child keys in the project properties. To delete the entire tree, use the following command:
 
 ```ruby
-OpsChain.project.properties.delete(:parent)
+OpsChain.properties_for(:project).delete(:parent)
 ```
 
 :::
@@ -271,15 +286,15 @@ Using a JSON Patch to apply changes made by actions to the OpsChain properties e
 ```ruby
 # Sets up an initial set of values for the OpsChain project properties, then calls the foo and bar child actions in parallel
 action :default, steps: [:foo, :bar], run_as: :parallel do
-  OpsChain.project.properties = { foo: 'old_foo', bar: 'old_bar' }
+  OpsChain.properties_for(:project) = { foo: 'old_foo', bar: 'old_bar' }
 end
 
 action :foo do
-  OpsChain.project.properties.foo = 'new_foo'
+  OpsChain.properties_for(:project).foo = 'new_foo'
 end
 
 action :bar do
-  OpsChain.project.properties.bar = 'new_bar'
+  OpsChain.properties_for(:project).bar = 'new_bar'
 end
 ```
 
@@ -296,15 +311,15 @@ Modifying the same property in concurrent steps will produce unexpected results.
 ```ruby
 # Sets up an initial set of values for the OpsChain project properties, then calls the foo and bar child actions in parallel
 action :default, steps: [:foo, :bar], run_as: :parallel do
-  OpsChain.project.properties = { race: 'initial value' }
+  OpsChain.properties_for(:project) = { race: 'initial value' }
 end
 
 action :foo do
-  OpsChain.project.properties.race = 'possible value 1'
+  OpsChain.properties_for(:project).race = 'possible value 1'
 end
 
 action :bar do
-  OpsChain.project.properties.race = 'possible value 2'
+  OpsChain.properties_for(:project).race = 'possible value 2'
 end
 ```
 
@@ -316,15 +331,15 @@ _Scenario 1:_ Deleting a property in one child, while modifying that property's 
 
 ```ruby
 action :default, steps: [:foo, :bar], run_as: :parallel do
-  OpsChain.project.properties.parent = { child: 'value' }
+  OpsChain.properties_for(:project).parent = { child: 'value' }
 end
 
 action :foo do
-  OpsChain.project.properties.delete(:parent)
+  OpsChain.properties_for(:project).delete(:parent)
 end
 
 action :bar do
-  OpsChain.project.properties.parent.child = 'new value'
+  OpsChain.properties_for(:project).parent.child = 'new value'
   sleep(10)
 end
 ```
@@ -333,15 +348,15 @@ _Scenario 2:_ Modifying the data type of a property in one child, while generati
 
 ```ruby
 action :default, steps: [:foo, :bar], run_as: :parallel do
-  OpsChain.project.properties.parent = { child: 'value' }
+  OpsChain.properties_for(:project).parent = { child: 'value' }
 end
 
 action :foo do
-  OpsChain.project.properties.parent = 'I am now a string'
+  OpsChain.properties_for(:project).parent = 'I am now a string'
 end
 
 action :bar do
-  OpsChain.project.properties.parent.child = 'new value'
+  OpsChain.properties_for(:project).parent.child = 'new value'
   sleep(10)
 end
 ```
@@ -444,13 +459,13 @@ The project or environment properties can be edited directly to add, edit or rem
 To store a file in the project properties
 
 ```ruby
-  OpsChain.project.store_file!('/file/to/store.txt')
+  OpsChain.store_file!(:project, '/file/to/store.txt')
 ```
 
 To remove a file from the project properties
 
 ```ruby
-  OpsChain.project.remove_file!('/file/to/store.txt')
+  OpsChain.remove_file!(:project, '/file/to/store.txt')
 ```
 
 ##### Environment file properties
@@ -458,13 +473,13 @@ To remove a file from the project properties
 To store a file in the environment properties
 
 ```ruby
-  OpsChain.environment.store_file!('/file/to/store.txt')
+  OpsChain.store_file!(:environment, '/file/to/store.txt')
 ```
 
 To remove a file from the environment properties
 
 ```ruby
-  OpsChain.environment.remove_file!('/file/to/store.txt')
+  OpsChain.remove_file!(:environment, '/file/to/store.txt')
 ```
 
 ##### Optional file format
@@ -472,7 +487,7 @@ To remove a file from the environment properties
 The `store_file!` method accepts an optional `format:` parameter, allowing you to specify the [file format](#file-formats) OpsChain should use when adding the file into the file properties. For example:
 
 ```ruby
-  OpsChain.environment.store_file!('/file/to/store.txt', format: :base64)
+  OpsChain.store_file!(:environment, '/file/to/store.txt', format: :base64)
 ```
 
 ##### Storing files examples

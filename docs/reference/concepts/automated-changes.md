@@ -12,6 +12,7 @@ After following this guide you should know:
 - how automated change rules work
 - how to create, list and delete automated change rules
 - the basics of automated change rules
+- how to diagnose errors in automated change rules
 
 ## Prerequisites
 
@@ -93,3 +94,12 @@ opschain automated-change create --project-code demo --environment-code dev --gi
 ```
 
 If the `--new-commits-only=false` were changed to `--new-commits-only=true` then the new change would only be created if new commits had been added to `master`. If the `--repeat` argument were changed to `--repeat=false` then a single new change would be created at 7pm and then the automated change rule would be deleted - the change would be created once rather than daily.
+
+## Automated change rule events
+
+Automated change rules create [events](events) in the following error conditions:
+
+- when the Git commit SHA can't be determined for the Git revision in the relevant Git remote. The event will have a type of `error:automated_change_rule:git_sha`
+- when the change creation fails for the automated change rule. The event will have a type of `error:automated_change_rule:change_creation`
+
+All automated change error events have a type starting with `error:automated_change_rule`, and hence can be fetched from the API using the following filters, `filter[type_start]=error:automated_change_rule` and `filter[system_eq]=true`. Learn more in the [API filtering guide](../api-filtering).

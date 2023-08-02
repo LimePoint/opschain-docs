@@ -34,9 +34,9 @@ Context information can be accessed using dot or square bracket notation with st
 ```ruby
 require 'opschain'
 
-OpsChain.context.project.code
-OpsChain.context[:project][:code]
-OpsChain.context['project']['code']
+OpsChain.context.change.action
+OpsChain.context[:change][:action]
+OpsChain.context['change']['action']
 ```
 
 :::note
@@ -51,7 +51,7 @@ In the example below, running the `main` action in the development environment w
 require 'opschain'
 
 action :enable_logging do
-  OpsChain.logger.level = ::Logger::DEBUG if OpsChain.context.environment.code == 'dev'
+  OpsChain.logger.level = ::Logger::DEBUG if OpsChain.context.parents.environment.code == 'dev'
 end
 
 action main: ['enable_logging'] do

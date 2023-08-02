@@ -157,9 +157,9 @@ Currently, the following system events are supported. These values will be prese
 - `api:automated_change_rules:destroy`
 - `api:changes:create`
 - `api:changes:destroy`
-- `api:environments:create`
-- `api:environments:update`
-- `api:environments:destroy`
+- `api:nodes:create`
+- `api:nodes:update`
+- `api:nodes:destroy`
 - `api:git_remotes:create`
 - `api:git_remotes:update`
 - `api:git_remotes:destroy`
@@ -171,6 +171,8 @@ Currently, the following system events are supported. These values will be prese
 - `api:steps:approve`
 - `api:steps:approve:denied`
 - `api:steps:continue`
+- `error:automated_change_rule:change_creation`
+- `error:automated_change_rule:git_sha`
 
 Custom (i.e. user created) events can have any `type` as it is specified when the event is created.
 

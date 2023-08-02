@@ -68,12 +68,9 @@ When OpsChain is started, it initialises its security configuration from the `se
 
 ```json
 {
-  "group_unauthorised_projects": {
-    "ldap-group-1": ["ansible"]
-  },
-  "group_unauthorised_environments": {
-    "ldap-group-1": ["terraform.dev"],
-    "ldap-group-2": ["ansible.local", "vault.dev"]
+  "group_unauthorised_nodes": {
+    "ldap-group-1": ["/projects/ansible", "/projects/terraform/environments/dev"],
+    "ldap-group-2": ["/projects/ansible/environments/local", "/projects/vault/environments/dev"]
   }
 }
 ```

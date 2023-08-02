@@ -1,19 +1,5 @@
 {
   "context": {
-    "project": {
-      "id": "bb7bef85-805f-43d9-a267-7e901630ffa0",
-      "code": "fin",
-      "name": "Finance",
-      "description": "Finance applications",
-      "archived": false
-    },
-    "environment": {
-      "id": "530d796b-60ff-4bc6-ad09-ac3eaf1afa45",
-      "code": "rcv",
-      "name": "Receivables",
-      "description": "RMS",
-      "archived": false
-    },
     "change": {
       "id": "3a97c789-8f4e-497c-a1aa-04efaa2e87e7",
       "created_by": "mary",
@@ -62,17 +48,32 @@
         "manager",
         "purchasing"
       ]
-    }
-  },
-  "project": {
-    "properties": {
+    },
+    "parents": {
       "project": {
-        "common": "property"
+        "id": "bb7bef85-805f-43d9-a267-7e901630ffa0",
+        "code": "fin",
+        "name": "Finance",
+        "description": "Finance applications",
+        "archived": false,
+        "project_type": "OpsChain"
+      },
+      "environment": {
+        "id": "530d796b-60ff-4bc6-ad09-ac3eaf1afa45",
+        "code": "rcv",
+        "name": "Receivables",
+        "description": "RMS",
+        "archived": false
       }
     }
   },
-  "environment": {
-    "properties": {
+  "properties": {
+    "project": {
+      "project": {
+        "common": "property"
+      }
+    },
+    "environment": {
       "environment": {
         "specific": "property"
       }

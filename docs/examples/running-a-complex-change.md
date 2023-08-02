@@ -113,7 +113,7 @@ The `actions.rb` provided in the Confluent repository includes logic to set envi
 
 ```ruby
 action provision: ['build_confluent_docker_base', 'terraform:apply'] do
-  OpsChain.environment.properties.brokers =
+  OpsChain.properties_for(:environment).brokers =
     {
       broker1: {
         properties: {

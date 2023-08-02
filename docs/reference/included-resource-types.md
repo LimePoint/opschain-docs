@@ -182,7 +182,7 @@ The [OpsChain AWS Ansible](https://github.com/LimePoint/opschain-examples-ansibl
 
 ## OpsChain Terraform
 
-Requiring `opschain-terraform` provides the `terraform_config` resource type. The resource type will accept any of the [RubyTerraform](https://github.com/infrablocks/ruby_terraform/blob/v1.6.0/README.md) command arguments as properties, but will only pass those supported by the command when the action is invoked.
+Requiring `opschain-terraform` provides the `terraform_config` resource type. The resource type will accept any of the [RubyTerraform](https://github.com/infrablocks/ruby_terraform/blob/v1.7.0/README.md) command arguments as properties, but will only pass those supported by the command when the action is invoked.
 
 Please see the [RubyTerraform module documentation](https://infrablocks.github.io/ruby_terraform/RubyTerraform.html) for further information about the available actions and their parameters.
 

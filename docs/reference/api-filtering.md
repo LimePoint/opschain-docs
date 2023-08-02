@@ -122,7 +122,7 @@ The table below lists some examples of how to use filters to query the OpsChain 
 | `filter[request_body_action_eq]=provision`<br/>`filter[type_eq]=api:changes:create`          | API requests to create a change with the `provision` action.                                                                                       |
 | `filter[url_params_project_code_eq]=demo`<br/>`filter[type_eq]=api:git_remotes:update`       | API requests to update the `demo` project Git remote.                                                                                              |
 | `filter[type_in][]=api:properties_versions:show`<br/>`filter[type_in][]=api:properties:show` | API requests to show properties, including older versions.                                                                                         |
-| `filter[environment_code_eq]=prod`                                                           | API requests for the `prod` environment.                                                                                                           |
+| `filter[parent_code_eq]=prod`<br/>`filter[parent_node_type_eq]=environment`                  | API requests for the `prod` environment.                                                                                                           |
 | `filter[system_eq]=false`<br/>`filter[name_start]=some`                                      | Custom events with a custom `name` field beginning with `some`.                                                                                    |
 
 ## External tools
