@@ -5,6 +5,36 @@ description: Learn about new releases of OpsChain, including new features and up
 
 # Changelog
 
+## [2023-09-12]
+
+### Added {#2023-09-12-added}
+
+- OpsChain now supports two different types of projects, _OpsChain_ and _MintPress_. Existing projects will be assigned the _OpsChain_ project type. _MintPress_ projects have experimental support for _assets_. More details will be provided as assets are developed further.
+- The OpsChain GUI now supports:
+  - viewing projects, environments, and assets.
+  - creating projects, environments, and assets.
+  - editing the properties for projects, environments, and assets.
+  - editing the settings for projects, environments, and assets.
+  - creating changes
+- You can now list, create, show and cancel changes for a specific environment via the `/projects/<project_code>/environments/<environment_code>/changes` endpoint. See the [API documentation](https://docs.opschain.io/api-docs/#tag/Environments) for more details.
+
+### Changed {#2023-09-12-changed}
+
+- Upgraded SSHKey Gem to 3.0.0.
+- Upgraded Buildkit to 0.12.2.
+- Upgraded Kong Helm chart to 2.25.0.
+- Upgraded Kong ingress controller to 2.10.4.
+- Upgraded OpsChain Ansible example to Terraform 'hashicorp/aws' provider 5.16.1.
+- Upgraded OpsChain Ansible, Confluent, Terraform and Weblogic examples to Terraform 1.5.7.
+- Upgraded OpsChain Confluent, Terraform and Weblogic examples to Terraform 'hashicorp/kubernetes' provider 2.23.0.
+- Upgraded OpsChain DB image to PostgreSQL 14.9.
+- Upgraded OpsChain Vault example to Vault 1.14.2.
+- Upgraded OpsChain auth image to OPA 0.56.0.
+- Upgraded OpsChain kubectl image to kubectl v1.28.1.
+- Upgraded cert-manager to v1.12.4.
+- Upgraded OpsChain ingress image to Kong 3.3.1.
+- Upgraded OpsChain log aggregator image to Fluentd v1.16.2-1.0.
+
 ## [2023-08-02]
 
 ### Important breaking changes {#2023-08-02-important-breaking-changes}

@@ -17,31 +17,22 @@ After following this guide you should know how to:
 
 ## Prerequisites
 
-### Required software
+### Kubernetes
 
-#### Git
+OpsChain requires Kubernetes and will operate on any Kubernetes cluster providing certain minimum requirements are met.
 
-In order to clone the latest release of the OpsChain repository you will need a [Git](https://git-scm.com/) client.
+For a single-node evaluation or test environment, we recommend using [Docker Desktop](https://www.docker.com/products/docker-desktop) (Windows or macOS) or [K3s](https://k3s.io) (Linux).
 
-#### OpenSSL
+For a multi-node production environment, your cluster _must_ be able to provide the following:
 
-As part of configuring the environment, the [OpenSSL](https://www.openssl.org/) utility is called to generate various keys.
+- a default [storage class](https://kubernetes.io/docs/concepts/storage/storage-classes/) which supports the [`ReadWriteOnce` access mode](https://kubernetes.io/docs/concepts/storage/persistent-volumes/#access-modes)
+- a [storage class](https://kubernetes.io/docs/concepts/storage/storage-classes/) which supports the [`ReadWriteMany` access mode](https://kubernetes.io/docs/concepts/storage/persistent-volumes/#access-modes)
+- a [LoadBalancer](https://kubernetes.io/docs/concepts/services-networking/service/#loadbalancer) service type
+- a [TLS certificate](https://kubernetes.io/docs/concepts/configuration/secret/#tls-secrets) for the OpsChain internal container registry that is trusted by the container runtime on your Kubernetes nodes
 
-#### Helm
+### Helm
 
 You must have [Helm](https://helm.sh/docs/intro/install/) version 3 installed.
-
-##### Kubernetes
-
-OpsChain supports the following Kubernetes distributions on a single node only:
-
-- macOS - Docker Desktop Community 3.1.0 and above
-- Linux - the latest stable [`k3s`](https://k3s.io/) with the [Docker container runtime selected](https://rancher.com/docs/k3s/latest/en/advanced/#using-docker-as-the-container-runtime)
-- Windows Subsystem for Linux (WSL) - the latest Docker Desktop release (installed in the WSL environment).
-
-:::tip Windows Subsystem for Linux (WSL)
-For a better CLI experience we suggest using a modern terminal (like the [Windows Terminal from the Microsoft Store](https://aka.ms/terminal) or a WSL terminal).
-:::
 
 ### Hardware/VM requirements
 
@@ -88,10 +79,12 @@ OpsChain depends on [`cert-manager`](https://cert-manager.io/) to manage its int
 ```bash
 helm repo add jetstack https://charts.jetstack.io
 helm repo update
-helm upgrade --install cert-manager jetstack/cert-manager --namespace cert-manager --create-namespace --version v1.12.2 --set installCRDs=true
+helm upgrade --install cert-manager jetstack/cert-manager --namespace cert-manager --create-namespace --version v1.12.4 --set installCRDs=true
 ```
 
-`cert-manager` is now ready for OpsChain to use - no additional `cert-manager` configuration is required.
+Along with internal certificates used by OpsChain, `cert-manager` will issue self-signed certificates for the OpsChain image registry and API server. To use these certificates, the `cert-manager` CA certificate must be trusted by the container runtime on your Kubernetes nodes, and by any systems from which you will access the OpsChain API.
+
+Alternatively, `cert-manager` can be configured to issue certificates from an external certificate authority (e.g. Let's Encrypt, Vault, Venafi) - see the [cert-manager documentation](https://cert-manager.io/docs/) for more information.
 
 :::note
 Please [contact OpsChain support](/docs/support.md#how-to-contact-us) if you would like the option to use OpsChain without installing `cert-manager`.
@@ -113,7 +106,7 @@ cd ~/opschain-configuration
 opschain server configure
 ```
 
-You will be asked to confirm whether you would like to use certain features and provide your credentials for the OpsChain installation.
+You will be asked to confirm whether you would like to use certain features and provide your credentials for the OpsChain installation. The values that will be configured via the `opschain server configure` command are suitable for an evaluation or test environment, however for a production environment we recommend reviewing the [configuration guide](/docs/operations/configuring-opschain.md) and [security guide](/docs/operations/restricting-user-access.md) to ensure the configuration is suitable for your needs.
 
 :::caution
 All future `opschain server` commands must be run in the `~/opschain-configuration` (or equivalent) directory to ensure that the right configuration is used.

@@ -92,7 +92,7 @@ The build arguments supplied to [BuildKit](https://docs.docker.com/develop/devel
 | :------------------- |:-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | GIT_REV              | The Git revision supplied to OpsChain as part of the `opschain change create` command.                                                                                               |
 | GIT_SHA              | The Git SHA this revision resolved to at the time of creating the change.                                                                                                            |
-| OPSCHAIN_BASE_RUNNER | The system default base runner image (including image tag). <br/>(i.e. `limepoint/opschain-runner:<OPSCHAIN_VERSION>` or `limepoint/opschain-enterprise-runner:<OPSCHAIN_VERSION>`). |
+| OPSCHAIN_BASE_RUNNER | The system default base runner image (including image tag). <br/>(i.e. `limepoint/opschain-runner:<OPSCHAIN_VERSION>` or `limepoint/opschain-runner-enterprise:<OPSCHAIN_VERSION>`). |
 | OPSCHAIN_VERSION     | The current OpsChain Docker image version.                                                                                                                                           |
 
 The [Dockerfile reference](https://docs.docker.com/engine/reference/builder/) and the [best practices for writing Dockerfiles](https://docs.docker.com/develop/develop-images/dockerfile_best-practices/) guide provide more information about writing Dockerfiles.
@@ -105,7 +105,7 @@ For maximum compatibility with OpsChain we suggest only using the Dockerfile `RU
 
 More advanced modifications (like modifying the `ENTRYPOINT`) are not supported and may break OpsChain.
 
-Custom Dockerfiles must be based on an OpsChain base runner image (i.e. `limepoint/opschain-runner` or `limepoint/opschain-enterprise-runner`) and we suggest using `FROM ${OPSCHAIN_BASE_RUNNER}` (as per the default Dockerfile) to achieve this.
+Custom Dockerfiles must be based on an OpsChain base runner image (i.e. `limepoint/opschain-runner` or `limepoint/opschain-runner-enterprise`) and we suggest using `FROM ${OPSCHAIN_BASE_RUNNER}` (as per the default Dockerfile) to achieve this.
 
 ### Secure secrets
 
