@@ -5,6 +5,37 @@ description: Learn about new releases of OpsChain, including new features and up
 
 # Changelog
 
+## [2023-10-24]
+
+### Added {#2023-10-24-added}
+
+- You can now create, view, and archive Git remotes via the OpsChain GUI.
+- You can now archive projects, environments, and assets via the OpsChain GUI.
+- The following log lines API endpoints now support a `download` parameter, allowing you to download the log messages as a text file:
+  - change logs: `/changes/<change_id>/log_lines` - see the [API documentation](https://docs.opschain.io/api-docs/#tag/Log-lines/paths/~1api~1changes~1%7Bchange_id%7D~1log_lines/get) for more details.
+  - step logs: `/steps/<step_id>/log_lines` - see the [API documentation](https://docs.opschain.io/api-docs/#tag/Log-lines/paths/~1api~1steps~1%7Bstep_id%7D~1log_lines/get) for more details.
+  - filtered logs: `/log_lines` - see the [API documentation](https://docs.opschain.io/api-docs/#tag/Log-lines/paths/~1api~1log_lines?filter%5Bmessage_eq%5D=/get) for more details.
+- The following API endpoints now support a `download` parameter, allowing you to download the API results as a CSV file:
+  - list changes: `/changes` - see the [API documentation](https://docs.opschain.io/api-docs/#tag/Changes/paths/~1api~1changes/get) for more details.
+  - list projects: `/projects` - see the [API documentation](https://docs.opschain.io/api-docs/#tag/Projects/paths/~1api~1projects/get) for more details.
+  - list project environments: `/projects/<project_code>/environments` - see the [API documentation](https://docs.opschain.io/api-docs/#tag/Environments/paths/~1api~1projects~1%7Bproject_code%7D~1environments/get) for more details.
+
+### Changed {#2023-10-24-changed}
+
+- Upgraded OpsChain Ansible example to Terraform 'hashicorp/aws' provider 5.22.0.
+- Upgraded OpsChain Ansible, Confluent, Terraform and Weblogic examples to Terraform 1.6.2.
+- Upgraded OpsChain Confluent example to Confluent 6.2.12.
+- Upgraded OpsChain Vault example to Vault 1.15.0.
+- Upgraded OpsChain auth image to OPA 0.57.1.
+- Upgraded OpsChain kubectl image to kubectl v1.28.2.
+- Upgraded OpsChain log aggregator image to Fluentd v1.16.2-1.1.
+- Upgraded cert-manager to v1.13.1.
+
+### Removed {#2023-10-24-removed}
+
+- *Breaking change* - Git remotes are no longer allowed to point to paths on the OpsChain API server instance's local filesystem.
+- *Breaking change* - The `opschain utils create_sample_data` command has been removed.
+
 ## [2023-09-12]
 
 ### Added {#2023-09-12-added}

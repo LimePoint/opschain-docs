@@ -3,17 +3,17 @@
 change:
   id: 3a97c789-8f4e-497c-a1aa-04efaa2e87e7
   created_by: mary
-  created_at: '2020-05-20T10:00:00.000Z'
   action: deploy
   status_code: running
-  started_at: '2020-05-20T10:00:05.000Z'
-  finished_at:
   initial_step_tree:
   metadata:
     custom:
       change: metadata
   automated: false
   approved_by: []
+  created_at: '2020-05-20T10:00:00.000000Z'
+  started_at: '2020-05-20T10:00:05.000000Z'
+  finished_at:
   environment_name: Receivables
   project_name: Finance
   git_remote_name: origin
@@ -24,13 +24,13 @@ step:
   id: 37fdf12f-aff3-4134-8926-a2321cef5acf
   status_code: running
   action: deploy
-  created_at: '2020-05-20T10:00:00.000Z'
-  started_at: '2020-05-20T10:00:05.000Z'
-  finished_at:
   step_type: standard
   approved_by: []
   continued_by: []
   child_execution_strategy: sequential
+  created_at: '2020-05-20T10:00:00.000000Z'
+  started_at: '2020-05-20T10:00:05.000000Z'
+  finished_at:
   requires_approval_from:
 user:
   name: mary

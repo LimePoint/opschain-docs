@@ -46,11 +46,9 @@ The `opschain-action` command uses a `.opschain/step_context.json` file if it ex
 $ mkdir -p .opschain
 $ cat << EOF > .opschain/step_context.json
 {
-   "project": {
-      "properties": $(opschain project show-properties -p web)
-   },
-   "environment": {
-      "properties": $(opschain environment show-properties -p web -e test)
+   "properties": {
+     "project": $(opschain project show-properties -p web)
+     "environment": $(opschain environment show-properties -p web -e test)
    }
 }
 EOF
@@ -61,11 +59,13 @@ If your actions rely on [OpsChain context](reference/concepts/context.md) values
 ```text
 {
   "context": {
-    "project": {
-       "code": "demo"
+    "parents": {
+      "project": {
+        "code": "demo"
+      },
     }
   },
-  "project": {
+  "properties": {
 ...
 ```
 
