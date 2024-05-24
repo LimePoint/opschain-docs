@@ -24,25 +24,9 @@ Each container only runs a single step before it is discarded. This ensures that
 
 The image used by the step container is built as part of every step's execution and relies on build caching functionality to keep this performant.
 
-### OpsChain standard runner
+The OpsChain runner base image is an AlmaLinux-based image that provides the standard RHEL-packaged base development tooling, a Ruby installation and the required Ruby Gems.
 
-The standard OpsChain runner base image is an AlmaLinux-based image that provides a subset of the MintPress controller Gems with an associated Ruby installation and the standard RHEL-packaged base development tooling.
-
-The standard runner image is called `limepoint/opschain-runner` and is configured by default for use in OpsChain.
-
-### OpsChain enterprise runner
-
-The OpsChain enterprise runner is an alternative base runner image that includes the MintPress Oracle controllers, in addition to everything in the standard runner. It is available for use by licenced MintPress customers.
-
-You must be logged in to the [Docker Hub](https://hub.docker.com/) as the `opschainenterprise` user to use the OpsChain enterprise runner - contact [LimePoint](mailto:opschain-support@limepoint.com) to obtain these user credentials.
-
-```bash
-docker login --username opschainenterprise
-```
-
-Add `OPSCHAIN_RUNNER_NAME='runner-enterprise'` and set `OPSCHAIN_RUNNER_IMAGE='limepoint/opschain-runner-enterprise:latest'` in your `.env` file to use the OpsChain enterprise runner.
-
-After updating the `.env` file, follow the steps from the [upgrading guide](../../operations/upgrading.md) to apply this configuration and fetch the enterprise runner.
+The runner image is called `limepoint/opschain-runner` and is configured by default for use in OpsChain.
 
 ## Custom step runner Dockerfiles
 
@@ -88,12 +72,12 @@ The build context used when building the step runner image has access to the fol
 
 The build arguments supplied to [BuildKit](https://docs.docker.com/develop/develop-images/build_enhancements/) when building the image include:
 
-| Argument             | Description                                                                                                                                                                          |
-| :------------------- |:-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| GIT_REV              | The Git revision supplied to OpsChain as part of the `opschain change create` command.                                                                                               |
-| GIT_SHA              | The Git SHA this revision resolved to at the time of creating the change.                                                                                                            |
-| OPSCHAIN_BASE_RUNNER | The system default base runner image (including image tag). <br/>(i.e. `limepoint/opschain-runner:<OPSCHAIN_VERSION>` or `limepoint/opschain-runner-enterprise:<OPSCHAIN_VERSION>`). |
-| OPSCHAIN_VERSION     | The current OpsChain Docker image version.                                                                                                                                           |
+| Argument             | Description                                                                                                             |
+| :------------------- |:------------------------------------------------------------------------------------------------------------------------|
+| GIT_REV              | The Git revision supplied to OpsChain as part of the `opschain change create` command.                                  |
+| GIT_SHA              | The Git SHA this revision resolved to at the time of creating the change.                                               |
+| OPSCHAIN_BASE_RUNNER | The system default base runner image (including image tag). <br/>(i.e. `limepoint/opschain-runner:<OPSCHAIN_VERSION>`). |
+| OPSCHAIN_VERSION     | The current OpsChain Docker image version.                                                                              |
 
 The [Dockerfile reference](https://docs.docker.com/engine/reference/builder/) and the [best practices for writing Dockerfiles](https://docs.docker.com/develop/develop-images/dockerfile_best-practices/) guide provide more information about writing Dockerfiles.
 
@@ -105,7 +89,7 @@ For maximum compatibility with OpsChain we suggest only using the Dockerfile `RU
 
 More advanced modifications (like modifying the `ENTRYPOINT`) are not supported and may break OpsChain.
 
-Custom Dockerfiles must be based on an OpsChain base runner image (i.e. `limepoint/opschain-runner` or `limepoint/opschain-runner-enterprise`) and we suggest using `FROM ${OPSCHAIN_BASE_RUNNER}` (as per the default Dockerfile) to achieve this.
+Custom Dockerfiles must be based on an OpsChain base runner image (i.e. `limepoint/opschain-runner`) and we suggest using `FROM ${OPSCHAIN_BASE_RUNNER}` (as per the default Dockerfile) to achieve this.
 
 ### Secure secrets
 
@@ -205,7 +189,7 @@ This is normally performant due to the image build cache - however it is possibl
 
 A custom base image can be created as follows:
 
-1. Create a Dockerfile for the base image that uses `FROM limepoint/opschain-runner` (or `opschain-runner-enterprise` if using the enterprise runner image).
+1. Create a Dockerfile for the base image that uses `FROM limepoint/opschain-runner`.
 
     ```dockerfile
     FROM limepoint/opschain-runner
@@ -230,7 +214,7 @@ A custom base image can be created as follows:
 
 4. Run your change as normal. It will now use the `my-base-image` image as the base for the custom step image.
 
-OpsChain relies on configuration done as part of the base runner image to work. By basing the custom base image on `limepoint/opschain-runner` or `limepoint/opschain-runner-enterprise` the OpsChain configuration still applies and will work as desired.
+OpsChain relies on configuration done as part of the base runner image to work. By basing the custom base image on `limepoint/opschain-runner` the OpsChain configuration still applies and will work as desired.
 
 Ensure that you rebuild your custom image after upgrading OpsChain.
 

@@ -346,3 +346,33 @@ To restart the `fuse-device-plugin-daemonset` daemonset, run the following comma
 ```bash
 kubectl rollout restart daemonset/fuse-device-plugin-daemonset -n opschain
 ```
+
+### Step build failing with `failed to convert whiteout file`
+
+When building a step runner image the change logs report:
+
+```text
+#10 [stage-0 2/6] ADD ./repo.tar .
+#10 ERROR: mount callback failed on /run/user/1000/containerd-mount1276938060: failed to convert whiteout file "tmp/.wh.setup": unlinkat /run/user/1000/containerd-mount1276938060/tmp/setup: input/output error
+------
+ > [stage-0 2/6] ADD ./repo.tar .:
+------
+Dockerfile:11
+--------------------
+   9 |
+  10 |     # The step below adds the Project Git repository (including the .git directory).
+  11 | >>> ADD ./repo.tar .
+  12 |
+  13 |     # Optional - the Git rev this change was created with. Useful when running automated changes to know the current branch.
+--------------------
+error: failed to solve: failed to compute cache key: mount callback failed on /run/user/1000/containerd-mount1276938060: failed to convert whiteout file "tmp/.wh.setup": unlinkat /run/user/1000/containerd-mount1276938060/tmp/setup: input/output error
+Failed to build step runner image
+```
+
+#### Solution - set `OPSCHAIN_IMAGE_BUILD_ROOTLESS=false` flag in `.env`
+
+Update the .env file to set the `OPSCHAIN_IMAGE_BUILD_ROOTLESS` flag to `false` and then redeploy the OpsChain services:
+
+```bash
+opschain server deploy
+```

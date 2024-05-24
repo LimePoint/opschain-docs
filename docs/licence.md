@@ -2,7 +2,7 @@
 
 OpsChain® - Unify Change: Connect, automate, and orchestrate people, process, and tools across on-premise and cloud platforms.
 
-Copyright © 2023 LimePoint. All rights reserved.
+Copyright © 2024 LimePoint. All rights reserved.
 
 This program and associated files are confidential and owned by LimePoint.
 Only licenced users are permitted to access and use of this program.

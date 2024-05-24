@@ -11,6 +11,7 @@ change:
       change: metadata
   automated: false
   approved_by: []
+  rejected_by: []
   created_at: '2020-05-20T10:00:00.000000Z'
   started_at: '2020-05-20T10:00:05.000000Z'
   finished_at:
@@ -22,15 +23,17 @@ change:
   requires_approval_from:
 step:
   id: 37fdf12f-aff3-4134-8926-a2321cef5acf
-  status_code: running
   action: deploy
   step_type: standard
   approved_by: []
+  rejected_by: []
   continued_by: []
   child_execution_strategy: sequential
+  change_id: 3a97c789-8f4e-497c-a1aa-04efaa2e87e7
   created_at: '2020-05-20T10:00:00.000000Z'
   started_at: '2020-05-20T10:00:05.000000Z'
   finished_at:
+  status_code: running
   requires_approval_from:
 user:
   name: mary
@@ -44,7 +47,7 @@ parents:
     name: Finance
     description: Finance applications
     archived: false
-    project_type: OpsChain
+    project_type: Standard
   environment:
     id: 530d796b-60ff-4bc6-ad09-ac3eaf1afa45
     code: rcv

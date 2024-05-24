@@ -2,8 +2,6 @@
 sidebar_position: 5
 description: The context information available to your actions when running steps.
 ---
-import SampleContextValues from '/files/samples/sample-context-values.md'
-
 # Context
 
 The OpsChain context framework provides a read only set of values. These values enable you to reuse code between projects and environments, conditionally performing logic based on when and where the step is being performed.
@@ -62,5 +60,7 @@ end
 ### Sample context values
 
 Below is an example of the values available to an action via `OpsChain.context` (formatted as yaml):
+
+import SampleContextValues from '/files/samples/sample-context-values.md'
 
 <SampleContextValues />

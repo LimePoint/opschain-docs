@@ -214,12 +214,6 @@ The example makes use of the [Terraform Kubernetes provider](https://registry.te
 
 ## What to do next
 
-### Try a more advanced example
-
-- The [Ansible example](running-an-aws-ansible-change.md) demonstrates how to use OpsChain with Terraform, Ansible and AWS to build and configure a simple nginx instance on AWS
-
-- The [Confluent example](running-a-complex-change.md) demonstrates how to use OpsChain to build and deploy a multi-node [Confluent](https://www.confluent.io) environment
-
 ### Create your own project
 
 Try creating a new project using the steps above and instead of adding a remote, author your own commits. See the [reference documentation](/docs/category/reference) and [developing your own resources](/docs/getting-started/developer.md#developing-resources) guide for more information.

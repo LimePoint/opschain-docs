@@ -145,11 +145,26 @@ curl --fail --user {{username}}:{{password}} http://localhost:3000/api/events -H
 
 OpsChain responds with a 201 status code and no response body when the event is created successfully.
 
-### System created events
+### Linking events
+
+Events can be linked to data within OpsChain. Below is an example of linking a project with the path `/projects/bank` (this is the same as a project with the code `bank`) to a custom event.
+
+```bash
+curl --fail --user {{username}}:{{password}} http://localhost:3000/api/events -H 'content-type: application/vnd.api+json' -d '{ "data": { "type": "Event", "attributes": { "type": "linked:to:project:example", "project_path": "/projects/bank" } } }'
+```
+
+Events can be linked to:
+
+- Automated change rules via an ID, e.g. `"automated_change_rule_id": "ff1bf781-4fe0-4b14-b0d2-20ef8cb1be80"`
+- Projects via a path or an ID, e.g. `"project_path": "/projects/bank"`, or `"node_path": "/projects/bank"`, or `"project_id": "ff1bf781-4fe0-4b14-b0d2-20ef8cb1be80"`
+- Environments via a path or an ID, e.g. `"node_path": "/projects/bank/environments/dev"`, or `"node_id": "969a2b4c-a700-40d2-a25c-1f4f68cf6d54"`
+- Assets via a path or an ID, e.g. `"node_path": "/projects/bank/environments/dev/assets/obp"`, or `"node_id": "2f988308-325d-4a41-bdab-4cf0b8c3103a"`
+
+## System created events
 
 Events created internally by OpsChain can be identified by the `system` property. If `system` is `true` then the event was created by OpsChain, if it is `false` then the event was created by a user using the `api/events` endpoint - the `username` field identifies the user that created the request.
 
-#### System event types
+### System event types
 
 Currently, the following system events are supported. These values will be present in the `type` field for an event:
 

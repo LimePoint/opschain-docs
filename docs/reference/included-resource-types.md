@@ -11,20 +11,14 @@ A collection of resource types come pre-installed on the OpsChain step runner im
 
 The table below outlines the file to `require` in your resource definition and the resource types that will become available.
 
-| Require                                               | Resource type            | Description                                                                                                                                                      |
-| :---------------------------------------------------- | :----------------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| [`opschain-infrastructure`](#opschain-infrastructure) | `infrastructure_host`    | Exposes the [`MintPress::Infrastructure::Host` controller](https://docs.limepoint.com/reference/ruby/MintPress/Infrastructure/Host.html)                         |
-|                                                       | `transport_factory`      | Exposes the [`MintPress::Infrastructure::TransportFactory` controller](https://docs.limepoint.com/reference/ruby/MintPress/Infrastructure/TransportFactory.html) |
-| [`opschain-kubernetes`](#opschain-kubernetes)         | `kubernetes_resource`    | Manage Kubernetes resources via manifests in your project repo                                                                                                   |
-|                                                       | `kubernetes_daemonset`   | Perform common operations on a Kubernetes daemonset resource                                                                                                     |
-|                                                       | `kubernetes_deployment`  | Perform common operations on a Kubernetes deployment resource                                                                                                    |
-|                                                       | `kubernetes_statefulset` | Perform common operations on a Kubernetes statefulset resource                                                                                                   |
-| [`opschain-ssh-key-pair`](#opschain-ssh-key-pair)     | `ssh_key_pair`           | Generate an SSH public/private key pair and optionally stores the key files in OpsChain properties                                                               |
-| [`opschain-terraform`](#opschain-terraform)           | `terraform_config`       | Exposes the [RubyTerraform](https://github.com/infrablocks/ruby_terraform/tree/v1.7.0) Gem                                                                       |
-
-:::info
-Contact [LimePoint](mailto:opschain-support@limepoint.com) to obtain the password required to access the MintPress Reference Documentation.
-:::
+| Require                                               | Resource type            | Description                                                                                        |
+| :---------------------------------------------------- | :----------------------- | :------------------------------------------------------------------------------------------------- |
+| [`opschain-kubernetes`](#opschain-kubernetes)         | `kubernetes_resource`    | Manage Kubernetes resources via manifests in your project repo                                     |
+|                                                       | `kubernetes_daemonset`   | Perform common operations on a Kubernetes daemonset resource                                       |
+|                                                       | `kubernetes_deployment`  | Perform common operations on a Kubernetes deployment resource                                      |
+|                                                       | `kubernetes_statefulset` | Perform common operations on a Kubernetes statefulset resource                                     |
+| [`opschain-ssh-key-pair`](#opschain-ssh-key-pair)     | `ssh_key_pair`           | Generate an SSH public/private key pair and optionally stores the key files in OpsChain properties |
+| [`opschain-terraform`](#opschain-terraform)           | `terraform_config`       | Exposes the [RubyTerraform](https://github.com/infrablocks/ruby_terraform/tree/v1.7.0) Gem         |
 
 ### Usage
 

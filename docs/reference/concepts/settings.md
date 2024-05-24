@@ -58,4 +58,4 @@ Whether to allow multiple changes to run within a single environment or not. See
 
 Default value: _not configured (changes do not require approval)_
 
-Requires that changes in the relevant environment/project are approved by a member of the configured LDAP group before they are executed. A member of the specified LDAP group must approve the change (e.g. using `opschain change approve` in the CLI) before the change will execute any actions.
+Requires that changes in the relevant environment/project are approved by a member of the configured LDAP group before they are executed. A member of the specified LDAP group must approve the change (e.g. using `opschain change approve` in the CLI) before the change will execute any actions. If required, LDAP group members can use the CLI command `opschain change reject` to reject changes that are waiting for approval.

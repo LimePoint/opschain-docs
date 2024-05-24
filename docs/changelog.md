@@ -5,6 +5,51 @@ description: Learn about new releases of OpsChain, including new features and up
 
 # Changelog
 
+## [2024-05-24]
+
+### Added {#2024-05-24-added}
+
+- The step `approve` API now accepts an optional message - see the [API documentation](https://docs.opschain.io/api-docs/#tag/Steps/paths/~1api~1steps~1{step_id}~1approve/post) for more details.
+- The step `continue` API now accepts an optional message - see the [API documentation](https://docs.opschain.io/api-docs/#tag/Steps/paths/~1api~1steps~1{step_id}~1continue/post) for more details.
+- A step `reject` API is now available to allow changes that are waiting for approval to be rejected - see the [API documentation](https://docs.opschain.io/api-docs.html#tag/Steps/paths/~1api~1steps~1%7Bstep_id%7D~1reject/post) for more details.
+- The step API now includes the change ID - see the [API documentation](https://docs.opschain.io/api-docs/#tag/Steps/paths/~1api~1steps~1%7Bstep_id%7D/get) for more details.
+- The CLI now supports rejecting changes that are waiting for approval via the `opschain change reject` subcommand.
+- All GUI screens that display multiple records (e.g. projects, changes, assets, etc.) now include a `CSV export` button that allows you to export the records to a CSV file.
+- The GUI now includes an audit history menu option to provide a basic view of the OpsChain events. This view will be enhanced in future releases to provide mode detailed information and links to relevant event resources.
+- For each project, environment and asset the GUI now includes:
+  - a _commands_ button that displays a dialog with useful `curl` commands to access information about the resource via the API.
+  - a _bookmarks_ button that displays a dialog containing the bookmarks (URLs) that have been associated with that resource via the API.
+- For standard projects, the GUI now provides the ability to:
+  - view automated changes
+  - execute changes
+- For enterprise projects, in addition to the standard project features, the GUI now provides the ability to:
+  - create and update templates and template versions for assets.
+  - create changes to execute template actions for assets.
+  - generate, view and compare the MintModels associated with enterprise project assets.
+  - create workflows to run multiple changes in sequence.
+  - execute and view workflows.
+
+### Changed {#2024-05-24-changed}
+
+- OpsChain will no longer automatically delete the Git repository folder when the remote has been archived. [Learn more.](/docs/reference/concepts/git-remotes.md#manually-deleting-the-git-repository-folder)
+- The step API response `approved_by` format has changed to support the new `message` field - see the [API documentation](https://docs.opschain.io/api-docs/#tag/Steps/paths/~1api~1steps~1{step_id}~1approve/post) for an example.
+- The step API response `continued_by` format has changed to support the new `message` field - see the [API documentation](https://docs.opschain.io/api-docs/#tag/Steps/paths/~1api~1steps~1{step_id}~1continue/post) for an example.
+- Upgraded the runner images to be based on AlmaLinux 8.9.
+- Upgraded Buildkit to 0.13.1.
+- Upgraded cert-manager to v1.14.4.
+- Upgraded Kong Helm chart to 2.25.0.
+- Upgraded the CLI to Node.js version to 20.
+- Upgraded OpsChain auth image to OPA 0.63.0.
+- Upgraded OpsChain DB image to PostgreSQL 14.11.
+- Upgraded OpsChain ingress image to Kong 3.6.1.
+- Upgraded OpsChain kubectl image to kubectl v1.29.2.
+- Upgraded OpsChain log aggregator image to Fluentd v1.16.5-1.0.
+- Upgraded OpsChain Ansible example to Terraform 'hashicorp/aws' provider 5.44.0.
+- Upgraded OpsChain Ansible, Confluent, Terraform and Weblogic examples to Terraform 1.7.5.
+- Upgraded OpsChain Confluent example to Confluent 6.2.14.
+- Upgraded OpsChain Confluent, Terraform and Weblogic examples to Terraform 'hashicorp/kubernetes' provider 2.27.0.
+- Upgraded OpsChain Vault example to Vault 1.16.1.
+
 ## [2023-10-24]
 
 ### Added {#2023-10-24-added}
@@ -40,7 +85,6 @@ description: Learn about new releases of OpsChain, including new features and up
 
 ### Added {#2023-09-12-added}
 
-- OpsChain now supports two different types of projects, _OpsChain_ and _MintPress_. Existing projects will be assigned the _OpsChain_ project type. _MintPress_ projects have experimental support for _assets_. More details will be provided as assets are developed further.
 - The OpsChain GUI now supports:
   - viewing projects, environments, and assets.
   - creating projects, environments, and assets.
@@ -245,7 +289,6 @@ description: Learn about new releases of OpsChain, including new features and up
 ### Important breaking changes {#2023-01-13-important-breaking-changes}
 
 - Upgraded to Ruby 3.1.2, please update the `.ruby_version` in your project Git repositories to reflect this change.
-- Upgraded MintPress Gems to [3.15.0](https://docs.limepoint.com/mintpress/release-notes/mint-press-3-15-0-release-notes).
 
 ### Added {#2023-01-13-added}
 
@@ -731,10 +774,6 @@ description: Learn about new releases of OpsChain, including new features and up
 - Upgraded Terraform 'hashicorp/aws' plugin to 3.63.0 in the OpsChain Ansible example.
 - The OpsChain step runner Docker image is now built with Docker BuildKit.
 
-### Removed {#2021-11-12-removed}
-
-- The LimePoint MintPress licence is no longer required to use OpsChain.
-
 ## [2021-10-26] {#2021-10-26}
 
 ### Added {#2021-10-26-added}
@@ -782,8 +821,6 @@ You **must** run `configure` after upgrading to update the `.env` file with the 
 ### Changed {#2021-09-28-changed}
 
 - The `configure` script now resolves the absolute path for the OPSCHAIN_DATA_DIR.
-- **Breaking change** - The OpsChain runner image has been split meaning the MintPress Oracle controllers are not available by default.
-  - See the [enterprise controllers for Oracle](/docs/reference/opschain-and-mintpress.md#enterprise-controllers-for-oracle) guide for more details.
 
 ### Fixed {#2021-09-28-fixed}
 
@@ -855,10 +892,6 @@ You **must** run `configure` after upgrading to update the `.env` file with the 
 
 ## [2021-08-04] {#2021-08-04}
 
-### Added {#2021-08-04-added}
-
-- Support for alternative spelling of `mintpress.license` in the `configure` script.
-
 ### Changed {#2021-08-04-changed}
 
 - The OpsChain change log retention guide has moved and been renamed to [OpsChain data retention](/docs/operations/maintenance/data-retention.md).
@@ -883,7 +916,6 @@ You **must** run `configure` after upgrading to update the `.env` file with the 
 
 - OpsChain now caches user's LDAP group membership to reduce LDAP load. See [LDAP group membership caching](/docs/operations/opschain-ldap.md#LDAP-group-membership-caching) for more details.
 - **Breaking change** - Calling OpsChain API's with missing or invalid parameters now returns a 500 Internal Server Error, and more explicit error messages in the response body.
-- Upgraded MintPress Gems to 3.14.0.
 
 ## [2021-07-19] {#2021-07-19}
 
@@ -971,7 +1003,6 @@ You **must** run `configure` after upgrading to update the `.env` file with the 
 - Upgraded Terraform to 0.15.4 in the OpsChain examples.
 - Upgraded Terraform plugins in the OpsChain examples - see the commit history of each repository for details.
 - Upgraded OpsChain Log Aggregator Image Fluentd to 1.12.4.
-- Upgraded MintPress Gems to 3.13.0.
 - Upgraded OpsChain DB Image PostgreSQL to 13.3.
 - Upgraded OpsChain Auth Image Open Policy Agent 0.29.4.
 - Upgraded Bundler to 2.2.19.
@@ -1043,7 +1074,6 @@ You **must** run `configure` after upgrading to update the `.env` file with the 
 
 ### Added {#2021-04-27-added}
 
-- An example project for [running an AWS Ansible change](/docs/examples/running-an-aws-ansible-change.md).
 - Helper methods available from within actions to store and remove files from project and environment properties. See [storing & removing files](/docs/reference/concepts/properties.md#storing--removing-files) for more details.
 
 ### Changed {#2021-04-27-changed}
@@ -1059,7 +1089,6 @@ You **must** run `configure` after upgrading to update the `.env` file with the 
 
 - The OpsChain Runner now uses
     - Ruby v2.7.3. Please make any necessary adjustments to your project's Git repositories to reflect this change.
-    - v3.11.1 of the MintPress Controllers.
 - **Breaking change** - the OpsChain [files properties](/docs/reference/concepts/properties.md#file-properties) format has changed. Any files stored in your properties will need to be altered to reflect the new format.
 
   _Note: The `properties-show` and `properties-set` features can be used to download, upload your properties (allowing you to edit your properties locally)._
@@ -1090,27 +1119,18 @@ You **must** run `configure` after upgrading to update the `.env` file with the 
 
 ### Added {#2021-03-22-added}
 
-- The `opschain-resource-types` gem is now pre-installed in the OpsChain step runner image providing some [resource types](/docs/reference/included-resource-types.md) for the `mintpress-infrastructure` and `ruby-terraform` gems.
+- The `opschain-resource-types` Gem is now pre-installed in the OpsChain step runner image providing some [resource types](/docs/reference/included-resource-types.md) for the `ruby-terraform` Gems.
 
   _Please note the [prerequisites](/docs/reference/included-resource-types.md#prerequisites) for the Terraform resource._
 
 ### Changed {#2021-03-22-changed}
 
-- Replaced `mintpress-infrastructure` resource types in the [Confluent example](https://github.com/LimePoint/opschain-examples-confluent) with those provided by the pre-installed `opschain-resource-types` gem in the OpsChain step runner image.
-- [Confluent example](https://github.com/LimePoint/opschain-examples-confluent) Properties
-  - Replaced encrypted project properties with unencrypted properties.
-  - The host environment for the brokers and control center is now sourced from OpsChain properties.
-
-  _Please note, you will need to [update the project properties](/docs/examples/running-a-complex-change.md#import-the-confluent-example-properties) with the new `project_properties.json` before re-running the example._
-
 - The Terraform binary is now installed in the custom step runner Dockerfile as part of the [OpsChain Confluent example](https://github.com/LimePoint/opschain-examples-confluent/blob/75473f7fbac4150b3d5c583dfc52c6b22044552f/.opschain/Dockerfile#L8)
 
 ### Removed {#2021-03-22-removed}
 
-- Removed decryption support from example code until MintAESEncryption is fully supported.
-- Removed `BUNDLE_CIBUILDER__MINTPRESS_IO` var (from `.env.example`) since it is not used.
 - The Terraform binary has been removed from the OpsChain step runner image for parity with other tools which we support but don't bundle.
-- Terraform support has been removed from the `opschain-core` gem (Terraform support is now available via the `opschain-resource-types` gem).
+- Terraform support has been removed from the `opschain-core` Gem (Terraform support is now available via the `opschain-resource-types` Gem).
 
 ## [2021-03-09] {#2021-03-09}
 
@@ -1131,4 +1151,3 @@ _Please note:_
 1. Project Git repositories will need to be updated:
     - [Terraform 0.12 -> 0.13](https://www.terraform.io/upgrade-guides/0-13.html) - will assist in creating a `versions.tf` in your project Git repository(s).
     - [Terraform 0.13 -> 0.14](https://www.terraform.io/upgrade-guides/0-14.html) - provides information on the new `.terraform.lock.hcl` lock file.
-2. You will need to [update the environment properties](/docs/examples/running-a-complex-change.md#import-the-confluent-example-properties) with the `environment_properties.json` before re-running the example (to remove the old `tfstate` information).

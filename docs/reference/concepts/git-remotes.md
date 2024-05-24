@@ -116,3 +116,13 @@ If the Git remote has not been used by a change (or an automated change), OpsCha
 ### Deleting used Git remotes
 
 In order to maintain OpsChain's audit trail, if a Git remote has been used by a change, OpsChain will not delete the Git remote. Instead, the Git remote's credentials (user, password, ssh_key_data) will be removed from the database but the record will remain.
+
+### Manually deleting the Git repository folder
+
+When archiving the Git remote, OpsChain will preserve the repository folder to maintain its audit trail.
+
+Once the remote has been archived, you can manually remove the repository folder by running the following CLI utility:
+
+```bash
+opschain server utils "delete_repo_folder[<archived_remote_id>]"
+```

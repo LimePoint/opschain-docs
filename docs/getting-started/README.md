@@ -431,7 +431,7 @@ This command works with the inbuilt LDAP server, and requires `kubectl` access t
 
 If you are using a different LDAP server you will need to add the user to the `qa` group with the tools you normally use to manage your LDAP.
 
-Even if you are unable to perform the require LDAP changes, we still suggesting reading through these steps so that you understand the feature.
+Even if you are unable to perform the required LDAP changes, we still suggest reading through these steps so that you understand the feature.
 :::
 
 Now that our user has been added to the `qa` LDAP group, let's approve the change:
@@ -442,6 +442,10 @@ Change xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx approved.
 ```
 
 The change will now progress as normal.
+
+:::tip
+If required, changes that are waiting for approval can be rejected by using the `opschain change reject` command.
+:::
 
 The user that approved the change can be seen via the `opschain change show` command.
 

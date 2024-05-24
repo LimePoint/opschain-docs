@@ -47,7 +47,7 @@ The open source [Docker Engine](https://docs.docker.com/engine/) package can be 
 
 #### Configure Docker Hub access
 
-To use the OpsChain development environment you will need log in to [Docker Hub](https://hub.docker.com/) as the `opschaintrial` user (or, if you have an [enterprise licence for OpsChain](/docs/reference/opschain-and-mintpress.md#enterprise-controllers-for-oracle), the `opschainenterprise` user). These are the same Docker credentials requested by the `opschain server configure` command.
+To use the OpsChain development environment you will need log in to [Docker Hub](https://hub.docker.com/) as the `opschaintrial` user. These are the same Docker credentials requested by the `opschain server configure` command.
 
 ```bash
 docker login --username opschaintrial

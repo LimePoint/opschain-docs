@@ -106,9 +106,7 @@ See the [actions reference guide](actions.md#defining-resource-types--resources)
 
 ## Composite resource
 
-A composite resource is a resource that encapsulates child resources. An example of this is the Confluent broker composite defined in the [resource types](https://github.com/LimePoint/opschain-examples-confluent/blob/master/lib/confluent/resource_types.rb) used in the [Confluent example](/docs/examples/running-a-complex-change.md). The Confluent broker composite provides the definition of the resources required to create one or more child brokers. Each broker will have a host, Java installation, Confluent installation and broker definition.
-
-Composite resources also allow you to define actions that will apply to all the composite's children. The Confluent broker composite in the example defines three actions (configure, start and install). Executing any of these actions on the composite will execute the equivalent action on each of the child brokers.
+A composite resource is a resource that encapsulates child resources. Composite resources also allow you to define actions that will apply to all the composite's children. The Confluent broker composite in the example defines three actions (configure, start and install). Executing any of these actions on the composite will execute the equivalent action on each of the child brokers.
 
 See the [actions reference guide](actions.md#defining-composite-resources--resource-types) and [developing your own resources guide](/docs/getting-started/developer.md#developing-resources) for more information.
 
