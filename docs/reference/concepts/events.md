@@ -155,10 +155,23 @@ curl --fail --user {{username}}:{{password}} http://localhost:3000/api/events -H
 
 Events can be linked to:
 
-- Automated change rules via an ID, e.g. `"automated_change_rule_id": "ff1bf781-4fe0-4b14-b0d2-20ef8cb1be80"`
 - Projects via a path or an ID, e.g. `"project_path": "/projects/bank"`, or `"node_path": "/projects/bank"`, or `"project_id": "ff1bf781-4fe0-4b14-b0d2-20ef8cb1be80"`
 - Environments via a path or an ID, e.g. `"node_path": "/projects/bank/environments/dev"`, or `"node_id": "969a2b4c-a700-40d2-a25c-1f4f68cf6d54"`
 - Assets via a path or an ID, e.g. `"node_path": "/projects/bank/environments/dev/assets/obp"`, or `"node_id": "2f988308-325d-4a41-bdab-4cf0b8c3103a"`
+- In addition, the following models can be linked via an ID, (e.g. `"{{model_type_id}}": "ff1bf781-4fe0-4b14-b0d2-20ef8cb1be80"`):
+    - Automated change rules (via `automated_change_rule_id`)
+    - Changes (via `change_id`)
+    - Steps (via `step_id`)
+    - Workflow steps (via `workflow_step_id`)
+    - Workflow runs (via `workflow_run_id`)
+    - Bookmarks (via `bookmark_id`)
+    - Templates (via `template_id`)
+    - Template versions (via `template_version_id`)
+    - Git remotes (via `git_remote_id`)
+    - Properties (via `properties_id`)
+    - Properties versions (via `properties_version_id`)
+    - Settings (via `settings_id`)
+    - Settings versions (via `settings_version_id`)
 
 ## System created events
 
@@ -171,6 +184,8 @@ Currently, the following system events are supported. These values will be prese
 - `api:automated_change_rules:create`
 - `api:automated_change_rules:destroy`
 - `api:changes:create`
+- `api:changes:start`
+- `api:changes:finish`
 - `api:changes:destroy`
 - `api:nodes:create`
 - `api:nodes:update`
@@ -178,14 +193,32 @@ Currently, the following system events are supported. These values will be prese
 - `api:git_remotes:create`
 - `api:git_remotes:update`
 - `api:git_remotes:destroy`
+- `api:templates:create`
+- `api:templates:update`
+- `api:template_versions:update`
 - `api:projects:create`
 - `api:projects:update`
 - `api:projects:destroy`
 - `api:properties:update`
 - `api:settings:update`
+- `api:steps:start`
 - `api:steps:approve`
 - `api:steps:approve:denied`
 - `api:steps:continue`
+- `api:steps:finish`
+- `api:workflow_runs:create`
+- `api:workflow_runs:start`
+- `api:workflow_runs:finish`
+- `api:workflow_runs:destroy`
+- `api:workflow_steps:start`
+- `api:workflow_steps:finish`
+- `api:workflows:create`
+- `api:workflows:update`
+- `api:properties:update`
+- `api:settings:update`
+- `api:bookmarks:create`
+- `api:bookmarks:update`
+- `api:bookmarks:destroy`
 - `error:automated_change_rule:change_creation`
 - `error:automated_change_rule:git_sha`
 

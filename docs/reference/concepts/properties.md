@@ -265,6 +265,16 @@ OpsChain.properties_for(:project).delete(:parent)
 
 :::
 
+To delete all database properties at the project or environment level for the currently running step, use the following command:
+
+```ruby
+OpsChain.properties_for(<level>).clear       # where <level> can be :project or :environment
+```
+
+:::caution
+Using `clear` on your properties from within an action should be used with caution. This will remove all database properties at the specified level. To restore the properties, retrieve an older version via the GUI or API and then apply them as the latest version.
+:::
+
 ##### Example
 
 An example of setting properties can be seen in the [Confluent example](https://github.com/LimePoint/opschain-examples-confluent). The `provision` [action](concepts.md#action) in [`actions.rb`](https://github.com/LimePoint/opschain-examples-confluent/blob/master/actions.rb) modifies the environment properties to change settings for broker1.

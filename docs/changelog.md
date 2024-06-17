@@ -5,6 +5,28 @@ description: Learn about new releases of OpsChain, including new features and up
 
 # Changelog
 
+## [2024-06-17]
+
+### Added {#2024-06-17-added}
+
+- The properties and settings versions responses now include:
+  - the `created_at` timestamp.
+  - a link to the properties `owner`.
+- The step response now include a link to the `change` that the step belongs to.
+- Enterprise projects now support workflows, allowing you to sequence multiple changes into a single workflow. Workflows also support wait and approval steps to control the flow of change execution.
+- The GUI now allows you to compare different versions of properties and settings.
+
+### Changed {#2024-06-17-changed}
+
+- The `properties_versions` link in the properties version response has been renamed to `versions`.
+- The `settings_versions` link in the settings versions response has been renamed to `versions`.
+- `error:controller:unhandled` type events are now assigned the `error:api:controller:unhandled` type to differentiate them from resource controller exceptions.
+- `RecordNotFound`, `UnpermittedParameters` and `UnsupportedIncludeError` exceptions are no longer logged as events by the API.
+- If a fetch of a project's remote Git repository fails an event will be logged. Subsequent fetches within that hour will not log additional events to avoid flooding the event tables. _Note: This event throttling also applies to the automated fetch that is performed every minute on `workflows` Git remotes._
+- OpsChain events can now be linked to more sources. See the [events documentation](/docs/reference/concepts/events.md#linking-events) for the full list.
+- More OpsChain system events have been added. See the [events documentation](/docs/reference/concepts/events.md#system-event-types) for the full list.
+- The GUI JSON editor for properties and settings now expands to the full height available in the tab.
+
 ## [2024-05-24]
 
 ### Added {#2024-05-24-added}
