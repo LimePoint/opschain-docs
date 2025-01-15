@@ -39,7 +39,7 @@ apprise -vv --title='Test message' "{{target url}}" # e.g. slack://TokenA/TokenB
 
 :::caution Credential visibility
 
-Note that any users that have permission to access these settings (i.e. access to this project and environment) can view the credentials stored in the `target_url`. See the [restricting user access](restricting-user-access.md) guide for information on limiting user access to projects and environments.
+Note that any users that have permission to access these settings (i.e. access to this project and environment) can view the credentials stored in the `target_url`.
 
 The credentials are encrypted at rest, so they will not be viewable by anyone who does not have permission.
 

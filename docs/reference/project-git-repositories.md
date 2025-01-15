@@ -5,7 +5,7 @@ description: A project Git repository is where you store the actions and related
 
 # Project Git repositories
 
-A project Git repository is where you store the actions and related configuration to apply to the project's environments. OpsChain will read all action and resource definitions from the `actions.rb` file in the repository root directory. See the [actions reference guide](concepts/actions.md) and [developing your own resources](/docs/getting-started/developer.md#developing-resources) guide for further information about the contents of the `actions.rb` file.
+A project Git repository is where you store the actions and related configuration to apply to the project's environments. OpsChain will read all action and resource definitions from the `actions.rb` file in the repository root directory. See the [actions reference guide](/docs/reference/concepts/actions.md) and [developing your own resources](/docs/getting-started/developer.md#developing-resources) guide for further information about the contents of the `actions.rb` file.
 
 ## Minimum requirements
 

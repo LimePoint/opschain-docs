@@ -56,3 +56,7 @@ h2#configuration-variables~p+h4, h2#setting-descriptions~p+h4 {
   border-top: 1px solid var(--ifm-table-border-color);
   padding-top: 1.5rem;
 }
+
+.image-border {
+  border: 1px solid green;
+}

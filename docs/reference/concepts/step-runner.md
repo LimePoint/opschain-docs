@@ -33,7 +33,7 @@ The runner image is called `limepoint/opschain-runner` and is configured by defa
 If your resources or actions rely on external software, the image used by your project for its step runner containers can be modified to add extra packages or executables. The image may also be modified to optimise the performance of build steps by performing tasks as part of the step image build rather than as part of the step execution.
 
 :::tip
-The [Docker development environment](/docs/development-environment.md#using-custom-runner-images) guide provides instructions on using a custom step runner image as your local OpsChain development environment.
+The [Docker development environment](/docs/development-environment.md#building-and-using-a-custom-runner-image) guide provides instructions on using a custom step runner image as your local OpsChain development environment.
 :::
 
 ### Creating a custom step runner Dockerfile
@@ -68,12 +68,12 @@ This Dockerfile can be modified and committed like any other file in the project
 The build context used when building the step runner image has access to the following files:
 
 - `repo.tar` - The complete project Git repository including the .git directory with all commit info. This file will change (and invalidate the build context) when a different commit is used for a change or when there are changes to the project's Git repository
-- `step_context_env.json` - The [environment variable properties](properties.md#environment-variables) for the project and environment, along with the project and environment [context](context.md) values for use by `opschain-exec`. This file will change if the environment variables in the project or environment change
+- `step_context_env.json` - The [environment variable properties](/docs/reference/concepts/properties.md#environment-variables) for the project and environment, along with the project and environment [context](/docs/reference/concepts/context.md) values for use by `opschain-exec`. This file will change if the environment variables in the project or environment change
 
 The build arguments supplied to [BuildKit](https://docs.docker.com/develop/develop-images/build_enhancements/) when building the image include:
 
 | Argument             | Description                                                                                                             |
-| :------------------- |:------------------------------------------------------------------------------------------------------------------------|
+|:---------------------|:------------------------------------------------------------------------------------------------------------------------|
 | GIT_REV              | The Git revision supplied to OpsChain as part of the `opschain change create` command.                                  |
 | GIT_SHA              | The Git SHA this revision resolved to at the time of creating the change.                                               |
 | OPSCHAIN_BASE_RUNNER | The system default base runner image (including image tag). <br/>(i.e. `limepoint/opschain-runner:<OPSCHAIN_VERSION>`). |
@@ -114,7 +114,7 @@ These environment variables will then be available to the `aws` CLI (when run vi
 RUN opschain-exec aws s3 cp s3://source-bucket-name/customer-utility /opt/opschain/customer-utility
 ```
 
-More granular control over the secrets that are supplied to the image build is available by configuring the `env:build_secrets` configuration in the project or environment [properties](properties.md#secrets). See [project and environment configuration](#project--environment-secret-configuration) for more information.
+More granular control over the secrets that are supplied to the image build is available by configuring the `env:build_secrets` configuration in the project or environment [properties](/docs/reference/concepts/properties.md#secrets). See [project and environment configuration](#project--environment-secret-configuration) for more information.
 
 #### Secure runner secrets
 
@@ -139,11 +139,11 @@ action :copy_utility do
 end
 ```
 
-More granular control over the secrets that are supplied to the step runner container is available by configuring the `env:runner_secrets` configuration in the project or environment[properties](properties.md#secrets). See [project and environment configuration](#project--environment-secret-configuration) for more information.
+More granular control over the secrets that are supplied to the step runner container is available by configuring the `env:runner_secrets` configuration in the project or environment[properties](/docs/reference/concepts/properties.md#secrets). See [project and environment configuration](#project--environment-secret-configuration) for more information.
 
 #### Project & environment secret configuration
 
-OpsChain allows you to configure specific secrets to supply to changes in an environment by configuring the `env:build_secrets` and `env:runner_secrets` configuration options in your project or environment [properties](properties.md#secrets).
+OpsChain allows you to configure specific secrets to supply to changes in an environment by configuring the `env:build_secrets` and `env:runner_secrets` configuration options in your project or environment [properties](/docs/reference/concepts/properties.md#secrets).
 
 For example, adding the following to the project and environment properties will cause OpsChain to provide the key value pairs in the `project-build-secrets-1`, `project-build-secrets-2` and `environment-build-secrets` secrets as environment variables to `opschain-exec` during the image build:
 
@@ -176,7 +176,7 @@ _Environment properties:_
 :::
 
 :::caution
-The `env:build_secrets` and `env:runner_secrets` configuration options cannot be set in [repository properties](properties.md#git-repository). If either option is configured in your project's repository properties, it will be ignored.
+The `env:build_secrets` and `env:runner_secrets` configuration options cannot be set in [repository properties](/docs/reference/concepts/properties.md#git-repository). If either option is configured in your project's repository properties, it will be ignored.
 :::
 
 See the [using secrets in your image build](/docs/examples/using-secrets-in-your-change.md) example for more information.
@@ -227,7 +227,7 @@ When running the step runner, OpsChain includes:
 
 Upon completion, the step will produce an `/opt/opschain/.opschain/step_result.json` file to be processed by the API server, detailing:
 
-1. any changes to the project and environment [properties](properties.md) the action has performed
+1. any changes to the project and environment [properties](/docs/reference/concepts/properties.md) the action has performed
 2. the merged set of properties used by the action
 3. any child steps to be run after this action (and their execution strategy)
 
@@ -235,11 +235,11 @@ Upon completion, the step will produce an `/opt/opschain/.opschain/step_result.j
 
 The `step_context.json` file supplied to the step includes the following sections:
 
-| JSON path                | Description                                                                                                                                            |
-|--------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `context`                | The step context values for the current step - see the [OpsChain context guide](context.md) for more details                                           |
-| `project/properties`     | The [properties](properties.md) output from `opschain project show-properties --project-code <project code>`                                           |
-| `environment/properties` | The [properties](properties.md) output from `opschain environment show-properties --project-code <project code> --environment-code <environment code>` |
+| JSON path                | Description                                                                                                                                                                     |
+|--------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `context`                | The step context values for the current step - see the [OpsChain context guide](/docs/reference/concepts/context.md) for more details                                           |
+| `project/properties`     | The [properties](/docs/reference/concepts/properties.md) output from `opschain project show-properties --project-code <project code>`                                           |
+| `environment/properties` | The [properties](/docs/reference/concepts/properties.md) output from `opschain environment show-properties --project-code <project code> --environment-code <environment code>` |
 
 :::note
 Replace the `<project code>` and `<environment code>` in the commands above with the values for the project and environment related to the change.

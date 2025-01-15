@@ -19,7 +19,7 @@ After reading this guide you should understand:
 - how to use the OpsChain logger
 
 :::tip
-This reference guide covers concepts from the [developer getting started guide](../../getting-started/developer.md) in more depth. If this is your first experience developing with OpsChain it may be a better place to start.
+This reference guide covers concepts from the [developer getting started guide](/docs/getting-started/developer.md) in more depth. If this is your first experience developing with OpsChain it may be a better place to start.
 :::
 
 ## Defining standalone actions
@@ -42,13 +42,19 @@ In the example above, the action's name is `hello_world`, and the action's block
 You must `require 'opschain'` at the top of your `actions.rb` file to allow you to use the features described in this reference guide.
 :::
 
+:::info
+When running an action that is defined in both the `actions.rb` file and through the MintModel associated with the asset, the MintModel action will take precedence over the one defined in the `actions.rb` file.
+
+We suggest not naming any actions in the `actions.rb` with a name that matches a MintModel action.
+:::
+
 ## Sequencing actions
 
-In addition to the action name, OpsChain's DSL allows you specify [prerequisite actions](#prerequisite-actions) (to run before the action's block) and [child steps](#child-steps) (to run after the action's block). In this way you can describe a sequence of actions to perform.
+In addition to the action name, OpsChain's DSL allows you to specify [prerequisite actions](#prerequisite-actions) (to run before the action's block) and [child steps](#child-steps) (to run after the action's block). In this way you can describe a sequence of actions to perform.
 
 ### Prerequisite actions
 
-Prerequisite actions will run in the same [step runner](step-runner.md) as the requested action. These behave like standard [Rake prerequisites](https://ruby.github.io/rake/doc/rakefile_rdoc.html#label-Tasks+with+Prerequisites).
+Prerequisite actions will run in the same [step runner](/docs/reference/concepts/step-runner.md) as the requested action. These behave like standard [Rake prerequisites](https://ruby.github.io/rake/doc/rakefile_rdoc.html#label-Tasks+with+Prerequisites).
 
 ```ruby
 action go_to_work: ['wake_up', 'get_dressed'] do
@@ -64,7 +70,7 @@ action :get_dressed do
 end
 ```
 
-In the example above, all actions would run in the same [step runner](step-runner.md), in this order:
+In the example above, all actions would run in the same [step runner](/docs/reference/concepts/step-runner.md), in this order:
 
 1. `wake_up`
 2. `get_dressed`
@@ -78,23 +84,23 @@ As noted in the prerequisite actions example above, an action with prerequisites
 action holiday: ['wake_up', 'get_dressed']
 ```
 
-Running the `holiday` action will execute the `wake_up` and `get_dressed` actions in a single [step runner](step-runner.md).
+Running the `holiday` action will execute the `wake_up` and `get_dressed` actions in a single [step runner](/docs/reference/concepts/step-runner.md).
 
 Grouping actions on a single step runner comes with some advantages and disadvantages:
 
 ##### Advantages
 
-1. Improved performance - as there is an overhead to building and launching each [step runner](step-runner.md), grouping actions can improve overall change performance
-2. De-isolation - passing data between actions running in their own [step runners](step-runner.md) requires you to store the data in OpsChain's [properties](properties.md) (or in a data store accessible to both runners). Grouping actions on a single [step runner](step-runner.md) means the actions have access to the same file system and memory. This removes the need to store sensitive (or single use) information in [properties](properties.md)
+1. Improved performance - as there is an overhead to building and launching each [step runner](/docs/reference/concepts/step-runner.md), grouping actions can improve overall change performance
+2. De-isolation - passing data between actions running in their own [step runners](/docs/reference/concepts/step-runner.md) requires you to store the data in OpsChain's [properties](/docs/reference/concepts/properties.md) (or in a data store accessible to both runners). Grouping actions on a single [step runner](/docs/reference/concepts/step-runner.md) means the actions have access to the same file system and memory. This removes the need to store sensitive (or single use) information in [properties](/docs/reference/concepts/properties.md)
 
 ##### Disadvantages
 
 1. Execution visibility - prerequisite steps are not displayed in OpsChain's change step tree. This reduces the visibility of their start and stop times, making it harder to follow the change's progress. Similarly, when viewing the change logs, there is no separator in the logs between each prerequisite action's log messages nor with the grouping action's log messages (if any)
-2. De-isolation - While it can be an advantage (as described above), care must be taken when deciding to combine actions on a single [step runner](step-runner.md). The modifications to the file system or memory that one action makes may have unintended effects if subsequent actions have been designed with an expectation that they will run in a "clean" [step runner](step-runner.md)
+2. De-isolation - While it can be an advantage (as described above), care must be taken when deciding to combine actions on a single [step runner](/docs/reference/concepts/step-runner.md). The modifications to the file system or memory that one action makes may have unintended effects if subsequent actions have been designed with an expectation that they will run in a "clean" [step runner](/docs/reference/concepts/step-runner.md)
 
 ### Child steps
 
-An action definition can include a list of other actions to run as child `steps`. After the parent's block has completed, these child steps will be added to the queue of actions to run. When an OpsChain worker becomes available, it will build and launch a [step runner](step-runner.md) to run the next action in the queue.
+An action definition can include a list of other actions to run as child `steps`. After the parent's block has completed, these child steps will be added to the queue of actions to run. When an OpsChain worker becomes available, it will build and launch a [step runner](/docs/reference/concepts/step-runner.md) to run the next action in the queue.
 
 The `steps:` argument accepts:
 
@@ -118,7 +124,7 @@ action :do_something_else_after do
 end
 ```
 
-In the example above each action will run in its own [step runner](step-runner.md), in this order:
+In the example above each action will run in its own [step runner](/docs/reference/concepts/step-runner.md), in this order:
 
 1. `do_something`
 2. `do_something_after`
@@ -136,7 +142,7 @@ An OpsChain wait step can only be added as part of a step's child steps, for exa
 action :do_something, steps: [:do_something_before_waiting, OpsChain.wait_step, :do_something_else_after_waiting]
 ```
 
-Another useful scenario for wait steps is when an [automated change rule](automated-changes.md) is used to create a change automatically, but a team member should then allow the change to proceed manually. To achieve this the OpsChain wait step can be used as the first child step of an action:
+Another useful scenario for wait steps is when an [automated change rule](/docs/reference/concepts/automated-changes.md) is used to create a change automatically, but a team member should then allow the change to proceed manually. To achieve this the OpsChain wait step can be used as the first child step of an action:
 
 ```ruby
 action :do_something, steps: [:do_something_after] do
@@ -147,10 +153,10 @@ action :do_something_with_acknowledgement, steps: [OpsChain.wait_step, :do_somet
 ```
 
 :::info
-All the sibling steps of a wait step will run immediately when using `run_as: :parallel` - the change will not continue on subsequently until it is manually continued. See the [troubleshooting guide](/docs/troubleshooting.md#opschain-change-parallel-steps-run-before-wait-step) for more info.
+All the sibling steps of a wait step will run immediately when using `run_as: :parallel` - the change will not continue on subsequently until it is manually continued. See the [troubleshooting guide](/docs/troubleshooting.md#opschain-change---parallel-steps-run-before-wait-step) for more info.
 :::
 
-The `opschain change continue` command can be used to continue a waiting change. Currently the `opschain change continue` command will continue all waiting steps for a change. The `api/steps/{{step_id}}/continue` API endpoint can be used to continue a specific step, for example: `curl -X POST -u {{username}}:{{password}} localhost:3000/api/steps/{{step_id}}/continue`. See the [OpsChain REST API documentation](/docs/getting-started/README.md#review-the-rest-api-documentation) to learn more.
+The `opschain change continue` command can be used to continue a waiting change. Currently, the `opschain change continue` command will continue all waiting steps for a change. The `api/steps/{{step_id}}/continue` API endpoint can be used to continue a specific step, for example: `curl -X POST -u {{username}}:{{password}} localhost:3000/api/steps/{{step_id}}/continue`. See the [OpsChain REST API documentation](/docs/getting-started/README.md#review-the-rest-api-documentation) to learn more.
 
 :::caution
 OpsChain wait steps use the naming convention `opschain_wait_step_{{unique id}}` - do not use this naming convention in your steps unless you intend to create an OpsChain wait step.
@@ -158,7 +164,7 @@ OpsChain wait steps use the naming convention `opschain_wait_step_{{unique id}}`
 
 ##### Step continuation auditing
 
-Information about step continuation can be viewed by using the [events endpoint](events.md). The continue action will be recorded with the type `audit:steps:continue` (these can be fetched via the API by requesting `api/events?filter[type_eq]=audit:steps:continue`). The username of the user who continued the step is available in the API response.
+Information about step continuation can be viewed by using the [events endpoint](/docs/reference/concepts/events.md). The continue action will be recorded with the type `audit:steps:continue` (these can be fetched via the API by requesting `api/events?filter[type_eq]=audit:steps:continue`). The username of the user who continued the step is available in the API response.
 
 Please [let us know](mailto:opschain-support@limepoint.com) if you would like to suggest improvements in this area.
 
@@ -240,7 +246,7 @@ Modifying the child steps list via any method other than the append and replace 
 
 ### Child execution strategy
 
-The action definition includes an optional `run_as:` parameter. By default it is set to `sequential`, meaning the action's child steps will run sequentially across the OpsChain workers.
+The action definition includes an optional `run_as:` parameter. By default, it is set to `sequential`, meaning the action's child steps will run sequentially across the OpsChain workers.
 
 :::info
 Only `sequential` and `parallel` (as strings or Ruby symbols) are valid values for the `run_as:` parameter.
@@ -272,7 +278,7 @@ In the example above actions would run in this order:
 :::note NOTES
 
 - Parallel task execution is limited by the number of available OpsChain workers
-- Care must be taken when modifying properties from within parallel steps. See the [changing properties in parallel steps](properties.md#changing-properties-in-parallel-steps) section of the [OpsChain properties guide](properties.md#opschain-properties-guide) for more information
+- Care must be taken when modifying properties from within parallel steps. See the [changing properties in parallel steps](/docs/reference/concepts/properties.md#changing-properties-in-concurrent-steps) section of the [OpsChain properties guide](/docs/reference/concepts/properties.md) for more information
 
 :::
 
@@ -349,7 +355,7 @@ In order for a step (and subsequently the change) status to be set to `error`, t
 
 OpsChain provides a logger for use in actions.
 
-The OpsChain logger is a standard Ruby Logger object. By default the logger is configured to log all INFO severity (and higher) messages to STDOUT. You can use the OpsChain logger from anywhere in your `actions.rb` or project code:
+The OpsChain logger is a standard Ruby Logger object. By default, the logger is configured to log all INFO severity (and higher) messages to STDOUT. You can use the OpsChain logger from anywhere in your `actions.rb` or project code:
 
 ```ruby
 OpsChain.logger.info 'Informational message'
@@ -364,6 +370,82 @@ If required, the logger can be set to also display DEBUG level messages as follo
 OpsChain.logger.level = ::Logger::DEBUG
 OpsChain.logger.debug 'Debug message'
 ```
+
+## OpsChain secret vault
+
+OpsChain allows you to interact with a secret vault to securely manage sensitive information. The secret vault is accessible from within your actions via `OpsChain.secret_vault`.
+
+### `OpsChain.secret_vault.get`
+
+The `get` method allows you to generate, store and retrieve secrets from the secret vault. In its simplest form the `get` method requires two arguments:
+
+1. the path where the secret is (to be) stored.
+2. the key the secret is stored under in this path.
+
+E.g.
+
+The following example shows a `terraform` [resource](#defining-resource-types--resources) being defined. The result of the secret vault `get` request is being assigned to the resource's `password` variable.
+
+```ruby
+terraform_config :terraform do
+  vars(
+    namespace: 'opschain-terraform',
+    external_port: 8080
+    password: OpsChain.secret_vault.get('vault/path/to/secrets', 'secret_key')
+  )
+end
+```
+
+In this form, if a secret has been stored in the vault for this path and key combination it will be returned. If no secret exists for this path and key combination then a new secret will be generated, stored in the vault, and then returned.
+
+#### Customising the secret get
+
+The following keyword arguments can be supplied to customise the `get` request:
+
+| Argument                 | Default value | Description                                                                                     |
+|--------------------------|---------------|-------------------------------------------------------------------------------------------------|
+| `auto_create:`           | true          | whether to automatically create the secret if it does not exist in the vault                    |
+| `default:`               | nil           | The default value to assign to the secret if one does not exist or `override` is true |
+| `include_chars:`         | true          | whether to include alphabetic characters in the generated secret value                          |
+| `include_numbers:`       | true          | whether to include numeric characters in the generated secret value                             |
+| `include_symbols:`       | true          | whether to include special characters in the generated secret value                             |
+| `length:`                | 14            | the number of characters to generate for the secret value                                       |
+| `must_start_with_char:`  | true          | whether the generated secret value must start with an alphabetic character                      |
+| `override:`              | false         | whether to overwrite the secret value if it already exists in the secret vault                  |
+| `symbols:`               | '-#_^$%*'     | the special characters to include in the secret value                                           |
+
+For example: `OpsChain.secret_vault.get('vault/path/to/secrets', 'secret_key', length: 20, include_numbers: false)`. If the secret does not exist, a new 20 character long secret will be generated that does not include any numeric characters. If the secret already exists, these keyword arguments will be ignored and the existing secret returned.
+
+### `OpsChain.secret_vault.remove`
+
+The `remove` method allows you to remove a secret from the secret vault. It requires two arguments:
+
+1. the path where the secret is stored.
+2. the key the secret is stored under in this path.
+
+The example `remove_secret` action below will remove a secret from the secret vault:
+
+```ruby
+action :remove_secret do
+  OpsChain.secret_vault.remove('vault/path/to/secrets', 'secret_key')
+end
+```
+
+### `OpsChain.secret_vault.remove_path`
+
+The `remove_path` method allows you to remove a path and all of its children from the secret vault.
+
+The example `cleanup_vault` action below will remove the `vault/path/to/secrets` path (including all secrets and child paths) from the secret vault:
+
+```ruby
+action :cleanup_vault do
+  OpsChain.secret_vault.remove_path('vault/path/to/secrets')
+end
+```
+
+:::caution
+Care should be taken using the `remove_path` method as there is no way to undo the path removal other than to recover from vault backup or manually recreate the paths and contents.
+:::
 
 ## Defining resource types & resources
 
@@ -401,7 +483,7 @@ These resources will automatically include the `name` and `weather` properties, 
 :::note NOTES
 
 1. The resource type name (`city`) and resource name (`melbourne`) should conform to ruby variable naming standards. This means the name can include alphanumeric characters and the underscore character however it cannot start with a number or a capital letter. This ensures it can be easily referenced from other ruby code or the command line.
-2. The action description assigned via the `desc` keyword in the example above is optional. When working in the [OpsChain development environment](../../development-environment.md), project actions with a description can be listed with the `opschain-action -T` command. To view all actions (with or without a description) the `opschain-action -AT` command can be used. This is useful as internal actions can be hidden by omitting a description, but are discoverable if needed.
+2. The action description assigned via the `desc` keyword in the example above is optional. When working in the [OpsChain development environment](/docs/development-environment.md), project actions with a description can be listed with the `opschain-action -T` command. To view all actions (with or without a description) the `opschain-action -AT` command can be used. This is useful as internal actions can be hidden by omitting a description, but are discoverable if needed.
 
 :::
 
@@ -785,7 +867,7 @@ Within an `action` block, OpsChain does not allow calling other resource's actio
 
 ### Setting multiple properties
 
-Multiple resource properties can be assigned values in a single step by taking advantage of the [OpsChain properties](properties.md) feature. Assuming the OpsChain properties JSON was set to:
+Multiple resource properties can be assigned values in a single step by taking advantage of the [OpsChain properties](/docs/reference/concepts/properties.md) feature. Assuming the OpsChain properties JSON was set to:
 
 ```json
 {
@@ -804,7 +886,7 @@ city :melbourne do
 end
 ```
 
-If the dynamic nature of [OpsChain properties](properties.md) is not required, you can directly supply a hash containing the property values, keyed with their property names.
+If the dynamic nature of [OpsChain properties](/docs/reference/concepts/properties.md) is not required, you can directly supply a hash containing the property values, keyed with their property names.
 
 ```ruby
 city :melbourne do
@@ -1001,8 +1083,8 @@ This would define the following actions:
 
 ## What to do next
 
-Learn about the OpsChain [step runner](step-runner.md).
+Learn about the OpsChain [step runner](/docs/reference/concepts/step-runner.md).
 
-Learn about the [Docker development environment](../../development-environment.md).
+Learn about the [Docker development environment](/docs/development-environment.md).
 
-Try [developing your own resources](../../getting-started/developer.md#developing-resources).
+Try [developing your own resources](/docs/getting-started/developer.md#developing-resources).

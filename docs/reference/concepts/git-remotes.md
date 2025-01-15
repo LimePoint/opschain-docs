@@ -68,7 +68,7 @@ You will need to edit the example to replace:
 
 ### Unarchiving a Git remote
 
-Similar to [unarchiving projects and environments](archiving.md#unarchiving-projects-and-environments), archiving a Git remote is intended as a one way process. If you need to unarchive a Git remote, you will need to interact directly with the API server. OpsChain will only allow unarchiving if the Git remote, with its saved url and credentials, is still accessible.
+Similar to [unarchiving projects and environments](/docs/reference/concepts/archiving.md#unarchiving-projects-and-environments), archiving a Git remote is intended as a one way process. If you need to unarchive a Git remote, you will need to interact directly with the API server. OpsChain will only allow unarchiving if the Git remote, with its saved url and credentials, is still accessible.
 
 The following command will unarchive a Git remote with ID `cfebaf57-42c3-4df6-bf1d-4ae6f9094ec1` from the `demo` project.
 

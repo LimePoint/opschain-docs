@@ -10,7 +10,6 @@ This guide takes you through installing and configuring OpsChain.
 After following this guide you should know how to:
 
 - install OpsChain pre-requisites
-- configure Docker Hub access
 - install, configure and start OpsChain
 - create an OpsChain user
 - download the OpsChain CLI
@@ -38,7 +37,7 @@ You must have [Helm](https://helm.sh/docs/intro/install/) version 3 installed.
 
 OpsChain requires a minimum of 2GB of ram to function. We recommend 4GB if you intend to run our more advanced examples.
 
-OpsChain requires a minimum of 30GB of disk to function. We recommend 100GB if you intend to run our examples without having to perform [manual cleanup activities](/docs/operations/maintenance/container-image-cleanup.md#container-image-cleanup) very frequently.
+OpsChain requires a minimum of 30GB of disk to function. We recommend 100GB if you intend to run our examples without having to perform [manual cleanup activities](/docs/operations/maintenance/container-image-cleanup.md) very frequently.
 
 If using Docker for Mac the [configuration UI](https://docs.docker.com/desktop/mac/#advanced) allows you to adjust the ram and disk allocation for Docker. After changing the configuration you will need to restart the Docker service.
 
@@ -52,7 +51,7 @@ When using macOS or Windows we suggest ensuring that your Docker installation is
 
 The OpsChain image registry requires a hostname different to the OpsChain API hostname (that will resolve to the Kubernetes host) to allow it to route the registry traffic.
 
-By default OpsChain will attempt to use `opschain-image-registry.local.gd` which resolves to `127.0.0.1`. If your Kubernetes host does not resolve this address (e.g. if `host opschain-image-registry.local.gd` fails), add `127.0.0.1 opschain-image-registry.local.gd` to your hosts file.
+By default, OpsChain will attempt to use `opschain-image-registry.local.gd` which resolves to `127.0.0.1`. If your Kubernetes host does not resolve this address (e.g. if `host opschain-image-registry.local.gd` fails), add `127.0.0.1 opschain-image-registry.local.gd` to your hosts file.
 
 [`hostctl`](https://guumaster.github.io/) can be used to achieve this with the `hostctl add domains opschain opschain-image-registry.local.gd` command.
 
@@ -79,7 +78,7 @@ OpsChain depends on [`cert-manager`](https://cert-manager.io/) to manage its int
 ```bash
 helm repo add jetstack https://charts.jetstack.io
 helm repo update
-helm upgrade --install cert-manager jetstack/cert-manager --namespace cert-manager --create-namespace --version v1.14.4 --set installCRDs=true
+helm upgrade --install cert-manager jetstack/cert-manager --namespace cert-manager --create-namespace --version v1.16.1 --set "crds.enabled=true" --set "featureGates=AdditionalCertificateOutputFormats=true" --set "webhook.extraArgs={--feature-gates=AdditionalCertificateOutputFormats=true}"
 ```
 
 Along with internal certificates used by OpsChain, `cert-manager` will issue self-signed certificates for the OpsChain image registry and API server. To use these certificates, the `cert-manager` CA certificate must be trusted by the container runtime on your Kubernetes nodes, and by any systems from which you will access the OpsChain API.
@@ -106,7 +105,7 @@ cd ~/opschain-configuration
 opschain server configure
 ```
 
-You will be asked to confirm whether you would like to use certain features and provide your credentials for the OpsChain installation. The values that will be configured via the `opschain server configure` command are suitable for an evaluation or test environment, however for a production environment we recommend reviewing the [configuration guide](/docs/operations/configuring-opschain.md) and [security guide](/docs/operations/restricting-user-access.md) to ensure the configuration is suitable for your needs.
+You will be asked to confirm whether you would like to use certain features and provide your credentials for the OpsChain installation. The values that will be configured via the `opschain server configure` command are suitable for an evaluation or test environment, however for a production environment we recommend reviewing the [configuration guide](/docs/operations/configuring-opschain.md) to ensure the configuration is suitable for your needs.
 
 :::caution
 All future `opschain server` commands must be run in the `~/opschain-configuration` (or equivalent) directory to ensure that the right configuration is used.
@@ -180,5 +179,5 @@ If you intend to use the OpsChain development environment (used when creating ne
 
 ## What to do next
 
-- (optional) OpsChain is supplied with an LDAP server for authentication. If you'd prefer to use your own LDAP server, follow the [OpsChain LDAP](opschain-ldap.md) guide to alter the OpsChain authentication configuration.
-- Return to the [getting started guide](../getting-started/README.md) to learn more about OpsChain.
+- (optional) OpsChain is supplied with an LDAP server for authentication. If you'd prefer to use your own LDAP server, follow the [OpsChain LDAP](/docs/operations/opschain-ldap.md) guide to alter the OpsChain authentication configuration.
+- Return to the [getting started guide](/docs/getting-started/README.md) to learn more about OpsChain.

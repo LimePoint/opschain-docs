@@ -1,8 +1,8 @@
 // @ts-check
 // Note: type annotations allow type checking and IDEs autocompletion
 
-const lightCodeTheme = require('prism-react-renderer/themes/github')
-const darkCodeTheme = require('prism-react-renderer/themes/dracula')
+const lightCodeTheme = require('prism-react-renderer').themes.github
+const darkCodeTheme = require('prism-react-renderer').themes.dracula
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
@@ -12,7 +12,8 @@ const config = {
   url: 'https://docs.opschain.io',
   baseUrl: '/',
   onBrokenLinks: 'throw',
-  onBrokenMarkdownLinks: 'warn',
+  onBrokenAnchors: 'throw',
+  onBrokenMarkdownLinks: 'throw',
   favicon: 'img/favicon.ico',
 
   // Even if you don't use internalization, you can use this field to set useful

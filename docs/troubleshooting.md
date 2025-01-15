@@ -16,12 +16,12 @@ When errors are encountered with OpsChain, the following high-level checklist ma
 - check the log output from any relevant changes using `opschain change show-logs`
 - check the log output from Kubernetes, e.g. via [`kubetail -n opschain --since 0`](https://github.com/johanhaleby/kubetail)
   - to see the logs for a specific OpsChain service using `kubetail`, run `kubetail {{service}} -n opschain` (use `kubectl get deployments -n opschain` to see the list of OpsChain services)
-- ensure the OpsChain [hardware/VM prerequisites](operations/installation.md#hardwarevm-requirements) are met
+- ensure the OpsChain [hardware/VM prerequisites](/docs/operations/installation.md#hardwarevm-requirements) are met
   - ensure that adequate disk space is still available
 - ensure the system time is accurate
 - check [known issues](#known-issues) below
 - restart OpsChain and try again
-- [contact us](support.md#how-to-contact-us) for support
+- [contact us](/docs/support.md#how-to-contact-us) for support
 
 ## Known issues
 
@@ -78,7 +78,7 @@ We suggest using a terminal (and font) that supports emojis - for example using 
 
 Alternatively, if this is not possible, the CLI can be configured to output these statuses as text.
 
-Set the `stepEmoji` CLI configuration option to `false` to show text rather than emojis for the step status - see the [CLI configuration guide](reference/cli.md#opschain-cli-configuration) for more details.
+Set the `stepEmoji` CLI configuration option to `false` to show text rather than emojis for the step status - see the [CLI configuration guide](/docs/reference/cli.md#opschain-cli-configuration) for more details.
 
 ### `opschain-exec` / `opschain-action` - Argument list too long
 
@@ -88,7 +88,7 @@ When using the `opschain-exec` or `opschain-action` commands (for example during
 .../bin/opschain-exec:4:in `exec': Argument list too long - ... (Errno::E2BIG)
 ```
 
-This error indicates that the [Environment Variable](reference/concepts/properties.md#environment-variables) properties stored in the OpsChain properties linked to your project and/or environment are too large.
+This error indicates that the [Environment Variable](/docs/reference/concepts/properties.md#environment-variables) properties stored in the OpsChain properties linked to your project and/or environment are too large.
 
 Linux systems have a limit on the size of arguments and environment variables when executing commands. This is the `ARG_MAX` property. `opschain-exec` and `opschain-action` are limited by this system limit.
 
@@ -96,7 +96,7 @@ The `Limits on size of arguments and environment` section in `man 2 execve` talk
 
 #### Solution - E2BIG
 
-You will need to reduce the size of the environment variables in your project or environment [properties](reference/concepts/properties.md)
+You will need to reduce the size of the environment variables in your project or environment [properties](/docs/reference/concepts/properties.md)
 
 To resolve this issue remove environment variables (or reduce the size of environment variable names/values) until the error stops appearing - we recommend limiting the size of the environment variables structure to smaller than 64KB to be safe. This is the combined total of project and environment environment variables.
 
@@ -190,7 +190,7 @@ some_resource 'something' do
 end
 ```
 
-The `ref` (short for reference) method looks up the resource in the same way as [referencing previous resources](reference/concepts/actions.md#referencing-resources).
+The `ref` (short for reference) method looks up the resource in the same way as [referencing previous resources](/docs/reference/concepts/actions.md#referencing-resources).
 
 ### Null bytes in log messages
 
@@ -202,7 +202,7 @@ Please [contact us](/docs/support.md#how-to-contact-us) if you have any issues w
 
 ### Git commit: `opschain: command not found`
 
-OpsChain automatically sets up the [`opschain dev lint` tool](development-environment.md#using-the-opschain-linter) to detect issues in the project Git repositories.
+OpsChain automatically sets up the [`opschain dev lint` tool](/docs/development-environment.md#using-the-opschain-linter) to detect issues in the project Git repositories.
 
 If the command is not available on the path when committing the following error will be shown:
 
@@ -238,15 +238,15 @@ in `remove_operation': JSON::PatchObjectOperationOnArrayException (JSON::PatchOb
 
 #### Solution - updates made to properties could not be applied
 
-The change logs of the change specified in the error will include a number of JSON documents containing the necessary information to manually correct the OpsChain properties. See the [resolving conflicts](reference/concepts/properties.md#resolving-conflicts) section of the properties reference guide for more information.
+The change logs of the change specified in the error will include a number of JSON documents containing the necessary information to manually correct the OpsChain properties. See the [resolving conflicts](/docs/reference/concepts/properties.md#resolving-conflicts) section of the properties reference guide for more information.
 
 ##### Preventing future properties update failures
 
-The [properties reference guide](reference/concepts/properties.md#changing-properties-in-concurrent-steps) includes a number of examples of properties updates that will cause JSON Patch failure. Review the code in your `actions.rb` and where possible avoid these types of updates.
+The [properties reference guide](/docs/reference/concepts/properties.md#changing-properties-in-concurrent-steps) includes a number of examples of properties updates that will cause JSON Patch failure. Review the code in your `actions.rb` and where possible avoid these types of updates.
 
 ### OpsChain change - `OpsChain wait steps can't be created as actions - they can only be used as steps.`
 
-OpsChain [wait steps](reference/concepts/actions.md#wait-steps), and the associated `OpsChain.wait_step` method, can't be used as an action name. This means that the following code is invalid:
+OpsChain [wait steps](/docs/reference/concepts/actions.md#wait-steps), and the associated `OpsChain.wait_step` method, can't be used as an action name. This means that the following code is invalid:
 
 ```ruby
 # invalid, don't do this
@@ -261,7 +261,7 @@ action :do_something_with_acknowledgement, steps: [OpsChain.wait_step, :do_somet
 
 ### OpsChain change - `OpsChain wait steps can't be used as prerequisites.`
 
-OpsChain [wait steps](reference/concepts/actions.md#wait-steps), and the associated `OpsChain.wait_step` method, can't be used as [prerequisite actions](reference/concepts/actions.md#prerequisite-actions). This means that the following code is invalid:
+OpsChain [wait steps](/docs/reference/concepts/actions.md#wait-steps), and the associated `OpsChain.wait_step` method, can't be used as [prerequisite actions](/docs/reference/concepts/actions.md#prerequisite-actions). This means that the following code is invalid:
 
 ```ruby
 # invalid, don't do this
@@ -284,7 +284,7 @@ end
 
 ### OpsChain change - parallel steps run before wait step
 
-OpsChain [wait steps](reference/concepts/actions.md#wait-steps), and the associated `OpsChain.wait_step` method, can be used with parallel `steps` - however this means that all the sibling parallel steps will kickoff whilst the wait step is waiting, not before. For example:
+OpsChain [wait steps](/docs/reference/concepts/actions.md#wait-steps), and the associated `OpsChain.wait_step` method, can be used with parallel `steps` - however this means that all the sibling parallel steps will kick off whilst the wait step is waiting, not before. For example:
 
 ```ruby
 # warning - the `do_something_1` and `do_something_2` steps will run before the wait step has been continued
@@ -307,7 +307,7 @@ The `opschain dev` subcommands rely on the `docker` executable to function.
 
 #### Solution - install the dev dependencies
 
-Install the CLI [dev dependencies](reference/cli.md#dev-subcommand-dependencies) and then run the command again.
+Install the CLI [dev dependencies](/docs/reference/cli.md#dev-subcommand-dependencies) and then run the command again.
 
 ### OpsChain Gemfile conflicting with existing Gemfile
 
@@ -317,7 +317,7 @@ If using OpsChain with a Ruby project, the OpsChain Gemfile may conflict with th
 
 To avoid the conflict, OpsChain can be configured to look for the Gemfile at a different path - e.g. `.opschain/Gemfile` - to avoid conflicting with the main repo Gemfile.
 
-To do so, add `ENV BUNDLE_GEMFILE=/opt/opschain/.opschain/Gemfile` to your project's [custom runner image](/docs/development-environment.md#custom-runner-images) before the `RUN bundle install` lines. Adjust the path as required. Also then ensure you create the OpsChain Gemfile at the new path in the repo. An example of the Dockerfile may be:
+To do so, add `ENV BUNDLE_GEMFILE=/opt/opschain/.opschain/Gemfile` to your project's [custom runner image](/docs/development-environment.md#custom-runner-images) before the `RUN bundle install` lines. Adjust the path as required and then ensure you create the OpsChain Gemfile at the new path in the repo. An example of the Dockerfile may be:
 
 ```dockerfile
 ...
@@ -330,7 +330,7 @@ RUN --mount=type=secret,required=true,id=env_context_json,uid=10001,gid=10001,ta
 
 ### OpsChain build service pod stuck in 'pending' state during an upgrade
 
-If the configuration option [OPSCHAIN_BUILD_SERVICE_ROOTLESS](operations/configuring-opschain.md#opschain_image_build_rootless) is set to true and the `opschain-build-service` pod is stuck in a 'pending' state during an upgrade, it may be that the `fuse-device-plugin-daemonset` daemonset is not running or requires a restart. This pod is responsible for making the required FUSE devices on the node, available to the `opschain-build-service` pod when running in rootless mode.
+If the configuration option [OPSCHAIN_BUILD_SERVICE_ROOTLESS](/docs/operations/configuring-opschain.md#opschain_image_build_rootless) is set to true and the `opschain-build-service` pod is stuck in a 'pending' state during an upgrade, it may be that the `fuse-device-plugin-daemonset` daemonset is not running or requires a restart. This pod is responsible for making the required FUSE devices on the node, available to the `opschain-build-service` pod when running in rootless mode.
 
 If this is the case, the `opschain-build-service` pod will show events similar to the following:
 

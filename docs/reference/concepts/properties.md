@@ -23,7 +23,7 @@ After following this guide you should understand:
 
 ## OpsChain properties
 
-Within each action, OpsChain properties are available via `OpsChain.properties` (which will behave like a [Hashie Mash](https://github.com/hashie/hashie#mash)). The values available are the result of a deep merge of the [change's](concepts.md#change) [project's Git repository](../project-git-repositories.md) properties with the [project](concepts.md#project) and [environment](concepts.md#environment) level properties. If a property exists at multiple levels, project values will override repository values and environment values will override project and repository values.
+Within each action, OpsChain properties are available via `OpsChain.properties` (which will behave like a [Hashie Mash](https://github.com/hashie/hashie#mash)). The values available are the result of a deep merge of the [change's](/docs/reference/concepts/concepts.md#change) [project's Git repository](/docs/reference/project-git-repositories.md) properties with the [project](/docs/reference/concepts/concepts.md#project) and [environment](/docs/reference/concepts/concepts.md#environment) level properties. If a property exists at multiple levels, project values will override repository values and environment values will override project and repository values.
 
 Properties can be accessed using dot or square bracket notation with string or symbol keys. These examples are equivalent:
 
@@ -52,7 +52,7 @@ The OpsChain context is automatically populated by OpsChain with information abo
 Rather than manually putting change related values - e.g. the environment code, project code, action name, etc. - into your properties, consider whether you could use the OpsChain context instead.
 
 :::tip
-See the [OpsChain context guide](context.md) if you would like to learn more about the OpsChain context framework.
+See the [OpsChain context guide](/docs/reference/concepts/context.md) if you would like to learn more about the OpsChain context framework.
 :::
 
 ## Storage options
@@ -70,17 +70,23 @@ OpsChain will look for the following files in your project's Git repository:
 7. `.opschain/environments/<environment code>.json`
 8. `.opschain/environments/<environment code>.toml`
 9. `.opschain/environments/<environment code>.yaml`
+10. `.opschain/assets/<asset code>.json`
+11. `.opschain/assets/<asset code>.toml`
+12. `.opschain/assets/<asset code>.yaml`
 
 If multiple files exist in the repository, they will be merged together in the order listed above. Where multiple files define the same property/value, the latter file's value will override the former. E.g. if `.opschain/properties.toml` and `.opschain/environments/<environment code>.json` both contain the same property, the value from `.opschain/environments/<environment code>.json` will be used.
 
 Within each action, the result of merging the properties in these files will be available via `OpsChain.repository_properties`.
 
-:::note
-The repository properties are read only within each action (as OpsChain cannot modify the underlying Git repository to store any changes).
+:::note NOTES
+
+1. The repository properties are read only within each action (as OpsChain cannot modify the underlying Git repository to store any changes).
+2. If multiple assets use the same asset code (within different projects or environments) then they will load the same properties file path. E.g. any asset with a code `soa1` will load `.opschain/assets/soa1.yaml` from its template Git repository, irrespective of the parent project or environment.
+
 :::
 
 :::caution
-[Build and runner secrets](step-runner.md#secure-secrets) can only be configured in [database](#database) properties. If `env:build_secrets` or `env:runner_secrets` configuration is included in your repository properties it will be ignored.
+[Build and runner secrets](/docs/reference/concepts/step-runner.md#secure-secrets) can only be configured in [database](#database) properties. If `env:build_secrets` or `env:runner_secrets` configuration is included in your repository properties it will be ignored.
 :::
 
 #### Parent specific repository properties
@@ -95,7 +101,7 @@ Access to the individual file contents is not available via the `repository_prop
 
 #### OpsChain development environment
 
-Repository properties will be loaded (and validated) each time the `opschain-action` command is executed inside the [OpsChain development environment](../../development-environment.md). Running `opschain-action -AT` to list available actions will raise explanatory exceptions if the schema or structure of the properties file(s) is invalid.
+Repository properties will be loaded (and validated) each time the `opschain-action` command is executed inside the [OpsChain development environment](/docs/development-environment.md). Running `opschain-action -AT` to list available actions will raise explanatory exceptions if the schema or structure of the properties file(s) is invalid.
 
 If you wish to use environment or project specific repository properties in the development environment (`<project code>.{json,toml,yaml}` or `<environment code>.{json,toml,yaml}`) files you will need to configure your `step_context.json` to reflect the relevant project or environment code in the context. e.g.
 
@@ -156,7 +162,7 @@ opschain project set-properties --project-code <project code> --file-path my_ops
 opschain environment set-properties --project-code <project code> --environment-code <environment_code> --file-path my_opschain_properties.json --confirm
 ```
 
-If you have an existing JSON you wish to use as the properties for a project or environment and you are certain that the existing properties are empty (or can be overwritten), this is an efficient way to populate the properties. You'll see some of our [OpsChain examples](/docs/category/examples) use `set-properties` to setup the initial project or environment properties.
+If you have an existing JSON you wish to use as the properties for a project or environment, and you are certain that the existing properties are empty (or can be overwritten), this is an efficient way to populate the properties. You'll see some of our [OpsChain examples](/docs/category/examples) use `set-properties` to setup the initial project or environment properties.
 
 **Whenever possible, use `edit-properties` rather than `set-properties` to ensure concurrent changes to the properties are not overwritten.**
 
@@ -213,7 +219,7 @@ OpsChain.properties_for(:project)
 OpsChain.properties_for(:environment)
 ```
 
-These are exposed to allow you to add, remove and update properties, with any modifications saved on [step](concepts.md#step) completion. The modified project and environment properties are then available to any subsequent [steps](concepts.md#step) or [changes](concepts.md#change).
+These are exposed to allow you to add, remove and update properties, with any modifications saved on [step](/docs/reference/concepts/concepts.md#step) completion. The modified project and environment properties are then available to any subsequent [steps](/docs/reference/concepts/concepts.md#step) or [changes](/docs/reference/concepts/concepts.md#change).
 
 The object returned by `OpsChain.properties` is the merged set of properties and is regenerated every time the method is called. This means that if the result of `OpsChain.properties` is assigned to a variable - or passed to a resource - it won't reflect updates.
 
@@ -277,11 +283,11 @@ Using `clear` on your properties from within an action should be used with cauti
 
 ##### Example
 
-An example of setting properties can be seen in the [Confluent example](https://github.com/LimePoint/opschain-examples-confluent). The `provision` [action](concepts.md#action) in [`actions.rb`](https://github.com/LimePoint/opschain-examples-confluent/blob/master/actions.rb) modifies the environment properties to change settings for broker1.
+An example of setting properties can be seen in the [Confluent example](https://github.com/LimePoint/opschain-examples-confluent). The `provision` [action](/docs/reference/concepts/concepts.md#action) in [`actions.rb`](https://github.com/LimePoint/opschain-examples-confluent/blob/master/actions.rb) modifies the environment properties to change settings for broker1.
 
 #### Changing properties in concurrent steps
 
-Changes that take advantage of the `:parallel` [change execution strategy](actions.md#child-execution-strategy) will cause OpsChain to run multiple steps concurrently. Similarly, starting multiple changes at once will also lead to steps executing concurrently.
+Changes that take advantage of the `:parallel` [change execution strategy](/docs/reference/concepts/actions.md#child-execution-strategy) will cause OpsChain to run multiple steps concurrently. Similarly, starting multiple changes at once will also lead to steps executing concurrently.
 
 When each step starts, the current state of the project and environment properties (in the OpsChain database) is supplied to the step's action(s). This means steps that run concurrently will start with the same set of properties. At the completion of each step, any changes made to the project and/or environment properties by the action, are reflected in a [JSON Patch](http://jsonpatch.com/) applicable to the relevant source properties. The JSON Patch(es) are returned from the step runner to the OpsChain API and applied to the current state of the database properties. It is up to the action developer to ensure any changes made to properties by concurrent steps are compatible with each other.
 
@@ -445,7 +451,7 @@ OpsChain file properties are written to the working directory prior to the step 
 Each file property key is an absolute path (or will be [expanded](https://docs.ruby-lang.org/en/2.7.0/File.html#method-c-expand_path) to one) and represents the location the file will be written to. Each file property value can include the following attributes:
 
 | Attribute | Description                                  |
-| :-------- | :------------------------------------------- |
+|:----------|:---------------------------------------------|
 | mode      | The file mode, specified in octal (optional) |
 | content   | The content of the file (optional)           |
 | format    | The format of the file (optional)            |
@@ -504,11 +510,11 @@ The `store_file!` method accepts an optional `format:` parameter, allowing you t
 
 Examples of storing files can be seen in the [Ansible example](https://github.com/LimePoint/opschain-examples-ansible).
 
-- The `save_known_hosts` [action](concepts.md#action) in [`actions.rb`](https://github.com/LimePoint/opschain-examples-ansible/blob/master/actions.rb) uses this feature to store the SSH `known_hosts` file in the environment properties - to ensure the host is [trusted](https://en.wikipedia.org/wiki/Trust_on_first_use) in future steps and actions
+- The `save_known_hosts` [action](/docs/reference/concepts/concepts.md#action) in [`actions.rb`](https://github.com/LimePoint/opschain-examples-ansible/blob/master/actions.rb) uses this feature to store the SSH `known_hosts` file in the environment properties - to ensure the host is [trusted](https://en.wikipedia.org/wiki/Trust_on_first_use) in future steps and actions
 
 ### Environment variables
 
-OpsChain environment variable properties allow you to configure the process environment prior to running your [step](concepts.md#step) [actions](concepts.md#action). Any property under `opschain.env` will be interpreted as an environment variable property.
+OpsChain environment variable properties allow you to configure the process environment prior to running your [step](/docs/reference/concepts/concepts.md#step) [actions](/docs/reference/concepts/concepts.md#action). Any property under `opschain.env` will be interpreted as an environment variable property.
 
 ```json
 {
@@ -523,7 +529,7 @@ OpsChain environment variable properties allow you to configure the process envi
 
 #### Action environment
 
-Each [step](concepts.md#step) [action](concepts.md#action) is executed using the `opschain-action` command. This will define an environment variable for each of the OpsChain environment variable properties prior to executing the action.
+Each [step](/docs/reference/concepts/concepts.md#step) [action](/docs/reference/concepts/concepts.md#action) is executed using the `opschain-action` command. This will define an environment variable for each of the OpsChain environment variable properties prior to executing the action.
 
 ##### Bundler credentials
 
@@ -535,7 +541,9 @@ An example of setting environment variables can be seen in the [Ansible example]
 
 ### Secrets
 
-[Kubernetes secrets](https://kubernetes.io/docs/concepts/configuration/secret/) can be used to store secure key value pairs. By default, the key value pairs in the `opschain-build-env` secret are supplied to the OpsChain build service when building the [step runner image](concepts.md#step-runner-image). Similarly, the key value pairs in the `opschain-runner-env` secret are supplied to the OpsChain runner container when running each change step. To override these defaults, the `opschain.env:build_secrets` and `opschain.env:runner_secrets` can be configured as follows:
+#### Kubernetes secrets
+
+[Kubernetes secrets](https://kubernetes.io/docs/concepts/configuration/secret/) can be used to store secure key value pairs. By default, the key value pairs in the `opschain-build-env` secret are supplied to the OpsChain build service when building the [step runner image](/docs/reference/concepts/concepts.md#step-runner-image). Similarly, the key value pairs in the `opschain-runner-env` secret are supplied to the OpsChain runner container when running each change step. To override these defaults, the `opschain.env:build_secrets` and `opschain.env:runner_secrets` can be configured as follows:
 
 ```json
 {
@@ -546,4 +554,25 @@ An example of setting environment variables can be seen in the [Ansible example]
 }
 ```
 
-See the [step runner reference guide](step-runner.md#project--environment-secret-configuration) for more information on configuring secrets for the [step runner image build](step-runner.md#secure-build-secrets) and [step execution](step-runner.md#secure-runner-secrets).
+See the [step runner reference guide](/docs/reference/concepts/step-runner.md#project--environment-secret-configuration) for more information on configuring secrets for the [step runner image build](/docs/reference/concepts/step-runner.md#secure-build-secrets) and [step execution](/docs/reference/concepts/step-runner.md#secure-runner-secrets).
+
+#### OpsChain secret vault
+
+In addition to Kubernetes secrets, OpsChain also allows you to use the OpsChain secret vault to store secure property information. Any OpsChain property can reference a secret vault path as its value (including the content for [file properties](#file-properties) and the values for [environment variables](#environment-variables)).
+
+Secret vault values must use the following format:
+
+```json
+{
+  "my_password": "secret-vault://vault/path/to/secrets/secret_key"
+}
+```
+
+In the above example, when the `OpsChain.properties.my_password` property is accessed, OpsChain will attempt to retrieve the `secret_key` secret, from the `vault/path/to/secrets` key value store in the secret vault. If required, the keyword arguments described in [customising the secret get](actions.md#customising-the-secret-get) can be used to customise the secret generation. These must be supplied as query params in the secret vault path. E.g.
+
+```json
+{
+  "my_password": "secret-vault://vault/path/to/secrets/secret_key?length=20&include_numbers=false"
+  }
+}
+```

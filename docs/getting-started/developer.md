@@ -13,11 +13,11 @@ The `actions.rb` in the project Git repository is the core of an OpsChain change
 
 ## Prerequisites
 
-If you have not already done so, we suggest completing the main [getting started guide](README.md) before this guide.
+If you have not already done so, we suggest completing the main [getting started guide](/docs/getting-started/README.md) before this guide.
 
 This guide assumes that:
 
-- you have have access to a running OpsChain API server, either locally or network accessible. See the [getting started installation guide](../operations/installation.md) for more details
+- you have access to a running OpsChain API server, either locally or network accessible. See the [getting started installation guide](/docs/operations/installation.md) for more details
 - you have installed:
   - the [OpsChain CLI](/docs/reference/cli.md#installation) - including setting up all the [dev dependencies](/docs/reference/cli.md#dev-subcommand-dependencies)
   - [Docker](https://docs.docker.com/engine/install/)
@@ -143,7 +143,7 @@ To help your changes complete faster, steps can also run in parallel - we'll cov
 
 Steps are run in isolated runner containers when run as part of an OpsChain change.
 
-Edit the `actions.rb` file to make the `default` action run it's dependent actions as steps:
+Edit the `actions.rb` file to make the `default` action run its dependent actions as steps:
 
 ```ruby
 action :default, steps: [:hello_world, :goodbye_world]
@@ -172,7 +172,7 @@ This command is automatically setup as a pre-commit hook for project Git reposit
 
 If you would like to commit code that fails linting (e.g. incomplete code) the Git `--no-verify` argument can be used when committing, e.g. `git commit --no-verify`.
 
-See the [OpsChain lint](../development-environment.md#using-opschain-dev-lint) documentation to learn more.
+See the [OpsChain lint](/docs/development-environment.md#using-the-opschain-linter) documentation to learn more.
 
 #### Commit your action
 
@@ -187,7 +187,7 @@ Commit the changes to the `actions.rb` file to allow them to be used via the Ops
 
 Now that you've developed and tested your actions, use the OpsChain server to run them as part of a change. This facilitates collaboration and record keeping, and can also be done to improve security by only executing changes in a secure environment.
 
-This step assumes you have completed the [running sample changes](README.md#setup-opschain-to-run-sample-changes) steps from the getting started guide - alternatively you could create a new [project](README.md#create-an-opschain-project) and [environment](README.md#create-opschain-environments) to run the change in.
+This step assumes you have completed the [running sample changes](/docs/getting-started/README.md#setup-opschain-to-run-a-simple-sample-change) steps from the getting started guide - alternatively you could create a new [project](/docs/getting-started/README.md#create-an-opschain-project) and [environment](/docs/getting-started/README.md#create-an-opschain-environment) to run the change in.
 
 #### Push your commit to the remote
 
@@ -315,7 +315,7 @@ Hello :-)
 
 ### Learn more about OpsChain actions
 
-Read our more comprehensive [actions reference guide](/docs/reference/concepts/actions.md#actions-reference-guide) to learn more about creating actions, resources, resource types and controllers.
+Read our more comprehensive [actions reference guide](/docs/reference/concepts/actions.md) to learn more about creating actions, resources, resource types and controllers.
 
 ### Create OpsChain actions that need manual intervention
 

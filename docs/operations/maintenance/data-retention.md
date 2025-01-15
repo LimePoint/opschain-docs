@@ -39,7 +39,7 @@ opschain server deploy
 
 ### Project/environment
 
-The global retention setting can be overridden by creating a `change_log_retention_days` or an `event_retention_days` setting within the appropriate project or environment. Similar to [properties](../../reference/concepts/properties.md), environment settings will override project settings.
+The global retention setting can be overridden by creating a `change_log_retention_days` or an `event_retention_days` setting within the appropriate project or environment. Similar to [properties](/docs/reference/concepts/properties.md), environment settings will override project settings.
 
 Use the `opschain project|environment edit-settings` command to edit the project or environment settings. Below is an example JSON to configure the retention settings:
 
@@ -78,4 +78,4 @@ Setting `OPSCHAIN_CLEAN_OLD_DATA_JOB_CRON=never` will prevent the log removal jo
 
 ## See also
 
-The OpsChain log aggregator can be configured to forward change logs to external log storage. See the [OpsChain change log forwarding](../log-forwarding.md) guide for details.
+The OpsChain log aggregator can be configured to forward change logs to external log storage. See the [OpsChain change log forwarding](/docs/operations/log-forwarding.md) guide for details.

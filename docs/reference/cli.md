@@ -96,7 +96,7 @@ opschain_config=./production.opschainrc opschain info
 The `.opschainrc` file must be a valid JSON or INI file and supports the following configuration:
 
 | Configuration Key | Optional | Description                                                                                                                                                                                                                                                                                                                                                                                                                                      |
-| :---------------- | :------- |:-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+|:------------------|:---------|:-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `apiBaseUrl`      | no       | OpsChain API server URL                                                                                                                                                                                                                                                                                                                                                                                                                          |
 | `username`        | no       | OpsChain API username                                                                                                                                                                                                                                                                                                                                                                                                                            |
 | `password`        | yes      | OpsChain API password - this or `passwordCommand` are required.                                                                                                                                                                                                                                                                                                                                                                                  |
@@ -177,7 +177,7 @@ docker run -ti -v $(pwd):$(pwd) -v ~/.opschainrc:$(pwd)/.opschainrc -w $(pwd) li
 
 ### Using the OpsChain CLI in an OpsChain change
 
-The OpsChain CLI container image also makes it simple to access the OpsChain CLI within a [custom step runner Dockerfile](concepts/step-runner.md#custom-step-runner-dockerfiles):
+The OpsChain CLI container image also makes it simple to access the OpsChain CLI within a [custom step runner Dockerfile](/docs/reference/concepts/step-runner.md#custom-step-runner-dockerfiles):
 
 ```dockerfile
 ARG OPSCHAIN_VERSION
@@ -190,7 +190,7 @@ FROM ${OPSCHAIN_BASE_RUNNER}
 COPY --from=cli /opschain /usr/bin/opschain
 ```
 
-The CLI configuration can be included in the [environment variable properties](concepts/properties.md#environment-variables) using the [environment variable configuration](#environment-variable-configuration)
+The CLI configuration can be included in the [environment variable properties](/docs/reference/concepts/properties.md#environment-variables) using the [environment variable configuration](#environment-variable-configuration)
 
 ### Server management
 

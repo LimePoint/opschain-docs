@@ -11,11 +11,11 @@ The following example will allow you to explore some of the features of OpsChain
 
 ## Install the OpsChain server
 
-If you do not have access to an OpsChain API server, follow the [installation guide](../operations/installation.md) to install and configure OpsChain on your machine.
+If you do not have access to an OpsChain API server, follow the [installation guide](/docs/operations/installation.md) to install and configure OpsChain on your machine.
 
 ## Install the OpsChain CLI
 
-The OpsChain CLI allows you to interact with the OpsChain API server and is required to run the examples in this guide. If you followed the OpsChain server [installation guide](../operations/installation.md) then you can skip this section as it has already covered these steps.
+The OpsChain CLI allows you to interact with the OpsChain API server and is required to run the examples in this guide. If you followed the OpsChain server [installation guide](/docs/operations/installation.md) then you can skip this section as it has already covered these steps.
 
 The latest version of the CLI can be downloaded from the [`opschain` repository](https://github.com/LimePoint/opschain/releases). Download the appropriate release for your platform.
 
@@ -95,7 +95,7 @@ $ opschain project add-git-remote \
 ```
 
 :::note
-You can use the GitHub personal access token you created while following the [installation guide](../operations/installation.md#create-a-github-personal-access-token) if using a local OpsChain install.
+You can use the GitHub personal access token you created while following the [installation guide](/docs/operations/installation.md#create-a-github-personal-access-token) if using a local OpsChain install.
 :::
 
 #### Create an OpsChain environment
@@ -234,7 +234,7 @@ opschain environment set-properties --environment-code prod --file-path prod_pro
 The project properties provide default values to use when running changes in any environment in the project. The production environment properties override these defaults with production specific values.
 
 :::info
-This example uses OpsChain properties for simplicity. OpsChain properties are stored encrypted at rest and are tracked for auditability, but it may be preferable to use [OpsChain secrets](/docs/examples/using-secrets-in-your-change) for sensitive information like AWS access keys.
+This example uses OpsChain properties for simplicity. OpsChain properties are stored encrypted at rest and are tracked for auditability, but it may be preferable to use [OpsChain secrets](/docs/examples/using-secrets-in-your-change.md) for sensitive information like AWS access keys.
 :::
 
 ### Advanced change example
@@ -530,11 +530,11 @@ In addition to the CLI, OpsChain also provides a read only web interface that al
 
 The OpsChain web UI is available by accessing the address of your OpsChain server in a web browser - if using the default installation options then this would be at [http://localhost:3000/](http://localhost:3000/). It uses the same username and password as the CLI.
 
-Please [contact us](/docs/support#how-to-contact-us) if you have any feedback, we'd love to hear it.
+Please [contact us](/docs/support.md#how-to-contact-us) if you have any feedback, we'd love to hear it.
 
 ### Learn more about OpsChain actions
 
-Follow the [developer getting started guide](developer.md) and add more advanced actions to the sample project (this guide is targeted at readers with some software development experience, although it is not mandatory).
+Follow the [developer getting started guide](/docs/getting-started/developer.md) and add more advanced actions to the sample project (this guide is targeted at readers with some software development experience, although it is not mandatory).
 
 ### Try more advanced examples
 

@@ -17,33 +17,35 @@ A change is the application of an action from a specific commit in the project's
 
 ### Creating a change
 
-OpsChain changes can be created via the OpsChain CLI, or by directly POSTing to the API changes endpoint. To create an OpsChain change, the following information is required:
+OpsChain changes can be created via the OpsChain CLI, GUI, or by directly POSTing to the API changes endpoint. To create an OpsChain change, the following information is required:
 
-- An OpsChain [project](concepts.md#project) and [environment](concepts.md#environment)
-- A [Git remote](git-remotes.md) and related Git reference (tag/branch/SHA)
-- The OpsChain [action](actions.md) to execute
+- An OpsChain [project](/docs/reference/concepts/concepts.md#project) and [environment](/docs/reference/concepts/concepts.md#environment)
+- A [Git remote](/docs/reference/concepts/git-remotes.md) and related Git reference (tag/branch/SHA)
+- The OpsChain [action](/docs/reference/concepts/actions.md) to execute
 
 :::tip Creating changes
 For more information on using the CLI to create a change, see `opschain change create --help`.
+
+For more information on using the GUI to create a change, see [creating a new change](/docs/ui/environments.md#creating-a-new-change)
 
 To learn how to create changes via the API, see OpsChain's API reference by accessing the API host with your browser.
 :::
 
 ## Change properties
 
-To unlock the true power of OpsChain, your actions should be constructed to take advantage of the OpsChain [properties](properties.md) framework. This allows the actions to dynamically source hostnames, credentials and other project/environment specific information at runtime rather than being hard-coded into the actions.
+To unlock the true power of OpsChain, your actions should be constructed to take advantage of the OpsChain [properties](/docs/reference/concepts/properties.md) framework. This allows the actions to dynamically source hostnames, credentials and other project/environment specific information at runtime rather than being hard-coded into the actions.
 
 ### Static properties
 
-The change's Git reference identifies the static [repository properties](properties.md#git-repository) that will be supplied to the change. As detailed in the [OpsChain properties guide](properties.md#opschain-properties), repository properties can be overridden by project and environment properties.
+The change's Git reference identifies the static [repository properties](/docs/reference/concepts/properties.md#git-repository) that will be supplied to the change. As detailed in the [OpsChain properties guide](/docs/reference/concepts/properties.md#opschain-properties), repository properties can be overridden by project and environment properties.
 
 ### Dynamic properties
 
-As each step in your change is constructed, OpsChain will supply it with the latest version of the change's project and environment [database properties](properties.md#database). This ensures any modifications made to the properties in prior change steps (or other changes) are available to the action.
+As each step in your change is constructed, OpsChain will supply it with the latest version of the change's project and environment [database properties](/docs/reference/concepts/properties.md#database). This ensures any modifications made to the properties in prior change steps (or other changes) are available to the action.
 
 ## Change execution
 
-A step will be created for the change action, with additional steps created for each child action. The [child execution strategy](actions.md#child-execution-strategy) specified by each action will determine whether its child actions are executed serially or in parallel.
+A step will be created for the change action, with additional steps created for each child action. The [child execution strategy](/docs/reference/concepts/actions.md#child-execution-strategy) specified by each action will determine whether its child actions are executed serially or in parallel.
 
 :::info
 The number of OpsChain worker nodes configured when the OpsChain server is deployed provides a hard limit on the number of steps that OpsChain can execute at a time. For example, with 3 worker nodes, OpsChain can run:
@@ -56,7 +58,7 @@ The number of OpsChain worker nodes configured when the OpsChain server is deplo
 
 ### Limitations
 
-The OpsChain properties guide highlights a number of limitations that must be taken into account when [changing properties in concurrent steps](properties.md#changing-properties-in-concurrent-steps).
+The OpsChain properties guide highlights a number of limitations that must be taken into account when [changing properties in concurrent steps](/docs/reference/concepts/properties.md#changing-properties-in-concurrent-steps).
 
 ### Change execution options
 
@@ -110,9 +112,9 @@ opschain change create -p project -e environment -m prod_change_metadata.json -a
 
 ### Query changes by metadata
 
-You can query changes by metadata via the search field in the [OpsChain web UI](/docs/getting-started/#visit-the-opschain-web-ui). Metadata searching via the web UI is based on simple string matching. Please [let us know](mailto:opschain-support@limepoint.com) if you're interested in more advanced searching.
+You can query changes by metadata via the search field in the [OpsChain web UI](/docs/getting-started/README.md#visit-the-opschain-web-ui). Metadata searching via the web UI is based on simple string matching. Please [let us know](mailto:opschain-support@limepoint.com) if you're interested in more advanced searching.
 
-When querying changes via the change API, you can use OpsChain's [API filtering](../api-filtering.md) feature to limit the response to changes whose approver matches the value we specified in the metadata, e.g.:
+When querying changes via the change API, you can use OpsChain's [API filtering](/docs/reference/api-filtering.md) feature to limit the response to changes whose approver matches the value we specified in the metadata, e.g.:
 
 ```bash
 curl -G --user "{{username}}:{{password}}" 'http://localhost:3000/api/changes' --data-urlencode 'filter[metadata_approver_eq]=A. Manager'
@@ -130,12 +132,12 @@ curl -G --user "{{username}}:{{password}}" 'http://localhost:3000/api/changes' -
 :::
 
 :::tip
-For more information on filtering the change list output, see the [API filtering & sorting guide](../api-filtering.md).
+For more information on filtering the change list output, see the [API filtering & sorting guide](/docs/reference/api-filtering.md).
 :::
 
 ### Using metadata in actions
 
-The change metadata can also be accessed from within your `actions.rb` via [OpsChain context](context.md). The following action would output the approver into the change log:
+The change metadata can also be accessed from within your `actions.rb` via [OpsChain context](/docs/reference/concepts/context.md). The following action would output the approver into the change log:
 
 ```ruby
 action :print_approver do

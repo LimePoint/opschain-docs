@@ -29,7 +29,7 @@ The default `opschain-runner` [service account](https://kubernetes.io/docs/tasks
 
 ### Using Docker
 
-OpsChain step runner containers can use their [custom step runner Dockerfile](concepts/step-runner.md#custom-step-runner-dockerfiles) to install the Docker CLI and interact with a remote Docker host, for example:
+OpsChain step runner containers can use their [custom step runner Dockerfile](/docs/reference/concepts/step-runner.md#custom-step-runner-dockerfiles) to install the Docker CLI and interact with a remote Docker host, for example:
 
 ```Dockerfile
 RUN dnf config-manager --add-repo=https://download.docker.com/linux/centos/docker-ce.repo && dnf install -y docker-ce-cli
@@ -75,7 +75,7 @@ BuildKit provides the `buildctl` tool which can be used to perform builds agains
 
 The [skopeo](https://github.com/containers/skopeo) and [umoci](https://umo.ci/) tools can be used to retrieve and modify container images directly.
 
-These tools can be installed as part of a [custom step runner Dockerfile](concepts/step-runner.md#custom-step-runner-dockerfiles), e.g.:
+These tools can be installed as part of a [custom step runner Dockerfile](/docs/reference/concepts/step-runner.md#custom-step-runner-dockerfiles), e.g.:
 
 ```dockerfile
 RUN dnf install -y skopeo

@@ -21,7 +21,7 @@ After making changes to your `.env` file, you must run `opschain server configur
 
 Default value: _none_
 
-The [Kubernetes TLS secret](https://kubernetes.io/docs/concepts/configuration/secret/#tls-secrets) name containing a custom certificate to be used for the HTTPS listener. [OPSCHAIN_API_HOST_NAME](https://docs.opschain.io/docs/operations/configuring-opschain#opschain_api_host_name) must also be configured. [Learn more](tls.md#api-certificate)
+The [Kubernetes TLS secret](https://kubernetes.io/docs/concepts/configuration/secret/#tls-secrets) name containing a custom certificate to be used for the HTTPS listener. [OPSCHAIN_API_HOST_NAME](https://docs.opschain.io/docs/operations/configuring-opschain#opschain_api_host_name) must also be configured. [Learn more](/docs/operations/tls.md#api-certificate)
 
 #### OPSCHAIN_API_EXTERNAL_PORT
 
@@ -33,7 +33,7 @@ The port that will be exposed for accessing the OpsChain API service.
 
 Default value: _none_
 
-The host name that will be configured for the OpsChain API HTTPS listener. This is not required for HTTP access to the API, only for HTTPS access. [Learn more](tls.md#accessing-the-opschain-api-via-https)
+The host name that will be configured for the OpsChain API HTTPS listener. This is not required for HTTP access to the API, only for HTTPS access. [Learn more](/docs/operations/tls.md#accessing-the-opschain-api-via-https)
 
 #### OPSCHAIN_DOCKER_USER
 
@@ -69,7 +69,7 @@ Default value: _none_
 
 Default value: _true_
 
-Enable/Disable the HTTP ingress port. [Learn more](tls.md#disable-the-insecure-http-listener).
+Enable/Disable the HTTP ingress port. [Learn more](/docs/operations/tls.md#disable-the-insecure-http-listener).
 
 #### OPSCHAIN_IMAGE_REGISTRY_HOST
 
@@ -101,18 +101,38 @@ Default value: _opschain_
 
 [Kubernetes namespace](https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/) to deploy OpsChain into.
 
+#### OPSCHAIN_MINTPRESS_PARALLEL_STEPS_PER_CHANGE
+
+Default value: 10
+
+The number of MintModel steps that can be run in parallel for a single change.
+
+:::note
+This option should not be set to a value greater than the number of [threads per worker](#opschain_threads_per_worker) multiplied by the [number of workers](#opschain_api_worker_scale).
+:::
+
 #### OPSCHAIN_RUNNER_NODE_SELECTOR
 
 Default value: _{}_
 
 [Kubernetes nodeSelector](https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/) value that will be used for step runner pods. Must be specified as a JSON string.
 
+#### OPSCHAIN_API_WORKER_SCALE
+
+Default value: _2_
+
+The number of worker pods that will be deployed to process change and workflow steps.
+
+:::note
+The number of steps that can be processed by OpsChain is limited to the number of [threads per worker](#opschain_threads_per_worker) multiplied by this value. E.g. Two workers with five threads per worker can process ten steps concurrently.
+:::
+
 #### OPSCHAIN_THREADS_PER_WORKER
 
 Default value: _5_<br/>
 Minimum value: _2_
 
-The number of threads each worker process will run. Note that increasing this number further may actually decrease concurrency due to context switching. We recommend that you consider increasing the OPSCHAIN_API_WORKER_SCALE value before considering increasing this value.
+The number of threads each worker process will run. Note that increasing this number further may actually decrease concurrency due to context switching. We recommend that you consider increasing the [number of workers](#opschain_api_worker_scale) before considering increasing this value.
 
 #### OPSCHAIN_TLS_EXTERNAL_PORT
 
@@ -198,25 +218,17 @@ LDAP/AD base DN to search for users.
 
 Default value: _uid_
 
-LDAP/AD user attribute used as the OpsChain user name.
-
-### Authentication configuration
-
-#### OPSCHAIN_AUTH_SERVICE
-
-Default value: _none_
-
-Policy agent type on the authorisation host. The following policy agent is currently available: OPA. _Please contact [LimePoint](mailto:opschain-support@limepoint.com) if you require other policy agents._
+LDAP/AD user attribute used as the OpsChain username.
 
 ### Development environment
 
-The following variables can be manually set inside the OpsChain development environment or configured in your host environment and they will be passed through (e.g. in your `~/.zshrc`).
+The following variables can be manually set inside the OpsChain development environment or configured in your host environment, and they will be passed through (e.g. in your `~/.zshrc`).
 
 #### OPSCHAIN_ACTION_RUN_CHILDREN
 
 Default value: _false_
 
-Automatically run child steps in the local Docker development environment. See the [Docker development environment guide (child steps)](../development-environment.md#child-steps) for more details.
+Automatically run child steps in the local Docker development environment. See the [Docker development environment guide (child steps)](/docs/development-environment.md#child-steps) for more details.
 
 #### OPSCHAIN_TRACE
 

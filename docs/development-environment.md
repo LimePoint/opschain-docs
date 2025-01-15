@@ -13,16 +13,35 @@ The OpsChain Docker-based development environment enables you to list and run in
 
 ## Introduction
 
-OpsChain resources and actions can be developed using the OpsChain development environment, accessed via the the `opschain dev` CLI command.
+OpsChain resources and actions can be developed using the OpsChain development environment, accessed via the `opschain dev` CLI command.
 
 ## Prerequisites
 
 This guide assumes that you have performed the following steps from the installation guide:
 
-- [Configured Docker Hub access](operations/installation.md#configure-docker-hub-access-optional)
-- [Downloaded the OpsChain CLI](reference/cli.md#installation)
-- [Created an OpsChain project](getting-started/README.md#create-an-opschain-project)
-- [Created a project Git repository](getting-started/developer.md#create-a-git-repository) and associated its remote with your OpsChain project.
+- [Configured Docker Hub access](/docs/reference/cli.md#configure-docker-hub-access)
+- [Downloaded the OpsChain CLI](/docs/reference/cli.md#installation)
+- [Created an OpsChain project](/docs/getting-started/README.md#create-an-opschain-project)
+- [Created a project Git repository](/docs/getting-started/developer.md#create-a-git-repository) and associated its remote with your OpsChain project.
+
+### Optional prerequisite - secret vault configuration
+
+If you require access to a HashiCorp Vault, or compatible product, via the `OpsChain.secret_vault` keyword you will need to set the following environment variables in your development environment prior to running `opschain-action`:
+
+| Environment Variable               | Description                                                                                                                                                                                                                                                                     |
+|------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| OPSCHAIN_VAULT_ADDRESS             | The address for the Vault server - e.g. `http://vault.example.com:8200`                                                                                                                                                                                                         |
+| OPSCHAIN_VAULT_AUTH_METHOD         | The method used for authentication - valid values are: `token`, `userpass`, `ldap`                                                                                                                                                                                              |
+| OPSCHAIN_VAULT_TOKEN               | The token used for authentication (required if the authorisation method is `token`)                                                                                                                                                                                             |
+| OPSCHAIN_VAULT_USERNAME            | The username for `userpass` or `ldap` authentication                                                                                                                                                                                                                            |
+| OPSCHAIN_VAULT_PASSWORD            | The password for `userpass` or `ldap` authentication                                                                                                                                                                                                                            |
+| OPSCHAIN_VAULT_MOUNT_PATH          | The path to the Vault mount (default: `kv/data`)                                                                                                                                                                                                                                |
+| OPSCHAIN_VAULT_USE_MINT_ENCRYPTION | Flag indicating whether to encrypt values before storing them in vault (double encryption) - default: `true`                                                                                                                                                                    |
+| OPSCHAIN_VAULT_CLIENT_OPTIONS      | A hash of options to pass to the Vault client, in JSON format. Refer to the Vault Ruby Client Gem [usage instructions](https://github.com/hashicorp/vault-ruby/tree/master?tab=readme-ov-file#usage) for the available options. e.g. `{ "ssl_timeout": 5, "read_timeout": 30 }` |
+
+:::tip
+These can be set manually or configured in the [environment variables](/docs/reference/concepts/properties.md#environment-variables) section of your `step_context.json`.
+:::
 
 ### Navigate to the project Git repository
 
@@ -35,12 +54,12 @@ $ opschain dev
 ```
 
 :::tip
-The `opschain-action` commands below assume the OpsChain development environment is being run in the Git repository created as part of the [getting started - developer edition](getting-started/developer.md). If using a different project, modify these commands to reflect the OpsChain actions available.
+The `opschain-action` commands below assume the OpsChain development environment is being run in the Git repository created as part of the [getting started - developer edition](/docs/getting-started/developer.md). If using a different project, modify these commands to reflect the OpsChain actions available.
 :::
 
 #### Create a `step_context.json` (optional)
 
-The `opschain-action` command uses a `.opschain/step_context.json` file if it exists within the project Git repository working directory. For more information about the `step_context.json` file, see the [step runner reference guide](reference/concepts/step-runner.md#step-context-json).
+The `opschain-action` command uses a `.opschain/step_context.json` file if it exists within the project Git repository working directory. For more information about the `step_context.json` file, see the [step runner reference guide](/docs/reference/concepts/step-runner.md#step-context-json).
 
 ```bash
 $ mkdir -p .opschain
@@ -54,7 +73,7 @@ $ cat << EOF > .opschain/step_context.json
 EOF
 ```
 
-If your actions rely on [OpsChain context](reference/concepts/context.md) values, include the required values in a "context" section in the file. E.g.
+If your actions rely on [OpsChain context](/docs/reference/concepts/context.md) values, include the required values in a "context" section in the file. E.g.
 
 ```text
 {
@@ -73,11 +92,11 @@ A sample `step_context.json` file is available to view [here](/files/samples/ste
 
 ## Using the OpsChain development environment
 
-The `opschain-action` command can be used to run OpsChain actions the same way they are run by the step runner. See the [OpsChain development environment](getting-started/developer.md#opschain-development-environment) section of the getting started guide for instructions on how to list and run individual actions.
+The `opschain-action` command can be used to run OpsChain actions the same way they are run by the step runner. See the [OpsChain development environment](/docs/getting-started/developer.md#developing-actions-locally) section of the getting started guide for instructions on how to list and run individual actions.
 
-Unlike when actions are run as part of an OpsChain change, the OpsChain development environment does not persist changes to the project and environment properties to the OpsChain database. Instead, the properties changes are output into the `.opschain/step_result.json` file. For more information about the `step_result.json` file, see the [step runner reference guide](reference/concepts/step-runner.md#step-result-json).
+Unlike when actions are run as part of an OpsChain change, the OpsChain development environment does not persist changes to the project and environment properties to the OpsChain database. Instead, the properties changes are output into the `.opschain/step_result.json` file. For more information about the `step_result.json` file, see the [step runner reference guide](/docs/reference/concepts/step-runner.md#step-result-json).
 
-### Child Steps
+### Child steps
 
 #### Viewing step dependencies
 
@@ -95,7 +114,7 @@ The `step_result.json` will now contain an `expected_step_tree` field showing th
 
 #### Running child steps
 
-During OpsChain change execution, each child step of an action is executed in its own isolated runner container. As the `opschain-action` command is being run in the OpsChain development environment, it does not execute an action's child steps. This safeguards the child steps from any issues that may arise from running them in the same container as their parent action. Instead a warning is displayed, detailing the child steps that are not being run.
+During OpsChain change execution, each child step of an action is executed in its own isolated runner container. As the `opschain-action` command is being run in the OpsChain development environment, it does not execute an action's child steps. This safeguards the child steps from any issues that may arise from running them in the same container as their parent action. Instead, a warning is displayed, detailing the child steps that are not being run.
 
 ##### Automatic execution
 
@@ -109,7 +128,7 @@ To enable `opschain-action` to run child steps automatically, configure the `OPS
 
 1. The `OPSCHAIN_ACTION_RUN_CHILDREN` variable:
    - can be set in your shell's configuration, e.g. your `.zshrc`, to persist the config
-   - is only applicable when using `opschain-action` in the development environment and has no affect on actions running within an OpsChain change
+   - is only applicable when using `opschain-action` in the development environment and has no effect on actions running within an OpsChain change
 2. The `run_as:` `:serial`/`:parallel` flags are ignored by `opschain-action` when running in the development environment. Child steps will always be executed sequentially.
 
 :::
@@ -246,7 +265,7 @@ Next, exec into the container as the root user:
 docker exec -ti -u 0 <container_id> /bin/bash
 ```
 
-Replace <container_id> with the appropriate container ID from the results of the previous command. You now have an interactive Bash shell running as root inside this container and can perform any command you need.
+Replace `<container_id>` with the appropriate container ID from the results of the previous command. You now have an interactive Bash shell running as root inside this container and can perform any command you need.
 
 When complete, update your project's `Dockerfile` to reflect any changes that are required in your project's step [runner image](#custom-runner-images).
 
@@ -256,4 +275,4 @@ Use the `history` command to see the commands you have executed while running as
 
 ## What to do next
 
-Try [developing your own resources](getting-started/developer.md#developing-resources)
+Try [developing your own resources](/docs/getting-started/developer.md#developing-resources)

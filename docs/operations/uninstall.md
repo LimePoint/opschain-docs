@@ -16,8 +16,31 @@ Before uninstalling OpsChain we suggest [making a backup](maintenance/backups.md
 Terminate and remove the running OpsChain containers (and associated data) by executing the following command:
 
 ```bash
-opschain-uninstall
+opschain server uninstall
 ```
+
+### Persistent data
+
+The following resource will remain in your Kubernetes cluster post uninstallation. These may contain secrets or data that you wish to capture before proceeding with the uninstallation. Once you are satisfied that you have captured the necessary data, you can delete these resources.
+
+#### Secret vault data
+
+If OpsChain was configured to use the default secret vault, the secret vault data will have been stored in the `opschain/opschain-secret-vault-data-claim` persistent volume claim. This volume will remain post installation in case any secrets it contains need to be retrieved. In addition, if OpsChain is re-installed, the data will once again be available for use.
+
+:::warning
+If the persistent volume claim or the vault specific secrets described below have been deleted all vault data will be lost.
+:::
+
+#### Secrets
+
+The following Kubernetes secrets contain the configuration to access the default secret vault and/or secure information used to build and run your OpsChain actions:
+
+| Secret name                      | Description                                                                                                                                                                                                                                                 |
+|----------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `opschain-vault-config`          | Contains the connection configuration for the OpsChain secret vault. If OpsChain was configured to use the default secret vault, then the unique root vault token required to access the vault will be contained in the OPSCHAIN_VAULT_TOKEN in the secret. |
+| `opschain-secret-vault-seal-key` | If OpsChain was configured to use the default secret vault, the unseal key for the vault will be contained in this secret. This is required to unseal the vault prior to accessing the vaults contents using the vault token.                               |
+| `opschain-build-env`             | This secret contains environment variables supplied to the OpsChain runner image build.                                                                                                                                                                     |
+| `opschain-runner-env`            | This secret contains environment variables supplied to the OpsChain runner when executing actions.                                                                                                                                                          |
 
 ## Remove LimePoint Docker images
 
@@ -35,7 +58,7 @@ docker system prune -a
 
 ## Logout OpsChain from Docker
 
-Run the following command to logout the `opschaintrial` user from Docker Hub. This step is only required if you ran the `docker login` step in the [install guide](installation.md#configure-docker-hub-access-optiona).
+Run the following command to logout the `opschaintrial` user from Docker Hub. This step is only required if you ran the `docker login` step in the [CLI guide](/docs/reference/cli.md#configure-docker-hub-access).
 
 ```bash
 docker logout
@@ -43,7 +66,7 @@ docker logout
 
 ## Delete .opschainrc file
 
-Remove the `.opschainrc` file that you created from the [create an OpsChain CLI configuration file](installation.md#create-an-opschain-cli-configuration-file) section in the installation guide.
+Remove the `.opschainrc` file that you created from the [create an OpsChain CLI configuration file](/docs/reference/cli.md#opschain-cli-configuration) section in the installation guide.
 
 ```bash
 rm ~/.opschainrc
@@ -51,12 +74,12 @@ rm ~/.opschainrc
 
 ## Delete the OpsChain configuration files
 
-Remove the configuration files that you created when [configuring Opschain](installation.md#configure-opschain)
+Remove the configuration files that you created when [configuring Opschain](/docs/operations/installation.md#configure-opschain)
 
 ## Uninstall native CLI
 
-Delete the binary file if you opted to use the native CLI in the [download the native CLI (optional)](installation.md#download-the-native-cli-optional) section in the installation guide.
+Delete the binary file if you opted to use the native CLI in the [download the native CLI (optional)](/docs/operations/installation.md#installation) section in the installation guide.
 
 ## Uninstall prerequisites (optional)
 
-If no longer required, you may opt to uninstall the prerequisites detailed in the [required software](installation.md#required-software) section in the installation guide.
+If no longer required, you may opt to uninstall the prerequisites detailed in the [required software](/docs/operations/installation.md#prerequisites) section in the installation guide.

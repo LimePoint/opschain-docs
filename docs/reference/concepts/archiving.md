@@ -23,7 +23,7 @@ opschain project archive
 Projects and environments cannot be archived if they contain a queued or running change. Please ensure all relevant changes are complete (or cancelled) prior to executing the command.
 :::
 
-## Affect on OpsChain
+## Effect on OpsChain
 
 Archiving an environment:
 
@@ -51,7 +51,7 @@ By default, archived resources are included in the results returned from the API
 
 #### Result filtering
 
-If required, the API endpoints allow you to use result filtering (described in more detail in [API filtering & sorting guide](../api-filtering.md)) to return only active projects or environments. To do this, append the filter `filter[archived_eq]=false` to your API request. e.g.
+If required, the API endpoints allow you to use result filtering (described in more detail in [API filtering & sorting guide](/docs/reference/api-filtering.md)) to return only active projects or environments. To do this, append the filter `filter[archived_eq]=false` to your API request. e.g.
 
 ```text
 http://localhost:3000/api/projects?filter[archived_eq]=false`

@@ -32,7 +32,7 @@ The OpsChain CLI provides commands for interacting with automated change rules v
 A new automated change rule can be created by using the `opschain automated-change create` subcommand in the CLI. The `--cron-schedule` allows you to control how often the rule will run. The `--new-commits-only` and `--git-rev` values determine whether the rule will create an OpsChain change when it runs. The following table outlines the various combinations:
 
 | `--new-commits-only` | Git revision has new commits | OpsChain change created |
-| :------------------- | :--------------------------- | :---------------------- |
+|:---------------------|:-----------------------------|:------------------------|
 | true                 | true                         | true                    |
 | true                 | false                        | false                   |
 | false                | n/a                          | true                    |
@@ -97,9 +97,9 @@ If the `--new-commits-only=false` were changed to `--new-commits-only=true` then
 
 ## Automated change rule events
 
-Automated change rules create [events](events) in the following error conditions:
+Automated change rules create [events](/docs/reference/concepts/events.md) in the following error conditions:
 
 - when the Git commit SHA can't be determined for the Git revision in the relevant Git remote. The event will have a type of `error:automated_change_rule:git_sha`
 - when the change creation fails for the automated change rule. The event will have a type of `error:automated_change_rule:change_creation`
 
-All automated change error events have a type starting with `error:automated_change_rule`, and hence can be fetched from the API using the following filters, `filter[type_start]=error:automated_change_rule` and `filter[system_eq]=true`. Learn more in the [API filtering guide](../api-filtering).
+All automated change error events have a type starting with `error:automated_change_rule`, and hence can be fetched from the API using the following filters, `filter[type_start]=error:automated_change_rule` and `filter[system_eq]=true`. Learn more in the [API filtering guide](/docs/reference/api-filtering.md).

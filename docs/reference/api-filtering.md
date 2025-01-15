@@ -5,7 +5,7 @@ description: A guide to sorting and filtering the API list output.
 
 # API filtering & sorting
 
-With the exception of the "list properties versions" endpoint (`/api/properties_versions`), all OpsChain API list endpoints support filtering and sorting by resource attributes. This guide provides an overview of how to filter and sort the API output.
+Except for the "list properties versions" endpoint (`/api/properties_versions`), all OpsChain API list endpoints support filtering and sorting by resource attributes. This guide provides an overview of how to filter and sort the API output.
 
 ## Querying the API
 
@@ -113,17 +113,17 @@ filter[code_in][]=demo
 
 ### Query examples
 
-The table below lists some examples of how to use filters to query the OpsChain API [events](concepts/events.md) endpoint.
+The table below lists some examples of how to use filters to query the OpsChain API [events](/docs/reference/concepts/events.md) endpoint.
 
-| Example                                                                                      | Description                                                                                                                                        |
-|:---------------------------------------------------------------------------------------------|:---------------------------------------------------------------------------------------------------------------------------------------------------|
-| `filter[created_at_lt]=2021-01-01T01:00:00.000000Z`                                          | Events older than 2021-01-01 - this can be useful for paginating back through old events.                                                          |
-| `filter[type_eq]=api:projects:create`                                                        | API requests to create a project - the full list of event types is available in the [events documentation](concepts/events.md#system-event-types). |
-| `filter[request_body_action_eq]=provision`<br/>`filter[type_eq]=api:changes:create`          | API requests to create a change with the `provision` action.                                                                                       |
-| `filter[url_params_project_code_eq]=demo`<br/>`filter[type_eq]=api:git_remotes:update`       | API requests to update the `demo` project Git remote.                                                                                              |
-| `filter[type_in][]=api:properties_versions:show`<br/>`filter[type_in][]=api:properties:show` | API requests to show properties, including older versions.                                                                                         |
-| `filter[parent_code_eq]=prod`<br/>`filter[parent_node_type_eq]=environment`                  | API requests for the `prod` environment.                                                                                                           |
-| `filter[system_eq]=false`<br/>`filter[name_start]=some`                                      | Custom events with a custom `name` field beginning with `some`.                                                                                    |
+| Example                                                                                      | Description                                                                                                                                                        |
+|:---------------------------------------------------------------------------------------------|:-------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `filter[created_at_lt]=2021-01-01T01:00:00.000000Z`                                          | Events older than 2021-01-01 - this can be useful for paginating back through old events.                                                                          |
+| `filter[type_eq]=api:projects:create`                                                        | API requests to create a project - the full list of event types is available in the [events documentation](/docs/reference/concepts/events.md#system-event-types). |
+| `filter[request_body_action_eq]=provision`<br/>`filter[type_eq]=api:changes:create`          | API requests to create a change with the `provision` action.                                                                                                       |
+| `filter[url_params_project_code_eq]=demo`<br/>`filter[type_eq]=api:git_remotes:update`       | API requests to update the `demo` project's Git remotes.                                                                                                           |
+| `filter[type_in][]=api:properties_versions:show`<br/>`filter[type_in][]=api:properties:show` | API requests to show properties, including older versions.                                                                                                         |
+| `filter[parent_code_eq]=prod`<br/>`filter[parent_node_type_eq]=environment`                  | API requests for the `prod` environment.                                                                                                                           |
+| `filter[system_eq]=false`<br/>`filter[name_start]=some`                                      | Custom events with a custom `name` field beginning with `some`.                                                                                                    |
 
 ## External tools
 

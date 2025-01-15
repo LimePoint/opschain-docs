@@ -19,7 +19,7 @@ This example describes how to use Kubernetes secrets in your change. After follo
 
 ## Prerequisites
 
-- A running OpsChain instance (see the [installation guide](../operations/installation.md) for more information)
+- A running OpsChain instance (see the [installation guide](/docs/operations/installation.md) for more information)
 - `kubectl` access to the Kubernetes cluster
 - A working understanding of [Kubernetes secrets](https://kubernetes.io/docs/concepts/configuration/secret/)
 - A [fork](https://docs.github.com/en/get-started/quickstart/fork-a-repo) of the [sample repo](https://github.com/LimePoint/opschain-getting-started) to follow this example in. See the [developer getting started guide](/docs/getting-started/developer.md#create-a-git-repository) for more information.
@@ -154,7 +154,7 @@ The key value pairs configured in the `opschain-build-env` Kubernetes secret are
     ```
 
     :::tip
-    As we are not actually accessing a secure Gem in this example, there is no need to generate a new access token - you can use the dummy access token in the example yaml above.
+    As we are not actually accessing a secure Gem in this example, there is no need to generate a new access token - you can use the dummy access token in the example YAML above.
     :::
 
 3. Re-run the `show_environment` action and verify:
@@ -250,7 +250,7 @@ To see this in action, let's start by adding some project level credentials to o
 
 ### Environment secrets
 
-Just like [properties](../reference/concepts/properties.md), OpsChain's secret model allows you to override project level secrets at the environment level. Lets add some developer credentials to our `dev` environment, so the production credentials are not visible to the development team.
+Just like [properties](/docs/reference/concepts/properties.md), OpsChain's secret model allows you to override project level secrets at the environment level. Let's add some developer credentials to our `dev` environment, so the production credentials are not visible to the development team.
 
 1. Create a Kubernetes secret containing specific credentials for the development team:
 

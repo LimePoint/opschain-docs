@@ -157,7 +157,7 @@ This change will use Terraform's `destroy` action to remove the Kubernetes resou
 opschain change create --project-code terraform --environment-code tform --git-remote-name origin --git-rev master --action destroy --confirm
 ```
 
-::tip
+:::tip
 The [verify the change](#verify-the-change) steps above can be re-run to verify that nginx has been removed from Kubernetes.
 :::
 

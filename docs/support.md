@@ -23,7 +23,7 @@ All support offered is best efforts - no guarantees are made that the support te
 
 ### What is included
 
-Please refer to the [troubleshooting](troubleshooting.md) guide on how to resolve known issues within OpsChain. If you do have any particular concerns, we will endeavour to address and respond to them within a reasonable amount of time. Our support policy also includes the following:
+Please refer to the [troubleshooting](/docs/troubleshooting.md) guide on how to resolve known issues within OpsChain. If you do have any particular concerns, we will endeavour to address and respond to them within a reasonable amount of time. Our support policy also includes the following:
 
 - Logging of issues and requests
 - Assistance with issues during installation
@@ -69,7 +69,7 @@ Our support team is available from 9am - 6pm Monday to Friday (AEDT).
 
 ### How to contact us
 
-- Self Service Support Portal - <http://support.limepoint.com>
+- [Self Service Support Portal](http://support.limepoint.com)
 - Assisted Support Number - 1300 546 399
 - Support Escalation Account Head
 

@@ -11,38 +11,38 @@ OpsChain can be used from Mac, Linux and Windows.
 
 OpsChain is deployed to Kubernetes. We can also provide a SaaS demo instance - [contact us](https://opschain.io/contact-us) if you would like to demo OpsChain.
 
-## [Getting started](getting-started/README.md)
+## [Getting started](/docs/getting-started/README.md)
 
 Explore OpsChain's features.
 
-## [Example projects](category/examples)
+## [Example projects](/docs/category/examples)
 
-A variety of example project Git repositories, many with step by step tutorials to see OpsChain in action.
+A variety of example project Git repositories, many with step-by-step tutorials to see OpsChain in action.
 
-## [Operations guides](category/operations)
+## [Operations guides](/docs/category/operations)
 
 Operations guides for OpsChain, including security, installation and upgrade guides.
 
-## [Containerised development environment](development-environment.md)
+## [Containerised development environment](/docs/development-environment.md)
 
 Understand the OpsChain containerised development environment.
 
-## [Developing your own resources](getting-started/developer.md#developing-resources)
+## [Developing your own resources](/docs/getting-started/developer.md#developing-resources)
 
 Learn the basics of developing your own resources.
 
-## [Reference documentation](category/reference)
+## [Reference documentation](/docs/category/reference)
 
 OpsChain concepts, system architecture, actions and properties.
 
-## [Troubleshooting](troubleshooting.md)
+## [Troubleshooting](/docs/troubleshooting.md)
 
 Known issues and solutions.
 
-## [Support](support.md)
+## [Support](/docs/support.md)
 
 OpsChain support policy.
 
-## [Changelog](changelog.md)
+## [Changelog](/docs/changelog.md)
 
 New features, bug fixes and changes in OpsChain.

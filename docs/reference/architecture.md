@@ -5,7 +5,7 @@ description: An overview of the components that make up OpsChain.
 
 # Architecture overview
 
-OpsChain provides a fully self contained environment consisting of the command line interface (CLI), web user interface (UI), API server, PostgreSQL database, Fluentd log aggregator, Open Policy Agent authorisation server and an optional LDAP server. The [configuring an external LDAP](../operations/opschain-ldap.md#configuring-an-external-ldap) guide provides instructions to swap out the OpsChain LDAP and integrate with a centralised LDAP or Active Directory server.
+OpsChain provides a fully self-contained environment consisting of the command line interface (CLI), web user interface (UI), API server, PostgreSQL database, Fluentd log aggregator, Open Policy Agent authorisation server and an optional LDAP server. The [configuring an external LDAP](/docs/operations/opschain-ldap.md#configuring-an-external-ldap) guide provides instructions to swap out the OpsChain LDAP and integrate with a centralised LDAP or Active Directory server.
 
 Each part of this environment is deployed using [Kubernetes](https://kubernetes.io/).
 

@@ -29,7 +29,7 @@ The data provided within the `attributes` section of the event API response vari
 
 All automatically created API events start with the `api:` prefix and are then followed by the API controller, and then the API method. The `index` method is analogous to `list`.
 
-A full list of API events is available [below](#list-of-events).
+A full list of API events is available [below](/docs/reference/concepts/events.md#system-event-types).
 
 ## Viewing events
 
@@ -82,7 +82,7 @@ The `--globoff` argument is required when using the filtering queries using `cur
 
 #### Filtering examples
 
-The API filtering and sorting guide includes a variety of [examples](../api-filtering.md#query-examples) that highlight OpsChain's filtering feature and how it can be used to find specific events.
+The API filtering and sorting guide includes a variety of [examples](/docs/reference/api-filtering.md#query-examples) that highlight OpsChain's filtering feature and how it can be used to find specific events.
 
 #### More complex examples
 

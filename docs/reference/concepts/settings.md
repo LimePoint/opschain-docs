@@ -52,7 +52,7 @@ The number of days to retain events. See [event retention](/docs/operations/main
 
 Default value: _false_
 
-Whether to allow multiple changes to run within a single environment or not. See [change execution options](changes.md#change-execution-options) in the changes reference guide for more information
+Whether to allow multiple changes to run within a single environment or not. See [change execution options](/docs/reference/concepts/changes.md#change-execution-options) in the changes reference guide for more information
 
 ### requires_approval_from
 

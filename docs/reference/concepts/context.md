@@ -17,10 +17,10 @@ Within each action, OpsChain context values are available via `OpsChain.context`
 
 | Context key   | Description                                                                                                                                                                  |
 |---------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `project`     | The [project](concepts.md#project) for the currently running step[^api_docs]                                                                                                 |
-| `environment` | The [environment](concepts.md#environment) for the currently running step[^api_docs]                                                                                         |
-| `change`      | The [change](concepts.md#change) the currently running step belongs to[^api_docs]                                                                                            |
-| `step`        | The currently running [step](concepts.md#step)[^api_docs]                                                                                                                    |
+| `project`     | The [project](/docs/reference/concepts/concepts.md#project) for the currently running step[^api_docs]                                                                        |
+| `environment` | The [environment](/docs/reference/concepts/concepts.md#environment) for the currently running step[^api_docs]                                                                |
+| `change`      | The [change](/docs/reference/concepts/concepts.md#change) the currently running step belongs to[^api_docs]                                                                   |
+| `step`        | The currently running [step](/docs/reference/concepts/concepts.md#step)[^api_docs]                                                                                           |
 | `user`        | Information about the user who submitted the change<br />  `name` - the user who submitted the change<br />  `groups` - an array of LDAP groups that the user is a member of |
 
 [^api_docs]: The attributes available within these context keys are the same as those available to you from the relevant API endpoint. See the [OpsChain API documentation](https://docs.opschain.io/api-docs/) for more details.
@@ -59,7 +59,7 @@ end
 
 ### Sample context values
 
-Below is an example of the values available to an action via `OpsChain.context` (formatted as yaml):
+Below is an example of the values available to an action via `OpsChain.context` (formatted as YAML):
 
 import SampleContextValues from '/files/samples/sample-context-values.md'
 

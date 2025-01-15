@@ -6,7 +6,7 @@ description: Upgrading OpsChain to the latest release.
 # Upgrading
 
 :::caution
-Before upgrading OpsChain, make sure you check the [changelog](/docs/changelog) for the relevant version - making note of any breaking changes and related pre-upgrade steps.
+Before upgrading OpsChain, make sure you check the [changelog](/docs/changelog.md) for the relevant version - making note of any breaking changes and related pre-upgrade steps.
 :::
 
 To upgrade OpsChain go to the location on your OpsChain host where you store your OpsChain server configuration (e.g. `~/opschain-configuration`), [download and install the latest CLI](/docs/reference/cli.md#installation), and deploy the latest version of OpsChain (which will pull the latest images).
