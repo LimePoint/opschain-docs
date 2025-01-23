@@ -137,6 +137,27 @@ The workflow details page provides the following buttons to control the executio
 | _Run workflow_      | Run the workflow, supplying an optional run description if required.                                                           |
 | _Automate workflow_ | Automate running the workflow, providing a cron schedule and conditional options to determine if and when the workflow is run. |
 
+### Workflow execution options
+
+By default, OpsChain will only allow a single instance of each workflow to be running at any time. This restriction relates to the default [change execution options](/docs/reference/concepts/changes.md#change-execution-options) for OpsChain changes that restricts running multiple changes in the same OpsChain project, environment or asset. Running the same workflow multiple times may cause this to happen and would slow the execution of the workflow. If you require the ability to run the same workflow multiple times concurrently, use the `opschain project edit-settings` command (or the OpsChain GUI) to set the `allow_parallel_runs_of_same_workflow` setting to `true` in your project's settings:
+
+```json
+{
+  ...
+  "allow_parallel_runs_of_same_workflow": true
+}
+```
+
+:::tip
+If you have `jq` installed you can use the following command to set the option programmatically:
+
+```bash
+opschain project show-settings -p demo | jq '. += { "allow_parallel_runs_of_same_workflow": true }' > /tmp/updated_project_settings.json
+opschain project set-settings -p <project code> -f /tmp/updated_project_settings.json -y
+```
+
+:::
+
 ### Viewing workflow runs
 
 The _runs_ tab of the workflow details page provides a list of each time the workflow has been run. Clicking on the _run ID_ of an individual run will take you to the [workflow run details page](/docs/ui/activity-details.md#workflow-run-details) to allow you to view each step of the workflow run.

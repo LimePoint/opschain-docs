@@ -23,14 +23,13 @@ The project and environment settings are stored in JSON format and allow you to 
 If a setting is configured at both the project and environment level, the environment setting will override the project setting.
 :::
 
-In addition to the settings listed above (that can be configured at the project or environment level), the project settings can also include an `environments` key, with configuration options that will be applied to all environments in the project. Currently, the `allow_parallel_changes` option is the only setting that can be configured under the `environments` key:
+In addition to the settings listed above (that can be configured at the project or environment level), projects can have an additional setting - `allow_parallel_changes` which will be applied to all environments and assets in the project.
 
 ```json
 {
   ...
-  "environments": {
-    "allow_parallel_changes": -- see description below --
-  }
+  "allow_parallel_changes": -- see description below --
+  "allow_parallel_runs_of_same_workflow": -- see description below --
 }
 ```
 
@@ -52,7 +51,13 @@ The number of days to retain events. See [event retention](/docs/operations/main
 
 Default value: _false_
 
-Whether to allow multiple changes to run within a single environment or not. See [change execution options](/docs/reference/concepts/changes.md#change-execution-options) in the changes reference guide for more information
+Whether to allow multiple changes to run within a single project, environment or asset. See [change execution options](/docs/reference/concepts/changes.md#change-execution-options) in the changes reference guide for more information
+
+### allow_parallel_runs_of_same_workflow
+
+Default value: _false_
+
+Whether to allow a workflow to be run multiple times in parallel. See [workflow execution options](/docs/reference/concepts/workflows.md#workflow-execution-options) in the workflows reference guide for more information.
 
 ### requires_approval_from
 

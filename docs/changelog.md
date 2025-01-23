@@ -5,6 +5,19 @@ description: Learn about new releases of OpsChain, including new features and up
 
 # Changelog
 
+## [2025-01-23]
+
+### Added {#2025-01-23-added}
+
+- The GUI now includes:
+  - filtering for all list pages
+- The CLI now supports running changes in `Enterprise` projects.
+
+### Changed {#2025-01-23-changed}
+
+- When a Git remote creation or update fails, an event is now logged with the failure details.
+- Project, environment and asset codes are now automatically converted to lowercase on creation.
+
 ## [2025-01-15]
 
 ### Added {#2025-01-15-added}

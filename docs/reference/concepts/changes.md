@@ -62,22 +62,23 @@ The OpsChain properties guide highlights a number of limitations that must be ta
 
 ### Change execution options
 
-By default, OpsChain will only allow a single change to execute for each project environment. This aims to reduce the likelihood that the limitations described above will impact running changes. However, if the actions in your project's Git repository perform logic that can be run concurrently within a single environment, and they interact with the database properties in a manner that will not be impacted by the limitations, you can configure the project to allow concurrent changes within the project's environments. To do this, use the `opschain project edit-settings` command to set the `allow_parallel_changes` setting to `true` in your project's settings:
+By default, OpsChain will only allow a single change to execute for a given project, environment or asset. This aims to reduce the likelihood that the limitations described above will impact running changes. If the actions in your project's Git repository perform logic that can be run concurrently, and they interact with the database properties in a manner that will not be impacted by the limitations, you can configure the project to allow concurrent changes within it and its children. To do this, use the `opschain project edit-settings` command (or the OpsChain GUI) to set the `allow_parallel_changes` setting to `true` in your project's settings:
 
 ```json
 {
   ...
-  "environments": {
-    "allow_parallel_changes": true
-  }
+  "allow_parallel_changes": true
 }
 ```
 
 :::note
+This setting applies to each change’s direct target. For example, when `allow_parallel_changes` is `false` changes will be allowed to run concurrently in the `dev` and `test` environments of a project (as these are two distinct targets). However, two changes will not be allowed to run concurrently in the `dev` environment.
+:::
+:::tip
 If you have `jq` installed you can use the following command to set the option programmatically:
 
 ```bash
-opschain project show-settings -p <project code> | jq '.environments += { "allow_parallel_changes": true }' > /tmp/updated_project_settings.json
+opschain project show-settings -p <project code> | jq '. += { "allow_parallel_changes": true }' > /tmp/updated_project_settings.json
 opschain project set-settings -p <project code> -f /tmp/updated_project_settings.json -y
 ```
 
