@@ -16,7 +16,7 @@ change:
   created_at: '2020-05-20T10:00:00.000000Z'
   started_at: '2020-05-20T10:00:05.000000Z'
   finished_at: 
-  updated_at: '2025-01-23T07:11:37.684667Z'
+  updated_at: '2025-01-30T23:46:15.253014Z'
   environment_name: Receivables
   project_name: Finance
   git_remote_name: origin
@@ -37,7 +37,7 @@ step:
   created_at: '2020-05-20T10:00:00.000000Z'
   started_at: '2020-05-20T10:00:05.000000Z'
   finished_at: 
-  updated_at: '2025-01-23T07:11:37.684667Z'
+  updated_at: '2025-01-30T23:46:15.253014Z'
   status_code: running
 user:
   name: mary

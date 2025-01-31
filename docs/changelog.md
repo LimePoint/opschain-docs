@@ -5,6 +5,23 @@ description: Learn about new releases of OpsChain, including new features and up
 
 # Changelog
 
+## [2025-01-31]
+
+### Added {#2025-01-31-added}
+
+- The CLI now supports listing and showing assets as well as editing an asset's properties and settings.
+- The GUI now provides an option for clearing all filters on any list page.
+- The table filters are now included in the URL to allow bookmarking and sharing with others.
+
+### Changed {#2025-01-31-changed}
+
+- *Breaking change* - Storing properties in the Git repository now uses a different folder structure. See the [Git repository storage options](/docs/reference/concepts/properties#git-repository) for reference.
+- Keyboard shortcuts have been added to allow the table header filters to be accepted (ENTER) or cancelled (ESC)
+
+### Fixed {#2025-01-31-fixed}
+
+- Resolved various issues that restricted users' ability to interact with the table header column filters.
+
 ## [2025-01-23]
 
 ### Added {#2025-01-23-added}

@@ -59,30 +59,73 @@ See the [OpsChain context guide](/docs/reference/concepts/context.md) if you wou
 
 ### Git repository
 
-OpsChain will look for the following files in your project's Git repository:
+OpsChain will look for properties stored in your template's Git repository under the `opschain/properties` folder. OpsChain will navigate all the files with a `json`, `yaml`, and `toml` extension within the target directory tree.
 
-1. `.opschain/properties.json`
-2. `.opschain/properties.toml`
-3. `.opschain/properties.yaml`
-4. `.opschain/projects/<project code>.json`
-5. `.opschain/projects/<project code>.toml`
-6. `.opschain/projects/<project code>.yaml`
-7. `.opschain/environments/<environment code>.json`
-8. `.opschain/environments/<environment code>.toml`
-9. `.opschain/environments/<environment code>.yaml`
-10. `.opschain/assets/<asset code>.json`
-11. `.opschain/assets/<asset code>.toml`
-12. `.opschain/assets/<asset code>.yaml`
+Property files will be loaded starting from the top down to the bottom of the folder structure. Properties at the bottom of the folder structure will override the parent property if they define the same property.
 
-If multiple files exist in the repository, they will be merged together in the order listed above. Where multiple files define the same property/value, the latter file's value will override the former. E.g. if `.opschain/properties.toml` and `.opschain/environments/<environment code>.json` both contain the same property, the value from `.opschain/environments/<environment code>.json` will be used.
+For example, given the below property folder structure in your repository:
+
+```folder
+└── opschain
+    └── properties
+        └── projects
+            ├── common-for-all-projects.json
+            ├── bank
+            │   ├── bank-project-properties.json
+            │   └── environments
+            │       ├── common-for-all-envs-in-bank-project.json
+            │       ├── dev
+            │       │   ├── dev-env-properties.json
+            │       │   └── assets
+            │       │       ├── common-for-all-assets-in-dev.json
+            │       │       ├── soa
+            │       │       │   ├── soa-1.json
+            │       │       │   └── soa-2.json
+            │       │       └── obp
+            │       └── staging
+            ├── another_project
+```
+
+Here are some of the possible scenarios:
+
+- When your target is the `soa` asset, the property files will be loaded and merged as follows:
+    1. load the `common-for-all-projects.json` properties
+    2. load the `bank-project-properties.json` properties, merging them with the `common-for-all-projects.json` properties
+    3. load the `common-for-all-envs-in-bank-project.json` properties, merging them with the result of the previous step
+    4. load the `dev-env-properties.json` properties, merging them with the result of the previous step
+    5. load the `common-for-all-assets-in-dev.json` properties, merging them with the result of the previous step
+    6. load the `soa-1.json` properties, merging them with the result of the previous step
+    7. load the `soa-2.json` properties, merging them with the result of the previous step
+- When your target is in `another_project`, you will share the `common-for-all-projects.json` properties file with other projects (e.g. `bank`)
+- When your target is the `staging` environment in the `bank` project, you will perform the first three load and merge steps described for the `soa` asset as these files are common to the `soa` and `staging` environments.
 
 Within each action, the result of merging the properties in these files will be available via `OpsChain.repository_properties`.
 
 :::note NOTES
+Property files within the same folder are loaded alphabetically (including their extension name). For example, if the following property files are within a single folder they will be loaded and merged in the following order:
 
-1. The repository properties are read only within each action (as OpsChain cannot modify the underlying Git repository to store any changes).
-2. If multiple assets use the same asset code (within different projects or environments) then they will load the same properties file path. E.g. any asset with a code `soa1` will load `.opschain/assets/soa1.yaml` from its template Git repository, irrespective of the parent project or environment.
+```text
+abc.json
+abc.toml
+abc.yaml
+common-1.json
+common.json
+common1.json
+common2.json
+```
 
+:::
+
+:::note NOTES
+
+1. Files with extensions other than `.json`, `.yaml`, or `.toml` will not be processed.
+2. File extensions must be in lowercase (e.g. `.json` instead of `.JSON`). Files with non-lowercase extensions will not be processed.
+3. Files without extensions will not be processed.
+
+:::
+
+:::note NOTES
+The repository properties are read only within each action (as OpsChain cannot modify the underlying Git repository to store any changes).
 :::
 
 :::caution
