@@ -23,6 +23,10 @@ Assets are only available in _enterprise_ projects.
 If multiple authorisation rules match a path, and any of them are `deny`, then the user will be denied access to the target.
 :::
 
+### Rule name
+
+When creating an authorisation rule, a rule name is required to describe what the authorisation rule is for.
+
 ### Actions
 
 An authorisation rule affects what a user can do at a path. The supported actions are:
@@ -32,6 +36,8 @@ An authorisation rule affects what a user can do at a path. The supported action
 - `execute` - whether the user can execute the target, for example executing a change or workflow
 
 ### Paths
+
+#### Project paths
 
 The path for a project, environment, or asset is the path that it is accessed via in the GUI or API. Examples of paths are:
 
@@ -56,6 +62,16 @@ Paths are matched as patterns (like regular expressions) and will apply to child
 :::tip
 To prevent a nested path potentially matching incorrectly (e.g. a rule for `/changes` that should not match with `/environments/changes`, `/projects/changes` or `/projects/bank/environments/dev/changes`), paths are started with `^(/[^/]+/[^/]+)*` to ensure that the match is against the type, not the code.
 :::
+
+#### Other paths
+
+Aside from project paths, you can also secure these other API endpoints:
+
+- `/authorisation_rules`
+- `/authorisation_rule_mappings`
+- `/events`
+- `/users`
+- `/groups`
 
 ## Authorisation rule mappings
 

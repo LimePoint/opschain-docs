@@ -5,6 +5,20 @@ description: Learn about new releases of OpsChain, including new features and up
 
 # Changelog
 
+## [2025-02-13]
+
+### Added {#2025-02-13-added}
+
+- You can now list, show, archive and create new template versions from the CLI.
+- It's now possible to update projects, environments and assets with the `update` command.
+- A new workflow editor with save and publish functionality.
+- The GUI Include archived check box has been replaced with column filters on the archived column.
+- [Documentation](/docs/operations/opschain-ldap#configuring-user-permissions) on configuring user permissions after OpsChain installation.
+
+### Changed {#2025-02-13-changed}
+
+- You can now provide multiple approvers on the `requires_approval_from` settings. See the [settings](/docs/reference/concepts/settings#requires_approval_from) for reference.
+
 ## [2025-01-31]
 
 ### Added {#2025-01-31-added}

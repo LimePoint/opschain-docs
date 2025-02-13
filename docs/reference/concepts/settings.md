@@ -63,4 +63,13 @@ Whether to allow a workflow to be run multiple times in parallel. See [workflow 
 
 Default value: _not configured (changes do not require approval)_
 
-Requires that changes in the relevant environment/project are approved by a member of the configured LDAP group before they are executed. A member of the specified LDAP group must approve the change (e.g. using `opschain change approve` in the CLI) before the change will execute any actions. If required, LDAP group members can use the CLI command `opschain change reject` to reject changes that are waiting for approval.
+Requires that changes in the relevant environment/project are approved by a specific user or a member of the configured LDAP group before they are executed. A user or a member of the specified LDAP group must approve the change (e.g. using `opschain change approve` in the CLI) before the change will execute any actions. If required, LDAP group members can use the CLI command `opschain change reject` to reject changes that are waiting for approval.
+
+You can provide multiple approvers containing users or LDAP groups in a comma-separated format. Any user or member of the supplied LDAP group can approve the change.
+
+For example, the following setting will require a change to be approved by the `some_username` user or any user who is a member of the `an_ldap_group` LDAP group.
+
+```json
+{
+  "requires_approval_from": "some_username, an_ldap_group"
+}
