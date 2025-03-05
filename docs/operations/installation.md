@@ -141,9 +141,13 @@ opschain server utils "create_user[opschain,password]"
 Please ensure there are no spaces included in the parameter you supply to `opschain server utils`.
 :::
 
-:::warning Default permissions
-By default, OpsChain allows all users full access to all of its features. During initial setup, your OpsChain administrator should login and configure appropriate [authorisation rules](/docs/reference/concepts/security#authorisation-rules) for your user's LDAP groups to limit their access. Once this is complete the system can be made available to your users.
-:::
+### Setting up admin access
+
+By default, users only have read access permission to the OpsChain features. To setup the `opschain` user as an admin user, execute:
+
+```bash
+opschain server utils "setup_admin_user[opschain,true]"
+```
 
 ### Configure the OpsChain CLI's API access
 

@@ -122,12 +122,12 @@ This tab lists the changes and workflows that have been executed for the project
 _Standard_ type projects do not have the activity tab on the project details page.
 :::
 
-#### Automated changes tab
+#### Scheduled activities tab
 
-This tab lists the automated changes defined for the project.
+This tab lists the scheduled activities defined for the project.
 
 :::note
-_Standard_ type projects do not have the automated changes tab on the project details page.
+_Standard_ type projects do not have the scheduled activities tab on the project details page.
 :::
 
 #### Environments tab

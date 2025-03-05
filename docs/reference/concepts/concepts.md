@@ -80,16 +80,16 @@ As steps are rerun from the start we suggest only retrying changes/steps that ar
 
 :::
 
-## Automated change rule
+## Scheduled changes
 
-An automated change rule allows the automated creation and execution of a change.
+A scheduled change allows changes to be created and executed on a user specified schedule.
 
-Automated change rules can be configured to automatically create and deploy changes in an environment:
+Scheduled changes can be configured to automatically create and deploy changes in an environment:
 
 - at a particular time
 - in response to project Git repository updates
 
-See [setting up automated changes](/docs/reference/concepts/automated-changes.md) for a guide on how to create an automated change rule.
+See [setting up scheduled changes](/docs/reference/concepts/scheduled-changes.md) for a guide on how to create a scheduled change.
 
 ## Action
 

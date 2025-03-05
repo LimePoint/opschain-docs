@@ -5,6 +5,23 @@ description: Learn about new releases of OpsChain, including new features and up
 
 # Changelog
 
+## [2025-03-05]
+
+### Added {#2025-03-05-added}
+
+- Workflows support has been added to the CLI. It's now possible to list, show, archive and execute workflows.
+- The GUI now includes a comprehensive workflow editor, available via the workflows side menu.
+
+### Changed {#2025-03-05-changed}
+
+- *Breaking change* - The `/api/automation_rules` endpoint has been replaced with `/api/scheduled_activities`.
+- *Breaking change* - Workflows are no longer held in the remote Git repository.
+- Automated change rules are now known as Scheduled changes.
+- Automated workflow rules are now known as Scheduled workflows.
+- The Automation side menu entry has been replaced with Scheduled activity.
+- The notification settings has been updated. See the [notifications documentation](/docs/operations/notifications) for reference.
+- The authorisation rules logic has changed. See the [security documentation](/docs/reference/concepts/security) for reference.
+
 ## [2025-02-13]
 
 ### Added {#2025-02-13-added}
@@ -13,7 +30,7 @@ description: Learn about new releases of OpsChain, including new features and up
 - It's now possible to update projects, environments and assets with the `update` command.
 - A new workflow editor with save and publish functionality.
 - The GUI Include archived check box has been replaced with column filters on the archived column.
-- [Documentation](/docs/operations/opschain-ldap#configuring-user-permissions) on configuring user permissions after OpsChain installation.
+- Documentation on configuring user permissions after OpsChain installation.
 
 ### Changed {#2025-02-13-changed}
 
@@ -214,7 +231,7 @@ description: Learn about new releases of OpsChain, including new features and up
 - The project and environment specific repository properties can now be accessed via `OpsChain.repository_properties_for(:environment)` and `OpsChain.repository_properties_for(:project)`. See the [properties reference](/docs/reference/concepts/properties.md#parent-specific-repository-properties) for more information.
 - `OpsChain.properties_for` has been added for use in `actions.rb`, see the [properties reference](/docs/reference/concepts/properties.md#modifiable-properties) for more information.
 - Step specific logs are now available from the `/steps/<step_id>/log_lines` API. The results can be filtered using the same filtering syntax as change log lines or events.
-- Events are now created when an automated change rule fails. Learn more in the [automated changes documentation](/docs/reference/concepts/automated-changes.md#automated-change-rule-events).
+- Events are now created when an automated change rule fails. Learn more in the [automated changes documentation](/docs/reference/concepts/scheduled-changes.md#scheduled-changes-events).
 
 ### Changed {#2023-08-02-changed}
 
@@ -629,8 +646,8 @@ description: Learn about new releases of OpsChain, including new features and up
 
 ### Added {#2022-06-20-added}
 
-- `OpsChain.context.change.automated` is now populated in the [OpsChain context](/docs/reference/concepts/context.md) - indicating whether a change was created by an [automated change rule](/docs/reference/concepts/automated-changes.md).
-- The `automated` field is now included in the OpsChain changes API response - indicating whether a change was created by an [automated change rule](/docs/reference/concepts/automated-changes.md).
+- `OpsChain.context.change.automated` is now populated in the [OpsChain context](/docs/reference/concepts/context.md) - indicating whether a change was created by an [automated change rule](/docs/reference/concepts/scheduled-changes.md).
+- The `automated` field is now included in the OpsChain changes API response - indicating whether a change was created by an [automated change rule](/docs/reference/concepts/scheduled-changes.md).
 
 ### Changed {#2022-06-20-changed}
 
@@ -935,7 +952,7 @@ You **must** run `configure` after upgrading to update the `.env` file with the 
 - The OpsChain API `projects` and `environments` endpoints now
   - return a boolean `archived` attribute.
   - accept `DELETE` requests. _Note: Only projects and environments with no associated changes can be deleted._
-- The OpsChain API `automated_change_rules` endpoint now includes a `next_run_at` attribute containing the time when the rule will next run. See the [automated changes guide](/docs/reference/concepts/automated-changes.md#creating-an-automated-change-rule-for-new-commits) for more information on what happens when an automated change rule runs.
+- The OpsChain API `automated_change_rules` endpoint now includes a `next_run_at` attribute containing the time when the rule will next run. See the [automated changes guide](/docs/reference/concepts/scheduled-changes.md#creating-a-scheduled-change-for-new-commits) for more information on what happens when an automated change rule runs.
 - The `opschain automated-change list` output no longer include the `Project` and `Environment` columns (as these are parameter values to the command) and includes a `Next Run At` column.
 - The `opschain-action` command now supports a _best-effort_ mode for running the child steps of an action. See the [child steps](/docs/development-environment.md#child-steps) section of the Docker development environment guide for more details.
 - OpsChain now provides an `opschain-lint` command for detecting issues with the OpsChain DSL. Learn more in the [Docker development environment](/docs/development-environment.md#using-the-opschain-linter) guide.
@@ -1150,8 +1167,8 @@ You **must** run `configure` after upgrading to update the `.env` file with the 
 
 ### Added {#2021-05-10-added}
 
-- OpsChain now supports [automated deployments](/docs/reference/concepts/concepts.md#automated-change-rule) - a way to automatically create OpsChain changes in response to Git changes. See [setting up an automated deployment](/docs/reference/concepts/automated-changes.md) for more information.
-- OpsChain now supports [scheduled deployments](/docs/reference/concepts/concepts.md#automated-change-rule) - a way to automatically create OpsChain changes at a scheduled time.
+- OpsChain now supports [automated deployments](/docs/reference/concepts/concepts.md#scheduled-changes) - a way to automatically create OpsChain changes in response to Git changes. See [setting up an automated deployment](/docs/reference/concepts/scheduled-changes.md) for more information.
+- OpsChain now supports [scheduled deployments](/docs/reference/concepts/concepts.md#scheduled-changes) - a way to automatically create OpsChain changes at a scheduled time.
 
 ### Changed {#2021-05-10-changed}
 

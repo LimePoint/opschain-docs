@@ -19,9 +19,41 @@ Paths are how OpsChain organises its projects, environments and assets. They are
 Assets are only available in _enterprise_ projects.
 :::
 
+### Rules logic
+
+#### Read access
+
+If multiple `read` access rules match a path, and any of them are `deny`, then the user will be denied access to the target.
+
+For example, if you are accessing `soa` and the following read rules are applied to the user:
+
+- `/projects/bank`
+- `/projects/bank/environments/dev`
+- `/projects/bank/environments/dev/assets/soa`
+
+All of these three rules must have allow access in order to get to `soa`. If either of these rules have a `deny` access, then the target `soa` will be inaccessible.
+
 :::tip
-If multiple authorisation rules match a path, and any of them are `deny`, then the user will be denied access to the target.
+In cases of emergency access (e.g. blacklist a user from accessing anything), you can have a rule that denies read access on a top level path (e.g. `/projects`) and then [apply](#authorisation-rule-mappings) that rule to the user.
 :::
+
+#### Update and execute access
+
+OpsChain will deny update and execute access by default. However, the rule that matches closest to the target is the active rule and overrides any other rule above the path hierarchy, provided that there is a `read` access to that path.
+
+For example, if you are accessing `soa` and the following update/execute rules are applied to the user:
+
+- `/projects/bank`
+- `/projects/bank/environments/dev`
+- `/projects/bank/environments/dev/assets/soa`
+
+The target `soa` must be [readable](#read-access) first (e.g. there is no deny `read` access to the target and its parents).
+
+The target `soa`'s `update` or `execute` access is then determined on the update/execute rule that was set on `/projects/bank/environments/dev/assets/soa`, regardless of the update/execute rule applied to its parents.
+
+If the target doesn't have a update/execute rule specified, it will search for that rule starting from its closest parent and apply that one.
+
+In the above example, if the target `soa` doesn't have an update/execute rule of its own, it will start searching for the rule starting from `/projects/bank/environments/dev`, then `/projects/bank/`. If no rule was found, it will deny the update/execute access to the target.
 
 ### Rule name
 
@@ -47,7 +79,7 @@ The path for a project, environment, or asset is the path that it is accessed vi
 Under projects, environments, or assets a number of other paths are supported, these include:
 
 - `/actions/{{action}}`, for example `/actions/destroy` is a path to enforce authorisation on changes, steps and workflows with the code `destroy`
-- `/automated_change_rules`
+- `/scheduled_activities`
 - `/changes`
 - `/git_remotes`
 - `/log_lines/{{action}}`, for example `/log_lines/update_passwords` is a path that will prevent access to logs for the `update_passwords` action. Users will still see logs returned, but they won't contain the original log results and will instead be redacted

@@ -142,7 +142,7 @@ An OpsChain wait step can only be added as part of a step's child steps, for exa
 action :do_something, steps: [:do_something_before_waiting, OpsChain.wait_step, :do_something_else_after_waiting]
 ```
 
-Another useful scenario for wait steps is when an [automated change rule](/docs/reference/concepts/automated-changes.md) is used to create a change automatically, but a team member should then allow the change to proceed manually. To achieve this the OpsChain wait step can be used as the first child step of an action:
+Another useful scenario for wait steps is when a [scheduled change](/docs/reference/concepts/scheduled-changes.md) is used to create a change automatically, but a team member should then allow the change to proceed manually. To achieve this the OpsChain wait step can be used as the first child step of an action:
 
 ```ruby
 action :do_something, steps: [:do_something_after] do

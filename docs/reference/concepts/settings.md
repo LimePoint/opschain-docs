@@ -11,11 +11,7 @@ The project and environment settings are stored in JSON format and allow you to 
 {
   "change_log_retention_days": -- see description below --,
   "event_retention_days": -- see description below --,
-  "notifications": {
-    "failure": {
-      "target_url": -- see description below --
-    }
-  }
+  "notifications": -- see description below --
 }
 ```
 
@@ -73,3 +69,8 @@ For example, the following setting will require a change to be approved by the `
 {
   "requires_approval_from": "some_username, an_ldap_group"
 }
+```
+
+### notifications
+
+Refer to [notifications](/docs/operations/notifications) for the notifications configuration.

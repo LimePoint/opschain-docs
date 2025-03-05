@@ -135,7 +135,7 @@ The workflow details page provides the following buttons to control the executio
 | Button              | Description                                                                                                                    |
 |---------------------|--------------------------------------------------------------------------------------------------------------------------------|
 | _Run workflow_      | Run the workflow, supplying an optional run description if required.                                                           |
-| _Automate workflow_ | Automate running the workflow, providing a cron schedule and conditional options to determine if and when the workflow is run. |
+| _Schedule workflow_ | Schedule running the workflow, providing a cron schedule and conditional options to determine if and when the workflow is run. |
 
 ### Workflow execution options
 
@@ -164,9 +164,9 @@ The _runs_ tab of the workflow details page provides a list of each time the wor
 
 Each step can be viewed or actioned according to its type. If all the workflow's steps complete successfully, the workflow run will be marked as successful. If a workflow step errors or is cancelled, the remaining steps in the workflow run will not execute and the workflow run will be marked as errored or cancelled based on the status of the step that ended the workflow run.
 
-### Viewing workflow automation
+### Viewing workflow scheduled activity
 
-The _automation_ tab of the workflow details page provides a list of all the automation schedules that have been created for the workflow. To remove a schedule, click on the checkboxes for the schedules you wish to remove, then select _delete selected_ from the _bulk operations_ drop down.
+The _scheduled activity_ tab of the workflow details page provides a list of all the scheduled activity that have been created for the workflow. To remove a schedule, click on the checkboxes for the schedules you wish to remove, then select _delete selected_ from the _bulk operations_ drop down.
 
 ## Adding an existing workflow into a new workflow
 

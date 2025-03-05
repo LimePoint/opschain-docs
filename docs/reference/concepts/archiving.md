@@ -27,8 +27,8 @@ Projects and environments cannot be archived if they contain a queued or running
 
 Archiving an environment:
 
-- disables its automated change rules
-- prevents new changes (and change rules) being created in it
+- disables its scheduled changes
+- prevents new changes (and scheduled changes) being created in it
 
 Archiving a project has the effect of archiving all its environments.
 
@@ -43,7 +43,7 @@ Archiving a project or environment will mean the resource no longer appears in:
     opschain environment list --project-code demo --include-archived
     ```
 
-If an archived environment is specified when running the OpsChain `change list` or `automated-change list` command the relevant results will continue to be displayed. The `Next Run At` column in the automated changes list will be empty to denote their disabled status._
+If an archived environment is specified when running the OpsChain `change list` or `scheduled-change list` command the relevant results will continue to be displayed. The `Next Run At` column in the scheduled changes list will be empty to denote their disabled status._
 
 ### API responses
 
@@ -57,11 +57,11 @@ If required, the API endpoints allow you to use result filtering (described in m
 http://localhost:3000/api/projects?filter[archived_eq]=false`
 ```
 
-### Changes and automated change rules
+### Changes and scheduled changes
 
-Once archived, attempts to create a change or automated change rule in an archived environment will be rejected with an error reflecting the environment's archived status.
+Once archived, attempts to create a change or a scheduled change in an archived environment will be rejected with an error reflecting the environment's archived status.
 
-Automated change rules that exist for an archived environment will be disabled and will not run whilst the environment remains archived.
+Scheduled changes that exist for an archived environment will be disabled and will not run whilst the environment remains archived.
 
 ## Unarchiving projects and environments
 

@@ -363,7 +363,7 @@ Dockerfile:11
   10 |     # The step below adds the Project Git repository (including the .git directory).
   11 | >>> ADD ./repo.tar .
   12 |
-  13 |     # Optional - the Git rev this change was created with. Useful when running automated changes to know the current branch.
+  13 |     # Optional - the Git rev this change was created with. Useful when running scheduled changes to know the current branch.
 --------------------
 error: failed to solve: failed to compute cache key: mount callback failed on /run/user/1000/containerd-mount1276938060: failed to convert whiteout file "tmp/.wh.setup": unlinkat /run/user/1000/containerd-mount1276938060/tmp/setup: input/output error
 Failed to build step runner image

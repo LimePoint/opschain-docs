@@ -9,14 +9,14 @@ change:
   metadata:
     custom:
       change: metadata
-  automated: false
+  scheduled: false
   approved_by: []
   rejected_by: []
   status_code: running
   created_at: '2020-05-20T10:00:00.000000Z'
   started_at: '2020-05-20T10:00:05.000000Z'
   finished_at: 
-  updated_at: '2025-02-13T04:19:48.870742Z'
+  updated_at: '2025-03-05T06:08:32.630707Z'
   asset_name: 
   environment_name: Receivables
   project_name: Finance
@@ -38,7 +38,7 @@ step:
   created_at: '2020-05-20T10:00:00.000000Z'
   started_at: '2020-05-20T10:00:05.000000Z'
   finished_at: 
-  updated_at: '2025-02-13T04:19:48.870742Z'
+  updated_at: '2025-03-05T06:08:32.630707Z'
   status_code: running
 user:
   name: mary

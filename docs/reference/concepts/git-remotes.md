@@ -111,7 +111,7 @@ curl -u opschain:password -X DELETE http://localhost:3000/api/projects/demo/git_
 
 ### Deleting unused Git remotes
 
-If the Git remote has not been used by a change (or an automated change), OpsChain can safely delete the Git remote.
+If the Git remote has not been used by a change (or a scheduled change), OpsChain can safely delete the Git remote.
 
 ### Deleting used Git remotes
 

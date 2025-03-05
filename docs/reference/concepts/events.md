@@ -159,7 +159,7 @@ Events can be linked to:
 - Environments via a path or an ID, e.g. `"node_path": "/projects/bank/environments/dev"`, or `"node_id": "969a2b4c-a700-40d2-a25c-1f4f68cf6d54"`
 - Assets via a path or an ID, e.g. `"node_path": "/projects/bank/environments/dev/assets/obp"`, or `"node_id": "2f988308-325d-4a41-bdab-4cf0b8c3103a"`
 - In addition, the following models can be linked via an ID, (e.g. `"{{model_type_id}}": "ff1bf781-4fe0-4b14-b0d2-20ef8cb1be80"`):
-    - Automated change rules (via `automated_change_rule_id`)
+    - Scheduled changes (via `scheduled_change_id`)
     - Changes (via `change_id`)
     - Steps (via `step_id`)
     - Workflow steps (via `workflow_step_id`)
@@ -181,8 +181,10 @@ Events created internally by OpsChain can be identified by the `system` property
 
 Currently, the following system events are supported. These values will be present in the `type` field for an event:
 
-- `api:automated_change_rules:create`
-- `api:automated_change_rules:destroy`
+- `api:scheduled_changes:create`
+- `api:scheduled_workflows:create`
+- `api:scheduled_changes:destroy`
+- `api:scheduled_workflows:destroy`
 - `api:changes:create`
 - `api:changes:start`
 - `api:changes:finish`
@@ -219,8 +221,9 @@ Currently, the following system events are supported. These values will be prese
 - `api:bookmarks:create`
 - `api:bookmarks:update`
 - `api:bookmarks:destroy`
-- `error:automated_change_rule:change_creation`
-- `error:automated_change_rule:git_sha`
+- `error:scheduled_changes:change_creation`
+- `error:scheduled_changes:git_sha`
+- `error:scheduled_workflows:skipped`
 
 Custom (i.e. user created) events can have any `type` as it is specified when the event is created.
 

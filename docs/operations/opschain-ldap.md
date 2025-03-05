@@ -89,7 +89,3 @@ OPSCHAIN_LDAP_ADMIN=CN=Administrator,CN=Users,DC=myopschain,DC=io
 OPSCHAIN_LDAP_PASSWORD=AdministratorPassword!
 OPSCHAIN_LDAP_HC_USER=
 ```
-
-## Configuring user permissions
-
-By default, OpsChain allows all users full access to all of its features. During initial setup, your OpsChain administrator should login and configure appropriate [authorisation rules](/docs/reference/concepts/security#authorisation-rules) for your user's LDAP groups to limit their access. Once this is complete the system can be made available to your users.

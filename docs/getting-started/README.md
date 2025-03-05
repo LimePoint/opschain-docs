@@ -453,7 +453,7 @@ This change approval flow makes it safer to roll out changes by providing govern
 
 ### Combining tools
 
-With OpsChain's DSL and Ruby integration you can develop actions to do almost anything. Take advantage of the best tool for every task and combine tools to manage change in the way that best suits your business. Imagine the web server needs to be placed into maintenance mode prior to deploying the new WAR file, then restored to active service afterwards. OpsChain allows you to combine these steps into a single automated change. Let's run a multi-step change to see how OpsChain manages this process:
+With OpsChain's DSL and Ruby integration you can develop actions to do almost anything. Take advantage of the best tool for every task and combine tools to manage change in the way that best suits your business. Imagine the web server needs to be placed into maintenance mode prior to deploying the new WAR file, then restored to active service afterwards. OpsChain allows you to combine these steps into a single change. Let's run a multi-step change to see how OpsChain manages this process:
 
 ```bash
 opschain change create --environment-code test --action deploy_in_maintenance_mode --git-remote-name origin --git-rev master --confirm
@@ -481,38 +481,38 @@ opschain change show-logs --change-id xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
 
 Review the logs to see how the `ACCESS_KEY_ID` and a `SECRET_ACCESS_KEY` we included in the project properties JSON, have been used by the `stop_instance` action.
 
-### Automated changes
+### Scheduled changes
 
 In addition to creating changes manually, OpsChain allows changes to be created on a time schedule, and also in response to Git commits.
 
 #### Time scheduling
 
-Automated change rules accept a [cron expression](https://crontab.guru/) that provides a standard format for defining how often a change should be run.
+Scheduled changes accept a [cron expression](https://crontab.guru/) that provides a standard format for defining how often a change should be run.
 
-##### Add automated change rules
+##### Add scheduled changes
 
-To save the project team manual effort and enable them to consistently realise the cost savings of stopping their test instance overnight, let's configure some test environment rules, to execute `stop_instance` each evening, and `start_instance` each morning.
+To save the project team manual effort and enable them to consistently realise the cost savings of stopping their test instance overnight, let's configure some test environment scheduled changes, to execute `stop_instance` each evening, and `start_instance` each morning.
 
 ```bash
-opschain automated-change create --environment-code test --git-remote-name origin --git-rev master --action stop_instance --cron-schedule '0 0 20 * * *' --new-commits-only=false --repeat --confirm
-opschain automated-change create --environment-code test --git-remote-name origin --git-rev master --action start_instance --cron-schedule '0 0 6 * * *' --new-commits-only=false --repeat --confirm
+opschain scheduled-change create --environment-code test --git-remote-name origin --git-rev master --action stop_instance --cron-schedule '0 0 20 * * *' --new-commits-only=false --repeat --confirm
+opschain scheduled-change create --environment-code test --git-remote-name origin --git-rev master --action start_instance --cron-schedule '0 0 6 * * *' --new-commits-only=false --repeat --confirm
 ```
 
 Now the test instance will be stopped each evening at 8pm (in the OpsChain server's timezone) and started each morning at 6am.
 
-##### View the configured rules
+##### View the configured scheduled changes
 
-To view the newly configured rules, use the `automated-change list` command.
+To view the newly configured scheduled changes, use the `scheduled-change list` command.
 
 ```bash
-opschain automated-change list --environment-code test
+opschain scheduled-change list --environment-code test
 ```
 
-You can also view the automated change rules via the [OpsChain web UI](#visit-the-opschain-web-ui).
+You can also view the scheduled changes via the [OpsChain web UI](#visit-the-opschain-web-ui).
 
 #### Git commits
 
-Note the `--new-commits-only=false` parameter used in the rule creation commands above. This instructs OpsChain to always create a change on the cron schedule. If `--new-commits-only=true` were used instead, OpsChain would continue to follow the specified cron schedule, but would only create a change if new commits were present in the project Git repository. With this feature, OpsChain can be used to automatically promote code changes on a schedule that suits your team. For example, you could configure a rule to automatically promote new commits in `master` to a test environment. Have your developers work in feature branches and their merge to `master` will also promote the code to test - at a time that suits your team, or straight away. See the [automated change rules guide](/docs/reference/concepts/automated-changes.md) for more details.
+Note the `--new-commits-only=false` parameter used in the scheduled change creation commands above. This instructs OpsChain to always create a change on the cron schedule. If `--new-commits-only=true` were used instead, OpsChain would continue to follow the specified cron schedule, but would only create a change if new commits were present in the project Git repository. With this feature, OpsChain can be used to automatically promote code changes on a schedule that suits your team. For example, you could configure a scheduled change to automatically promote new commits in `master` to a test environment. Have your developers work in feature branches and their merge to `master` will also promote the code to test - at a time that suits your team, or straight away. See the [scheduled changes guide](/docs/reference/concepts/scheduled-changes.md) for more details.
 
 ### Output formats
 

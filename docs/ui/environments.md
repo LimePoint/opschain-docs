@@ -127,9 +127,9 @@ Once the change is created, it will automatically appear in the activity table. 
 
 :::
 
-### Automated changes tab
+### Scheduled activities tab
 
-This tab lists the automated changes defined for this environment.
+This tab lists the scheduled activities defined for this environment.
 
 ### Assets tab
 
