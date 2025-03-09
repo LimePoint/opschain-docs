@@ -5,6 +5,20 @@ description: Learn about new releases of OpsChain, including new features and up
 
 # Changelog
 
+## [2025-03-10]
+
+### Changed {#2025-03-10-changed}
+
+- The `api:<model>:finish` event for changes, steps, workflow runs and workflow steps has been replaced with `success`, `error`, `cancel` and `abort` events., See the [events documentation](/docs/reference/concepts/events) for reference.
+- The GUI change step log viewer now includes the logs of all child steps. Their inclusion can be toggled via the `Include child logs` toggle.
+
+### Fixed {#2025-03-10-fixed}
+
+- Fixed an issue where changes to some workflow attributes did not result in a new version being created
+- Viewing inherited properties via the GUI or API now refreshes the OpsChain cache to ensure the latest properties are displayed.
+- Generating a MintModel for an asset via the GUI or API now refreshes the OpsChain cache to ensure the latest properties are displayed.
+- The `git fetch` command output is now included in the failure event to assist with debugging.
+
 ## [2025-03-05]
 
 ### Added {#2025-03-05-added}
@@ -19,7 +33,7 @@ description: Learn about new releases of OpsChain, including new features and up
 - Automated change rules are now known as Scheduled changes.
 - Automated workflow rules are now known as Scheduled workflows.
 - The Automation side menu entry has been replaced with Scheduled activity.
-- The notification settings has been updated. See the [notifications documentation](/docs/operations/notifications) for reference.
+- The notification settings have been updated. See the [notifications documentation](/docs/operations/notifications) for reference.
 - The authorisation rules logic has changed. See the [security documentation](/docs/reference/concepts/security) for reference.
 
 ## [2025-02-13]
