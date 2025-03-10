@@ -16,7 +16,7 @@ change:
   created_at: '2020-05-20T10:00:00.000000Z'
   started_at: '2020-05-20T10:00:05.000000Z'
   finished_at: 
-  updated_at: '2025-03-09T18:33:57.763513Z'
+  updated_at: '2025-03-10T06:32:38.986122Z'
   asset_name: 
   environment_name: Receivables
   project_name: Finance
@@ -38,7 +38,7 @@ step:
   created_at: '2020-05-20T10:00:00.000000Z'
   started_at: '2020-05-20T10:00:05.000000Z'
   finished_at: 
-  updated_at: '2025-03-09T18:33:57.763513Z'
+  updated_at: '2025-03-10T06:32:38.986122Z'
   status_code: running
 user:
   name: mary
