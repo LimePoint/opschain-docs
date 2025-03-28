@@ -5,6 +5,23 @@ description: Learn about new releases of OpsChain, including new features and up
 
 # Changelog
 
+## [2025-03-28]
+
+### Added {#2025-03-28-added}
+
+- *Breaking change* Authorisation is now applied via authorisation policies. See the [security documentation](/docs/reference/concepts/security) for reference.
+- Creating, updating or removing authorisation rules and policies will now create system events. See the [events documentation](/docs/reference/concepts/events) for reference.
+- The change creation API now accepts a `property_overrides` attribute, allowing you to supply additional JSON properties to override your repository and database properties.
+- The change creation API now accepts a `template_version` attribute, allowing you to supply a different template_version to the one assigned to the asset.
+- The `/info` endpoint now includes the database version and API version information
+- Endpoints for deleting workflows and workflow versions are now available. Sending a DELETE request to the workflow versions index endpoint will delete all draft versions of the workflow. See the [API documentation](https://docs.opschain.io/api-docs/) for more details.
+
+### Fixed {#2025-03-28-added}
+
+- Templated changes whose MintModel fails to generate will now end with an error.
+- The APIs for updating a workflow and workflow versions now allow you to archive a workflow or specific workflow versions.
+- Retried changes will now reuse the same version of properties as the original change.
+
 ## [2025-03-10]
 
 ### Changed {#2025-03-10-changed}

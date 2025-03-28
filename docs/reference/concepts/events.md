@@ -181,10 +181,15 @@ Events created internally by OpsChain can be identified by the `system` property
 
 Currently, the following system events are supported. These values will be present in the `type` field for an event:
 
-- `api:scheduled_changes:create`
-- `api:scheduled_workflows:create`
-- `api:scheduled_changes:destroy`
-- `api:scheduled_workflows:destroy`
+- `api:authorisation_policies:create`
+- `api:authorisation_policies:destroy`
+- `api:authorisation_policies:update`
+- `api:authorisation_rules:create`
+- `api:authorisation_rules:destroy`
+- `api:authorisation_rules:update`
+- `api:bookmarks:create`
+- `api:bookmarks:update`
+- `api:bookmarks:destroy`
 - `api:changes:create`
 - `api:changes:start`
 - `api:changes:success`
@@ -201,10 +206,18 @@ Currently, the following system events are supported. These values will be prese
 - `api:templates:create`
 - `api:templates:update`
 - `api:template_versions:update`
+- `api:policy_assignments:create`
+- `api:policy_assignments:destroy`
+- `api:policy_rules:create`
+- `api:policy_rules:destroy`
 - `api:projects:create`
 - `api:projects:update`
 - `api:projects:destroy`
 - `api:properties:update`
+- `api:scheduled_changes:create`
+- `api:scheduled_workflows:create`
+- `api:scheduled_changes:destroy`
+- `api:scheduled_workflows:destroy`
 - `api:settings:update`
 - `api:steps:start`
 - `api:steps:approve`
@@ -228,11 +241,6 @@ Currently, the following system events are supported. These values will be prese
 - `api:workflow_steps:abort`
 - `api:workflows:create`
 - `api:workflows:update`
-- `api:properties:update`
-- `api:settings:update`
-- `api:bookmarks:create`
-- `api:bookmarks:update`
-- `api:bookmarks:destroy`
 - `error:scheduled_changes:change_creation`
 - `error:scheduled_changes:git_sha`
 - `error:scheduled_workflows:skipped`

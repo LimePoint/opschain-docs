@@ -9,6 +9,8 @@ change:
   metadata:
     custom:
       change: metadata
+  property_overrides:
+    port: generating
   scheduled: false
   approved_by: []
   rejected_by: []
@@ -16,7 +18,7 @@ change:
   created_at: '2020-05-20T10:00:00.000000Z'
   started_at: '2020-05-20T10:00:05.000000Z'
   finished_at: 
-  updated_at: '2025-03-10T06:32:38.986122Z'
+  updated_at: '2025-03-28T07:15:14.191260Z'
   asset_name: 
   environment_name: Receivables
   project_name: Finance
@@ -38,7 +40,7 @@ step:
   created_at: '2020-05-20T10:00:00.000000Z'
   started_at: '2020-05-20T10:00:05.000000Z'
   finished_at: 
-  updated_at: '2025-03-10T06:32:38.986122Z'
+  updated_at: '2025-03-28T07:15:14.191260Z'
   status_code: running
 user:
   name: mary
