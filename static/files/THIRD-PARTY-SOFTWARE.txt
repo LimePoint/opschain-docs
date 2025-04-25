@@ -19711,7 +19711,7 @@ Exhibit B - "Incompatible With Secondary Licenses" Notice
 
 
 *****
-THE FOLLOWING SETS FORTH ATTRIBUTION NOTICES FOR THIRD PARTY SOFTWARE THAT MAY BE CONTAINED IN PORTIONS OF THE WORKSPACE AGGREGATOR A61B84AB A98B 413D AC76 A67183986BCE PRODUCT.
+THE FOLLOWING SETS FORTH ATTRIBUTION NOTICES FOR THIRD PARTY SOFTWARE THAT MAY BE CONTAINED IN PORTIONS OF THE WORKSPACE AGGREGATOR 323D2F34 8881 4F85 A83A DC8B2B5EBB3B PRODUCT.
 
 -----
 
@@ -20760,7 +20760,7 @@ SOFTWARE.
 
 -----
 
-The following software may be included in this product: @jest/console, @jest/core, @jest/environment, @jest/expect, @jest/expect-utils, @jest/fake-timers, @jest/globals, @jest/reporters, @jest/schemas, @jest/source-map, @jest/test-result, @jest/test-sequencer, @jest/transform, @jest/types, babel-jest, babel-plugin-jest-hoist, babel-preset-jest, create-jest, diff-sequences, expect, jest, jest-changed-files, jest-circus, jest-cli, jest-config, jest-diff, jest-docblock, jest-each, jest-environment-node, jest-get-type, jest-haste-map, jest-leak-detector, jest-matcher-utils, jest-message-util, jest-mock, jest-regex-util, jest-resolve, jest-resolve-dependencies, jest-runner, jest-runtime, jest-snapshot, jest-util, jest-validate, jest-watcher, jest-worker, pretty-format, react, react-dom, react-is, scheduler, use-sync-external-store. A copy of the source code may be downloaded from https://github.com/jestjs/jest.git (@jest/console), https://github.com/jestjs/jest.git (@jest/core), https://github.com/jestjs/jest.git (@jest/environment), https://github.com/jestjs/jest.git (@jest/expect), https://github.com/jestjs/jest.git (@jest/expect-utils), https://github.com/jestjs/jest.git (@jest/fake-timers), https://github.com/jestjs/jest.git (@jest/globals), https://github.com/jestjs/jest.git (@jest/reporters), https://github.com/jestjs/jest.git (@jest/schemas), https://github.com/jestjs/jest.git (@jest/source-map), https://github.com/jestjs/jest.git (@jest/test-result), https://github.com/jestjs/jest.git (@jest/test-sequencer), https://github.com/jestjs/jest.git (@jest/transform), https://github.com/jestjs/jest.git (@jest/types), https://github.com/jestjs/jest.git (babel-jest), https://github.com/jestjs/jest.git (babel-plugin-jest-hoist), https://github.com/jestjs/jest.git (babel-preset-jest), https://github.com/jestjs/jest.git (create-jest), https://github.com/jestjs/jest.git (diff-sequences), https://github.com/jestjs/jest.git (expect), https://github.com/jestjs/jest.git (jest), https://github.com/jestjs/jest.git (jest-changed-files), https://github.com/jestjs/jest.git (jest-circus), https://github.com/jestjs/jest.git (jest-cli), https://github.com/jestjs/jest.git (jest-config), https://github.com/jestjs/jest.git (jest-diff), https://github.com/jestjs/jest.git (jest-docblock), https://github.com/jestjs/jest.git (jest-each), https://github.com/jestjs/jest.git (jest-environment-node), https://github.com/jestjs/jest.git (jest-get-type), https://github.com/jestjs/jest.git (jest-haste-map), https://github.com/jestjs/jest.git (jest-leak-detector), https://github.com/jestjs/jest.git (jest-matcher-utils), https://github.com/jestjs/jest.git (jest-message-util), https://github.com/jestjs/jest.git (jest-mock), https://github.com/jestjs/jest.git (jest-regex-util), https://github.com/jestjs/jest.git (jest-resolve), https://github.com/jestjs/jest.git (jest-resolve-dependencies), https://github.com/jestjs/jest.git (jest-runner), https://github.com/jestjs/jest.git (jest-runtime), https://github.com/jestjs/jest.git (jest-snapshot), https://github.com/jestjs/jest.git (jest-util), https://github.com/jestjs/jest.git (jest-validate), https://github.com/jestjs/jest.git (jest-watcher), https://github.com/jestjs/jest.git (jest-worker), https://github.com/jestjs/jest.git (pretty-format), https://github.com/facebook/react.git (react), https://github.com/facebook/react.git (react-dom), https://github.com/facebook/react.git (react-is), https://github.com/facebook/react.git (scheduler), https://github.com/facebook/react.git (use-sync-external-store). This software contains the following license and notice below:
+The following software may be included in this product: @jest/console, @jest/core, @jest/environment, @jest/expect, @jest/expect-utils, @jest/fake-timers, @jest/globals, @jest/reporters, @jest/schemas, @jest/source-map, @jest/test-result, @jest/test-sequencer, @jest/transform, @jest/types, babel-jest, babel-plugin-jest-hoist, babel-preset-jest, create-jest, diff-sequences, expect, jest, jest-changed-files, jest-circus, jest-cli, jest-config, jest-diff, jest-docblock, jest-each, jest-environment-node, jest-get-type, jest-haste-map, jest-leak-detector, jest-matcher-utils, jest-message-util, jest-mock, jest-regex-util, jest-resolve, jest-resolve-dependencies, jest-runner, jest-runtime, jest-snapshot, jest-util, jest-validate, jest-watcher, jest-worker, pretty-format, react, react-dom, react-is, react-refresh, scheduler, use-sync-external-store. A copy of the source code may be downloaded from https://github.com/jestjs/jest.git (@jest/console), https://github.com/jestjs/jest.git (@jest/core), https://github.com/jestjs/jest.git (@jest/environment), https://github.com/jestjs/jest.git (@jest/expect), https://github.com/jestjs/jest.git (@jest/expect-utils), https://github.com/jestjs/jest.git (@jest/fake-timers), https://github.com/jestjs/jest.git (@jest/globals), https://github.com/jestjs/jest.git (@jest/reporters), https://github.com/jestjs/jest.git (@jest/schemas), https://github.com/jestjs/jest.git (@jest/source-map), https://github.com/jestjs/jest.git (@jest/test-result), https://github.com/jestjs/jest.git (@jest/test-sequencer), https://github.com/jestjs/jest.git (@jest/transform), https://github.com/jestjs/jest.git (@jest/types), https://github.com/jestjs/jest.git (babel-jest), https://github.com/jestjs/jest.git (babel-plugin-jest-hoist), https://github.com/jestjs/jest.git (babel-preset-jest), https://github.com/jestjs/jest.git (create-jest), https://github.com/jestjs/jest.git (diff-sequences), https://github.com/jestjs/jest.git (expect), https://github.com/jestjs/jest.git (jest), https://github.com/jestjs/jest.git (jest-changed-files), https://github.com/jestjs/jest.git (jest-circus), https://github.com/jestjs/jest.git (jest-cli), https://github.com/jestjs/jest.git (jest-config), https://github.com/jestjs/jest.git (jest-diff), https://github.com/jestjs/jest.git (jest-docblock), https://github.com/jestjs/jest.git (jest-each), https://github.com/jestjs/jest.git (jest-environment-node), https://github.com/jestjs/jest.git (jest-get-type), https://github.com/jestjs/jest.git (jest-haste-map), https://github.com/jestjs/jest.git (jest-leak-detector), https://github.com/jestjs/jest.git (jest-matcher-utils), https://github.com/jestjs/jest.git (jest-message-util), https://github.com/jestjs/jest.git (jest-mock), https://github.com/jestjs/jest.git (jest-regex-util), https://github.com/jestjs/jest.git (jest-resolve), https://github.com/jestjs/jest.git (jest-resolve-dependencies), https://github.com/jestjs/jest.git (jest-runner), https://github.com/jestjs/jest.git (jest-runtime), https://github.com/jestjs/jest.git (jest-snapshot), https://github.com/jestjs/jest.git (jest-util), https://github.com/jestjs/jest.git (jest-validate), https://github.com/jestjs/jest.git (jest-watcher), https://github.com/jestjs/jest.git (jest-worker), https://github.com/jestjs/jest.git (pretty-format), https://github.com/facebook/react.git (react), https://github.com/facebook/react.git (react-dom), https://github.com/facebook/react.git (react-is), https://github.com/facebook/react.git (react-refresh), https://github.com/facebook/react.git (scheduler), https://github.com/facebook/react.git (use-sync-external-store). This software contains the following license and notice below:
 
 MIT License
 
@@ -21420,6 +21420,18 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -----
 
+The following software may be included in this product: @octokit/openapi-types. A copy of the source code may be downloaded from https://github.com/octokit/openapi-types.ts.git. This software contains the following license and notice below:
+
+Copyright (c) GitHub 2025 - Licensed as MIT.
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+-----
+
 The following software may be included in this product: @octokit/plugin-paginate-graphql, @octokit/plugin-paginate-rest, @octokit/plugin-rest-endpoint-methods, @octokit/types. A copy of the source code may be downloaded from https://github.com/octokit/plugin-paginate-graphql.js.git (@octokit/plugin-paginate-graphql), https://github.com/octokit/plugin-paginate-rest.js.git (@octokit/plugin-paginate-rest), https://github.com/octokit/plugin-rest-endpoint-methods.js.git (@octokit/plugin-rest-endpoint-methods), https://github.com/octokit/types.ts.git (@octokit/types). This software contains the following license and notice below:
 
 MIT License Copyright (c) 2019 Octokit contributors
@@ -21487,7 +21499,7 @@ THE SOFTWARE.
 
 The following software may be included in this product: @octokit/webhooks. A copy of the source code may be downloaded from https://github.com/octokit/webhooks.js.git. This software contains the following license and notice below:
 
-Copyright (c) 2017 Gregor Martynus
+Copyright (c) GitHub 2025 - Licensed as MIT.
 
 Permission is hereby granted, free of charge, to any person obtaining
 a copy of this software and associated documentation files (the
@@ -36419,7 +36431,7 @@ SOFTWARE.
 
 -----
 
-The following software may be included in this product: jest-worker, pretty-format, react, react-docgen, react-dom, react-is, react-refresh, scheduler. A copy of the source code may be downloaded from https://github.com/facebook/jest.git (jest-worker), https://github.com/facebook/jest.git (pretty-format), git+https://github.com/facebook/react.git (react), https://github.com/reactjs/react-docgen.git (react-docgen), git+https://github.com/facebook/react.git (react-dom), https://github.com/facebook/react.git (react-is), https://github.com/facebook/react.git (react-refresh), https://github.com/facebook/react.git (scheduler). This software contains the following license and notice below:
+The following software may be included in this product: jest-worker, pretty-format, react, react-docgen, react-dom, react-is, scheduler. A copy of the source code may be downloaded from https://github.com/facebook/jest.git (jest-worker), https://github.com/facebook/jest.git (pretty-format), git+https://github.com/facebook/react.git (react), https://github.com/reactjs/react-docgen.git (react-docgen), git+https://github.com/facebook/react.git (react-dom), https://github.com/facebook/react.git (react-is), https://github.com/facebook/react.git (scheduler). This software contains the following license and notice below:
 
 MIT License
 
@@ -37258,7 +37270,7 @@ THE SOFTWARE.
 
 -----
 
-The following software may be included in this product: lint-staged. A copy of the source code may be downloaded from https://github.com/lint-staged/lint-staged. This software contains the following license and notice below:
+The following software may be included in this product: lint-staged. A copy of the source code may be downloaded from git+https://github.com/lint-staged/lint-staged.git. This software contains the following license and notice below:
 
 The MIT License (MIT)
 
@@ -43701,7 +43713,7 @@ THE SOFTWARE.
 
 -----
 
-The following software may be included in this product: synckit. A copy of the source code may be downloaded from git+https://github.com/un-ts/synckit.git. This software contains the following license and notice below:
+The following software may be included in this product: synckit. A copy of the source code may be downloaded from https://github.com/un-ts/synckit.git. This software contains the following license and notice below:
 
 MIT License
 

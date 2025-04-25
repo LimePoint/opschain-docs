@@ -220,6 +220,16 @@ Default value: _uid_
 
 LDAP/AD user attribute used as the OpsChain username.
 
+### Authentication configuration
+
+#### OPSCHAIN_AUTH_STRATEGY
+
+Default value: _ldap_
+
+Accepted values: _ldap, local_
+
+Which authentication strategy OpsChain will use for user authentication.
+
 ### Development environment
 
 The following variables can be manually set inside the OpsChain development environment or configured in your host environment, and they will be passed through (e.g. in your `~/.zshrc`).

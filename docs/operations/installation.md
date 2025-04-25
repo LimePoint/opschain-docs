@@ -129,25 +129,53 @@ kubectl get all -n opschain
 
 Once the `opschain server deploy` script has returned you can continue with the rest of the setup process.
 
-### Create an OpsChain user
+### Creating an OpsChain user
 
-The OpsChain API server requires a valid username and password. To create a user, execute:
+The OpsChain API server requires a valid username and password for users.
+
+:::note No spaces
+Please ensure there are no spaces included in the parameters you supply to `opschain server utils`.
+:::
+
+#### LDAP authenticated users
+
+To create a user that is authenticated via LDAP, execute:
 
 ```bash
 opschain server utils "create_user[opschain,password]"
 ```
 
-:::caution No spaces
-Please ensure there are no spaces included in the parameter you supply to `opschain server utils`.
-:::
+#### Locally authenticated users
 
-### Setting up admin access
-
-By default, users only have read access permission to the OpsChain features. To setup the `opschain` user as an admin user, execute:
+To create a user that is authenticated locally in OpsChain, execute:
 
 ```bash
-opschain server utils "setup_admin_user[opschain,true]"
+opschain server utils "create_local_user[opschain,password]"
 ```
+
+:::note Authentication strategy
+The active authentication strategy is set via the `OPSCHAIN_AUTH_STRATEGY` environment variable, available in the `.env` file.
+:::
+
+#### Resetting a local user's password
+
+To reset the password for a locally authenticated user in OpsChain, execute:
+
+```bash
+opschain server utils "reset_local_user_password[opschain,new_password]"
+```
+
+### Setting up superuser access
+
+By default, users have permissions according to the authorisation policies assigned to them. OpsChain provides a special `superuser` policy that can be assigned for users that should not have their access restricted in any circumstance. To setup the `opschain` user as a superuser, execute:
+
+```bash
+opschain server utils "setup_superuser[opschain,true]"
+```
+
+:::caution
+Due to security risks, it is not recommended to provide superuser access for a large number of users.
+:::
 
 ### Configure the OpsChain CLI's API access
 

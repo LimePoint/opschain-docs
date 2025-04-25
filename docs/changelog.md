@@ -5,6 +5,19 @@ description: Learn about new releases of OpsChain, including new features and up
 
 # Changelog
 
+## [2025-04-25]
+
+### Added {#2025-04-25-added}
+
+- Local user authentication can be activated via the `OPSCHAIN_AUTH_STRATEGY` environment variable. See the [authentication configuration documentation](/docs/operations/configuring-opschain#authentication-configuration) for reference.
+- It's now possible to create and login as local user. See the [creating an OpsChain user documentation](/docs/operations/installation#locally-authenticated-users) for reference.
+- Users can now be assigned authorisation policy update and create permissions for a specific project, environment or asset.
+- The Step API now allows you to update a failed change step, flagging it to be skipped when the change is retried.
+
+### Changed {#2025-03-125-changed}
+
+- The manage security screens have been redesigned to improve usability and simplify the process of creating and assigning authorisation policies.
+
 ## [2025-03-28]
 
 ### Added {#2025-03-28-added}
