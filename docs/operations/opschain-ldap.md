@@ -18,18 +18,16 @@ By default, OpsChain will cache a user's LDAP group membership for 1 minute to r
 
 ### Disable caching
 
-To disable group membership caching, set the `OPSCHAIN_LDAP_CACHE_TTL` value to `0` in your `.env` file.
-
-```bash
-echo OPSCHAIN_LDAP_CACHE_TTL=0 >> .env
-```
+To disable group membership caching, update the system configuration settings with `"ldap": { "cache_ttl": 0 }` and [restart the OpsChain API](#restart-opschain-api).
 
 ### Increase cache life
 
-To increase the cache life, set the `OPSCHAIN_LDAP_CACHE_TTL` value to the number of seconds you would like the cache to be valid. The following example would increase the cache life to 5 minutes.
+To increase the cache life, update the system configuration settings with the number of seconds you require the cache to be valid. The following example would increase the cache life to 5 minutes.
 
-```bash
-echo OPSCHAIN_LDAP_CACHE_TTL=300 >> .env
+```json
+{
+  "ldap": { "cache_ttl": 300 }
+}
 ```
 
 ---
@@ -58,7 +56,8 @@ This setting will be applied to the Kubernetes cluster when you [restart OpsChai
 
 ### Alter the OpsChain LDAP configuration
 
-See the [configuring OpsChain](/docs/operations/configuring-opschain.md#ldap-configuration) guide for details of the LDAP configuration variables that can be adjusted to enable the use of an external LDAP server. Edit your `.env` file, adding the relevant LDAP options to override the default values supplied in `.env.internal`.
+See the [configuring OpsChain](/operations/configuring-opschain.md#ldap-configuration) guide for details of the LDAP settings that can be adjusted to enable the use of an external LDAP server. Update the [system configuration settings](/operations/configuring-opschain.md#system-configuration) with the relevant LDAP options to override the default values.
+Optionally, on installation, edit your `.env` file, adding the relevant LDAP options to override the default values supplied in `.env.internal`.
 
 :::info
 An example [Active Directory configuration](#example-active-directory-configuration) appears at the end of this document.
@@ -74,7 +73,27 @@ kubectl rollout restart -n opschain deployment.apps/opschain-api
 
 ### Example Active Directory configuration
 
-The following example `.env` values allow OpsChain to utilise an Active Directory for user authentication:
+The following example settings allow OpsChain to utilise an Active Directory for user authentication:
+
+```json
+{
+  "ldap": {
+    "host": "ad-server",
+    "port": 389,
+    "domain": "myopschain.io",
+    "base_dn": "DC=myopschain,DC=io",
+    "user_base": "CN=Users,DC=myopschain,DC=io",
+    "user_attribute": "sAMAccountName",
+    "group_base": "DC=myopschain,DC=io",
+    "group_attribute": "member",
+    "admin": "CN=Administrator,CN=Users,DC=myopschain,DC=io",
+    "password": "AdministratorPassword!",
+    "hc_user": ""
+  }
+}
+```
+
+Optionally, the following example `.env` values will provide the same functionality from installation:
 
 ```dotenv
 OPSCHAIN_LDAP_HOST=ad-server

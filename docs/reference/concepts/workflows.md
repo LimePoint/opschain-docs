@@ -139,12 +139,14 @@ The workflow details page provides the following buttons to control the executio
 
 ### Workflow execution options
 
-By default, OpsChain will only allow a single instance of each workflow to be running at any time. This restriction relates to the default [change execution options](/docs/reference/concepts/changes.md#change-execution-options) for OpsChain changes that restricts running multiple changes in the same OpsChain project, environment or asset. Running the same workflow multiple times may cause this to happen and would slow the execution of the workflow. If you require the ability to run the same workflow multiple times concurrently, use the `opschain project edit-settings` command (or the OpsChain GUI) to set the `allow_parallel_runs_of_same_workflow` setting to `true` in your project's settings:
+By default, OpsChain will only allow a single instance of each workflow to be running at any time. This restriction relates to the default [change execution options](/reference/concepts/changes.md#change-execution-options) for OpsChain changes that restricts running multiple changes in the same OpsChain project, environment or asset. Running the same workflow multiple times may cause this to happen and would slow the execution of the workflow. If you require the ability to run the same workflow multiple times concurrently, use the `opschain project edit-settings` command (or the OpsChain GUI) to set the `allow_parallel.runs_of_same_workflow` setting to `true` in your project's settings:
 
 ```json
 {
   ...
-  "allow_parallel_runs_of_same_workflow": true
+  "allow_parallel": {
+    "runs_of_same_workflow": true
+  }
 }
 ```
 
@@ -152,7 +154,7 @@ By default, OpsChain will only allow a single instance of each workflow to be ru
 If you have `jq` installed you can use the following command to set the option programmatically:
 
 ```bash
-opschain project show-settings -p demo | jq '. += { "allow_parallel_runs_of_same_workflow": true }' > /tmp/updated_project_settings.json
+opschain project show-settings -p demo | jq '. += { "allow_parallel": { "runs_of_same_workflow": true } }' > /tmp/updated_project_settings.json
 opschain project set-settings -p <project code> -f /tmp/updated_project_settings.json -y
 ```
 
@@ -160,7 +162,7 @@ opschain project set-settings -p <project code> -f /tmp/updated_project_settings
 
 ### Viewing workflow runs
 
-The _runs_ tab of the workflow details page provides a list of each time the workflow has been run. Clicking on the _run ID_ of an individual run will take you to the [workflow run details page](/docs/ui/activity-details.md#workflow-run-details) to allow you to view each step of the workflow run.
+The _runs_ tab of the workflow details page provides a list of each time the workflow has been run. Clicking on the _run ID_ of an individual run will take you to the [workflow run details page](/ui/activity-details.md#workflow-run-details) to allow you to view each step of the workflow run.
 
 Each step can be viewed or actioned according to its type. If all the workflow's steps complete successfully, the workflow run will be marked as successful. If a workflow step errors or is cancelled, the remaining steps in the workflow run will not execute and the workflow run will be marked as errored or cancelled based on the status of the step that ended the workflow run.
 

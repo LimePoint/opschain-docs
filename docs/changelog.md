@@ -5,16 +5,35 @@ description: Learn about new releases of OpsChain, including new features and up
 
 # Changelog
 
+## [Unreleased]
+
+### Added {#unreleased-added}
+
+- A `/secrets` endpoint under a node path to lookup a value of a secret. See the [API documentation](https://docs.opschain.io/api-docs/) for more details.
+- Some default settings can now be configured via the OpsChain API. See the [documentation](/operations/configuring-opschain.md) for reference.
+- A new operations endpoint has been added to the API, providing specific endpoints to fetch OpsChain's Kubernetes nodes' information and metrics, worker pods and database statuses. See the [API documentation](https://docs.opschain.io/api-docs/#tag/Admin-operations) for more details.
+- Historical data for jobs run in OpsChain queues is now persisted within OpsChain.
+- An `/admin/queues` endpoint has been introduced to allow users to be aware of their change's status and progress within OpsChain's internal queue system. See the [API documentation](https://docs.opschain.io/api-docs/#tag/Admin-operations) for more details.
+- A `/jobs` endpoint has been introduced to allow users to fetch detailed information about any job's progress within OpsChain. The jobs can be filtered by their respective node's id or path, execution time, status and other details. See the [API documentation](https://docs.opschain.io/api-docs/#tag/Jobs) for more details.
+- A setting for specifying for how long job history will be kept for has been added. See the [documentation](/reference/concepts/settings.md#job_retention_days) for reference.
+
+### Changed {#unreleased-changed}
+
+- The `allow_parallel_changes` and `allow_parallel_runs_of_same_workflow` settings have been grouped under the `allow_parallel` heading. See the [documentation](/reference/concepts/settings.md) for the updated version.
+- The `clean_old_data_job` setting (same as the `OPSCHAIN_CLEAN_OLD_DATA_JOB` environment variable) is now set to `never` by default. If an invalid cron string is used, the API and worker pods will fail to start.
+- The data retention settings `change_log_retention_days` and `event_retention_days` have been moved under the `data_retention` header. Their respective environment variables have been renamed to `OPSCHAIN_DATA_RETENTION_CHANGE_LOG_RETENTION_DAYS` and `OPSCHAIN_DATA_RETENTION_EVENT_RETENTION_DAYS`, respectively.
+- The global `data_retention.change_log_retention_days` setting is now set to `null` by default, meaning that the change logs will not be cleaned up unless overwritten for specific projects, environments or assets. See the [data retention documentation](/operations/maintenance/data-retention.md) for reference.
+
 ## [2025-04-25]
 
 ### Added {#2025-04-25-added}
 
-- Local user authentication can be activated via the `OPSCHAIN_AUTH_STRATEGY` environment variable. See the [authentication configuration documentation](/docs/operations/configuring-opschain#authentication-configuration) for reference.
-- It's now possible to create and login as local user. See the [creating an OpsChain user documentation](/docs/operations/installation#locally-authenticated-users) for reference.
+- Local user authentication can be activated via the `OPSCHAIN_AUTH_STRATEGY` environment variable. See the [authentication configuration documentation](/operations/configuring-opschain.md#authentication-configuration) for reference.
+- It's now possible to create and login as local user. See the [creating an OpsChain user documentation](/operations/installation.md#locally-authenticated-users) for reference.
 - Users can now be assigned authorisation policy update and create permissions for a specific project, environment or asset.
 - The Step API now allows you to update a failed change step, flagging it to be skipped when the change is retried.
 
-### Changed {#2025-03-125-changed}
+### Changed {#2025-04-25-changed}
 
 - The manage security screens have been redesigned to improve usability and simplify the process of creating and assigning authorisation policies.
 
@@ -22,14 +41,14 @@ description: Learn about new releases of OpsChain, including new features and up
 
 ### Added {#2025-03-28-added}
 
-- *Breaking change* Authorisation is now applied via authorisation policies. See the [security documentation](/docs/reference/concepts/security) for reference.
-- Creating, updating or removing authorisation rules and policies will now create system events. See the [events documentation](/docs/reference/concepts/events) for reference.
+- *Breaking change* Authorisation is now applied via authorisation policies. See the [security documentation](/reference/concepts/security.md) for reference.
+- Creating, updating or removing authorisation rules and policies will now create system events. See the [events documentation](/reference/concepts/events.md) for reference.
 - The change creation API now accepts a `property_overrides` attribute, allowing you to supply additional JSON properties to override your repository and database properties.
 - The change creation API now accepts a `template_version` attribute, allowing you to supply a different template_version to the one assigned to the asset.
 - The `/info` endpoint now includes the database version and API version information
 - Endpoints for deleting workflows and workflow versions are now available. Sending a DELETE request to the workflow versions index endpoint will delete all draft versions of the workflow. See the [API documentation](https://docs.opschain.io/api-docs/) for more details.
 
-### Fixed {#2025-03-28-added}
+### Fixed {#2025-03-28-fixed}
 
 - Templated changes whose MintModel fails to generate will now end with an error.
 - The APIs for updating a workflow and workflow versions now allow you to archive a workflow or specific workflow versions.
@@ -39,7 +58,7 @@ description: Learn about new releases of OpsChain, including new features and up
 
 ### Changed {#2025-03-10-changed}
 
-- The `api:<model>:finish` event for changes, steps, workflow runs and workflow steps has been replaced with `success`, `error`, `cancel` and `abort` events., See the [events documentation](/docs/reference/concepts/events) for reference.
+- The `api:<model>:finish` event for changes, steps, workflow runs and workflow steps has been replaced with `success`, `error`, `cancel` and `abort` events., See the [events documentation](/reference/concepts/events.md) for reference.
 - The GUI change step log viewer now includes the logs of all child steps. Their inclusion can be toggled via the `Include child logs` toggle.
 
 ### Fixed {#2025-03-10-fixed}
@@ -63,8 +82,8 @@ description: Learn about new releases of OpsChain, including new features and up
 - Automated change rules are now known as Scheduled changes.
 - Automated workflow rules are now known as Scheduled workflows.
 - The Automation side menu entry has been replaced with Scheduled activity.
-- The notification settings have been updated. See the [notifications documentation](/docs/operations/notifications) for reference.
-- The authorisation rules logic has changed. See the [security documentation](/docs/reference/concepts/security) for reference.
+- The notification settings have been updated. See the [notifications documentation](/operations/notifications.md) for reference.
+- The authorisation rules logic has changed. See the [security documentation](/reference/concepts/security.md) for reference.
 
 ## [2025-02-13]
 
@@ -78,7 +97,7 @@ description: Learn about new releases of OpsChain, including new features and up
 
 ### Changed {#2025-02-13-changed}
 
-- You can now provide multiple approvers on the `requires_approval_from` settings. See the [settings](/docs/reference/concepts/settings#requires_approval_from) for reference.
+- You can now provide multiple approvers on the `requires_approval_from` settings. See the [settings](/reference/concepts/settings.md#requires_approval_from) for reference.
 
 ## [2025-01-31]
 
@@ -90,7 +109,7 @@ description: Learn about new releases of OpsChain, including new features and up
 
 ### Changed {#2025-01-31-changed}
 
-- *Breaking change* - Storing properties in the Git repository now uses a different folder structure. See the [Git repository storage options](/docs/reference/concepts/properties#git-repository) for reference.
+- *Breaking change* - Storing properties in the Git repository now uses a different folder structure. See the [Git repository storage options](/reference/concepts/properties.md#git-repository) for reference.
 - Keyboard shortcuts have been added to allow the table header filters to be accepted (ENTER) or cancelled (ESC)
 
 ### Fixed {#2025-01-31-fixed}
@@ -117,7 +136,7 @@ description: Learn about new releases of OpsChain, including new features and up
 - The step response now includes:
   - an optional `name` value
   - an optional `data` JSON object
-- OpsChain now includes a secret vault that can be used to store secrets. Secrets can be used within your `actions.rb` and referenced in your OpsChain properties. See the [actions reference](/docs/reference/concepts/actions.md#opschain-secret-vault) and [properties reference](/docs/reference/concepts/properties.md#opschain-secret-vault) for more information.
+- OpsChain now includes a secret vault that can be used to store secrets. Secrets can be used within your `actions.rb` and referenced in your OpsChain properties. See the [actions reference](/reference/concepts/actions.md#opschain-secret-vault) and [properties reference](/reference/concepts/properties.md#opschain-secret-vault) for more information.
 - The GUI now includes:
   - an activity page to display the most recent change and workflow activities
   - a manage activity page where you can approve and continue changes and workflow runs
@@ -150,8 +169,8 @@ description: Learn about new releases of OpsChain, including new features and up
 - `error:controller:unhandled` type events are now assigned the `error:api:controller:unhandled` type to differentiate them from resource controller exceptions.
 - `RecordNotFound`, `UnpermittedParameters` and `UnsupportedIncludeError` exceptions are no longer logged as events by the API.
 - If a fetch of a project's remote Git repository fails an event will be logged. Subsequent fetches within that hour will not log additional events to avoid flooding the event tables. _Note: This event throttling also applies to the automated fetch that is performed every minute on `workflows` Git remotes._
-- OpsChain events can now be linked to more sources. See the [events documentation](/docs/reference/concepts/events.md#linking-events) for the full list.
-- More OpsChain system events have been added. See the [events documentation](/docs/reference/concepts/events.md#system-event-types) for the full list.
+- OpsChain events can now be linked to more sources. See the [events documentation](/reference/concepts/events.md#linking-events) for the full list.
+- More OpsChain system events have been added. See the [events documentation](/reference/concepts/events.md#system-event-types) for the full list.
 - The GUI JSON editor for properties and settings now expands to the full height available in the tab.
 
 ## [2024-05-24]
@@ -180,7 +199,7 @@ description: Learn about new releases of OpsChain, including new features and up
 
 ### Changed {#2024-05-24-changed}
 
-- OpsChain will no longer automatically delete the Git repository folder when the remote has been archived. [Learn more.](/docs/reference/concepts/git-remotes.md#manually-deleting-the-git-repository-folder)
+- OpsChain will no longer automatically delete the Git repository folder when the remote has been archived. [Learn more.](/reference/concepts/git-remotes.md#manually-deleting-the-git-repository-folder)
 - The step API response `approved_by` format has changed to support the new `message` field - see the [API documentation](https://docs.opschain.io/api-docs/#tag/Steps/paths/~1api~1steps~1{step_id}~1approve/post) for an example.
 - The step API response `continued_by` format has changed to support the new `message` field - see the [API documentation](https://docs.opschain.io/api-docs/#tag/Steps/paths/~1api~1steps~1{step_id}~1continue/post) for an example.
 - Upgraded the runner images to be based on AlmaLinux 8.9.
@@ -263,19 +282,19 @@ description: Learn about new releases of OpsChain, including new features and up
 
 ### Important breaking changes {#2023-08-02-important-breaking-changes}
 
-- Modifiable database properties are no longer accessible via `OpsChain.environment.properties` and `OpsChain.project.properties`. Use the `OpsChain.properties_for(:environment)` and `OpsChain.properties_for(:project)` methods instead. See the [properties reference](/docs/reference/concepts/properties.md#modifiable-properties) for more information.
-- Repository properties are no longer accessible via `OpsChain.repository.properties`. Use the `OpsChain.repository_properties` method instead. See the [properties reference](/docs/reference/concepts/properties.md#git-repository) for more information.
+- Modifiable database properties are no longer accessible via `OpsChain.environment.properties` and `OpsChain.project.properties`. Use the `OpsChain.properties_for(:environment)` and `OpsChain.properties_for(:project)` methods instead. See the [properties reference](/reference/concepts/properties.md#modifiable-properties) for more information.
+- Repository properties are no longer accessible via `OpsChain.repository.properties`. Use the `OpsChain.repository_properties` method instead. See the [properties reference](/reference/concepts/properties.md#git-repository) for more information.
 - `OpsChain.context` no longer contains `project` and `environment` directly. These can now be accessed via `OpsChain.context.parents`, e.g.`OpsChain.context.parents.project`.
 - The format to prevent access to projects and environments in the OpsChain OPA security provider (in `security_configuration.json`) has changed.
-- The changes get API no longer supports the `environment_{{attribute}}` filter, instead `parent_{{attribute}}` can be used. See the [query examples](/docs/reference/api-filtering.md#query-examples) to see the updated environment filter example.
+- The changes get API no longer supports the `environment_{{attribute}}` filter, instead `parent_{{attribute}}` can be used. See the [query examples](/reference/api-filtering.md#query-examples) to see the updated environment filter example.
 
 ### Added {#2023-08-02-added}
 
-- Multi-project Git repositories can now include project specific [repository properties](/docs/reference/concepts/properties.md#git-repository).
-- The project and environment specific repository properties can now be accessed via `OpsChain.repository_properties_for(:environment)` and `OpsChain.repository_properties_for(:project)`. See the [properties reference](/docs/reference/concepts/properties.md#parent-specific-repository-properties) for more information.
-- `OpsChain.properties_for` has been added for use in `actions.rb`, see the [properties reference](/docs/reference/concepts/properties.md#modifiable-properties) for more information.
+- Multi-project Git repositories can now include project specific [repository properties](/reference/concepts/properties.md#git-repository).
+- The project and environment specific repository properties can now be accessed via `OpsChain.repository_properties_for(:environment)` and `OpsChain.repository_properties_for(:project)`. See the [properties reference](/reference/concepts/properties.md#parent-specific-repository-properties) for more information.
+- `OpsChain.properties_for` has been added for use in `actions.rb`, see the [properties reference](/reference/concepts/properties.md#modifiable-properties) for more information.
 - Step specific logs are now available from the `/steps/<step_id>/log_lines` API. The results can be filtered using the same filtering syntax as change log lines or events.
-- Events are now created when an automated change rule fails. Learn more in the [automated changes documentation](/docs/reference/concepts/scheduled-changes.md#scheduled-changes-events).
+- Events are now created when an automated change rule fails. Learn more in the [automated changes documentation](/reference/concepts/scheduled-changes.md#scheduled-changes-events).
 
 ### Changed {#2023-08-02-changed}
 
@@ -315,14 +334,14 @@ description: Learn about new releases of OpsChain, including new features and up
 
 - The properties API no longer returns the version in the JSONAPI `meta` (e.g. `{ meta: { version: 1 } }`) . It is now available in the `data` (e.g. `{ data: { attributes: { version: 1, data: ... } } }`).
 - OpsChain project and environment properties can no longer include configuration under `{ opschain: { config: ... } }`.
-  - The list of Kubernetes secrets to include in the environment during build and runtime are now configured in `{ opschain: { 'env:build_secrets': [<secret names>], 'env:runner_secrets': [<secret names>], ... } }`. See [secrets](/docs/reference/concepts/properties.md#secrets) for more information.
-  - The project / environment settings that were previously configured under `{ opschain: { config: ... } }` are now configured in the [project and environment settings](/docs/reference/concepts/settings.md).
+  - The list of Kubernetes secrets to include in the environment during build and runtime are now configured in `{ opschain: { 'env:build_secrets': [<secret names>], 'env:runner_secrets': [<secret names>], ... } }`. See [secrets](/reference/concepts/properties.md#secrets) for more information.
+  - The project / environment settings that were previously configured under `{ opschain: { config: ... } }` are now configured in the [project and environment settings](/reference/concepts/settings.md).
 
 ### Added {#2023-06-07-added}
 
 - OpsChain settings are now available via the `/api/settings/<settings_id>` endpoint. Current and prior versions of the settings are available via the `/api/settings/<settings_id>/versions` endpoint. The link to a project or environment's settings is available via the `settings` `relationship` in the JSON:API response for the relevant project or environment.
 - The CLI now provides `show-settings`, `set-settings` and `edit-settings` subcommands for projects and environments.
-- OpsChain changes now support human approvals. Learn more in the [getting started guide.](/docs/getting-started/README.md#human-approvals-for-changes)
+- OpsChain changes now support human approvals. Learn more in the [getting started guide.](/getting-started/README.md#human-approvals-for-changes)
   - The step API response now includes the `requires_approval_from` and `approved_by` information for the step.
   - The change API response now includes the `requires_approval_from` and `approved_by` information for the change's root step.
 
@@ -339,13 +358,13 @@ description: Learn about new releases of OpsChain, including new features and up
 
 ### Added {#2023-05-12-added}
 
-- The CLI can now be configured to invoke a command to determine the API password rather than storing it in the configuration directly. [Learn more.](/docs/reference/cli.md#opschain-cli-configuration-settings)
+- The CLI can now be configured to invoke a command to determine the API password rather than storing it in the configuration directly. [Learn more.](/reference/cli.md#opschain-cli-configuration-settings)
 
 ## [2023-05-05] {#2023-05-05}
 
 ### Added {#2023-05-05-added}
 
-- OpsChain can now be configured to send a notification when a change has failed using [Apprise](https://github.com/caronc/apprise). [Learn more](/docs/operations/notifications.md#notifications-configuration).
+- OpsChain can now be configured to send a notification when a change has failed using [Apprise](https://github.com/caronc/apprise). [Learn more](/operations/notifications.md#notifications-configuration).
 - The logs for an individual step within a change can now be viewed via the OpsChain GUI by clicking on the step details icon for the relevant step on the change details page.
 
 ### Changed {#2023-05-05-changed}
@@ -362,7 +381,7 @@ description: Learn about new releases of OpsChain, including new features and up
 
 ### Added {#2023-04-14-added}
 
-- Introduced a new `lazy` DSL keyword to allow resource property values to be derived at runtime rather than when OpsChain parses the project's `actions.rb` file. See [lazy property evaluation](/docs/reference/concepts/actions.md#lazy-property-evaluation) for more information.
+- Introduced a new `lazy` DSL keyword to allow resource property values to be derived at runtime rather than when OpsChain parses the project's `actions.rb` file. See [lazy property evaluation](/reference/concepts/actions.md#lazy-property-evaluation) for more information.
 
 ### Changed {#2023-04-14-changed}
 
@@ -401,7 +420,7 @@ description: Learn about new releases of OpsChain, including new features and up
 ### Added {#2023-03-31-added}
 
 - The build service now automatically restarts when its certificate is renewed.
-- OpsChain's web UI has been released. [Learn more](https://opschain.io/docs/whats-new/#31-march-2023) about its features. We expect the web UI to continue to evolve and thus change as features are added. [Contact us](/docs/support.md#how-to-contact-us) if you have any feedback.
+- OpsChain's web UI has been released. [Learn more](https://opschain.io/docs/whats-new/#31-march-2023) about its features. We expect the web UI to continue to evolve and thus change as features are added. [Contact us](/support.md#how-to-contact-us) if you have any feedback.
   - This release includes the ability to:
     - view a list of changes.
     - search changes.
@@ -412,8 +431,8 @@ description: Learn about new releases of OpsChain, including new features and up
 
 - The API documentation has been moved from `/docs` to `/api-docs`.
 - When accessing `/` the new web UI will be shown rather than the API docs. Access the API docs directly via `/api-docs`.
-- The changes API (`api/changes`) now allows filtering by nested metadata values. [Learn more](/docs/reference/concepts/changes.md#query-changes-by-metadata).
-- The automated change rules API (`api/automated_change_rules`) now supports filtering and sorting. [Learn more](/docs/reference/api-filtering.md)
+- The changes API (`api/changes`) now allows filtering by nested metadata values. [Learn more](/reference/concepts/changes.md#query-changes-by-metadata).
+- The automated change rules API (`api/automated_change_rules`) now supports filtering and sorting. [Learn more](/reference/api-filtering.md)
 - Upgraded cert-manager to 1.11.0.
 - Upgraded BuildKit to v0.11.3.
 - Upgraded Confluent to 6.2.9 in the OpsChain Confluent example.
@@ -431,7 +450,7 @@ description: Learn about new releases of OpsChain, including new features and up
 ### Fixed {#2023-03-31-fixed}
 
 - The GitHub RSA keys in the SSH `known_hosts` file in the runner have been updated following [the GitHub announcement](https://github.blog/2023-03-23-we-updated-our-rsa-ssh-host-key/).
-  - [View the documentation](/docs/reference/project-git-repositories.md#customising-the-ssh-known_hosts-file) if you need to modify the contents of this file.
+  - [View the documentation](/reference/project-git-repositories.md#customising-the-ssh-known_hosts-file) if you need to modify the contents of this file.
 
 ## 2023-01-13 {#2023-01-13}
 
@@ -441,9 +460,9 @@ description: Learn about new releases of OpsChain, including new features and up
 
 ### Added {#2023-01-13-added}
 
-- Documentation on [running commands as root in `opschain dev`](/docs/development-environment.md#running-commands-as-root).
-- When defining a controller based resource type, the array supplied to the `action_methods:` keyword, can now include hashes providing the action name and description. Similarly, the controller `resource_type_actions` class method can now include hashes. [Learn more](/docs/reference/concepts/actions.md#controller)
-- Documentation has been added showing how to use a specific configuration file with the CLI. [Learn more](/docs/reference/cli.md#specifying-the-cli-configuration-file).
+- Documentation on [running commands as root in `opschain dev`](/development-environment.md#running-commands-as-root).
+- When defining a controller based resource type, the array supplied to the `action_methods:` keyword, can now include hashes providing the action name and description. Similarly, the controller `resource_type_actions` class method can now include hashes. [Learn more](/reference/concepts/actions.md#controller)
+- Documentation has been added showing how to use a specific configuration file with the CLI. [Learn more](/reference/cli.md#specifying-the-cli-configuration-file).
 
 ### Changed {#2023-01-13-changed}
 
@@ -469,7 +488,7 @@ description: Learn about new releases of OpsChain, including new features and up
 ### Fixed {#2023-01-13-fixed}
 
 - `opschain dev build-runner-image` no longer aborts if Git repository files have been deleted but not yet committed.
-- OpsChain replaces the null bytes in log messages with U+FFFD. See the [troubleshooting guide](/docs/troubleshooting.md#null-bytes-in-log-messages) to learn why this is necessary.
+- OpsChain replaces the null bytes in log messages with U+FFFD. See the [troubleshooting guide](/troubleshooting.md#null-bytes-in-log-messages) to learn why this is necessary.
 
 ## 2022-11-29 {#2022-11-29}
 
@@ -480,11 +499,11 @@ description: Learn about new releases of OpsChain, including new features and up
 
 ### Added {#2022-11-29-added}
 
-- [Instructions for restarting the build service when its certificate renews every 90 days](/docs/operations/maintenance/build-service-certificate-renewals.md).
+- [Instructions for restarting the build service when its certificate renews every 90 days](/operations/maintenance/build-service-certificate-renewals.md).
 
 ### Changed {#2022-11-29-changed}
 
-- The API worker processes will now wait up to one hour to complete any running actions when shutting down. This grace period can also be [customised via a Helm value](/docs/operations/workers.md#graceful-shutdown).
+- The API worker processes will now wait up to one hour to complete any running actions when shutting down. This grace period can also be [customised via a Helm value](/operations/workers.md#graceful-shutdown).
 - The project and environment `--description` argument is now optional. If not supplied on the command line it will not be requested and the project/environment will be created with an empty description.
 
 ### Fixed {#2022-11-29-fixed}
@@ -499,7 +518,7 @@ description: Learn about new releases of OpsChain, including new features and up
 
 - OpsChain project Git remote credentials can now be updated using the `opschain project update-git-remote` command.
 - OpsChain project and environment properties can now be edited using the `opschain project edit-properties` and `opschain environment edit-properties` commands.
-- OpsChain now allows you to supply build secrets to the step runner image build process. See [secure build secrets](/docs/reference/concepts/step-runner.md#secure-build-secrets) for more information. _Note: these secrets are provided at build time only and are not available at runtime. [Let us know](mailto:opschain-support@limepoint.com) if you're interested in using these secrets at runtime too._
+- OpsChain now allows you to supply build secrets to the step runner image build process. See [secure build secrets](/reference/concepts/step-runner.md#secure-build-secrets) for more information. _Note: these secrets are provided at build time only and are not available at runtime. [Let us know](mailto:opschain-support@limepoint.com) if you're interested in using these secrets at runtime too._
 - All OpsChain commands that support the `--output` argument now accept JSONPath queries in the format `--output jsonpath='$.jsonpath.query'`.
   - See the underlying JSONPath implementation documentation for details about the [supported syntax](https://www.npmjs.com/package/jsonpath-plus#user-content-syntax-through-examples), or try the [demo tool](https://jsonpath-plus.github.io/JSONPath/demo/).
 
@@ -523,7 +542,7 @@ description: Learn about new releases of OpsChain, including new features and up
 
 - The OpsChain CLI `opschain server deploy` command has been fixed on Windows.
   - **Breaking change** - the `.env` file has moved from using double quotes around values to single quotes to fix an issue with Windows paths containing special character sequences like `\n` - which was being treated as a newline.
-    - If your .env file contains values containing `"`, they need to be unescaped and the surrounding `"` changed to `'`. Similarly, any value containing a `'` now needs to have the single quotes escaped. Rerunning a [full reconfiguration](/docs/reference/cli.md#full-reconfiguration) may be simpler.
+    - If your .env file contains values containing `"`, they need to be unescaped and the surrounding `"` changed to `'`. Similarly, any value containing a `'` now needs to have the single quotes escaped. Rerunning a [full reconfiguration](/reference/cli.md#full-reconfiguration) may be simpler.
 - Removed the text colour presentation from the masked fields in the `add-git-remote` and `list-git-remotes` command output when displayed in `json` or `yaml` format.
 
 ## 2022-09-20 {#2022-09-20}
@@ -551,11 +570,11 @@ description: Learn about new releases of OpsChain, including new features and up
 ### Added {#2022-09-15-added}
 
 - The OpsChain CLI now supports an optional `--output` argument for many operations, allowing you to display the command's output in different formats (e.g. YAML / JSON). See the relevant command's `--help` output for the available formats.
-- Default output format(s) can be configured via your `.opschainrc` file. See the [OpsChain CLI reference](/docs/reference/cli.md#opschain-cli-configuration-settings) for more information.
+- Default output format(s) can be configured via your `.opschainrc` file. See the [OpsChain CLI reference](/reference/cli.md#opschain-cli-configuration-settings) for more information.
 - The `opschain change retry` command now accepts a `--background` argument, allowing you to retry the change in the background.
-- OpsChain now supports loading environment specific repository properties. See the [Git repository](/docs/reference/concepts/properties.md#git-repository) section of the properties guide for more information.
-- OpsChain can now be configured to support running concurrent changes for a single project environment. See the [change execution options](/docs/reference/concepts/changes.md#change-execution-options) section of the changes reference guide for more information.
-- The OpsChain CLI has new subcommands for managing and configuring OpsChain server installations under `opschain server`, e.g. `opschain server configure` - [learn more](/docs/reference/cli.md#server-management).
+- OpsChain now supports loading environment specific repository properties. See the [Git repository](/reference/concepts/properties.md#git-repository) section of the properties guide for more information.
+- OpsChain can now be configured to support running concurrent changes for a single project environment. See the [change execution options](/reference/concepts/changes.md#change-execution-options) section of the changes reference guide for more information.
+- The OpsChain CLI has new subcommands for managing and configuring OpsChain server installations under `opschain server`, e.g. `opschain server configure` - [learn more](/reference/cli.md#server-management).
 - The `opschain server` commands support a `values.override.yaml` file for automatically applying Helm customisations.
 
 ### Changed {#2022-09-15-changed}
@@ -603,7 +622,7 @@ description: Learn about new releases of OpsChain, including new features and up
 
 ### Added {#2022-08-10-added}
 
-- The OpsChain CLI now allows you to build a step runner image from your project's `.opschain/Dockerfile` via the `opschain dev build-runner-image` command. See [custom runner images](/docs/development-environment.md#custom-runner-images) for more details on using the image in your OpsChain development environment.
+- The OpsChain CLI now allows you to build a step runner image from your project's `.opschain/Dockerfile` via the `opschain dev build-runner-image` command. See [custom runner images](/development-environment.md#custom-runner-images) for more details on using the image in your OpsChain development environment.
 
 ### Changed {#2022-08-10-changed}
 
@@ -656,7 +675,7 @@ description: Learn about new releases of OpsChain, including new features and up
 
 ### Changed {#2022-07-11-changed}
 
-- The OpsChain CLI now displays the user who continued a [wait step](/docs/reference/concepts/actions.md#wait-steps).
+- The OpsChain CLI now displays the user who continued a [wait step](/reference/concepts/actions.md#wait-steps).
 - Upgraded Bundler to 2.3.17.
 - Upgraded HashiCorp Vault to 1.11.0 in the OpsChain Vault example.
 - Upgraded Kong Helm chart to v2.10.2.
@@ -679,7 +698,7 @@ description: Learn about new releases of OpsChain, including new features and up
 
 - OpsChain project Git remotes can now be archived using the `opschain project archive-git-remote` command.
 - The OpsChain API project `git_remotes` endpoint now accepts `DELETE` requests. _Note: Git remotes  that are associated with changes will have their credentials cleared rather than being deleted._
-- Documentation has been added on Git remote operations. [Learn more](/docs/reference/concepts/git-remotes.md).
+- Documentation has been added on Git remote operations. [Learn more](/reference/concepts/git-remotes.md).
 
 ### Changed {#2022-06-29-changed}
 
@@ -690,8 +709,8 @@ description: Learn about new releases of OpsChain, including new features and up
 
 ### Added {#2022-06-20-added}
 
-- `OpsChain.context.change.automated` is now populated in the [OpsChain context](/docs/reference/concepts/context.md) - indicating whether a change was created by an [automated change rule](/docs/reference/concepts/scheduled-changes.md).
-- The `automated` field is now included in the OpsChain changes API response - indicating whether a change was created by an [automated change rule](/docs/reference/concepts/scheduled-changes.md).
+- `OpsChain.context.change.automated` is now populated in the [OpsChain context](/reference/concepts/context.md) - indicating whether a change was created by an [automated change rule](/reference/concepts/scheduled-changes.md).
+- The `automated` field is now included in the OpsChain changes API response - indicating whether a change was created by an [automated change rule](/reference/concepts/scheduled-changes.md).
 
 ### Changed {#2022-06-20-changed}
 
@@ -713,7 +732,7 @@ description: Learn about new releases of OpsChain, including new features and up
 
 ### Important breaking changes {#2022-06-08-important-breaking-changes}
 
-- OpsChain must be installed from scratch for this release. Follow the steps in the [uninstall guide](/docs/operations/uninstall.md) to remove OpsChain and then perform a [fresh install](/docs/operations/installation.md). The existing Git remotes can be re-used with the new installation.
+- OpsChain must be installed from scratch for this release. Follow the steps in the [uninstall guide](/operations/uninstall.md) to remove OpsChain and then perform a [fresh install](/operations/installation.md). The existing Git remotes can be re-used with the new installation.
 
 ### Added {#2022-06-08-added}
 
@@ -730,19 +749,19 @@ description: Learn about new releases of OpsChain, including new features and up
 
 ### Fixed {#2022-06-08-fixed}
 
-- [Wait steps](/docs/reference/concepts/actions.md#wait-steps) within namespaces now work as expected.
+- [Wait steps](/reference/concepts/actions.md#wait-steps) within namespaces now work as expected.
 - A sporadic bug whilst running changes or using `opschain dev` - `iseq_compile_each: unknown node (NODE_SCOPE) (SyntaxError)` - has been fixed.
 
 ## 2022-05-25 {#2022-05-25}
 
 ### Known issues {#2022-05-25-known-issues}
 
-- OpsChain changes may fail with `BUG: error: failed to solve ...`. See the [troubleshooting guide](/docs/troubleshooting.md#opschain-change---bug-error-failed-to-solve) to learn how to resolve this issue.
+- OpsChain changes may fail with `BUG: error: failed to solve ...`. See the [troubleshooting guide](/troubleshooting.md#opschain-change---bug-error-failed-to-solve) to learn how to resolve this issue.
 
 ### Added {#2022-05-25-added}
 
 - The `opschain change show-logs` command now supports the `--timestamps` option, to prefix each log line with the date and time it was logged.
-- OpsChain now supports [wait steps](/docs/reference/concepts/actions.md#wait-steps) - steps that pause a change execution and wait for a user to continue the change manually.
+- OpsChain now supports [wait steps](/reference/concepts/actions.md#wait-steps) - steps that pause a change execution and wait for a user to continue the change manually.
 - CLI version, server version and runner image can be retrieved via the `opschain info` CLI command.
 - An `/info` endpoint has been added to the OpsChain API to return the currently running version and runner image.
 
@@ -762,7 +781,7 @@ description: Learn about new releases of OpsChain, including new features and up
 
 ### Fixed {#2022-05-25-fixed}
 
-- Added the missing `OpsChain.repository.properties` method that is described in the Git repository section of the [properties guide](/docs/reference/concepts/properties.md#git-repository).
+- Added the missing `OpsChain.repository.properties` method that is described in the Git repository section of the [properties guide](/reference/concepts/properties.md#git-repository).
 - The project links in the Git remotes response body.
 - Fixed runner image building on macOS M1 hosts.
 
@@ -789,7 +808,7 @@ description: Learn about new releases of OpsChain, including new features and up
 
 ### Added {#2022-05-05-added}
 
-- Documentation has been added explaining how container image builds can be achieved with OpsChain. [Learn more](/docs/reference/building-container-images.md).
+- Documentation has been added explaining how container image builds can be achieved with OpsChain. [Learn more](/reference/building-container-images.md).
 - A link to the step's log lines is now included in the step JSON.
 - The `opschain change create` command now accepts the `--background` argument, allowing you to create changes and not follow their progress.
 
@@ -801,8 +820,8 @@ description: Learn about new releases of OpsChain, including new features and up
 
 ### Added {#2022-04-20-added}
 
-- The OpsChain CLI request timeout can now be modified. [Learn more](/docs/reference/cli.md#opschain-cli-configuration-settings).
-- Log messages pertaining to the step phases. [Learn more](/docs/reference/concepts/step-runner.md#log-messages-for-step-phases).
+- The OpsChain CLI request timeout can now be modified. [Learn more](/reference/cli.md#opschain-cli-configuration-settings).
+- Log messages pertaining to the step phases. [Learn more](/reference/concepts/step-runner.md#log-messages-for-step-phases).
 
 ### Changed {#2022-04-20-changed}
 
@@ -831,9 +850,9 @@ description: Learn about new releases of OpsChain, including new features and up
 
 ### Added {#2022-04-11-added}
 
-- The OpsChain CLI now supports [shell completion](/docs/reference/cli.md#shell-completion).
+- The OpsChain CLI now supports [shell completion](/reference/cli.md#shell-completion).
 - OpsChain now supports SSH authentication (in addition to password authentication) for Git remotes.
-  - There is an SSH `known_hosts` file provided by OpsChain. See [the documentation](/docs/reference/project-git-repositories.md#ssh-git-remotes) if you need to know more about this file.
+  - There is an SSH `known_hosts` file provided by OpsChain. See [the documentation](/reference/project-git-repositories.md#ssh-git-remotes) if you need to know more about this file.
 
 ### Changed {#2022-04-11-changed}
 
@@ -844,8 +863,8 @@ description: Learn about new releases of OpsChain, including new features and up
 
 ### Added {#2022-03-28-added}
 
-- Documentation on the [change and step behaviour](/docs/reference/concepts/concepts.md#behaviour-when-a-child-step-fails) when a failure occurs in one of the child steps.
-- OpsChain action method validation can now be [disabled](/docs/reference/concepts/actions.md#controller-action-method-validation).
+- Documentation on the [change and step behaviour](/reference/concepts/concepts.md#behaviour-when-a-child-step-fails) when a failure occurs in one of the child steps.
+- OpsChain action method validation can now be [disabled](/reference/concepts/actions.md#controller-action-method-validation).
 
 ### Changed {#2022-03-28-changed}
 
@@ -853,7 +872,7 @@ description: Learn about new releases of OpsChain, including new features and up
   - OpsChain has moved from Docker Compose to Kubernetes. Only single node Kubernetes deployments are supported currently.
     - There is no migration path for data from previous versions of OpsChain to the current version.
     - This release of OpsChain must be installed from scratch.
-    - Most of the OpsChain processes documented in the [OpsChain operations guides](/docs/category/operations) have changed.
+    - Most of the OpsChain processes documented in the [OpsChain operations guides](./operations) have changed.
   - The OpsChain runner Dockerfile now utilises the OPSCHAIN_BASE_RUNNER build argument to determine the FROM image. Use the `opschain-utils dockerfile_template` command to see the new format and ensure any custom project Dockerfiles are updated to reflect this change.
 - When running changes that include parallel child steps, if one of those children fails, the `opschain change create` command will continue running until all its siblings have finished.
 - Upgraded Fluentd to v1.14.5-1.1.
@@ -873,11 +892,11 @@ description: Learn about new releases of OpsChain, including new features and up
 
 ### Added {#2022-03-01-added}
 
-- The OpsChain hardware requirements are now [documented](/docs/operations/installation.md#hardwarevm-requirements).
+- The OpsChain hardware requirements are now [documented](/operations/installation.md#hardwarevm-requirements).
 - The `opschain change show-logs` command now accepts a `--follow` argument to follow the logs until the change completes.
-- [Documentation](/docs/reference/concepts/properties.md#changing-properties-in-concurrent-steps) and [troubleshooting guide](/docs/troubleshooting.md#updates-made-to-properties-in-change--step--could-not-be-applied) when changing properties within parallel steps.
-- Added [Kubernetes resource types](/docs/reference/included-resource-types.md#opschain-kubernetes).
-- Added an [SSH key pair](/docs/reference/included-resource-types.md#opschain-ssh-key-pair) resource type.
+- [Documentation](/reference/concepts/properties.md#changing-properties-in-concurrent-steps) and [troubleshooting guide](/troubleshooting.md#updates-made-to-properties-in-change--step--could-not-be-applied) when changing properties within parallel steps.
+- Added [Kubernetes resource types](/reference/included-resource-types.md#opschain-kubernetes).
+- Added an [SSH key pair](/reference/included-resource-types.md#opschain-ssh-key-pair) resource type.
 
 ### Changed {#2022-03-01-changed}
 
@@ -891,8 +910,8 @@ description: Learn about new releases of OpsChain, including new features and up
 - Upgraded Terraform 'hashicorp/aws' plugin to 3.73.0 in the OpsChain Ansible example.
 - Upgraded HashiCorp Vault to 1.9.2 in the OpsChain Vault example.
 - Upgraded Confluent to 6.2.2 in the OpsChain Confluent example.
-- Update example on [setting environment variables](/docs/reference/concepts/properties.md#setting-environment-variables-example) in the [OpsChain properties guide](/docs/reference/concepts/properties.md#opschain-properties).
-- Update documentation on the [minimum requirements](/docs/reference/project-git-repositories.md#minimum-requirements) in the [OpsChain project Git repositories guide](/docs/reference/project-git-repositories.md).
+- Update example on [setting environment variables](/reference/concepts/properties.md#setting-environment-variables-example) in the [OpsChain properties guide](/reference/concepts/properties.md#opschain-properties).
+- Update documentation on the [minimum requirements](/reference/project-git-repositories.md#minimum-requirements) in the [OpsChain project Git repositories guide](/reference/project-git-repositories.md).
 - The OpsChain base runner image is now based on AlmaLinux 8.
 
 ### Fixed {#2022-03-01-fixed}
@@ -905,13 +924,13 @@ description: Learn about new releases of OpsChain, including new features and up
 ### Added {#2021-11-12-added}
 
 - Reference for all third party software licences used in our applications.
-- Document our [support policy](/docs/support.md). This includes the type of support we provide when using OpsChain, as well as details on how and when to contact our support team.
+- Document our [support policy](/support.md). This includes the type of support we provide when using OpsChain, as well as details on how and when to contact our support team.
 - In addition to lightweight tags, OpsChain now supports creating changes that reference annotated tags. See [creating tags](https://git-scm.com/book/en/v2/Git-Basics-Tagging) for more information on Git tag types.
 - When run in a dirty Git repository, the OpsChain CLI now prints a warning when creating a change to alert the user that their updates may not be committed yet.
 - **Breaking changes**
   - OpsChain now requires an `opschain.lic` licence file to operate. Please use the [`#opschain-trial` Slack channel](https://limepoint.slack.com/messages/opschain-trial) to request a licence.
-  - Custom runner base images now require ONBUILD steps to ensure the OpsChain licence is available to the runner. For further details see [image performance - base images](/docs/reference/concepts/step-runner.md#image-performance---base-images).
-- Documentation on how to [uninstall](/docs/operations/uninstall.md) OpsChain.
+  - Custom runner base images now require ONBUILD steps to ensure the OpsChain licence is available to the runner. For further details see [image performance - base images](/reference/concepts/step-runner.md#image-performance---base-images).
+- Documentation on how to [uninstall](/operations/uninstall.md) OpsChain.
 
 ### Changed {#2021-11-12-changed}
 
@@ -929,9 +948,9 @@ description: Learn about new releases of OpsChain, including new features and up
 
 - Change specific logs are now available from the `/changes/<change_id>/log_lines` API. The results can be filtered using the same filtering syntax as events.
 - The OpsChain DSL now supports
-  - referencing resource properties by name within `action` blocks - see [defining resource types & resources](/docs/reference/concepts/actions.md#defining-resource-types--resources).
-  - referencing composite resource properties by name within child resources - see [defining composite resources](/docs/reference/concepts/actions.md#defining-composite-resources--resource-types).
-  - referencing resources by name from within actions and when setting properties - see [referencing resources](/docs/reference/concepts/actions.md#referencing-resources)
+  - referencing resource properties by name within `action` blocks - see [defining resource types & resources](/reference/concepts/actions.md#defining-resource-types--resources).
+  - referencing composite resource properties by name within child resources - see [defining composite resources](/reference/concepts/actions.md#defining-composite-resources--resource-types).
+  - referencing resources by name from within actions and when setting properties - see [referencing resources](/reference/concepts/actions.md#referencing-resources)
 
 ### Changed {#2021-10-26-changed}
 
@@ -981,8 +1000,8 @@ You **must** run `configure` after upgrading to update the `.env` file with the 
 ### Added {#2021-09-03-added}
 
 - The OpsChain CLI can now:
-  - be configured to output the step statuses as text rather than emoji. See the [CLI configuration guide](/docs/reference/cli.md#opschain-cli-configuration-settings) for more details.
-  - archive projects and environments. See the [archiving projects & environments guide](/docs/reference/concepts/archiving.md) for more details.
+  - be configured to output the step statuses as text rather than emoji. See the [CLI configuration guide](/reference/cli.md#opschain-cli-configuration-settings) for more details.
+  - archive projects and environments. See the [archiving projects & environments guide](/reference/concepts/archiving.md) for more details.
 - The OpsChain DSL now supports the `ref` method for referencing other resources. This is useful for cases where a resource name includes special characters, e.g.:
 
   ```ruby
@@ -996,10 +1015,10 @@ You **must** run `configure` after upgrading to update the `.env` file with the 
 - The OpsChain API `projects` and `environments` endpoints now
   - return a boolean `archived` attribute.
   - accept `DELETE` requests. _Note: Only projects and environments with no associated changes can be deleted._
-- The OpsChain API `automated_change_rules` endpoint now includes a `next_run_at` attribute containing the time when the rule will next run. See the [automated changes guide](/docs/reference/concepts/scheduled-changes.md#creating-a-scheduled-change-for-new-commits) for more information on what happens when an automated change rule runs.
+- The OpsChain API `automated_change_rules` endpoint now includes a `next_run_at` attribute containing the time when the rule will next run. See the [automated changes guide](/reference/concepts/scheduled-changes.md#creating-a-scheduled-change-for-new-commits) for more information on what happens when an automated change rule runs.
 - The `opschain automated-change list` output no longer include the `Project` and `Environment` columns (as these are parameter values to the command) and includes a `Next Run At` column.
-- The `opschain-action` command now supports a _best-effort_ mode for running the child steps of an action. See the [child steps](/docs/development-environment.md#child-steps) section of the Docker development environment guide for more details.
-- OpsChain now provides an `opschain-lint` command for detecting issues with the OpsChain DSL. Learn more in the [Docker development environment](/docs/development-environment.md#using-the-opschain-linter) guide.
+- The `opschain-action` command now supports a _best-effort_ mode for running the child steps of an action. See the [child steps](/development-environment.md#child-steps) section of the Docker development environment guide for more details.
+- OpsChain now provides an `opschain-lint` command for detecting issues with the OpsChain DSL. Learn more in the [Docker development environment](/development-environment.md#using-the-opschain-linter) guide.
   - `opschain-lint` is run as part of the default Dockerfile for steps to detect errors sooner - this can be added to custom Dockerfiles, or a custom Dockerfile could be used to remove the linter if it is not desired.
 
 ### Fixed {#2021-09-03-fixed}
@@ -1020,15 +1039,15 @@ You **must** run `configure` after upgrading to update the `.env` file with the 
 
 ### Added {#2021-08-16-added}
 
-- OpsChain now supports events. The `/events` endpoint can be used for reporting and auditing, see the [events](/docs/reference/concepts/events.md) guide for more details.
-- The list of configuration in the `.env` file is now documented in the [configuration options](/docs/operations/configuring-opschain.md) guide.
+- OpsChain now supports events. The `/events` endpoint can be used for reporting and auditing, see the [events](/reference/concepts/events.md) guide for more details.
+- The list of configuration in the `.env` file is now documented in the [configuration options](/operations/configuring-opschain.md) guide.
 - Changes can now take metadata (JSON structured data) to help identify and track changes.
   - The `opschain change create/retry` commands now takes an optional argument to allow providing the metadata for a change.
     - If provided, the metadata file must contain a JSON object, e.g. `{ "cr": "CR73", "description": "Change request 73 - apply patchset abc to xyz." }`.
   - The `opschain change show/list` commands now include the change metadata.
   - The `/changes` API can now be filtered using the same filtering syntax as events.
     - For example, `?filter[metadata_cr_eq]=CR73` would match all changes with the metadata `{ "cr": "CR73" }`.
-    - See the [events filtering](/docs/reference/concepts/events.md#filtering-events) documentation for more details.
+    - See the [events filtering](/reference/concepts/events.md#filtering-events) documentation for more details.
 
 ### Changed {#2021-08-16-changed}
 
@@ -1043,7 +1062,7 @@ You **must** run `configure` after upgrading to update the `.env` file with the 
 
 ### Changed {#2021-08-04-changed}
 
-- The OpsChain change log retention guide has moved and been renamed to [OpsChain data retention](/docs/operations/maintenance/data-retention.md).
+- The OpsChain change log retention guide has moved and been renamed to [OpsChain data retention](/operations/maintenance/data-retention.md).
 - **Breaking change** - the `OPSCHAIN_ARCHIVE_LOG_LINES_JOB_CRON` config variable has been renamed to `OPSCHAIN_CLEAN_OLD_DATA_JOB_CRON`.
 - **Breaking change** - Upgraded Ruby to 2.7.4 on the OpsChain Step Runner.
   - If required, please update the `.ruby_version` in your project Git repositories.
@@ -1063,17 +1082,17 @@ You **must** run `configure` after upgrading to update the `.env` file with the 
 
 ### Changed {#2021-07-29-changed}
 
-- OpsChain now caches user's LDAP group membership to reduce LDAP load. See [LDAP group membership caching](/docs/operations/opschain-ldap.md#ldap-group-membership-caching) for more details.
+- OpsChain now caches user's LDAP group membership to reduce LDAP load. See [LDAP group membership caching](/operations/opschain-ldap.md#ldap-group-membership-caching) for more details.
 - **Breaking change** - Calling OpsChain API's with missing or invalid parameters now returns a 500 Internal Server Error, and more explicit error messages in the response body.
 
 ## [2021-07-19] {#2021-07-19}
 
 ### Added {#2021-07-19-added}
 
-- OpsChain change logs can now be [forwarded to external storage](/docs/operations/log-forwarding.md).
-- OpsChain change logs can now be [cleaned up automatically](/docs/operations/maintenance/data-retention.md#change-log-retention).
+- OpsChain change logs can now be [forwarded to external storage](/operations/log-forwarding.md).
+- OpsChain change logs can now be [cleaned up automatically](/operations/maintenance/data-retention.md#change-log-retention).
 - When defining dependent steps in the OpsChain DSL the step name is now automatically qualified with the current namespace.
-- **Feature preview** - the platform native builds of the OpsChain CLI can now be [downloaded directly](/docs/reference/cli.md#installation).
+- **Feature preview** - the platform native builds of the OpsChain CLI can now be [downloaded directly](/reference/cli.md#installation).
 
 ### Changed {#2021-07-19-changed}
 
@@ -1090,7 +1109,7 @@ You **must** run `configure` after upgrading to update the `.env` file with the 
 - The OpsChain CLI now helps you track the progress of a change by showing the expected step tree.
 - The `opchain-action` and `opschain-dev` commands now inherit environment variables starting with `opschain_` (case insensitive).
 - The `opschain-action` command now supports the `OPSCHAIN_DRY_RUN` environment variable to see the full expected step tree without running the action.
-- OpsChain file properties now supports storing binary files with the new base64 format. See [file formats](/docs/reference/concepts/properties.md#file-formats) for more details.
+- OpsChain file properties now supports storing binary files with the new base64 format. See [file formats](/reference/concepts/properties.md#file-formats) for more details.
 
 ### Changed {#2021-07-08-changed}
 
@@ -1104,7 +1123,7 @@ You **must** run `configure` after upgrading to update the `.env` file with the 
 
 ### Added {#2021-06-24-added}
 
-- `OpsChain.context` is now available to actions and controllers. See the [OpsChain context guide](/docs/reference/concepts/context.md) for more information.
+- `OpsChain.context` is now available to actions and controllers. See the [OpsChain context guide](/reference/concepts/context.md) for more information.
 
 ### Fixed {#2021-06-24-fixed}
 
@@ -1140,7 +1159,7 @@ You **must** run `configure` after upgrading to update the `.env` file with the 
 
 - An Oracle WebLogic example project repository is [now available](https://github.com/LimePoint/opschain-examples-weblogic).
 - **Feature preview** - platform native builds of the OpsChain CLI are now available for Windows, macOS and Linux. Contact LimePoint support for access.
-- OpsChain now supports Active Directory for user authentication and authorisation. See [configuring an external LDAP](/docs/operations/opschain-ldap.md#configuring-an-external-ldap)
+- OpsChain now supports Active Directory for user authentication and authorisation. See [configuring an external LDAP](/operations/opschain-ldap.md#configuring-an-external-ldap)
   - **This change requires the `configure` command to be rerun.**
 - OpsChain changes can now be retried from failure or cancellation by using the `opchain change retry` command.
 - Updating now safeguards properties whilst a change is active.
@@ -1165,10 +1184,10 @@ You **must** run `configure` after upgrading to update the `.env` file with the 
 
 - The ability to use custom Runner images in the OpsChain Docker development environment. Note that the custom Runner image must have been built as part of an OpsChain change.
   - **This change requires the `configure` command to be rerun.**
-- The OpsChain CLI now inherits environment variables. This allows using environment variables to override CLI config or to configure http(s) proxies. Find out more in our [CLI reference](/docs/reference/cli.md).
-- [OpsChain operations guides](/docs/category/operations).
+- The OpsChain CLI now inherits environment variables. This allows using environment variables to override CLI config or to configure http(s) proxies. Find out more in our [CLI reference](/reference/cli.md).
+- [OpsChain operations guides](./operations).
   - <a href='#' onclick={(e) => {alert('This document has been removed'); e.preventDefault()} }>OpsChain rootless Docker install</a> documentation.
-  - [OpsChain backups](/docs/operations/maintenance/backups.md) documentation.
+  - [OpsChain backups](/operations/maintenance/backups.md) documentation.
 
 ## [2021-05-26] {#2021-05-26}
 
@@ -1211,19 +1230,19 @@ You **must** run `configure` after upgrading to update the `.env` file with the 
 
 ### Added {#2021-05-10-added}
 
-- OpsChain now supports [automated deployments](/docs/reference/concepts/concepts.md#scheduled-changes) - a way to automatically create OpsChain changes in response to Git changes. See [setting up an automated deployment](/docs/reference/concepts/scheduled-changes.md) for more information.
-- OpsChain now supports [scheduled deployments](/docs/reference/concepts/concepts.md#scheduled-changes) - a way to automatically create OpsChain changes at a scheduled time.
+- OpsChain now supports [automated deployments](/reference/concepts/concepts.md#scheduled-changes) - a way to automatically create OpsChain changes in response to Git changes. See [setting up an automated deployment](/reference/concepts/scheduled-changes.md) for more information.
+- OpsChain now supports [scheduled deployments](/reference/concepts/concepts.md#scheduled-changes) - a way to automatically create OpsChain changes at a scheduled time.
 
 ### Changed {#2021-05-10-changed}
 
-- OpsChain now allows properties to be sourced from a project's Git repository. See the updated [OpsChain properties guide](/docs/reference/concepts/properties.md) for more information.
+- OpsChain now allows properties to be sourced from a project's Git repository. See the updated [OpsChain properties guide](/reference/concepts/properties.md) for more information.
 - OpsChain now does a Git [forced fetch](https://git-scm.com/docs/git-fetch#Documentation/git-fetch.txt---force) when fetching a project's Git repository. This means tags can be updated in the remote and reflected in the project Git repository.
 
 ## [2021-04-27] {#2021-04-27}
 
 ### Added {#2021-04-27-added}
 
-- Helper methods available from within actions to store and remove files from project and environment properties. See [storing & removing files](/docs/reference/concepts/properties.md#storing--removing-files) for more details.
+- Helper methods available from within actions to store and remove files from project and environment properties. See [storing & removing files](/reference/concepts/properties.md#storing--removing-files) for more details.
 
 ### Changed {#2021-04-27-changed}
 
@@ -1238,7 +1257,7 @@ You **must** run `configure` after upgrading to update the `.env` file with the 
 
 - The OpsChain Runner now uses
     - Ruby v2.7.3. Please make any necessary adjustments to your project's Git repositories to reflect this change.
-- **Breaking change** - the OpsChain [files properties](/docs/reference/concepts/properties.md#file-properties) format has changed. Any files stored in your properties will need to be altered to reflect the new format.
+- **Breaking change** - the OpsChain [files properties](/reference/concepts/properties.md#file-properties) format has changed. Any files stored in your properties will need to be altered to reflect the new format.
 
   _Note: The `properties-show` and `properties-set` features can be used to download, upload your properties (allowing you to edit your properties locally)._
 
@@ -1251,7 +1270,7 @@ You **must** run `configure` after upgrading to update the `.env` file with the 
 
 ### Added {#2021-03-31-added}
 
-- An example project for [running a simple Terraform change](/docs/examples/running-a-simple-terraform-change.md).
+- An example project for [running a simple Terraform change](/examples/running-a-simple-terraform-change.md).
 - The Getting Started guide now includes instructions for creating your own action.
 
 ### Changed {#2021-03-31-changed}
@@ -1268,9 +1287,9 @@ You **must** run `configure` after upgrading to update the `.env` file with the 
 
 ### Added {#2021-03-22-added}
 
-- The `opschain-resource-types` Gem is now pre-installed in the OpsChain step runner image providing some [resource types](/docs/reference/included-resource-types.md) for the `ruby-terraform` Gems.
+- The `opschain-resource-types` Gem is now pre-installed in the OpsChain step runner image providing some [resource types](/reference/included-resource-types.md) for the `ruby-terraform` Gems.
 
-  _Please note the [prerequisites](/docs/reference/included-resource-types.md#prerequisites) for the Terraform resource._
+  _Please note the [prerequisites](/reference/included-resource-types.md#prerequisites) for the Terraform resource._
 
 ### Changed {#2021-03-22-changed}
 
@@ -1285,8 +1304,8 @@ You **must** run `configure` after upgrading to update the `.env` file with the 
 
 ### Added {#2021-03-09-added}
 
-- Automatically expose [controller actions and properties](/docs/reference/concepts/actions.md#controller-actions-and-properties) in resource types and resources.
-- [upgrading.md](/docs/operations/upgrading.md) documentation.
+- Automatically expose [controller actions and properties](/reference/concepts/actions.md#controller-actions-and-properties) in resource types and resources.
+- [upgrading.md](/operations/upgrading.md) documentation.
 
 ### Changed {#2021-03-09-changed}
 

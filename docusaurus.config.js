@@ -62,6 +62,11 @@ const config = {
             label: 'OpsChain API reference',
             href: 'pathname:///api-docs/',
           },
+          {
+            type: 'docsVersionDropdown',
+            position: 'right',
+            dropdownActiveClassDisabled: true,
+          },
         ],
       },
       footer: {
