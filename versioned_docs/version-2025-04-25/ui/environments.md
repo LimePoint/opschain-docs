@@ -15,7 +15,7 @@ Environments within _standard_ type projects can't contain assets.
 
 To view all environments within a project:
 
-1. [Log in](/docs/ui/login.md) to the GUI.
+1. [Log in](/ui/login.md) to the GUI.
 2. Click on _projects_ on the navigation bar on the left side.
 3. Navigate to your desired project.
 4. Click on the _environments_ tab to display the list of environments.

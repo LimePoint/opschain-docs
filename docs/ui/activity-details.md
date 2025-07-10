@@ -17,7 +17,7 @@ To view the details of a particular change or workflow run:
 ## Understanding the activity details screen
 
 <p align='center'>
-  <img alt='Activity details screen' src={require('!url-loader!./activity-details.png').default} className='image-border'/>
+  <img alt='Activity details screen' src={require('!url-loader!./images/activity-details.png').default} className='image-border'/>
 </p>
 
 The activity details screen is divided into several sections, providing a comprehensive overview of the activity's lifecycle.
@@ -25,25 +25,23 @@ The activity details screen is divided into several sections, providing a compre
 ### Header information
 
 <p align='center'>
-  <img alt='Activity header details screen' src={require('!url-loader!./activity-header-details.png').default} className='image-border'/>
+  <img alt='Activity header details screen' src={require('!url-loader!./images/activity-header-details.png').default} className='image-border'/>
 </p>
 
 | Information                       | Description                                                                                        |
 |-----------------------------------|----------------------------------------------------------------------------------------------------|
-| **Target (project, environment)** | Indicates the environment and project where the activity is being run.                             |
 | **Action name**                   | The name of the action being executed.                                                             |
 | **Status & execution duration**   | Displays the status of the change or workflow run, and duration.                                   |
 | **Git reference**                 | Shows the Git reference associated with the activity, including the remote, revision, and the SHA. |
-| **Metadata**                      | Displays the metadata that was supplied when the activity was created.                             |
 
 ### Change tabs: step tree and logs
 
-For changes, two tabs are available: The step tree of the change, and the logs of the change.
+For changes, available tabs include: The step tree of the change, the logs of the change, and the metadata of the change.
 
 #### Step tree
 
 <p align='center'>
-  <img alt='Step tree screen' src={require('!url-loader!./activity-step-tree.png').default} className='image-border'/>
+  <img alt='Step tree screen' src={require('!url-loader!./images/activity-step-tree.png').default} className='image-border'/>
 </p>
 
 The step tree tab visualises the following:
@@ -97,7 +95,7 @@ Where a change or workflow includes wait steps or approval steps, the following 
 #### Change logs
 
 <p align='center'>
-  <img alt='Change logs screen' src={require('!url-loader!./activity-change-log.png').default} className='image-border'/>
+  <img alt='Change logs screen' src={require('!url-loader!./images/activity-change-log.png').default} className='image-border'/>
 </p>
 
 The change logs tab contains detailed logs related to a change. Access this tab to review comprehensive log information that can help in troubleshooting and understanding the change's impact.
@@ -105,10 +103,14 @@ The change logs tab contains detailed logs related to a change. Access this tab 
 #### Step logs
 
 <p align='center'>
-  <img alt='Step log screen' src={require('!url-loader!./activity-step-log.png').default} className='image-border'/>
+  <img alt='Step log screen' src={require('!url-loader!./images/activity-step-log.png').default} className='image-border'/>
 </p>
 
 To view the log for a specific step, click on the icon to the right of the step name. This will then display the step logs for that particular step.
+
+#### Metadata
+
+The metadata tab displays the metadata that the change ran with.
 
 ### Managing changes
 
@@ -129,5 +131,5 @@ If a change is cancelled, all finalised steps (i.e. in the success or error stat
 For a workflow run, the step tree is shown in the same style as the [change step tree](#step-tree).
 
 <p align='center'>
-  <img alt='Workflow run tree' src={require('!url-loader!./activity-workflow.png').default} className='image-border'/>
+  <img alt='Workflow run tree' src={require('!url-loader!./images/activity-workflow.png').default} className='image-border'/>
 </p>

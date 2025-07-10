@@ -17,7 +17,7 @@ This guide covers navigation and usage of the projects and the individual projec
 
 To view and manage your projects:
 
-1. [Log in](/docs/ui/login.md) to the GUI.
+1. [Log in](/ui/login.md) to the GUI.
 2. Access _projects_ from the navigation bar to see a table of all projects.
 
 ### Features of the projects screen

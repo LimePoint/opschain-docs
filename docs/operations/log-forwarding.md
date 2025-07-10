@@ -64,6 +64,31 @@ kubectl edit -n opschain secret opschain-image-secret
 # modify the base64 encoded `.dockerconfigjson` value to add the additional credentials (don't remove the existing ones)
 ```
 
+### Splunk HEC plugin
+
+OpsChain's log aggregator already has a built-in splunk plugin that supports HEC tokens, so you can immediately configure your log aggregator to forward messages to splunk.
+
+e.g.
+
+```bash
+kubectl edit configmap opschain-log-aggregator-additional-output-config -n opschain
+```
+
+Modify the `output.conf` in the config map:
+
+```text
+output.conf: |-
+  <store>
+     @type splunk_hec
+
+    hec_host splunk.myco.com
+    hec_port 8088
+    hec_token <Splunk HEC token>
+    insecure_ssl true
+    source opschain_fluentd
+  </store>
+```
+
 ### Configuring your output plugins
 
 The OpsChain Helm chart allows you to specify additional config that will be stored in a Kubernetes ConfigMap and mounted into the log-aggregator pod at runtime.
@@ -94,3 +119,7 @@ logAggregator:
 :::note
 The specific configuration to include in `additionalOutputConfig` will depend on the plugin `@type` used. Please see Fluentd's [config file syntax](https://docs.fluentd.org/configuration/config-file) guide, and the relevant plugin manual for further information.
 :::
+
+### Using settings to configure the additional outputs
+
+OpsChain exposes the `log_aggregator_additional_output_settings` so you can configure it via the UI. You'll need to supply the entire `<store></store>` string to this setting. Once done, you'll need to restart the log-aggregator for the additional configuration to take effect.
