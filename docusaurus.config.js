@@ -43,6 +43,11 @@ const config = {
   themeConfig:
     /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
     ({
+      colorMode: {
+        defaultMode: 'dark',
+        disableSwitch: false,
+        respectPrefersColorScheme: true,
+      },
       navbar: {
         title: 'OpsChain',
         logo: {
@@ -50,10 +55,10 @@ const config = {
           src: 'img/logo.png',
         },
         items: [
-          {
-            label: 'OpsChain overview',
-            to: '/docs/',
-          },
+          // {
+          //   label: 'OpsChain overview',
+          //   to: '/docs/',
+          // },
           {
             label: 'OpsChain CLI download',
             href: 'https://github.com/LimePoint/opschain/releases',
@@ -112,6 +117,7 @@ const config = {
       prism: {
         theme: lightCodeTheme,
         darkTheme: darkCodeTheme,
+        additionalLanguages: ['ruby', 'bash', 'docker', 'yaml', 'json'],
       },
     }),
   plugins: [[require.resolve('@easyops-cn/docusaurus-search-local'), { hashed: true }]],

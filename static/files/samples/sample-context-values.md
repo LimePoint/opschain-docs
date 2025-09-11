@@ -5,33 +5,35 @@ change:
   created_by: mary
   name: deploy
   action: deploy
-  initial_step_tree: 
+  build_without_cache: false
+  initial_step_tree: {}
   metadata:
     custom:
       change: metadata
   property_overrides:
-    pixel: overriding
+    system: calculating
   scheduled: false
   approved_by: []
   rejected_by: []
+  cancelled_by:
   status_code: running
   created_at: '2020-05-20T10:00:00.000000Z'
   started_at: '2020-05-20T10:00:05.000000Z'
-  finished_at: 
-  updated_at: '2025-04-25T06:22:28.803399Z'
-  asset_name: 
+  finished_at:
+  updated_at: '2025-09-11T00:47:39.301765Z'
+  asset_name:
   environment_name: Receivables
   project_name: Finance
   git_remote_name: origin
   git_rev: bug-fix
   commit_sha: 5213c76dad01ac0d87c2c900d46778675d4dc760
-  requires_approval_from: 
+  requires_approval_from:
 step:
   id: 37fdf12f-aff3-4134-8926-a2321cef5acf
   approved_by: []
   rejected_by: []
   continued_by: []
-  requires_approval_from: 
+  requires_approval_from:
   action: deploy
   name: deploy
   step_type: standard
@@ -40,14 +42,17 @@ step:
   skip_on_retry: false
   created_at: '2020-05-20T10:00:00.000000Z'
   started_at: '2020-05-20T10:00:05.000000Z'
-  finished_at: 
-  updated_at: '2025-04-25T06:22:28.803399Z'
+  finished_at:
+  updated_at: '2025-09-11T00:47:39.301765Z'
   status_code: running
 user:
   name: mary
   groups:
   - manager
   - purchasing
+parent_order:
+- project
+- environment
 parents:
   project:
     id: bb7bef85-805f-43d9-a267-7e901630ffa0
@@ -55,6 +60,7 @@ parents:
     name: Finance
     description: Finance applications
     archived: false
+    created_by: frederick.johns
     project_type: Standard
   environment:
     id: 530d796b-60ff-4bc6-ad09-ac3eaf1afa45
@@ -62,4 +68,5 @@ parents:
     name: Receivables
     description: RMS
     archived: false
+    created_by: earlene
 ```

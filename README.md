@@ -9,6 +9,7 @@ The [LimePoint](https://www.limepoint.com/) [OpsChain](https://opschain.io/) doc
 To run the interactive server run:
 
 ```shell
+npm install
 npm run start
 ```
 

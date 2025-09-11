@@ -1,9 +1,0 @@
-{
-  "label": "Examples",
-  "position": 3,
-  "link": {
-    "type": "generated-index",
-    "slug": "/examples",
-    "description": "The following guides will walk you through the process of setting up OpsChain to use various example OpsChain project Git repositories. There are also links to samples showing some example OpsChain patterns."
-  }
-}
