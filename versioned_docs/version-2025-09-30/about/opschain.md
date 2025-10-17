@@ -13,7 +13,7 @@ Modern organizations typically rely on automation, ranging from shell scripts to
 
 These fragmented approaches can make end-to-end change management difficult. A typical application release might involve infrastructure provisioning, database updates, and service orchestration—each owned by a different team and executed using different tools. While each step might be automated, the coordination between them is often manual, error-prone, or undocumented.
 
-![OpsChain Change Overview](../static/img/oc_overview.png)
+![OpsChain Change Overview](/img/oc_overview.png)
 
 ## How OpsChain Helps
 

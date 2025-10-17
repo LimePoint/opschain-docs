@@ -13,7 +13,11 @@ const config = {
   baseUrl: '/',
   onBrokenLinks: 'throw',
   onBrokenAnchors: 'throw',
-  onBrokenMarkdownLinks: 'throw',
+  markdown: {
+    hooks: {
+      onBrokenMarkdownLinks: 'throw',
+    },
+  },
   favicon: 'img/favicon.ico',
 
   // Even if you don't use internalization, you can use this field to set useful
@@ -119,8 +123,12 @@ const config = {
         darkTheme: darkCodeTheme,
         additionalLanguages: ['ruby', 'bash', 'docker', 'yaml', 'json'],
       },
+      zoom: {},
     }),
-  plugins: [[require.resolve('@easyops-cn/docusaurus-search-local'), { hashed: true }]],
+  plugins: [
+    [require.resolve('@easyops-cn/docusaurus-search-local'), { hashed: true }],
+    [require.resolve('docusaurus-plugin-image-zoom'), { id: 'docusaurus-plugin-image-zoom' }],
+  ],
 }
 
 module.exports = config

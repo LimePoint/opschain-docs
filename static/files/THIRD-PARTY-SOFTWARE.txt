@@ -2309,6 +2309,67 @@ You can redistribute it and/or modify it under either the terms of the
 
 
 *****
+io-console
+
+Ruby is copyrighted free software by Yukihiro Matsumoto <matz@netlab.jp>.
+You can redistribute it and/or modify it under either the terms of the
+2-clause BSDL (see the file BSDL), or the conditions below:
+
+1. You may make and give away verbatim copies of the source form of the
+   software without restriction, provided that you duplicate all of the
+   original copyright notices and associated disclaimers.
+
+2. You may modify your copy of the software in any way, provided that
+   you do at least ONE of the following:
+
+   a. place your modifications in the Public Domain or otherwise
+      make them Freely Available, such as by posting said
+      modifications to Usenet or an equivalent medium, or by allowing
+      the author to include your modifications in the software.
+
+   b. use the modified software only within your corporation or
+      organization.
+
+   c. give non-standard binaries non-standard names, with
+      instructions on where to get the original software distribution.
+
+   d. make other distribution arrangements with the author.
+
+3. You may distribute the software in object code or binary form,
+   provided that you do at least ONE of the following:
+
+   a. distribute the binaries and library files of the software,
+      together with instructions (in the manual page or equivalent)
+      on where to get the original distribution.
+
+   b. accompany the distribution with the machine-readable source of
+      the software.
+
+   c. give non-standard binaries non-standard names, with
+      instructions on where to get the original software distribution.
+
+   d. make other distribution arrangements with the author.
+
+4. You may modify and include the part of the software into any other
+   software (possibly commercial).  But some files in the distribution
+   are not written by the author, so that they are not under these terms.
+
+   For the list of those files and their copying conditions, see the
+   file LEGAL.
+
+5. The scripts and library files supplied as input to or produced as
+   output from the software do not automatically fall under the
+   copyright of the software, but belong to whomever generated them,
+   and may be sold commercially, and may be aggregated with this
+   software.
+
+6. THIS SOFTWARE IS PROVIDED "AS IS" AND WITHOUT ANY EXPRESS OR
+   IMPLIED WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED
+   WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
+   PURPOSE.
+
+
+*****
 irb
 
 Copyright (C) 1993-2013 Yukihiro Matsumoto. All rights reserved.
@@ -3933,6 +3994,67 @@ You can redistribute it and/or modify it under either the terms of the
 
 
 *****
+net-http
+
+Ruby is copyrighted free software by Yukihiro Matsumoto <matz@netlab.jp>.
+You can redistribute it and/or modify it under either the terms of the
+2-clause BSDL (see the file BSDL), or the conditions below:
+
+1. You may make and give away verbatim copies of the source form of the
+   software without restriction, provided that you duplicate all of the
+   original copyright notices and associated disclaimers.
+
+2. You may modify your copy of the software in any way, provided that
+   you do at least ONE of the following:
+
+   a. place your modifications in the Public Domain or otherwise
+      make them Freely Available, such as by posting said
+      modifications to Usenet or an equivalent medium, or by allowing
+      the author to include your modifications in the software.
+
+   b. use the modified software only within your corporation or
+      organization.
+
+   c. give non-standard binaries non-standard names, with
+      instructions on where to get the original software distribution.
+
+   d. make other distribution arrangements with the author.
+
+3. You may distribute the software in object code or binary form,
+   provided that you do at least ONE of the following:
+
+   a. distribute the binaries and library files of the software,
+      together with instructions (in the manual page or equivalent)
+      on where to get the original distribution.
+
+   b. accompany the distribution with the machine-readable source of
+      the software.
+
+   c. give non-standard binaries non-standard names, with
+      instructions on where to get the original software distribution.
+
+   d. make other distribution arrangements with the author.
+
+4. You may modify and include the part of the software into any other
+   software (possibly commercial).  But some files in the distribution
+   are not written by the author, so that they are not under these terms.
+
+   For the list of those files and their copying conditions, see the
+   file LEGAL.
+
+5. The scripts and library files supplied as input to or produced as
+   output from the software do not automatically fall under the
+   copyright of the software, but belong to whomever generated them,
+   and may be sold commercially, and may be aggregated with this
+   software.
+
+6. THIS SOFTWARE IS PROVIDED "AS IS" AND WITHOUT ANY EXPRESS OR
+   IMPLIED WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED
+   WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
+   PURPOSE.
+
+
+*****
 net-ldap
 
 == License
@@ -4416,6 +4538,67 @@ You can redistribute it and/or modify it under either the terms of the
      IMPLIED WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED
      WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
      PURPOSE.
+
+
+*****
+pp
+
+Ruby is copyrighted free software by Yukihiro Matsumoto <matz@netlab.jp>.
+You can redistribute it and/or modify it under either the terms of the
+2-clause BSDL (see the file BSDL), or the conditions below:
+
+1. You may make and give away verbatim copies of the source form of the
+   software without restriction, provided that you duplicate all of the
+   original copyright notices and associated disclaimers.
+
+2. You may modify your copy of the software in any way, provided that
+   you do at least ONE of the following:
+
+   a. place your modifications in the Public Domain or otherwise
+      make them Freely Available, such as by posting said
+      modifications to Usenet or an equivalent medium, or by allowing
+      the author to include your modifications in the software.
+
+   b. use the modified software only within your corporation or
+      organization.
+
+   c. give non-standard binaries non-standard names, with
+      instructions on where to get the original software distribution.
+
+   d. make other distribution arrangements with the author.
+
+3. You may distribute the software in object code or binary form,
+   provided that you do at least ONE of the following:
+
+   a. distribute the binaries and library files of the software,
+      together with instructions (in the manual page or equivalent)
+      on where to get the original distribution.
+
+   b. accompany the distribution with the machine-readable source of
+      the software.
+
+   c. give non-standard binaries non-standard names, with
+      instructions on where to get the original software distribution.
+
+   d. make other distribution arrangements with the author.
+
+4. You may modify and include the part of the software into any other
+   software (possibly commercial).  But some files in the distribution
+   are not written by the author, so that they are not under these terms.
+
+   For the list of those files and their copying conditions, see the
+   file LEGAL.
+
+5. The scripts and library files supplied as input to or produced as
+   output from the software do not automatically fall under the
+   copyright of the software, but belong to whomever generated them,
+   and may be sold commercially, and may be aggregated with this
+   software.
+
+6. THIS SOFTWARE IS PROVIDED "AS IS" AND WITHOUT ANY EXPRESS OR
+   IMPLIED WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED
+   WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
+   PURPOSE.
 
 
 *****
@@ -5707,6 +5890,67 @@ You can redistribute it and/or modify it under either the terms of the
 
 
 *****
+securerandom
+
+Ruby is copyrighted free software by Yukihiro Matsumoto <matz@netlab.jp>.
+You can redistribute it and/or modify it under either the terms of the
+2-clause BSDL (see the file BSDL), or the conditions below:
+
+1. You may make and give away verbatim copies of the source form of the
+   software without restriction, provided that you duplicate all of the
+   original copyright notices and associated disclaimers.
+
+2. You may modify your copy of the software in any way, provided that
+   you do at least ONE of the following:
+
+   a. place your modifications in the Public Domain or otherwise
+      make them Freely Available, such as by posting said
+      modifications to Usenet or an equivalent medium, or by allowing
+      the author to include your modifications in the software.
+
+   b. use the modified software only within your corporation or
+      organization.
+
+   c. give non-standard binaries non-standard names, with
+      instructions on where to get the original software distribution.
+
+   d. make other distribution arrangements with the author.
+
+3. You may distribute the software in object code or binary form,
+   provided that you do at least ONE of the following:
+
+   a. distribute the binaries and library files of the software,
+      together with instructions (in the manual page or equivalent)
+      on where to get the original distribution.
+
+   b. accompany the distribution with the machine-readable source of
+      the software.
+
+   c. give non-standard binaries non-standard names, with
+      instructions on where to get the original software distribution.
+
+   d. make other distribution arrangements with the author.
+
+4. You may modify and include the part of the software into any other
+   software (possibly commercial).  But some files in the distribution
+   are not written by the author, so that they are not under these terms.
+
+   For the list of those files and their copying conditions, see the
+   file LEGAL.
+
+5. The scripts and library files supplied as input to or produced as
+   output from the software do not automatically fall under the
+   copyright of the software, but belong to whomever generated them,
+   and may be sold commercially, and may be aggregated with this
+   software.
+
+6. THIS SOFTWARE IS PROVIDED "AS IS" AND WITHOUT ANY EXPRESS OR
+   IMPLIED WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED
+   WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
+   PURPOSE.
+
+
+*****
 sigdump
 
 
@@ -6025,6 +6269,67 @@ You can redistribute it and/or modify it under either the terms of the
 
 
 *****
+timeout
+
+Ruby is copyrighted free software by Yukihiro Matsumoto <matz@netlab.jp>.
+You can redistribute it and/or modify it under either the terms of the
+2-clause BSDL (see the file BSDL), or the conditions below:
+
+1. You may make and give away verbatim copies of the source form of the
+   software without restriction, provided that you duplicate all of the
+   original copyright notices and associated disclaimers.
+
+2. You may modify your copy of the software in any way, provided that
+   you do at least ONE of the following:
+
+   a. place your modifications in the Public Domain or otherwise
+      make them Freely Available, such as by posting said
+      modifications to Usenet or an equivalent medium, or by allowing
+      the author to include your modifications in the software.
+
+   b. use the modified software only within your corporation or
+      organization.
+
+   c. give non-standard binaries non-standard names, with
+      instructions on where to get the original software distribution.
+
+   d. make other distribution arrangements with the author.
+
+3. You may distribute the software in object code or binary form,
+   provided that you do at least ONE of the following:
+
+   a. distribute the binaries and library files of the software,
+      together with instructions (in the manual page or equivalent)
+      on where to get the original distribution.
+
+   b. accompany the distribution with the machine-readable source of
+      the software.
+
+   c. give non-standard binaries non-standard names, with
+      instructions on where to get the original software distribution.
+
+   d. make other distribution arrangements with the author.
+
+4. You may modify and include the part of the software into any other
+   software (possibly commercial).  But some files in the distribution
+   are not written by the author, so that they are not under these terms.
+
+   For the list of those files and their copying conditions, see the
+   file LEGAL.
+
+5. The scripts and library files supplied as input to or produced as
+   output from the software do not automatically fall under the
+   copyright of the software, but belong to whomever generated them,
+   and may be sold commercially, and may be aggregated with this
+   software.
+
+6. THIS SOFTWARE IS PROVIDED "AS IS" AND WITHOUT ANY EXPRESS OR
+   IMPLIED WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED
+   WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
+   PURPOSE.
+
+
+*****
 toml-rb
 
 The MIT License (MIT)
@@ -6096,6 +6401,67 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
+
+
+*****
+uri
+
+Ruby is copyrighted free software by Yukihiro Matsumoto <matz@netlab.jp>.
+You can redistribute it and/or modify it under either the terms of the
+2-clause BSDL (see the file BSDL), or the conditions below:
+
+1. You may make and give away verbatim copies of the source form of the
+   software without restriction, provided that you duplicate all of the
+   original copyright notices and associated disclaimers.
+
+2. You may modify your copy of the software in any way, provided that
+   you do at least ONE of the following:
+
+   a. place your modifications in the Public Domain or otherwise
+      make them Freely Available, such as by posting said
+      modifications to Usenet or an equivalent medium, or by allowing
+      the author to include your modifications in the software.
+
+   b. use the modified software only within your corporation or
+      organization.
+
+   c. give non-standard binaries non-standard names, with
+      instructions on where to get the original software distribution.
+
+   d. make other distribution arrangements with the author.
+
+3. You may distribute the software in object code or binary form,
+   provided that you do at least ONE of the following:
+
+   a. distribute the binaries and library files of the software,
+      together with instructions (in the manual page or equivalent)
+      on where to get the original distribution.
+
+   b. accompany the distribution with the machine-readable source of
+      the software.
+
+   c. give non-standard binaries non-standard names, with
+      instructions on where to get the original software distribution.
+
+   d. make other distribution arrangements with the author.
+
+4. You may modify and include the part of the software into any other
+   software (possibly commercial).  But some files in the distribution
+   are not written by the author, so that they are not under these terms.
+
+   For the list of those files and their copying conditions, see the
+   file LEGAL.
+
+5. The scripts and library files supplied as input to or produced as
+   output from the software do not automatically fall under the
+   copyright of the software, but belong to whomever generated them,
+   and may be sold commercially, and may be aggregated with this
+   software.
+
+6. THIS SOFTWARE IS PROVIDED "AS IS" AND WITHOUT ANY EXPRESS OR
+   IMPLIED WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED
+   WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
+   PURPOSE.
 
 
 *****
@@ -9530,6 +9896,33 @@ THE SOFTWARE.
 
 
 *****
+
+*****
+abbrev
+
+Copyright (C) 1993-2013 Yukihiro Matsumoto. All rights reserved.
+
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions
+are met:
+1. Redistributions of source code must retain the above copyright
+notice, this list of conditions and the following disclaimer.
+2. Redistributions in binary form must reproduce the above copyright
+notice, this list of conditions and the following disclaimer in the
+documentation and/or other materials provided with the distribution.
+
+THIS SOFTWARE IS PROVIDED BY THE AUTHOR AND CONTRIBUTORS ``AS IS'' AND
+ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ARE DISCLAIMED.  IN NO EVENT SHALL THE AUTHOR OR CONTRIBUTORS BE LIABLE
+FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
+OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
+OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
+
 
 *****
 activesupport
@@ -13965,6 +14358,33 @@ You can redistribute it and/or modify it under either the terms of the
 
 
 *****
+base64
+
+Copyright (C) 1993-2013 Yukihiro Matsumoto. All rights reserved.
+
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions
+are met:
+1. Redistributions of source code must retain the above copyright
+notice, this list of conditions and the following disclaimer.
+2. Redistributions in binary form must reproduce the above copyright
+notice, this list of conditions and the following disclaimer in the
+documentation and/or other materials provided with the distribution.
+
+THIS SOFTWARE IS PROVIDED BY THE AUTHOR AND CONTRIBUTORS ``AS IS'' AND
+ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ARE DISCLAIMED.  IN NO EVENT SHALL THE AUTHOR OR CONTRIBUTORS BE LIABLE
+FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
+OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
+OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
+
+
+*****
 bcrypt_pbkdf
 
 (The MIT License)
@@ -14050,6 +14470,67 @@ You can redistribute it and/or modify it under either the terms of the
    IMPLIED WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED
    WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
    PURPOSE.
+
+
+*****
+bigdecimal
+
+Ruby is copyrighted free software by Yukihiro Matsumoto <matz@netlab.jp>.
+You can redistribute it and/or modify it under either the terms of the
+2-clause BSDL (see the file BSDL), or the conditions below:
+
+  1. You may make and give away verbatim copies of the source form of the
+     software without restriction, provided that you duplicate all of the
+     original copyright notices and associated disclaimers.
+
+  2. You may modify your copy of the software in any way, provided that
+     you do at least ONE of the following:
+
+       a) place your modifications in the Public Domain or otherwise
+          make them Freely Available, such as by posting said
+	  modifications to Usenet or an equivalent medium, or by allowing
+	  the author to include your modifications in the software.
+
+       b) use the modified software only within your corporation or
+          organization.
+
+       c) give non-standard binaries non-standard names, with
+          instructions on where to get the original software distribution.
+
+       d) make other distribution arrangements with the author.
+
+  3. You may distribute the software in object code or binary form,
+     provided that you do at least ONE of the following:
+
+       a) distribute the binaries and library files of the software,
+	  together with instructions (in the manual page or equivalent)
+	  on where to get the original distribution.
+
+       b) accompany the distribution with the machine-readable source of
+	  the software.
+
+       c) give non-standard binaries non-standard names, with
+          instructions on where to get the original software distribution.
+
+       d) make other distribution arrangements with the author.
+
+  4. You may modify and include the part of the software into any other
+     software (possibly commercial).  But some files in the distribution
+     are not written by the author, so that they are not under these terms.
+
+     For the list of those files and their copying conditions, see the
+     file LEGAL.
+
+  5. The scripts and library files supplied as input to or produced as 
+     output from the software do not automatically fall under the
+     copyright of the software, but belong to whomever generated them, 
+     and may be sold commercially, and may be aggregated with this
+     software.
+
+  6. THIS SOFTWARE IS PROVIDED "AS IS" AND WITHOUT ANY EXPRESS OR
+     IMPLIED WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED
+     WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
+     PURPOSE.
 
 
 *****
@@ -14521,6 +15002,44 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 
 *****
+csv
+
+Copyright (C) 2005-2016 James Edward Gray II. All rights reserved.
+Copyright (C) 2007-2017 Yukihiro Matsumoto. All rights reserved.
+Copyright (C) 2017 SHIBATA Hiroshi. All rights reserved.
+Copyright (C) 2017 Olivier Lacan. All rights reserved.
+Copyright (C) 2017 Espartaco Palma. All rights reserved.
+Copyright (C) 2017 Marcus Stollsteimer. All rights reserved.
+Copyright (C) 2017 pavel. All rights reserved.
+Copyright (C) 2017-2018 Steven Daniels. All rights reserved.
+Copyright (C) 2018 Tomohiro Ogoke. All rights reserved.
+Copyright (C) 2018 Kouhei Sutou. All rights reserved.
+Copyright (C) 2018 Mitsutaka Mimura. All rights reserved.
+Copyright (C) 2018 Vladislav. All rights reserved.
+
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions
+are met:
+1. Redistributions of source code must retain the above copyright
+notice, this list of conditions and the following disclaimer.
+2. Redistributions in binary form must reproduce the above copyright
+notice, this list of conditions and the following disclaimer in the
+documentation and/or other materials provided with the distribution.
+
+THIS SOFTWARE IS PROVIDED BY THE AUTHOR AND CONTRIBUTORS ``AS IS'' AND
+ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ARE DISCLAIMED.  IN NO EVENT SHALL THE AUTHOR OR CONTRIBUTORS BE LIABLE
+FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
+OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
+OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
+
+
+*****
 debug
 
 Copyright (C) 1993-2013 Yukihiro Matsumoto. All rights reserved.
@@ -14752,6 +15271,33 @@ NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
 LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
 OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+*****
+drb
+
+Copyright (C) 1993-2013 Yukihiro Matsumoto. All rights reserved.
+
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions
+are met:
+1. Redistributions of source code must retain the above copyright
+notice, this list of conditions and the following disclaimer.
+2. Redistributions in binary form must reproduce the above copyright
+notice, this list of conditions and the following disclaimer in the
+documentation and/or other materials provided with the distribution.
+
+THIS SOFTWARE IS PROVIDED BY THE AUTHOR AND CONTRIBUTORS ``AS IS'' AND
+ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ARE DISCLAIMED.  IN NO EVENT SHALL THE AUTHOR OR CONTRIBUTORS BE LIABLE
+FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
+OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
+OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
+
 
 *****
 drb
@@ -15528,6 +16074,33 @@ gem-path
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
    See the License for the specific language governing permissions and
    limitations under the License.
+
+
+*****
+getoptlong
+
+Copyright (C) 1993-2013 Yukihiro Matsumoto. All rights reserved.
+
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions
+are met:
+1. Redistributions of source code must retain the above copyright
+notice, this list of conditions and the following disclaimer.
+2. Redistributions in binary form must reproduce the above copyright
+notice, this list of conditions and the following disclaimer in the
+documentation and/or other materials provided with the distribution.
+
+THIS SOFTWARE IS PROVIDED BY THE AUTHOR AND CONTRIBUTORS ``AS IS'' AND
+ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ARE DISCLAIMED.  IN NO EVENT SHALL THE AUTHOR OR CONTRIBUTORS BE LIABLE
+FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
+OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
+OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
 
 
 *****
@@ -17162,34 +17735,7 @@ OTHER DEALINGS IN THE SOFTWARE.
 
 
 *****
-net-ftp
-
-Copyright (C) 1993-2013 Yukihiro Matsumoto. All rights reserved.
-
-Redistribution and use in source and binary forms, with or without
-modification, are permitted provided that the following conditions
-are met:
-1. Redistributions of source code must retain the above copyright
-notice, this list of conditions and the following disclaimer.
-2. Redistributions in binary form must reproduce the above copyright
-notice, this list of conditions and the following disclaimer in the
-documentation and/or other materials provided with the distribution.
-
-THIS SOFTWARE IS PROVIDED BY THE AUTHOR AND CONTRIBUTORS ``AS IS'' AND
-ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
-IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
-ARE DISCLAIMED.  IN NO EVENT SHALL THE AUTHOR OR CONTRIBUTORS BE LIABLE
-FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
-DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
-OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
-HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
-LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
-OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
-
-
-*****
-net-http
+mutex_m
 
 Ruby is copyrighted free software by Yukihiro Matsumoto <matz@netlab.jp>.
 You can redistribute it and/or modify it under either the terms of the
@@ -17250,95 +17796,6 @@ You can redistribute it and/or modify it under either the terms of the
 
 
 *****
-net-imap
-
-Copyright (C) 1993-2013 Yukihiro Matsumoto. All rights reserved.
-
-Redistribution and use in source and binary forms, with or without
-modification, are permitted provided that the following conditions
-are met:
-1. Redistributions of source code must retain the above copyright
-notice, this list of conditions and the following disclaimer.
-2. Redistributions in binary form must reproduce the above copyright
-notice, this list of conditions and the following disclaimer in the
-documentation and/or other materials provided with the distribution.
-
-THIS SOFTWARE IS PROVIDED BY THE AUTHOR AND CONTRIBUTORS ``AS IS'' AND
-ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
-IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
-ARE DISCLAIMED.  IN NO EVENT SHALL THE AUTHOR OR CONTRIBUTORS BE LIABLE
-FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
-DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
-OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
-HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
-LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
-OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
-
--------------------------------------------------------------------------
-
-This software includes documentation which has been copied from the relevant
-RFCs.  The copied documentation is covered by the following licenses:
-
-RFC 3501 (Editor: M. Crispin)
-Full Copyright Statement
-
-   Copyright (C) The Internet Society (2003).  All Rights Reserved.
-
-   This document and translations of it may be copied and furnished to
-   others, and derivative works that comment on or otherwise explain it
-   or assist in its implementation may be prepared, copied, published
-   and distributed, in whole or in part, without restriction of any
-   kind, provided that the above copyright notice and this paragraph are
-   included on all such copies and derivative works.  However, this
-   document itself may not be modified in any way, such as by removing
-   the copyright notice or references to the Internet Society or other
-   Internet organizations, except as needed for the purpose of
-   developing Internet standards in which case the procedures for
-   copyrights defined in the Internet Standards process must be
-   followed, or as required to translate it into languages other than
-   English.
-
-   The limited permissions granted above are perpetual and will not be
-   revoked by the Internet Society or its successors or assigns.  v This
-   document and the information contained herein is provided on an "AS
-   IS" basis and THE INTERNET SOCIETY AND THE INTERNET ENGINEERING TASK
-   FORCE DISCLAIMS ALL WARRANTIES, EXPRESS OR IMPLIED, INCLUDING BUT NOT
-   LIMITED TO ANY WARRANTY THAT THE USE OF THE INFORMATION HEREIN WILL
-   NOT INFRINGE ANY RIGHTS OR ANY IMPLIED WARRANTIES OF MERCHANTABILITY
-   OR FITNESS FOR A PARTICULAR PURPOSE.
-
-
-RFC9051 (Editors: A. Melnikov, B. Leiba)
-Copyright Notice
-
-   Copyright (c) 2021 IETF Trust and the persons identified as the
-   document authors.  All rights reserved.
-
-   This document is subject to BCP 78 and the IETF Trust's Legal
-   Provisions Relating to IETF Documents
-   (https://trustee.ietf.org/license-info) in effect on the date of
-   publication of this document.  Please review these documents
-   carefully, as they describe your rights and restrictions with respect
-   to this document.  Code Components extracted from this document must
-   include Simplified BSD License text as described in Section 4.e of
-   the Trust Legal Provisions and are provided without warranty as
-   described in the Simplified BSD License.
-
-   This document may contain material from IETF Documents or IETF
-   Contributions published or made publicly available before November
-   10, 2008.  The person(s) controlling the copyright in some of this
-   material may not have granted the IETF Trust the right to allow
-   modifications of such material outside the IETF Standards Process.
-   Without obtaining an adequate license from the person(s) controlling
-   the copyright in such materials, this document may not be modified
-   outside the IETF Standards Process, and derivative works of it may
-   not be created outside the IETF Standards Process, except to format
-   it for publication as an RFC or to translate it into languages other
-   than English.
-
-
-*****
 net-pop
 
 Copyright (C) 1993-2013 Yukihiro Matsumoto. All rights reserved.
@@ -17392,28 +17849,8 @@ SOFTWARE.
 *****
 net-smtp
 
-Copyright (C) 1993-2013 Yukihiro Matsumoto. All rights reserved.
-
-Redistribution and use in source and binary forms, with or without
-modification, are permitted provided that the following conditions
-are met:
-1. Redistributions of source code must retain the above copyright
-notice, this list of conditions and the following disclaimer.
-2. Redistributions in binary form must reproduce the above copyright
-notice, this list of conditions and the following disclaimer in the
-documentation and/or other materials provided with the distribution.
-
-THIS SOFTWARE IS PROVIDED BY THE AUTHOR AND CONTRIBUTORS ``AS IS'' AND
-ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
-IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
-ARE DISCLAIMED.  IN NO EVENT SHALL THE AUTHOR OR CONTRIBUTORS BE LIABLE
-FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
-DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
-OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
-HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
-LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
-OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+All the files in this distribution are covered under either the Ruby license or
+the BSD-2-Clause license (see the file COPYING).
 
 
 *****
@@ -17541,6 +17978,33 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
+
+
+*****
+observer
+
+Copyright (C) 1993-2013 Yukihiro Matsumoto. All rights reserved.
+
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions
+are met:
+1. Redistributions of source code must retain the above copyright
+notice, this list of conditions and the following disclaimer.
+2. Redistributions in binary form must reproduce the above copyright
+notice, this list of conditions and the following disclaimer in the
+documentation and/or other materials provided with the distribution.
+
+THIS SOFTWARE IS PROVIDED BY THE AUTHOR AND CONTRIBUTORS ``AS IS'' AND
+ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ARE DISCLAIMED.  IN NO EVENT SHALL THE AUTHOR OR CONTRIBUTORS BE LIABLE
+FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
+OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
+OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
 
 
 *****
@@ -18349,28 +18813,62 @@ You can redistribute it and/or modify it under either the terms of the
 *****
 prime
 
-Copyright (C) 1993-2013 Yukihiro Matsumoto. All rights reserved.
+Ruby is copyrighted free software by Yukihiro Matsumoto <matz@netlab.jp>.
+You can redistribute it and/or modify it under either the terms of the
+2-clause BSDL (see the file BSDL), or the conditions below:
 
-Redistribution and use in source and binary forms, with or without
-modification, are permitted provided that the following conditions
-are met:
-1. Redistributions of source code must retain the above copyright
-notice, this list of conditions and the following disclaimer.
-2. Redistributions in binary form must reproduce the above copyright
-notice, this list of conditions and the following disclaimer in the
-documentation and/or other materials provided with the distribution.
+1. You may make and give away verbatim copies of the source form of the
+   software without restriction, provided that you duplicate all of the
+   original copyright notices and associated disclaimers.
 
-THIS SOFTWARE IS PROVIDED BY THE AUTHOR AND CONTRIBUTORS ``AS IS'' AND
-ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
-IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
-ARE DISCLAIMED.  IN NO EVENT SHALL THE AUTHOR OR CONTRIBUTORS BE LIABLE
-FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
-DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
-OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
-HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
-LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
-OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+2. You may modify your copy of the software in any way, provided that
+   you do at least ONE of the following:
+
+   a. place your modifications in the Public Domain or otherwise
+      make them Freely Available, such as by posting said
+      modifications to Usenet or an equivalent medium, or by allowing
+      the author to include your modifications in the software.
+
+   b. use the modified software only within your corporation or
+      organization.
+
+   c. give non-standard binaries non-standard names, with
+      instructions on where to get the original software distribution.
+
+   d. make other distribution arrangements with the author.
+
+3. You may distribute the software in object code or binary form,
+   provided that you do at least ONE of the following:
+
+   a. distribute the binaries and library files of the software,
+      together with instructions (in the manual page or equivalent)
+      on where to get the original distribution.
+
+   b. accompany the distribution with the machine-readable source of
+      the software.
+
+   c. give non-standard binaries non-standard names, with
+      instructions on where to get the original software distribution.
+
+   d. make other distribution arrangements with the author.
+
+4. You may modify and include the part of the software into any other
+   software (possibly commercial).  But some files in the distribution
+   are not written by the author, so that they are not under these terms.
+
+   For the list of those files and their copying conditions, see the
+   file LEGAL.
+
+5. The scripts and library files supplied as input to or produced as
+   output from the software do not automatically fall under the
+   copyright of the software, but belong to whomever generated them,
+   and may be sold commercially, and may be aggregated with this
+   software.
+
+6. THIS SOFTWARE IS PROVIDED "AS IS" AND WITHOUT ANY EXPRESS OR
+   IMPLIED WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED
+   WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
+   PURPOSE.
 
 
 *****
@@ -18488,30 +18986,29 @@ You can redistribute it and/or modify it under either the terms of the
 
 
 *****
-racc
+rake
 
-Copyright (C) 2019 Yukihiro Matsumoto. All rights reserved.
+Copyright (c) Jim Weirich
 
-Redistribution and use in source and binary forms, with or without
-modification, are permitted provided that the following conditions
-are met:
-1. Redistributions of source code must retain the above copyright
-notice, this list of conditions and the following disclaimer.
-2. Redistributions in binary form must reproduce the above copyright
-notice, this list of conditions and the following disclaimer in the
-documentation and/or other materials provided with the distribution.
+Permission is hereby granted, free of charge, to any person obtaining
+a copy of this software and associated documentation files (the
+"Software"), to deal in the Software without restriction, including
+without limitation the rights to use, copy, modify, merge, publish,
+distribute, sublicense, and/or sell copies of the Software, and to
+permit persons to whom the Software is furnished to do so, subject to
+the following conditions:
 
-THIS SOFTWARE IS PROVIDED BY THE AUTHOR AND CONTRIBUTORS ``AS IS'' AND
-ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
-IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
-ARE DISCLAIMED.  IN NO EVENT SHALL THE AUTHOR OR CONTRIBUTORS BE LIABLE
-FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
-DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
-OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
-HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
-LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
-OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+The above copyright notice and this permission notice shall be
+included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
+LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
 
 
 *****
@@ -18668,6 +19165,59 @@ THE SOFTWARE.
 
 
 *****
+repl_type_completor
+
+The MIT License (MIT)
+
+Copyright (c) 2023 tompng
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.
+
+
+*****
+resolv-replace
+
+Copyright (C) 1993-2013 Yukihiro Matsumoto. All rights reserved.
+
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions
+are met:
+1. Redistributions of source code must retain the above copyright
+notice, this list of conditions and the following disclaimer.
+2. Redistributions in binary form must reproduce the above copyright
+notice, this list of conditions and the following disclaimer in the
+documentation and/or other materials provided with the distribution.
+
+THIS SOFTWARE IS PROVIDED BY THE AUTHOR AND CONTRIBUTORS ``AS IS'' AND
+ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ARE DISCLAIMED.  IN NO EVENT SHALL THE AUTHOR OR CONTRIBUTORS BE LIABLE
+FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
+OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
+OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
+
+
+*****
 rest-client
 
 The MIT License (MIT)
@@ -18740,6 +19290,33 @@ SUCH DAMAGE.
 
 *****
 rexml
+
+Copyright (C) 1993-2013 Yukihiro Matsumoto. All rights reserved.
+
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions
+are met:
+1. Redistributions of source code must retain the above copyright
+notice, this list of conditions and the following disclaimer.
+2. Redistributions in binary form must reproduce the above copyright
+notice, this list of conditions and the following disclaimer in the
+documentation and/or other materials provided with the distribution.
+
+THIS SOFTWARE IS PROVIDED BY THE AUTHOR AND CONTRIBUTORS ``AS IS'' AND
+ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ARE DISCLAIMED.  IN NO EVENT SHALL THE AUTHOR OR CONTRIBUTORS BE LIABLE
+FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
+OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
+OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
+
+
+*****
+rinda
 
 Copyright (C) 1993-2013 Yukihiro Matsumoto. All rights reserved.
 
@@ -19219,6 +19796,67 @@ You can redistribute it and/or modify it under either the terms of the
 
 
 *****
+securerandom
+
+Ruby is copyrighted free software by Yukihiro Matsumoto <matz@netlab.jp>.
+You can redistribute it and/or modify it under either the terms of the
+2-clause BSDL (see the file BSDL), or the conditions below:
+
+1. You may make and give away verbatim copies of the source form of the
+   software without restriction, provided that you duplicate all of the
+   original copyright notices and associated disclaimers.
+
+2. You may modify your copy of the software in any way, provided that
+   you do at least ONE of the following:
+
+   a. place your modifications in the Public Domain or otherwise
+      make them Freely Available, such as by posting said
+      modifications to Usenet or an equivalent medium, or by allowing
+      the author to include your modifications in the software.
+
+   b. use the modified software only within your corporation or
+      organization.
+
+   c. give non-standard binaries non-standard names, with
+      instructions on where to get the original software distribution.
+
+   d. make other distribution arrangements with the author.
+
+3. You may distribute the software in object code or binary form,
+   provided that you do at least ONE of the following:
+
+   a. distribute the binaries and library files of the software,
+      together with instructions (in the manual page or equivalent)
+      on where to get the original distribution.
+
+   b. accompany the distribution with the machine-readable source of
+      the software.
+
+   c. give non-standard binaries non-standard names, with
+      instructions on where to get the original software distribution.
+
+   d. make other distribution arrangements with the author.
+
+4. You may modify and include the part of the software into any other
+   software (possibly commercial).  But some files in the distribution
+   are not written by the author, so that they are not under these terms.
+
+   For the list of those files and their copying conditions, see the
+   file LEGAL.
+
+5. The scripts and library files supplied as input to or produced as
+   output from the software do not automatically fall under the
+   copyright of the software, but belong to whomever generated them,
+   and may be sold commercially, and may be aggregated with this
+   software.
+
+6. THIS SOFTWARE IS PROVIDED "AS IS" AND WITHOUT ANY EXPRESS OR
+   IMPLIED WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED
+   WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
+   PURPOSE.
+
+
+*****
 selenium-webdriver
 
 
@@ -19633,6 +20271,33 @@ sys-proctable
 
 
 *****
+syslog
+
+Copyright (C) 1993-2013 Yukihiro Matsumoto. All rights reserved.
+
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions
+are met:
+1. Redistributions of source code must retain the above copyright
+notice, this list of conditions and the following disclaimer.
+2. Redistributions in binary form must reproduce the above copyright
+notice, this list of conditions and the following disclaimer in the
+documentation and/or other materials provided with the distribution.
+
+THIS SOFTWARE IS PROVIDED BY THE AUTHOR AND CONTRIBUTORS ``AS IS'' AND
+ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ARE DISCLAIMED.  IN NO EVENT SHALL THE AUTHOR OR CONTRIBUTORS BE LIABLE
+FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
+OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
+OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
+
+
+*****
 table_print
 
 Copyright (c) 2012-2016 Chris Doyle
@@ -19928,6 +20593,67 @@ NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
 LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
 OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+
+*****
+uri
+
+Ruby is copyrighted free software by Yukihiro Matsumoto <matz@netlab.jp>.
+You can redistribute it and/or modify it under either the terms of the
+2-clause BSDL (see the file BSDL), or the conditions below:
+
+1. You may make and give away verbatim copies of the source form of the
+   software without restriction, provided that you duplicate all of the
+   original copyright notices and associated disclaimers.
+
+2. You may modify your copy of the software in any way, provided that
+   you do at least ONE of the following:
+
+   a. place your modifications in the Public Domain or otherwise
+      make them Freely Available, such as by posting said
+      modifications to Usenet or an equivalent medium, or by allowing
+      the author to include your modifications in the software.
+
+   b. use the modified software only within your corporation or
+      organization.
+
+   c. give non-standard binaries non-standard names, with
+      instructions on where to get the original software distribution.
+
+   d. make other distribution arrangements with the author.
+
+3. You may distribute the software in object code or binary form,
+   provided that you do at least ONE of the following:
+
+   a. distribute the binaries and library files of the software,
+      together with instructions (in the manual page or equivalent)
+      on where to get the original distribution.
+
+   b. accompany the distribution with the machine-readable source of
+      the software.
+
+   c. give non-standard binaries non-standard names, with
+      instructions on where to get the original software distribution.
+
+   d. make other distribution arrangements with the author.
+
+4. You may modify and include the part of the software into any other
+   software (possibly commercial).  But some files in the distribution
+   are not written by the author, so that they are not under these terms.
+
+   For the list of those files and their copying conditions, see the
+   file LEGAL.
+
+5. The scripts and library files supplied as input to or produced as
+   output from the software do not automatically fall under the
+   copyright of the software, but belong to whomever generated them,
+   and may be sold commercially, and may be aggregated with this
+   software.
+
+6. THIS SOFTWARE IS PROVIDED "AS IS" AND WITHOUT ANY EXPRESS OR
+   IMPLIED WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED
+   WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
+   PURPOSE.
 
 
 *****
@@ -20836,6 +21562,58 @@ SOFTWARE.
 
 -----
 
+The following software may be included in this product: @lezer/common, @lezer/lr. A copy of the source code may be downloaded from https://github.com/lezer-parser/common.git (@lezer/common), https://github.com/lezer-parser/lr.git (@lezer/lr). This software contains the following license and notice below:
+
+MIT License
+
+Copyright (C) 2018 by Marijn Haverbeke <marijn@haverbeke.berlin> and others
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.
+
+-----
+
+The following software may be included in this product: @mischnic/json-sourcemap. A copy of the source code may be downloaded from https://github.com/mischnic/json-sourcemap. This software contains the following license and notice below:
+
+MIT License
+
+Copyright (c) 2022 Niklas Mischkulnig
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+-----
+
 The following software may be included in this product: @monaco-editor/loader. A copy of the source code may be downloaded from https://github.com/suren-atoyan/monaco-loader.git. This software contains the following license and notice below:
 
 MIT License
@@ -20867,54 +21645,6 @@ The following software may be included in this product: @monaco-editor/react. A 
 MIT License
 
 Copyright (c) 2018 Suren Atoyan
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
-
------
-
-The following software may be included in this product: @napi-rs/wasm-runtime. A copy of the source code may be downloaded from git+https://github.com/napi-rs/napi-rs.git. This software contains the following license and notice below:
-
-MIT License
-
-Copyright (c) 2020-present LongYinan
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
-
-MIT License
-
-Copyright (c) 2018 GitHub
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -21812,32 +22542,6 @@ The following software may be included in this product: aria-hidden, react-remov
 MIT License
 
 Copyright (c) 2017 Anton Korzunov
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
-
------
-
-The following software may be included in this product: async-function, async-generator-function. A copy of the source code may be downloaded from git+https://github.com/ljharb/async-function.git (async-function), git+https://github.com/ljharb/async-generator-function.git (async-generator-function). This software contains the following license and notice below:
-
-MIT License
-
-Copyright (c) 2016 EduardoRFS
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -23594,18 +24298,6 @@ THE SOFTWARE.
 
 -----
 
-The following software may be included in this product: generator-function. A copy of the source code may be downloaded from git+https://github.com/ljharb/generator-function.git. This software contains the following license and notice below:
-
-Copyright (c) 2015 Tiancheng “Timothy” Gu
-
-Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-
------
-
 The following software may be included in this product: get-intrinsic. A copy of the source code may be downloaded from git+https://github.com/ljharb/get-intrinsic.git. This software contains the following license and notice below:
 
 MIT License
@@ -24231,6 +24923,34 @@ IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR
 ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, 
 TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE 
 SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+-----
+
+The following software may be included in this product: json5. A copy of the source code may be downloaded from git+https://github.com/json5/json5.git. This software contains the following license and notice below:
+
+MIT License
+
+Copyright (c) 2012-2018 Aseem Kishore, and [others].
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+[others]: https://github.com/json5/json5/contributors
 
 -----
 
@@ -25318,7 +26038,7 @@ SOFTWARE.
 
 -----
 
-The following software may be included in this product: rollup. A copy of the source code may be downloaded from https://github.com/rollup/rollup.git. This software contains the following license and notice below:
+The following software may be included in this product: rollup. A copy of the source code may be downloaded from git+https://github.com/rollup/rollup.git. This software contains the following license and notice below:
 
 # Rollup core license
 Rollup is released under the MIT license:
@@ -28962,7 +29682,7 @@ SOFTWARE.
 
 
 *****
-THE FOLLOWING SETS FORTH ATTRIBUTION NOTICES FOR THIRD PARTY SOFTWARE THAT MAY BE CONTAINED IN PORTIONS OF THE WORKSPACE AGGREGATOR BF767A36 F83B 44D2 BA54 E9F0B963F704 PRODUCT.
+THE FOLLOWING SETS FORTH ATTRIBUTION NOTICES FOR THIRD PARTY SOFTWARE THAT MAY BE CONTAINED IN PORTIONS OF THE WORKSPACE AGGREGATOR 05DAA643 D450 4092 AE99 E94236DDD6CB PRODUCT.
 
 -----
 
@@ -29027,7 +29747,7 @@ This product is distributed under the [Mozilla Public License 2.0](https://www.m
 
 -----
 
-The following software may be included in this product: @babel/code-frame, @babel/compat-data, @babel/core, @babel/generator, @babel/helper-annotate-as-pure, @babel/helper-compilation-targets, @babel/helper-create-class-features-plugin, @babel/helper-create-regexp-features-plugin, @babel/helper-globals, @babel/helper-member-expression-to-functions, @babel/helper-module-imports, @babel/helper-module-transforms, @babel/helper-optimise-call-expression, @babel/helper-plugin-utils, @babel/helper-remap-async-to-generator, @babel/helper-replace-supers, @babel/helper-skip-transparent-expression-wrappers, @babel/helper-string-parser, @babel/helper-validator-identifier, @babel/helper-validator-option, @babel/helper-wrap-function, @babel/plugin-bugfix-firefox-class-in-computed-class-key, @babel/plugin-bugfix-safari-class-field-initializer-scope, @babel/plugin-bugfix-safari-id-destructuring-collision-in-function-expression, @babel/plugin-bugfix-v8-spread-parameters-in-optional-chaining, @babel/plugin-bugfix-v8-static-class-fields-redefine-readonly, @babel/plugin-proposal-export-namespace-from, @babel/plugin-proposal-private-property-in-object, @babel/plugin-syntax-async-generators, @babel/plugin-syntax-bigint, @babel/plugin-syntax-class-properties, @babel/plugin-syntax-class-static-block, @babel/plugin-syntax-export-namespace-from, @babel/plugin-syntax-import-assertions, @babel/plugin-syntax-import-attributes, @babel/plugin-syntax-import-meta, @babel/plugin-syntax-json-strings, @babel/plugin-syntax-jsx, @babel/plugin-syntax-logical-assignment-operators, @babel/plugin-syntax-nullish-coalescing-operator, @babel/plugin-syntax-numeric-separator, @babel/plugin-syntax-object-rest-spread, @babel/plugin-syntax-optional-catch-binding, @babel/plugin-syntax-optional-chaining, @babel/plugin-syntax-private-property-in-object, @babel/plugin-syntax-top-level-await, @babel/plugin-syntax-typescript, @babel/plugin-syntax-unicode-sets-regex, @babel/plugin-transform-arrow-functions, @babel/plugin-transform-async-generator-functions, @babel/plugin-transform-async-to-generator, @babel/plugin-transform-block-scoped-functions, @babel/plugin-transform-block-scoping, @babel/plugin-transform-class-properties, @babel/plugin-transform-class-static-block, @babel/plugin-transform-classes, @babel/plugin-transform-computed-properties, @babel/plugin-transform-destructuring, @babel/plugin-transform-dotall-regex, @babel/plugin-transform-duplicate-keys, @babel/plugin-transform-duplicate-named-capturing-groups-regex, @babel/plugin-transform-dynamic-import, @babel/plugin-transform-explicit-resource-management, @babel/plugin-transform-exponentiation-operator, @babel/plugin-transform-export-namespace-from, @babel/plugin-transform-for-of, @babel/plugin-transform-function-name, @babel/plugin-transform-json-strings, @babel/plugin-transform-literals, @babel/plugin-transform-logical-assignment-operators, @babel/plugin-transform-member-expression-literals, @babel/plugin-transform-modules-amd, @babel/plugin-transform-modules-commonjs, @babel/plugin-transform-modules-systemjs, @babel/plugin-transform-modules-umd, @babel/plugin-transform-named-capturing-groups-regex, @babel/plugin-transform-new-target, @babel/plugin-transform-nullish-coalescing-operator, @babel/plugin-transform-numeric-separator, @babel/plugin-transform-object-rest-spread, @babel/plugin-transform-object-super, @babel/plugin-transform-optional-catch-binding, @babel/plugin-transform-optional-chaining, @babel/plugin-transform-parameters, @babel/plugin-transform-private-methods, @babel/plugin-transform-private-property-in-object, @babel/plugin-transform-property-literals, @babel/plugin-transform-react-jsx-self, @babel/plugin-transform-react-jsx-source, @babel/plugin-transform-regexp-modifiers, @babel/plugin-transform-reserved-words, @babel/plugin-transform-shorthand-properties, @babel/plugin-transform-spread, @babel/plugin-transform-sticky-regex, @babel/plugin-transform-template-literals, @babel/plugin-transform-typeof-symbol, @babel/plugin-transform-unicode-escapes, @babel/plugin-transform-unicode-property-regex, @babel/plugin-transform-unicode-regex, @babel/plugin-transform-unicode-sets-regex, @babel/preset-env, @babel/runtime, @babel/template, @babel/traverse, @babel/types. A copy of the source code may be downloaded from https://github.com/babel/babel.git (@babel/code-frame), https://github.com/babel/babel.git (@babel/compat-data), https://github.com/babel/babel.git (@babel/core), https://github.com/babel/babel.git (@babel/generator), https://github.com/babel/babel.git (@babel/helper-annotate-as-pure), https://github.com/babel/babel.git (@babel/helper-compilation-targets), https://github.com/babel/babel.git (@babel/helper-create-class-features-plugin), https://github.com/babel/babel.git (@babel/helper-create-regexp-features-plugin), https://github.com/babel/babel.git (@babel/helper-globals), https://github.com/babel/babel.git (@babel/helper-member-expression-to-functions), https://github.com/babel/babel.git (@babel/helper-module-imports), https://github.com/babel/babel.git (@babel/helper-module-transforms), https://github.com/babel/babel.git (@babel/helper-optimise-call-expression), https://github.com/babel/babel.git (@babel/helper-plugin-utils), https://github.com/babel/babel.git (@babel/helper-remap-async-to-generator), https://github.com/babel/babel.git (@babel/helper-replace-supers), https://github.com/babel/babel.git (@babel/helper-skip-transparent-expression-wrappers), https://github.com/babel/babel.git (@babel/helper-string-parser), https://github.com/babel/babel.git (@babel/helper-validator-identifier), https://github.com/babel/babel.git (@babel/helper-validator-option), https://github.com/babel/babel.git (@babel/helper-wrap-function), https://github.com/babel/babel.git (@babel/plugin-bugfix-firefox-class-in-computed-class-key), https://github.com/babel/babel.git (@babel/plugin-bugfix-safari-class-field-initializer-scope), https://github.com/babel/babel.git (@babel/plugin-bugfix-safari-id-destructuring-collision-in-function-expression), https://github.com/babel/babel.git (@babel/plugin-bugfix-v8-spread-parameters-in-optional-chaining), https://github.com/babel/babel.git (@babel/plugin-bugfix-v8-static-class-fields-redefine-readonly), https://github.com/babel/babel.git (@babel/plugin-proposal-export-namespace-from), https://github.com/babel/babel-plugin-proposal-private-property-in-object.git (@babel/plugin-proposal-private-property-in-object), https://github.com/babel/babel/tree/master/packages/babel-plugin-syntax-async-generators (@babel/plugin-syntax-async-generators), https://github.com/babel/babel/tree/master/packages/babel-plugin-syntax-bigint (@babel/plugin-syntax-bigint), https://github.com/babel/babel.git (@babel/plugin-syntax-class-properties), https://github.com/babel/babel.git (@babel/plugin-syntax-class-static-block), https://github.com/babel/babel/tree/master/packages/babel-plugin-syntax-export-namespace-from (@babel/plugin-syntax-export-namespace-from), https://github.com/babel/babel.git (@babel/plugin-syntax-import-assertions), https://github.com/babel/babel.git (@babel/plugin-syntax-import-attributes), https://github.com/babel/babel.git (@babel/plugin-syntax-import-meta), https://github.com/babel/babel/tree/master/packages/babel-plugin-syntax-json-strings (@babel/plugin-syntax-json-strings), https://github.com/babel/babel.git (@babel/plugin-syntax-jsx), https://github.com/babel/babel.git (@babel/plugin-syntax-logical-assignment-operators), https://github.com/babel/babel/tree/master/packages/babel-plugin-syntax-nullish-coalescing-operator (@babel/plugin-syntax-nullish-coalescing-operator), https://github.com/babel/babel.git (@babel/plugin-syntax-numeric-separator), https://github.com/babel/babel/tree/master/packages/babel-plugin-syntax-object-rest-spread (@babel/plugin-syntax-object-rest-spread), https://github.com/babel/babel/tree/master/packages/babel-plugin-syntax-optional-catch-binding (@babel/plugin-syntax-optional-catch-binding), https://github.com/babel/babel/tree/master/packages/babel-plugin-syntax-optional-chaining (@babel/plugin-syntax-optional-chaining), https://github.com/babel/babel.git (@babel/plugin-syntax-private-property-in-object), https://github.com/babel/babel.git (@babel/plugin-syntax-top-level-await), https://github.com/babel/babel.git (@babel/plugin-syntax-typescript), https://github.com/babel/babel.git (@babel/plugin-syntax-unicode-sets-regex), https://github.com/babel/babel.git (@babel/plugin-transform-arrow-functions), https://github.com/babel/babel.git (@babel/plugin-transform-async-generator-functions), https://github.com/babel/babel.git (@babel/plugin-transform-async-to-generator), https://github.com/babel/babel.git (@babel/plugin-transform-block-scoped-functions), https://github.com/babel/babel.git (@babel/plugin-transform-block-scoping), https://github.com/babel/babel.git (@babel/plugin-transform-class-properties), https://github.com/babel/babel.git (@babel/plugin-transform-class-static-block), https://github.com/babel/babel.git (@babel/plugin-transform-classes), https://github.com/babel/babel.git (@babel/plugin-transform-computed-properties), https://github.com/babel/babel.git (@babel/plugin-transform-destructuring), https://github.com/babel/babel.git (@babel/plugin-transform-dotall-regex), https://github.com/babel/babel.git (@babel/plugin-transform-duplicate-keys), https://github.com/babel/babel.git (@babel/plugin-transform-duplicate-named-capturing-groups-regex), https://github.com/babel/babel.git (@babel/plugin-transform-dynamic-import), https://github.com/babel/babel.git (@babel/plugin-transform-explicit-resource-management), https://github.com/babel/babel.git (@babel/plugin-transform-exponentiation-operator), https://github.com/babel/babel.git (@babel/plugin-transform-export-namespace-from), https://github.com/babel/babel.git (@babel/plugin-transform-for-of), https://github.com/babel/babel.git (@babel/plugin-transform-function-name), https://github.com/babel/babel.git (@babel/plugin-transform-json-strings), https://github.com/babel/babel.git (@babel/plugin-transform-literals), https://github.com/babel/babel.git (@babel/plugin-transform-logical-assignment-operators), https://github.com/babel/babel.git (@babel/plugin-transform-member-expression-literals), https://github.com/babel/babel.git (@babel/plugin-transform-modules-amd), https://github.com/babel/babel.git (@babel/plugin-transform-modules-commonjs), https://github.com/babel/babel.git (@babel/plugin-transform-modules-systemjs), https://github.com/babel/babel.git (@babel/plugin-transform-modules-umd), https://github.com/babel/babel.git (@babel/plugin-transform-named-capturing-groups-regex), https://github.com/babel/babel.git (@babel/plugin-transform-new-target), https://github.com/babel/babel.git (@babel/plugin-transform-nullish-coalescing-operator), https://github.com/babel/babel.git (@babel/plugin-transform-numeric-separator), https://github.com/babel/babel.git (@babel/plugin-transform-object-rest-spread), https://github.com/babel/babel.git (@babel/plugin-transform-object-super), https://github.com/babel/babel.git (@babel/plugin-transform-optional-catch-binding), https://github.com/babel/babel.git (@babel/plugin-transform-optional-chaining), https://github.com/babel/babel.git (@babel/plugin-transform-parameters), https://github.com/babel/babel.git (@babel/plugin-transform-private-methods), https://github.com/babel/babel.git (@babel/plugin-transform-private-property-in-object), https://github.com/babel/babel.git (@babel/plugin-transform-property-literals), https://github.com/babel/babel.git (@babel/plugin-transform-react-jsx-self), https://github.com/babel/babel.git (@babel/plugin-transform-react-jsx-source), https://github.com/babel/babel.git (@babel/plugin-transform-regexp-modifiers), https://github.com/babel/babel.git (@babel/plugin-transform-reserved-words), https://github.com/babel/babel.git (@babel/plugin-transform-shorthand-properties), https://github.com/babel/babel.git (@babel/plugin-transform-spread), https://github.com/babel/babel.git (@babel/plugin-transform-sticky-regex), https://github.com/babel/babel.git (@babel/plugin-transform-template-literals), https://github.com/babel/babel.git (@babel/plugin-transform-typeof-symbol), https://github.com/babel/babel.git (@babel/plugin-transform-unicode-escapes), https://github.com/babel/babel.git (@babel/plugin-transform-unicode-property-regex), https://github.com/babel/babel.git (@babel/plugin-transform-unicode-regex), https://github.com/babel/babel.git (@babel/plugin-transform-unicode-sets-regex), https://github.com/babel/babel.git (@babel/preset-env), https://github.com/babel/babel.git (@babel/runtime), https://github.com/babel/babel.git (@babel/template), https://github.com/babel/babel.git (@babel/traverse), https://github.com/babel/babel.git (@babel/types). This software contains the following license and notice below:
+The following software may be included in this product: @babel/code-frame, @babel/compat-data, @babel/core, @babel/generator, @babel/helper-annotate-as-pure, @babel/helper-compilation-targets, @babel/helper-create-class-features-plugin, @babel/helper-create-regexp-features-plugin, @babel/helper-globals, @babel/helper-member-expression-to-functions, @babel/helper-module-imports, @babel/helper-module-transforms, @babel/helper-optimise-call-expression, @babel/helper-plugin-utils, @babel/helper-remap-async-to-generator, @babel/helper-replace-supers, @babel/helper-skip-transparent-expression-wrappers, @babel/helper-string-parser, @babel/helper-validator-identifier, @babel/helper-validator-option, @babel/helper-wrap-function, @babel/plugin-bugfix-firefox-class-in-computed-class-key, @babel/plugin-bugfix-safari-class-field-initializer-scope, @babel/plugin-bugfix-safari-id-destructuring-collision-in-function-expression, @babel/plugin-bugfix-v8-spread-parameters-in-optional-chaining, @babel/plugin-bugfix-v8-static-class-fields-redefine-readonly, @babel/plugin-proposal-private-property-in-object, @babel/plugin-syntax-async-generators, @babel/plugin-syntax-bigint, @babel/plugin-syntax-class-properties, @babel/plugin-syntax-class-static-block, @babel/plugin-syntax-import-assertions, @babel/plugin-syntax-import-attributes, @babel/plugin-syntax-import-meta, @babel/plugin-syntax-json-strings, @babel/plugin-syntax-jsx, @babel/plugin-syntax-logical-assignment-operators, @babel/plugin-syntax-nullish-coalescing-operator, @babel/plugin-syntax-numeric-separator, @babel/plugin-syntax-object-rest-spread, @babel/plugin-syntax-optional-catch-binding, @babel/plugin-syntax-optional-chaining, @babel/plugin-syntax-private-property-in-object, @babel/plugin-syntax-top-level-await, @babel/plugin-syntax-typescript, @babel/plugin-syntax-unicode-sets-regex, @babel/plugin-transform-arrow-functions, @babel/plugin-transform-async-generator-functions, @babel/plugin-transform-async-to-generator, @babel/plugin-transform-block-scoped-functions, @babel/plugin-transform-block-scoping, @babel/plugin-transform-class-properties, @babel/plugin-transform-class-static-block, @babel/plugin-transform-classes, @babel/plugin-transform-computed-properties, @babel/plugin-transform-destructuring, @babel/plugin-transform-dotall-regex, @babel/plugin-transform-duplicate-keys, @babel/plugin-transform-duplicate-named-capturing-groups-regex, @babel/plugin-transform-dynamic-import, @babel/plugin-transform-explicit-resource-management, @babel/plugin-transform-exponentiation-operator, @babel/plugin-transform-export-namespace-from, @babel/plugin-transform-for-of, @babel/plugin-transform-function-name, @babel/plugin-transform-json-strings, @babel/plugin-transform-literals, @babel/plugin-transform-logical-assignment-operators, @babel/plugin-transform-member-expression-literals, @babel/plugin-transform-modules-amd, @babel/plugin-transform-modules-commonjs, @babel/plugin-transform-modules-systemjs, @babel/plugin-transform-modules-umd, @babel/plugin-transform-named-capturing-groups-regex, @babel/plugin-transform-new-target, @babel/plugin-transform-nullish-coalescing-operator, @babel/plugin-transform-numeric-separator, @babel/plugin-transform-object-rest-spread, @babel/plugin-transform-object-super, @babel/plugin-transform-optional-catch-binding, @babel/plugin-transform-optional-chaining, @babel/plugin-transform-parameters, @babel/plugin-transform-private-methods, @babel/plugin-transform-private-property-in-object, @babel/plugin-transform-property-literals, @babel/plugin-transform-react-jsx-self, @babel/plugin-transform-react-jsx-source, @babel/plugin-transform-regexp-modifiers, @babel/plugin-transform-reserved-words, @babel/plugin-transform-shorthand-properties, @babel/plugin-transform-spread, @babel/plugin-transform-sticky-regex, @babel/plugin-transform-template-literals, @babel/plugin-transform-typeof-symbol, @babel/plugin-transform-unicode-escapes, @babel/plugin-transform-unicode-property-regex, @babel/plugin-transform-unicode-regex, @babel/plugin-transform-unicode-sets-regex, @babel/preset-env, @babel/runtime, @babel/template, @babel/traverse, @babel/types. A copy of the source code may be downloaded from https://github.com/babel/babel.git (@babel/code-frame), https://github.com/babel/babel.git (@babel/compat-data), https://github.com/babel/babel.git (@babel/core), https://github.com/babel/babel.git (@babel/generator), https://github.com/babel/babel.git (@babel/helper-annotate-as-pure), https://github.com/babel/babel.git (@babel/helper-compilation-targets), https://github.com/babel/babel.git (@babel/helper-create-class-features-plugin), https://github.com/babel/babel.git (@babel/helper-create-regexp-features-plugin), https://github.com/babel/babel.git (@babel/helper-globals), https://github.com/babel/babel.git (@babel/helper-member-expression-to-functions), https://github.com/babel/babel.git (@babel/helper-module-imports), https://github.com/babel/babel.git (@babel/helper-module-transforms), https://github.com/babel/babel.git (@babel/helper-optimise-call-expression), https://github.com/babel/babel.git (@babel/helper-plugin-utils), https://github.com/babel/babel.git (@babel/helper-remap-async-to-generator), https://github.com/babel/babel.git (@babel/helper-replace-supers), https://github.com/babel/babel.git (@babel/helper-skip-transparent-expression-wrappers), https://github.com/babel/babel.git (@babel/helper-string-parser), https://github.com/babel/babel.git (@babel/helper-validator-identifier), https://github.com/babel/babel.git (@babel/helper-validator-option), https://github.com/babel/babel.git (@babel/helper-wrap-function), https://github.com/babel/babel.git (@babel/plugin-bugfix-firefox-class-in-computed-class-key), https://github.com/babel/babel.git (@babel/plugin-bugfix-safari-class-field-initializer-scope), https://github.com/babel/babel.git (@babel/plugin-bugfix-safari-id-destructuring-collision-in-function-expression), https://github.com/babel/babel.git (@babel/plugin-bugfix-v8-spread-parameters-in-optional-chaining), https://github.com/babel/babel.git (@babel/plugin-bugfix-v8-static-class-fields-redefine-readonly), https://github.com/babel/babel-plugin-proposal-private-property-in-object.git (@babel/plugin-proposal-private-property-in-object), https://github.com/babel/babel/tree/master/packages/babel-plugin-syntax-async-generators (@babel/plugin-syntax-async-generators), https://github.com/babel/babel/tree/master/packages/babel-plugin-syntax-bigint (@babel/plugin-syntax-bigint), https://github.com/babel/babel.git (@babel/plugin-syntax-class-properties), https://github.com/babel/babel.git (@babel/plugin-syntax-class-static-block), https://github.com/babel/babel.git (@babel/plugin-syntax-import-assertions), https://github.com/babel/babel.git (@babel/plugin-syntax-import-attributes), https://github.com/babel/babel.git (@babel/plugin-syntax-import-meta), https://github.com/babel/babel/tree/master/packages/babel-plugin-syntax-json-strings (@babel/plugin-syntax-json-strings), https://github.com/babel/babel.git (@babel/plugin-syntax-jsx), https://github.com/babel/babel.git (@babel/plugin-syntax-logical-assignment-operators), https://github.com/babel/babel/tree/master/packages/babel-plugin-syntax-nullish-coalescing-operator (@babel/plugin-syntax-nullish-coalescing-operator), https://github.com/babel/babel.git (@babel/plugin-syntax-numeric-separator), https://github.com/babel/babel/tree/master/packages/babel-plugin-syntax-object-rest-spread (@babel/plugin-syntax-object-rest-spread), https://github.com/babel/babel/tree/master/packages/babel-plugin-syntax-optional-catch-binding (@babel/plugin-syntax-optional-catch-binding), https://github.com/babel/babel/tree/master/packages/babel-plugin-syntax-optional-chaining (@babel/plugin-syntax-optional-chaining), https://github.com/babel/babel.git (@babel/plugin-syntax-private-property-in-object), https://github.com/babel/babel.git (@babel/plugin-syntax-top-level-await), https://github.com/babel/babel.git (@babel/plugin-syntax-typescript), https://github.com/babel/babel.git (@babel/plugin-syntax-unicode-sets-regex), https://github.com/babel/babel.git (@babel/plugin-transform-arrow-functions), https://github.com/babel/babel.git (@babel/plugin-transform-async-generator-functions), https://github.com/babel/babel.git (@babel/plugin-transform-async-to-generator), https://github.com/babel/babel.git (@babel/plugin-transform-block-scoped-functions), https://github.com/babel/babel.git (@babel/plugin-transform-block-scoping), https://github.com/babel/babel.git (@babel/plugin-transform-class-properties), https://github.com/babel/babel.git (@babel/plugin-transform-class-static-block), https://github.com/babel/babel.git (@babel/plugin-transform-classes), https://github.com/babel/babel.git (@babel/plugin-transform-computed-properties), https://github.com/babel/babel.git (@babel/plugin-transform-destructuring), https://github.com/babel/babel.git (@babel/plugin-transform-dotall-regex), https://github.com/babel/babel.git (@babel/plugin-transform-duplicate-keys), https://github.com/babel/babel.git (@babel/plugin-transform-duplicate-named-capturing-groups-regex), https://github.com/babel/babel.git (@babel/plugin-transform-dynamic-import), https://github.com/babel/babel.git (@babel/plugin-transform-explicit-resource-management), https://github.com/babel/babel.git (@babel/plugin-transform-exponentiation-operator), https://github.com/babel/babel.git (@babel/plugin-transform-export-namespace-from), https://github.com/babel/babel.git (@babel/plugin-transform-for-of), https://github.com/babel/babel.git (@babel/plugin-transform-function-name), https://github.com/babel/babel.git (@babel/plugin-transform-json-strings), https://github.com/babel/babel.git (@babel/plugin-transform-literals), https://github.com/babel/babel.git (@babel/plugin-transform-logical-assignment-operators), https://github.com/babel/babel.git (@babel/plugin-transform-member-expression-literals), https://github.com/babel/babel.git (@babel/plugin-transform-modules-amd), https://github.com/babel/babel.git (@babel/plugin-transform-modules-commonjs), https://github.com/babel/babel.git (@babel/plugin-transform-modules-systemjs), https://github.com/babel/babel.git (@babel/plugin-transform-modules-umd), https://github.com/babel/babel.git (@babel/plugin-transform-named-capturing-groups-regex), https://github.com/babel/babel.git (@babel/plugin-transform-new-target), https://github.com/babel/babel.git (@babel/plugin-transform-nullish-coalescing-operator), https://github.com/babel/babel.git (@babel/plugin-transform-numeric-separator), https://github.com/babel/babel.git (@babel/plugin-transform-object-rest-spread), https://github.com/babel/babel.git (@babel/plugin-transform-object-super), https://github.com/babel/babel.git (@babel/plugin-transform-optional-catch-binding), https://github.com/babel/babel.git (@babel/plugin-transform-optional-chaining), https://github.com/babel/babel.git (@babel/plugin-transform-parameters), https://github.com/babel/babel.git (@babel/plugin-transform-private-methods), https://github.com/babel/babel.git (@babel/plugin-transform-private-property-in-object), https://github.com/babel/babel.git (@babel/plugin-transform-property-literals), https://github.com/babel/babel.git (@babel/plugin-transform-react-jsx-self), https://github.com/babel/babel.git (@babel/plugin-transform-react-jsx-source), https://github.com/babel/babel.git (@babel/plugin-transform-regexp-modifiers), https://github.com/babel/babel.git (@babel/plugin-transform-reserved-words), https://github.com/babel/babel.git (@babel/plugin-transform-shorthand-properties), https://github.com/babel/babel.git (@babel/plugin-transform-spread), https://github.com/babel/babel.git (@babel/plugin-transform-sticky-regex), https://github.com/babel/babel.git (@babel/plugin-transform-template-literals), https://github.com/babel/babel.git (@babel/plugin-transform-typeof-symbol), https://github.com/babel/babel.git (@babel/plugin-transform-unicode-escapes), https://github.com/babel/babel.git (@babel/plugin-transform-unicode-property-regex), https://github.com/babel/babel.git (@babel/plugin-transform-unicode-regex), https://github.com/babel/babel.git (@babel/plugin-transform-unicode-sets-regex), https://github.com/babel/babel.git (@babel/preset-env), https://github.com/babel/babel.git (@babel/runtime), https://github.com/babel/babel.git (@babel/template), https://github.com/babel/babel.git (@babel/traverse), https://github.com/babel/babel.git (@babel/types). This software contains the following license and notice below:
 
 MIT License
 
@@ -33963,7 +34683,7 @@ THE SOFTWARE.
 
 -----
 
-The following software may be included in this product: async-function, async-generator-function. A copy of the source code may be downloaded from git+https://github.com/ljharb/async-function.git (async-function), git+https://github.com/ljharb/async-generator-function.git (async-generator-function). This software contains the following license and notice below:
+The following software may be included in this product: async-function. A copy of the source code may be downloaded from git+https://github.com/ljharb/async-function.git. This software contains the following license and notice below:
 
 MIT License
 
@@ -37466,7 +38186,7 @@ SOFTWARE.
 
 The following software may be included in this product: core-js, core-js-compat, core-js-pure. A copy of the source code may be downloaded from git+https://github.com/zloirock/core-js.git (core-js), git+https://github.com/zloirock/core-js.git (core-js-compat), git+https://github.com/zloirock/core-js.git (core-js-pure). This software contains the following license and notice below:
 
-Copyright (c) 2014-2025 Denis Pushkarev
+Copyright (c) 2014-2025 Denis Pushkarev, 2025 CoreJS Company
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -43099,7 +43819,7 @@ SOFTWARE.
 
 -----
 
-The following software may be included in this product: generator-function. A copy of the source code may be downloaded from git+https://github.com/ljharb/generator-function.git. This software contains the following license and notice below:
+The following software may be included in this product: generator-function. A copy of the source code may be downloaded from git+https://github.com/TimothyGu/generator-function.git. This software contains the following license and notice below:
 
 Copyright (c) 2015 Tiancheng “Timothy” Gu
 
@@ -50855,7 +51575,7 @@ SOFTWARE.
 
 -----
 
-The following software may be included in this product: rollup. A copy of the source code may be downloaded from https://github.com/rollup/rollup.git. This software contains the following license and notice below:
+The following software may be included in this product: rollup. A copy of the source code may be downloaded from git+https://github.com/rollup/rollup.git. This software contains the following license and notice below:
 
 # Rollup core license
 Rollup is released under the MIT license:
