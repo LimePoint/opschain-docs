@@ -1,0 +1,9 @@
+{
+  "label": "Setup",
+  "position": 4,
+  "link": {
+    "type": "generated-index",
+    "slug": "/setup",
+    "description": "The following guides will walk you through the process of setting up, patching and uninstalling OpsChain."
+  }
+}
