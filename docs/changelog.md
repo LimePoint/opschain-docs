@@ -5,6 +5,12 @@ description: Learn about new releases of OpsChain, including new features and up
 
 # Changelog
 
+## [unreleased]
+
+### Added {#unrelease-added}
+
+- Changes (and scheduled changes) now support settings overrides. The [`Dockerfile` path](key-concepts/settings#dockerfile), the base [`runner` image settings](key-concepts/settings#runnerimage_tag), the [`worker` image settings](key-concepts/settings#workerimage_tag), the [`mintmodel_executor` image settings](key-concepts/settings#mintmodel_executorimage_tag), the [`pod_per_change_step` setting](key-concepts/settings#pod_per_change_step), the [`remove_change_worker_pod` setting](key-concepts/settings#remove_change_worker_pod), and the [`repo_folder`](key-concepts/settings#repo_folder) can now be overridden for a change.
+
 ## [2025-12-11]
 
 ### Added {#2025-12-11-added}

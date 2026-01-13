@@ -33,7 +33,7 @@ REPLICAS="$(kubectl get deploy opschain-api-worker -o jsonpath='{.spec.replicas}
 kubectl scale deploy opschain-api-worker --replicas 0
 
 # wait for all workers to exit
-# if there are any in-progress changes, the workers will wait for up to one hour for these to complete
+# if there are any in-progress changes, waiting for up to one hour for these to complete
 kubectl wait --for=delete pod -l app=opschain-api-worker --timeout 1h
 
 # once the workers are stopped, you can restart the build service and wait for it to become available again

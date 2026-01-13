@@ -116,21 +116,81 @@ firewall-cmd --permanent --zone=trusted --add-source=10.43.0.0/16 #services
 firewall-cmd --reload
 ```
 
-### Download & Install K3s
+### Download & install K3s
 
 ```bash
 curl -sfL https://get.k3s.io | INSTALL_K3S_VERSION="v1.32.5+k3s1" INSTALL_K3S_EXEC="--disable traefik --write-kubeconfig-mode 644 --data-dir /limepoint/k3s" sh -
 
 # validate k3s
-k3s version
+k3s --version
 ```
+
+### Download Helm
+
+```bash
+curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | DESIRED_VERSION="v3.17.2" bash
+
+# validate helm
+helm version
+```
+
+### Option 1: deploy cert-manager
+
+:::tip
+Using cert-manager simplifies the management and installation of OpsChain, but as an alternative TLS certificates can be configured manually.
+:::
+
+OpsChain can use [cert-manager](https://cert-manager.io) to manage authentication within internal components via certificates.
+
+```bash
+export KUBECONFIG=/limepoint/rancher/k3s/k3s.yaml
+helm upgrade --install cert-manager oci://quay.io/jetstack/charts/cert-manager --namespace cert-manager --create-namespace --version v1.16.1 --set "crds.enabled=true" --set "featureGates=AdditionalCertificateOutputFormats=true" --set "webhook.extraArgs={--feature-gates=AdditionalCertificateOutputFormats=true}"
+```
+
+Along with internal certificates used by OpsChain, `cert-manager` will issue self-signed certificates for the OpsChain image registry and API server. To use these certificates, the `cert-manager` CA certificate must be trusted by the container runtime on your Kubernetes nodes, and by any systems from which you will access the OpsChain API.
+
+Alternatively, `cert-manager` can be configured to issue certificates from an external certificate authority (e.g. Let's Encrypt, Vault, Venafi) - see the [cert-manager documentation](https://cert-manager.io/docs/) for more information.
+
+### Option 2: deploy certificates
+
+If you have elected not to use cert-manager, then you will need to deploy the [certificates required by OpsChain](understanding-opschain-variables#configuring-opschain-without-cert-manager).
+
+#### Option 2a: Using provided self-signed certificates
+
+LimePoint provides self-signed certificates that can be used for deploying OpsChain. These are insecure certificates and are only meant for trialling.
+
+These certificates are provided as Kubernetes secret resources and are configured for the namespace `opschain`. The namespace can be modified in the JSON files if needed.
+
+```bash
+kubectl create namespace opschain
+curl -L https://docs.opschain.io/files/downloads/certs.tar.gz | tar xz
+for cert in *.json; do kubectl apply -f "${cert}"; done
+```
+
+These certificates are configured for the following hostnames in the `values.yaml`:
+
+- `api.hostName`: `opschain.local.gd`
+- `OPSCHAIN_IMAGE_REGISTRY_HOST`: `opschain-image-registry.local.gd`
+- `global.secretVaultExternalHostName`: `opschain-vault.local.gd`
+
+#### Option 2b: Using your own certificates
+
+[These certificates](understanding-opschain-variables#configuring-opschain-without-cert-manager) must deployed manually, for example using the [Kubernetes TLS](https://kubernetes.io/docs/reference/kubectl/generated/kubectl_create/kubectl_create_secret_tls/) commands. An example command is shown below:
+
+```bash
+kubectl create secret tls opschain-api-cert --cert=path/to/cert/file --key=path/to/key/file
+```
+
+:::tip
+Don't forget to do this for [all the required certificates](understanding-opschain-variables#configuring-opschain-without-cert-manager).
+:::
 
 ### Setup shell
 
 Update your login shell to add the following aliases to make life simpler.
 
 ```bash
-vi ~/.bash_profile
+$ vi ~/.bash_profile
 export KUBECONFIG=/etc/rancher/k3s/k3s.yaml
 export KUBE_EDITOR=vim
 alias crictl='sudo env "PATH=$PATH" crictl --config /limepoint/mint4/agent/etc/crictl.yaml'

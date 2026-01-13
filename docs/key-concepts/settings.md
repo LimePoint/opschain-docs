@@ -92,6 +92,24 @@ _This setting is ignored when using an asset template Dockefile because it takes
 
 Refer to [log forwarding](/administration/log-forwarding.md) for the log aggregator configuration.
 
+### mintmodel_executor.image_tag
+
+Default: _Current version, e.g. `2025-01-01`_.
+
+Override the base `FROM` MintModel executor tag, used to build change step runners.
+
+### mintmodel_executor.name
+
+Default: _opschain-runner_ (or _opschain-runner-enterprise_ for enterprise users)
+
+Override the base `FROM` MintModel executor image name, used to build change step runners.
+
+### mintmodel_executor.repository
+
+Default: _limepoint_
+
+Override the base `FROM` MintModel executor image repository, used to build change step runners.
+
 ### notifications
 
 Refer to [notifications](/administration/notifications.md) for the notifications configuration.

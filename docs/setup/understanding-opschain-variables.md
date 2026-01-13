@@ -34,6 +34,134 @@ You can then copy the value and paste it into your setting's value. DO NOT reuse
 | OPSCHAIN_PRIMARY_KEY    | The primary key OpsChain will use for encryption, must be at least 32 characters long. |
 | PGPASSWORD    | The password for accessing OpsChain's database, must be at least 8 characters long. |
 
+## Configuring OpsChain without cert-manager
+
+```bash
+vi /limepoint/values.yaml.example
+```
+
+If you elected not to use [cert-manager](installing_k3s#option-1-deploy-cert-manager) then you will need to update all the [TLS certificate configuration](#configuring-opschain-without-cert-manager).
+
+After filling in all the mandatory settings, you can rename the file to `values.yaml` and proceed with the installation in the [installation guide](/setup/installation.md).
+
+```bash
+cp /limepoint/values.yaml.example /limepoint/values.yaml
+```
+
+## Configuring OpsChain without cert-manager
+
+If you are configuring OpsChain to run without [cert-manager](https://cert-manager.io/), and are not using the [LimePoint provided certificates](#using-the-limepoint-provided-certificates), then you must create [Kubernetes TLS](https://kubernetes.io/docs/reference/kubectl/generated/kubectl_create/kubectl_create_secret_tls/) secrets for the follow configurations:
+
+- `api.certificateSecretName`: This certificate is used for the API ingress. The certificate you provide must include a DNS `subjectAlternativeName` that matches the `api.hostName` value.
+- `buildService.certificateSecretName`: This certificate is for [mTLS](https://en.wikipedia.org/wiki/Mutual_authentication#mTLS) authentication internally.
+- `imageRegistry.certificateSecretName` and `trow.ingress.tls[0].secretName`: This certificate is for the image registry ingress and must be trusted by the Kubernetes cluster and the build service.
+- `secretVault.internalCertificateSecretName` and `openbao.server.volumes[0].secret.secretName`: Used if using the internal secret vault.
+- `secretVault.externalCertificateSecretName`: If using the internal secret vault, then the certificate you provide must include a DNS `subjectAlternativeName` that matches the `global.secretVaultExternalHostName` value.
+
+You also need to set `useCertManager: false` in your `values.yaml`.
+
+:::tip Overriding the secret vault internal certificate (`internalCertificateSecretName`)
+The Helm `values.yaml` needs all the existing volumes in `.openbao.server.volumes` defined in addition to the modification, otherwise they will be removed.
+
+Use `helm show values oci://docker.io/limepoint/opschain --version ${OPSCHAIN_CHART_VERSION} --jsonpath '{.openbao.server.volumes}'` to show the default values, and provide it as `.openbao.server.volumes` with the `secretName` modified.
+:::
+
+A subset example of the `values.yaml` for these values is:
+
+```yaml
+useCertManager: false
+
+api:
+  hostName: #api-hostname
+  certificateSecretName: #api-cert-name
+
+imageRegistry:
+  certificateSecretName: #image-registry-cert
+
+buildService:
+  certificateSecretName: #build-service-cert
+
+trow:
+  trow:
+    domain: #image-registry-hostname
+  ingress:
+    hosts:
+      - paths: [ "/" ]
+        host: #image-registry-hostname
+    tls:
+      - secretName: #image-registry-cert
+        hosts:
+          - #image-registry-hostname
+
+openbao:
+  server:
+    volumes:
+      - name: opschain-secret-vault-cert
+        secret:
+          secretName: #secret-vault-cert
+      - name: opschain-secret-vault-data-claim
+        persistentVolumeClaim:
+          claimName: opschain-secret-vault-data-claim
+
+
+secretVault:
+  externalCertificateSecretName: #secret-vault-external-cert
+  internalCertificateSecretName: #secret-vault-cert
+
+global:
+  secretVaultExternalHostName: #secret-vault-hostname
+
+env:
+  OPSCHAIN_API_CERTIFICATE_SECRET_NAME: #api-cert-name
+  OPSCHAIN_API_HOST_NAME: #api-hostname
+  OPSCHAIN_IMAGE_REGISTRY_HOST: #image-registry-hostname
+```
+
+:::warning
+This sample `values.yaml` is not complete and is not usable as shown.
+:::
+
+### Using the LimePoint provided certificates
+
+The [LimePoint provided certificates](installing_k3s#option-2a-using-provided-self-signed-certificates) are configured for the following configuration in the `values.yaml`:
+
+- `api.hostName`: `opschain.local.gd`
+- `OPSCHAIN_IMAGE_REGISTRY_HOST`: `opschain-image-registry.local.gd`
+- `global.secretVaultExternalHostName`: `opschain-vault.local.gd`
+- `trow.ingress.tls[0].secretName`: `opschain-image-registry-cert`
+- `trow.ingress.tls[0].hosts[0]`: `opschain-image-registry.local.gd`
+
+A subset example of the `values.yaml` for these values is:
+
+```yaml
+useCertManager: false
+
+api:
+  hostName: opschain.local.gd
+
+trow:
+  trow:
+    domain: "opschain-image-registry.local.gd"
+  ingress:
+    hosts:
+      - paths: [ "/" ]
+        host: "opschain-image-registry.local.gd"
+    tls:
+      - secretName: opschain-image-registry-cert
+        hosts:
+          - "opschain-image-registry.local.gd"
+
+global:
+  secretVaultExternalHostName: "opschain-vault.local.gd"
+
+env:
+  OPSCHAIN_IMAGE_REGISTRY_HOST: "opschain-image-registry.local.gd"
+```
+
+:::warning
+This sample `values.yaml` is not complete and is not usable as shown.
+:::
+
 ## Mandatory secret vault settings
 
 ### Internal default secret vault
@@ -41,7 +169,7 @@ You can then copy the value and paste it into your setting's value. DO NOT reuse
 If you are using the default secret vault provided by OpsChain, you must define the host name its UI will be accessible at. You can do so by modifying the `global.secretVaultExternalHostName` setting in your `values.yaml` file.
 
 :::warning
-The default secret vault uses the same Ingress as the API. Ensure that the host name you provide for the secret vault is different than the API host name.
+The default secret vault uses the same ingress as the API. Ensure that the host name you provide for the secret vault is different than the API host name.
 :::
 
 On the client machines that need to access the secret vault UI, you must create a DNS entry for the host name you provided in your `values.yaml` file. To do so, you'll need to obtain the external address of the `opschain-ingress-proxy` load balancer. In a working OpsChain installation, you can run the following command to obtain the external address:

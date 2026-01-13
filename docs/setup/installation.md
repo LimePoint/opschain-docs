@@ -92,7 +92,7 @@ helm upgrade --install opschain "oci://docker.io/limepoint/opschain" --version $
 This will start the OpsChain server and its dependent services in separate Kubernetes pods. For more information on these containers see the [architecture overview](/getting-started/overview.md#architecture-overview).
 
 :::warning Installation time
-The command may take several minutes (upto 30 mins) to start as the OpsChain images are downloaded, especially with slower internet connections.
+The command may take several minutes (up to 30 mins) to start as the OpsChain images are downloaded, especially with slower internet connections.
 
 Do not close or end the shell session while the installation is still ongoing, doing so might render your installation unusable.
 :::
