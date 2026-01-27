@@ -100,7 +100,7 @@ This step is required even if you are not planning to use the high availability 
 With Helm connected to LimePoint's registry and using your configured `values.yaml` and environment variables, we can install the specific OpsChain version in the desired namespace by running the following command:
 
 ```bash
-helm upgrade --install opschain "oci://docker.io/limepoint/opschain" --version ${OPSCHAIN_CHART_VERSION} --create-namespace -n {KUBERNETES_NAMESPACE} -f values.yaml --wait --timeout 30m --insecure-skip-tls-verify
+helm upgrade --install opschain "oci://docker.io/limepoint/opschain" --version ${OPSCHAIN_CHART_VERSION} --create-namespace -n ${KUBERNETES_NAMESPACE} -f values.yaml --wait --timeout 30m --insecure-skip-tls-verify
 ```
 
 This will start the OpsChain server and its dependent services in separate Kubernetes pods. For more information on these containers see the [architecture overview](/getting-started/overview.md#architecture-overview).
