@@ -84,7 +84,7 @@ Whether to allow a workflow to be run multiple times in parallel.
 
 Default value: _Dockerfile_
 
-The filename to use for the `Dockerfile` for building the [custom step runner Dockerfile](/docs/key-concepts/step-runner#custom-step-runner-dockerfiles).
+The filename to use for the `Dockerfile` for building the [custom step runner Dockerfile](/key-concepts/step-runner.md#custom-step-runner-dockerfiles).
 
 _This setting is ignored when using an asset template Dockefile because it takes higher priority._
 

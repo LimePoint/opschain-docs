@@ -49,7 +49,13 @@ export KUBERNETES_NAMESPACE=opschain
 
 #### OpsChain chart version
 
-OpsChain should always be installed with a version defined explicitly. The available OpsChain versions are listed in the [changelog](/changelog.md) page. The Helm chart version is a semver formatted version of the release name/date, with no leading zeros. For example, if you want to install the release named 2025-01-01, the chart version will be 2025.1.1. You can export an environment variable for the version you want to install, like so:
+OpsChain should always be installed with a version defined explicitly. The available OpsChain versions are listed in the [changelog](/changelog.md) page.
+
+:::info
+The Helm chart version is a semver formatted version of the release name/date, with no leading zeros.
+:::
+
+For example, if you want to install the release named `2025-01-01`, the chart version will be `2025.1.1`. You can export an environment variable for the version you want to install, like so:
 
 ```bash
 export OPSCHAIN_CHART_VERSION=2025.1.1

@@ -483,7 +483,7 @@ Each Kubernetes cluster will have its own `opschain-db-credentials` secret, but 
 
 ## Deploying OpsChain
 
-Once the topology has been defined in each cluster's `values.yaml` file, you can deploy OpsChain in each cluster as defined in the [installation guide](/docs/setup/installation.md#install-opschain).
+Once the topology has been defined in each cluster's `values.yaml` file, you can deploy OpsChain in each cluster as defined in the [installation guide](/setup/installation.md#install-opschain).
 
 Once deployed, the North cluster will initialise with an empty OpsChain database - given the `replica.enabled: false` is set in the `values.yaml` file. It is recommended to do the initial setup of the North instance, like creating the first user and logging in before setting up the South cluster.
 

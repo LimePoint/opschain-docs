@@ -60,7 +60,7 @@ description: Learn about new releases of OpsChain, including new features and up
 ### Changed {#2025-12-10-changed}
 
 - OpsChain's Helm charts are now available via OCI registry. Visit the [installation documentation](/setup/installation.md) for more information on how to install and upgrade OpsChain using the new Helm charts.
-- To improve caching, the default Dockerfile no longer copies the `.git` directory into the image by default. See the [custom step runner Dockerfile](/docs/key-concepts/step-runner#custom-step-runner-dockerfiles) documentation to see how to use a custom Dockerfile which will allow the contents of the `.git` directory to be added to the image.
+- To improve caching, the default Dockerfile no longer copies the `.git` directory into the image by default. See the [custom step runner Dockerfile](/key-concepts/step-runner.md#custom-step-runner-dockerfiles) documentation to see how to use a custom Dockerfile which will allow the contents of the `.git` directory to be added to the image.
 - Build Dockerfiles and base images are now configurable via node-specific settings.
 - Trow has been upgraded 0.9.2 and now has its own garbage collection process - removing the need for the OpsChain image registry garbage collector deployment.
 - Fluentd has been updated to 1.19.1-2.1 deployment.
