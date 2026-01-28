@@ -36,19 +36,13 @@ You can then copy the value and paste it into your setting's field value inside 
 | OPSCHAIN_PRIMARY_KEY    | The primary key OpsChain will use for encryption | 32 characters  |
 | PGPASSWORD    | The password for accessing OpsChain's database | At least 8 characters long |
 
-## Configuring OpsChain without cert-manager
-
-```bash
-vi /limepoint/values.yaml.example
-```
-
-If you elected not to use [cert-manager](/setup/installing_k3s.md#option-1-deploy-cert-manager) then you will need to update all the [TLS certificate configuration](#configuring-opschain-without-cert-manager).
-
 After filling in all the mandatory settings, you can rename the file to `values.yaml` and proceed with the installation in the [installation guide](/setup/installation.md).
 
 ```bash
 cp /limepoint/values.yaml.example /limepoint/values.yaml
 ```
+
+If you elected not to use [cert-manager](/setup/installing_k3s.md#option-1-deploy-cert-manager) then you will need to update all the [TLS certificate configuration](#configuring-opschain-without-cert-manager).
 
 ## Configuring OpsChain without cert-manager
 

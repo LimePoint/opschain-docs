@@ -110,14 +110,27 @@ If you'd like to use the high availability setup, read through the available opt
 
 ### Deploy OpsChain
 
-Deploy OpsChain using the regular Helm upgrade command. Once deployed, if you used the default values, the new database instance will be in a pod named `opschain-db-1` and will be available in your Kubernetes namespace. You can follow the migration process by following the logs of the new database pod and describing the database cluster using the following commands, respectively:
+Deploy OpsChain using the regular Helm upgrade command. Once deployed, a pod responsible for migrating the database will be created and will be running until the migration is complete, this process might take a few minutes to complete and the regular OpsChain services will not be available until then. You can follow the migration process by following the logs of the migration pod:
 
 ```bash
-kubectl logs pod/opschain-db-1 -n ${KUBERNETES_NAMESPACE} -f
-kubectl describe cluster opschain-db -n ${KUBERNETES_NAMESPACE}
+kubectl -n ${KUBERNETES_NAMESPACE} logs pod/$(kubectl get pods -n ${KUBERNETES_NAMESPACE} | grep "opschain-db-1-import" | awk '{print $1}') -f
 ```
 
-When the database is fully imported, restart the OpsChain services so they connect to the new database:
+:::tip
+The command above will fail if the import pod has been terminated or has not been created yet.
+
+Alternatively, you can describe the database cluster to check the migration progress:
+
+```bash
+kubectl describe cluster opschain-db -n ${KUBERNETES_NAMESPACE}
+```
+:::
+
+:::info
+It's expected that some OpsChain services fail to start during a long-running migration. This is expected and will not affect the migration process.
+:::
+
+If you used the default values, the new database instance will be in a pod named `opschain-db-1` and will be available in your Kubernetes namespace when the migration is complete. When the database successfully starts, restart the OpsChain services so they connect to it:
 
 ```bash
 kubectl rollout restart deployment opschain-api opschain-api-worker opschain-log-aggregator -n ${KUBERNETES_NAMESPACE}
@@ -126,7 +139,7 @@ kubectl rollout restart deployment opschain-api opschain-api-worker opschain-log
 Verify the migration is successful via the logs and by checking OpsChain's instance is working either by creating a change or modifying a project's properties via the UI. If the automatic migration fails, you can follow the [manual database migration process](#manual-database-migration) to recover the database.
 
 :::info
-Once the migration is complete and the new database is fully operational, you can remove the `db.recoveryMode` and all the `db.volume` settings from the `values.yaml` file and redeploy OpsChain. The old database deployment will be removed once OpsChain successfully deploys without these settings.
+Once the migration is complete and the new database is fully operational, you should remove the `db.recoveryMode` and all the `db.volume` settings from the `values.yaml` file and redeploy OpsChain. The old database deployment will be removed once OpsChain successfully deploys without these settings.
 :::
 
 ## Manual database migration
