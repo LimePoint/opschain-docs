@@ -185,7 +185,8 @@ All Rails encryption keys defined in the `values.yaml` should be the same across
 By default, CNPG issues self-signed certificates for its managed clusters. These certificates are stored in secrets in the OpsChain namespace and should be trusted and configured as secrets in each of the external clusters. You can see the secrets created by CNPG by running the following command:
 
 ```bash
-kubectl get secrets -n cnpg-system
+# opschain-db is the default cluster name for the database
+kubectl get secrets -n ${KUBERNETES_NAMESPACE} | grep "opschain-db"
 ```
 
 If you'd like to bring your own certificates, you must create the necessary Kubernetes secrets containing the CA certificate and private key, the server certificate and private key, and the streaming replica certificate and private key. To enable custom certificates, you must set the `db.cnpg.security.tls.customCerts.enabled` setting to `true`.
