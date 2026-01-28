@@ -68,12 +68,6 @@ kubectl get pods -n cnpg-system
 The CNPG operator is installed at the cluster level, with CRDs, controllers and service accounts deployed in the `cnpg-system` namespace.
 :::
 
-#### (optional) Install the CNPG plugin
-
-CNPG provides a plugin for the Kubernetes CLI that allows you to manage CNPG clusters and their resources, as well as fetch detailed information about the clusters more easily. This is not required, but it provides useful features that greatly simplify the operations steps described in this guide.
-
-Refer to the [CNPG plugin installation guide](https://cloudnative-pg.io/documentation/1.27/kubectl-plugin/) for more information.
-
 ### Cluster configuration
 
 Some settings are available to configure your CNPG cluster via the `values.yaml` file and should be considered carefully before the first deployment with CNPG. All the settings below default to a non-HA setup.
@@ -91,6 +85,8 @@ db:
 ```
 
 :::warning
+Ignore this setting if you're not upgrading OpsChain from a version prior to 2026-01-27.
+
 Deploying without this setting will result in the previous database deployment being lost, thus making it impossible to recover your OpsChain database.
 :::
 
@@ -493,12 +489,6 @@ You can verify the North cluster's status by running the following command:
 kubectl get cluster opschain-db-cluster-north -n ${KUBERNETES_NAMESPACE}
 ```
 
-Alternatively, you can get more detailed information about the cluster using the CNPG plugin like so:
-
-```bash
-kubectl cnpg status opschain-db-cluster-north -n ${KUBERNETES_NAMESPACE}
-```
-
 When the South cluster is deployed, it will start replicating from the North cluster immediately - given the `replica.enabled: true` is set in the `values.yaml` file of the South cluster and its `primary` field is set to the North cluster's name. Its database will be in a read-only state and the OpsChain instance will be using the North cluster's database until a failover is triggered.
 
 By default, OpsChain will automatically map the `PGHOST` and `PGPORT` settings to the `primary` cluster's definition in the `values.yaml` file, ensuring that when your topology changes, the OpsChain instance will automatically connect to the new primary cluster.
@@ -528,6 +518,15 @@ Besides stopping the OpsChain instance, you can also hibernate the database usin
 When the database is hibernated, the Kubernetes PersistentVolume (PV) and PersistentVolumeClaim (PVC) will be created for it, but no PostgreSQL instance will be running in the replica cluster. This is useful for recovering a cluster from a physical backup or performing maintenance on the cluster.
 
 To resume the database, you can simply remove the `stopDatabase: true` setting in the `values.yaml` file and redeploy the cluster or by passing `--set stopDatabase=false` to the Helm command used for installing and patching OpsChain.
+
+:::tip
+For faster hibernation switching, you can toggle hibernation on and off by annotating the database cluster with the `cnpg.io/hibernation` annotation instead of redeploying MintPress. For example:
+
+```bash
+kubectl annotate cluster opschain-db -n ${KUBERNETES_NAMESPACE} cnpg.io/hibernation=on
+```
+
+:::
 
 ### Failover
 
@@ -603,12 +602,6 @@ kubectl get cluster <cluster-name> -n ${KUBERNETES_NAMESPACE}
 
 All clusters should show `Cluster in healthy state` in their status.
 
-Alternatively, if you have the CNPG plugin installed, you can get more detailed information about the cluster using the CNPG plugin like so:
-
-```bash
-kubectl cnpg status <cluster-name> -n ${KUBERNETES_NAMESPACE}
-```
-
 You can access the logs for each database instance of a cluster using the following command:
 
 ```bash
@@ -662,12 +655,6 @@ If a disaster happens to one of your replica clusters, a full recovery might be 
 
 ```bash
 kubectl logs pod/<cluster-name>-1 -n ${KUBERNETES_NAMESPACE}
-```
-
-Alternatively, you can use the CNPG plugin to get more detailed information about the cluster using the CNPG plugin like so:
-
-```bash
-kubectl cnpg status <cluster-name> -n ${KUBERNETES_NAMESPACE}
 ```
 
 In case a full recovery is necessary, you can follow the steps outlined in the [Recovering a replica cluster](#recovering-a-replica-cluster) section above.

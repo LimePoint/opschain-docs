@@ -1,5 +1,5 @@
 ---
-sidebar_position: 6
+sidebar_position: 5
 description: Upgrading OpsChain to the latest release.
 ---
 

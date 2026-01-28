@@ -1,5 +1,5 @@
 ---
-sidebar_position: 7
+sidebar_position: 6
 description: Steps to perform to permanently remove OpsChain.
 ---
 

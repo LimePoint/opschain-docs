@@ -1,6 +1,15 @@
+---
+sidebar_position: 7
+description: Upgrading the database to the latest version.
+---
+
 # DB upgrade guide
 
-Once the CNPG operator is installed and configured, you should be ready to upgrade OpsChain to the new version. The entire upgrade process might take some time to complete depending on your database size. A downtime of OpsChain is required for this update.
+Once the CNPG operator is installed and configured in your cluster - see the [install the CNPG operator section](/advanced/high-availability-setup.md#installing-the-cnpg-operator) if you haven't done so yet -, you should be ready to upgrade OpsChain to the new version. The entire upgrade process might take some time to complete depending on your database size. A downtime of OpsChain is required for this update.
+
+:::warning
+This process is only required if you're upgrading from an OpsChain version prior to 2026-01-27 and can be skipped if not.
+:::
 
 ## Stop OpsChain
 
@@ -18,13 +27,53 @@ Skipping this step might result in permanent data loss. Do not proceed without a
 
 With the database deployment back up, create a backup with the following commands:
 
-1. Enter the database container: `kubectl exec -it deploy/opschain-db -n ${KUBERNETES_NAMESPACE} -- /bin/bash`
-2. Create a backup of the database: `pg_basebackup -h 127.0.0.1 -p 5432 -U opschain -D "/tmp" -Ft -z --compress=6 -P -vvv --wal-method=stream --checkpoint=fast --max-rate=300M`
-3. Verify the backup files are created and are not empty: `ls -lah /tmp`
-4. Exit the database container: `exit`
-5. Get the database pod name: `DB_POD=$(kubectl get pods -n ${KUBERNETES_NAMESPACE} -l app=opschain-db -o jsonpath='{.items[0].metadata.name}')`
-6. Make a directory to store the backup on the host filesystem: `mkdir -p /limepoint/backup`
-7. Copy the backup files to the host: `kubectl cp $DB_POD:/tmp/ /limepoint/backup/`
+1. Enter the database container
+
+   ```bash
+   kubectl exec -it deploy/opschain-db -n ${KUBERNETES_NAMESPACE} -- /bin/bash
+   ```
+
+2. Create a directory to store the backup on the host filesystem
+
+   ```bash
+   mkdir -p /tmp/backup
+   ```
+
+3. Create a backup of the database
+
+   ```bash
+   pg_basebackup -h 127.0.0.1 -p 5432 -U opschain -D "/tmp/backup" -Ft -z --compress=6 -P -vvv --wal-method=stream --checkpoint=fast --max-rate=300M
+   ```
+
+4. Verify the backup files are created and are not empty
+
+   ```bash
+   ls -lah /tmp/backup
+   ```
+
+5. Exit the database container
+
+   ```bash
+   exit
+   ```
+
+6. Get the database pod name
+
+   ```bash
+   DB_POD=$(kubectl get pods -n ${KUBERNETES_NAMESPACE} -l app=opschain-db -o jsonpath='{.items[0].metadata.name}')
+   ```
+
+7. Make a directory to store the backup on the host filesystem
+
+   ```bash
+   mkdir -p /limepoint/backup
+   ```
+
+8. Copy the backup files to the host
+
+   ```bash
+   kubectl cp $DB_POD:/tmp/backup/ /limepoint/backup/ -n ${KUBERNETES_NAMESPACE}
+   ```
 
 ### Update the `values.yaml` file
 
@@ -65,7 +114,7 @@ Deploy OpsChain using the regular Helm upgrade command. Once deployed, if you us
 
 ```bash
 kubectl logs pod/opschain-db-1 -n ${KUBERNETES_NAMESPACE} -f
-kubectl describe cluster opschain-db-1 -n ${KUBERNETES_NAMESPACE}
+kubectl describe cluster opschain-db -n ${KUBERNETES_NAMESPACE}
 ```
 
 When the database is fully imported, restart the OpsChain services so they connect to the new database:
@@ -81,6 +130,10 @@ Once the migration is complete and the new database is fully operational, you ca
 :::
 
 ## Manual database migration
+
+:::warning
+This process is only required if the automatic migration fails to complete.
+:::
 
 If the migration process fails to complete automatically, you can still manually import the backup into the new database. The requirements to do so are:
 
@@ -147,7 +200,7 @@ kubectl run restore-from-backup --rm -it --restart=Never \
 This will drop you into a shell inside the recovery pod, do not exit this pod yet. From another terminal session, copy the backup files from the backup folder (modify to where your backup files are) into the pod's `/tmp` directory:
 
 ```bash
-for file in $(find ./backup -type f); do
+for file in $(find /limepoint/backup -type f); do
   kubectl cp $file restore-from-backup:/tmp/$(basename $file)
 done
 ```
@@ -166,19 +219,43 @@ cp /var/lib/postgresql/data/pgdata/{pg_hba.conf,pg_ident.conf,postgresql.conf,po
 
 And, finally, we can recover the database with the following commands:
 
-- Remove the original `pgdata` folder: `rm -rf /var/lib/postgresql/data/pgdata/*`
-- Extract the base backup: `tar xzvf /tmp/base.tar.gz -C /var/lib/postgresql/data/pgdata/`
-- Extract the WAL files: `tar xzvf /tmp/pg_wal.tar.gz -C /var/lib/postgresql/data/pgdata/pg_wal/`
-- Change the ownership of the database folders and files: `chown -R 26:26 /var/lib/postgresql/data`
-- Restore the sensitive PostgreSQL files: `cp /tmp/{pg_hba.conf,pg_ident.conf,postgresql.conf,postgresql.auto.conf} /var/lib/postgresql/data/pgdata/`
+1. Remove the original `pgdata` folder
 
-Check the control data to ensure the backup is valid:
+   ```bash
+   rm -rf /var/lib/postgresql/data/pgdata/*
+   ```
 
-```bash
-pg_controldata /var/lib/postgresql/data/pgdata/
+2. Extract the base backup
 
-# For a valid backup, this should show "Database cluster state: in production" at the top of the output.
-```
+   ```bash
+   tar xzvf /tmp/base.tar.gz -C /var/lib/postgresql/data/pgdata/
+   ```
+
+3. Extract the WAL files
+
+   ```bash
+   tar xzvf /tmp/pg_wal.tar.gz -C /var/lib/postgresql/data/pgdata/pg_wal/
+   ```
+
+4. Change the ownership of the database folders and files
+
+   ```bash
+   chown -R 26:26 /var/lib/postgresql/data
+   ```
+
+5. Restore the sensitive PostgreSQL files
+
+   ```bash
+   cp /tmp/{pg_hba.conf,pg_ident.conf,postgresql.conf,postgresql.auto.conf} /var/lib/postgresql/data/pgdata/
+   ```
+
+6. Check the control data to ensure the backup is valid
+
+   ```bash
+   pg_controldata /var/lib/postgresql/data/pgdata/
+
+   # For a valid backup, this should show "Database cluster state: in production" at the top of the output.
+   ```
 
 Once that's working, you can exit the recovery pod, toggle hibernation off by redeploying OpsChain without the `stopDatabase` setting and wait for CNPG to resume the cluster. You can follow the database's logs to check for failures/errors. It's common to see some CNPG errors at first, but they should be gone once the PostgreSQL instance is running.
 

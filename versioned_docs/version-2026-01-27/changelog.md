@@ -9,7 +9,7 @@ description: Learn about new releases of OpsChain, including new features and up
 
 ### Important breaking changes {#2026-01-27-important-breaking-changes}
 
-- OpsChain database is now managed by the CNPG operator. Configuring the operator is required to successfully upgrade to this version. Before upgrading, follow the steps described in the [High availability setup](/advanced/high-availability-setup.md#installing-the-cnpg-operator) guide to install the operator in your cluster. We recommend you read the entire guide to understand the upgrade implications and the new features provided by the operator. After installing the CNPG operator, follow the steps in the [DB upgrade guide](/setup/db_upgrade.md) to complete the upgrade process.
+- OpsChain database is now managed by the CNPG operator. Configuring the operator is required to successfully upgrade to this version. Before upgrading, follow the steps described in the [install the CNPG operator section](/advanced/high-availability-setup.md#installing-the-cnpg-operator) of the high availability setup guide to install the operator in your cluster. We recommend you read the entire guide to understand the upgrade implications and the new features provided by the operator. After installing the CNPG operator, follow the steps in the [DB upgrade guide](/setup/db_upgrade.md) to complete the upgrade process.
 
 ### Added {#2026-01-27-added}
 

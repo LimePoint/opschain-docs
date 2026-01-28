@@ -1,5 +1,5 @@
 ---
-sidebar_position: 5
+sidebar_position: 4
 description: A guide to installing OpsChain.
 ---
 
@@ -89,7 +89,7 @@ source ~/.bash_profile
 
 ### Install the CNPG operator
 
-Follow the steps outlined in the [High availability setup](/advanced/high-availability-setup.md#installing-the-cnpg-operator) guide to install the CNPG operator in your cluster.
+Follow the steps outlined in the [install the CNPG operator section](/advanced/high-availability-setup.md#installing-the-cnpg-operator) of the high availability setup guide to install the CNPG operator in your cluster.
 
 :::warning
 This step is required even if you are not planning to use the high availability features.
@@ -134,6 +134,14 @@ echo "127.0.0.1 opschain-image-registry.local.gd" >> /etc/hosts
 ```
 
 This may vary if you have used a different [domain name for the internal image registry](/setup/understanding-opschain-variables.md#opschain_image_registry_host) in your `values.yaml` file.
+
+#### Internal TLS certificate setup
+
+If you are using TLS for this OpsChain instance then the certificate being used by the OpsChain ingress must be trusted on the k3s host.
+
+If [you configured OpsChain with `cert-manager`](/setup/installing_k3s.md#option-1-deploy-cert-manager); or [you configured OpsChain with the provided self-signed certificates](/setup/installing_k3s.md#option-2a-using-provided-self-signed-certificates), then you will need to trust the OpsChain certificate CA on the k3s host. Follow the steps in the [TLS Kubernetes certificate setup using self-signed certificates](/administration/tls.md#kubernetes-certificate-setup-using-self-signed-certificates) guide before proceeding.
+
+If you are providing your own certificates then you will need to ensure they are trusted by the k3s host by configuring it accordingly.
 
 ### Install the OpsChain CLI
 

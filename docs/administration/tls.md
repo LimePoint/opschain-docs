@@ -38,6 +38,34 @@ opschain server configure
 opschain server deploy
 ```
 
+:::warning OpsChain host certificate trust
+
+This certificate must be trusted by the host running OpsChain because OpsChain will access its image registry via the ingress proxy load balancer.
+
+If this needs to be done manually, then k3s must be restarted after installing the cert via `systemctl restart k3s`.
+
+:::
+
+### Kubernetes certificate setup using self-signed certificates
+
+By default, MintPress will issue a self-signed certificate for the HTTPS listener from the internal `opschain-ca` certificate authority.
+
+This certificate (or any other self-signed certificate) must be trusted by the host running Kubernetes to allow the Kubernetes cluster to access OpsChain images from the image registry.
+
+```shell
+kubectl -n ${KUBERNETES_NAMESPACE} get secret opschain-ca-key-pair -o jsonpath="{.data.ca\.crt}" | base64 -d > opschain-ca.pem
+```
+
+This certificate must then be trusted.
+
+Each platform has a different way of trusting a certificate. Follow your platform's documentation to trust the certificate.
+
+After trusting the certificate, if using OpsChain on k3s, k3s must be restarted:
+
+```shell
+systemctl restart k3s
+```
+
 ## Configure the OpsChain CLI to trust a certificate authority
 
 If you want to the use the default certificate issued by the opschain-ca certificate authority or use a custom certificate that is signed by a private certificate authority, you will need to configure the OpsChain CLI to trust any certificates issued by the CA.

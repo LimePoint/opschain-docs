@@ -16,23 +16,25 @@ Your `values.yaml` file might come with settings that are not mentioned in this 
 The settings to secure your OpsChain installation must be provided before installing the application. These are unique keys that should not be modified after the initial installation and not shared with anyone.
 
 :::info Generating keys and passwords
-You can generate a random key of specific length for the following settings with:
+You can generate a random key of specific `<key_length>` for the following settings with:
 
 ```bash
-openssl rand -hex <key_length>
+openssl rand -hex $((<key_length>/2))
 ```
 
-You can then copy the value and paste it into your setting's value. DO NOT reuse the same value for different settings.
+You can then copy the value and paste it into your setting's field value inside the `values.yaml` file. DO NOT reuse the same value for different settings and avoid creating keys longer than 512 characters.
 :::
 
-| Variable name | Description |
-| :---  | :--- |
-| OPSCHAIN_DETERMINISTIC_KEY    | The key OpsChain will use for encrypting its data, must be at least 32 characters long |
-| OPSCHAIN_IMAGE_REGISTRY_PASSWORD    | The password that OpsChain should use when communicating with its internal image registry, must be at least 8 characters long. |
-| OPSCHAIN_KEY_DERIVATION_SALT    | The key OpsChain will use for generating its cryptography keys, must be at least 32 characters long. |
-| OPSCHAIN_LDAP_PASSWORD    | The password that OpsChain will use when communicating with its LDAP server, must be at least 8 characters long. |
-| OPSCHAIN_PRIMARY_KEY    | The primary key OpsChain will use for encryption, must be at least 32 characters long. |
-| PGPASSWORD    | The password for accessing OpsChain's database, must be at least 8 characters long. |
+| Variable name | Description | Key length |
+| :---  | :--- | :--- |
+| OPSCHAIN_DETERMINISTIC_KEY    | The key OpsChain will use for encrypting its data | 32 characters |
+| OPSCHAIN_DOCKER_PASSWORD    | The DockerHub password that OpsChain should use when communicating with the external DockerHub registry. Provided with your licence. | At least 8 characters long |
+| OPSCHAIN_DOCKER_USER   | The DockerHub username that OpsChain should use when communicating with the external DockerHub registry. Provided with your licence. | At least 8 characters long |
+| OPSCHAIN_IMAGE_REGISTRY_PASSWORD    | The password that OpsChain should use when communicating with its internal image registry. This setting should be reflected in the `trow.trow.password` field in your `values.yaml` file, otherwise OpsChain will not be able to access the internal image registry. | At least 8 characters long |
+| OPSCHAIN_KEY_DERIVATION_SALT    | The key OpsChain will use for generating its cryptography keys | 32 characters |
+| OPSCHAIN_LDAP_PASSWORD    | The password that OpsChain will use when communicating with its LDAP server | At least 8 characters long |
+| OPSCHAIN_PRIMARY_KEY    | The primary key OpsChain will use for encryption | 32 characters  |
+| PGPASSWORD    | The password for accessing OpsChain's database | At least 8 characters long |
 
 ## Configuring OpsChain without cert-manager
 
@@ -40,7 +42,7 @@ You can then copy the value and paste it into your setting's value. DO NOT reuse
 vi /limepoint/values.yaml.example
 ```
 
-If you elected not to use [cert-manager](installing_k3s#option-1-deploy-cert-manager) then you will need to update all the [TLS certificate configuration](#configuring-opschain-without-cert-manager).
+If you elected not to use [cert-manager](/setup/installing_k3s.md#option-1-deploy-cert-manager) then you will need to update all the [TLS certificate configuration](#configuring-opschain-without-cert-manager).
 
 After filling in all the mandatory settings, you can rename the file to `values.yaml` and proceed with the installation in the [installation guide](/setup/installation.md).
 
@@ -50,7 +52,60 @@ cp /limepoint/values.yaml.example /limepoint/values.yaml
 
 ## Configuring OpsChain without cert-manager
 
-If you are configuring OpsChain to run without [cert-manager](https://cert-manager.io/), and are not using the [LimePoint provided certificates](#using-the-limepoint-provided-certificates), then you must create [Kubernetes TLS](https://kubernetes.io/docs/reference/kubectl/generated/kubectl_create/kubectl_create_secret_tls/) secrets for the follow configurations:
+:::warning
+You can skip this section if you're deploying OpsChain with cert-manager.
+:::
+
+If you want to deploy OpsChain without using cert-manager, you have two options to do so.
+
+### Option 1: Using the LimePoint provided certificates
+
+The [LimePoint provided certificates](/setup/installing_k3s.md#option-2a-using-provided-self-signed-certificates) configure the following addresses/secrets that you need to match in your `values.yaml` file:
+
+| Address / secret name | Related `values.yaml` setting |
+| :---  | :--- |
+| opschain.local.gd | `api.hostName` |
+| opschain-image-registry.local.gd | `trow.trow.domain` |
+| opschain-image-registry.local.gd | `trow.ingress.tls[0].hosts[0]` |
+| opschain-image-registry-cert | `trow.ingress.tls[0].secretName` |
+| opschain-image-registry.local.gd | `trow.ingress.hosts[0].host` |
+| opschain-vault.local.gd | `global.secretVaultExternalHostName` |
+| opschain-image-registry.local.gd | `OPSCHAIN_IMAGE_REGISTRY_HOST` |
+
+A subset example of how you should configure your `values.yaml` file using these certificates is:
+
+```yaml
+useCertManager: false
+
+api:
+  hostName: "opschain.local.gd"
+
+trow:
+  trow:
+    domain: "opschain-image-registry.local.gd"
+  ingress:
+    hosts:
+      - paths: [ "/" ]
+        host: "opschain-image-registry.local.gd"
+    tls:
+      - secretName: opschain-image-registry-cert
+        hosts:
+          - "opschain-image-registry.local.gd"
+
+global:
+  secretVaultExternalHostName: "opschain-vault.local.gd"
+
+env:
+  OPSCHAIN_IMAGE_REGISTRY_HOST: "opschain-image-registry.local.gd"
+```
+
+:::warning
+This sample `values.yaml` is not complete and is not usable as shown.
+:::
+
+### Option 2: Using your own certificates
+
+If you want to use your own certificates to install OpsChain, then you must create [Kubernetes TLS](https://kubernetes.io/docs/reference/kubectl/generated/kubectl_create/kubectl_create_secret_tls/) secrets for the follow configurations:
 
 - `api.certificateSecretName`: This certificate is used for the API ingress. The certificate you provide must include a DNS `subjectAlternativeName` that matches the `api.hostName` value.
 - `buildService.certificateSecretName`: This certificate is for [mTLS](https://en.wikipedia.org/wiki/Mutual_authentication#mTLS) authentication internally.
@@ -121,58 +176,17 @@ env:
 This sample `values.yaml` is not complete and is not usable as shown.
 :::
 
-### Using the LimePoint provided certificates
-
-The [LimePoint provided certificates](installing_k3s#option-2a-using-provided-self-signed-certificates) are configured for the following configuration in the `values.yaml`:
-
-- `api.hostName`: `opschain.local.gd`
-- `OPSCHAIN_IMAGE_REGISTRY_HOST`: `opschain-image-registry.local.gd`
-- `global.secretVaultExternalHostName`: `opschain-vault.local.gd`
-- `trow.ingress.tls[0].secretName`: `opschain-image-registry-cert`
-- `trow.ingress.tls[0].hosts[0]`: `opschain-image-registry.local.gd`
-
-A subset example of the `values.yaml` for these values is:
-
-```yaml
-useCertManager: false
-
-api:
-  hostName: opschain.local.gd
-
-trow:
-  trow:
-    domain: "opschain-image-registry.local.gd"
-  ingress:
-    hosts:
-      - paths: [ "/" ]
-        host: "opschain-image-registry.local.gd"
-    tls:
-      - secretName: opschain-image-registry-cert
-        hosts:
-          - "opschain-image-registry.local.gd"
-
-global:
-  secretVaultExternalHostName: "opschain-vault.local.gd"
-
-env:
-  OPSCHAIN_IMAGE_REGISTRY_HOST: "opschain-image-registry.local.gd"
-```
-
-:::warning
-This sample `values.yaml` is not complete and is not usable as shown.
-:::
-
 ## Mandatory secret vault settings
 
-### Internal default secret vault
+### Option 1. Internal default secret vault
 
-If you are using the default secret vault provided by OpsChain, you must define the host name its UI will be accessible at. You can do so by modifying the `global.secretVaultExternalHostName` setting in your `values.yaml` file.
+If you are using the default secret vault provided by OpsChain (default configuration), you must define the host name its UI will be accessible at. You should do so by modifying the `global.secretVaultExternalHostName` setting in your `values.yaml` file.
 
 :::warning
 The default secret vault uses the same ingress as the API. Ensure that the host name you provide for the secret vault is different than the API host name.
 :::
 
-On the client machines that need to access the secret vault UI, you must create a DNS entry for the host name you provided in your `values.yaml` file. To do so, you'll need to obtain the external address of the `opschain-ingress-proxy` load balancer. In a working OpsChain installation, you can run the following command to obtain the external address:
+On the client machines that need to access the secret vault UI, you must create a DNS entry for the host name you provided in your `values.yaml` file. To do so, you'll need to obtain the external address of the `opschain-ingress-proxy` load balancer. Once OpsChain is installed, you can run the following command to obtain the external address:
 
 ```shell
 kubectl get svc -n opschain opschain-ingress-proxy -o jsonpath='{.status.loadBalancer.ingress[]}'
@@ -186,7 +200,7 @@ echo "<load balancer address> <secret vault external host name>" >> /etc/hosts
 
 #### Self-signed certificate
 
-By default, OpsChain will issue a self-signed certificate for accessing the default secret vault on the host name you provided, this certificate must be trusted by anyone who will be accessing the secret vault UI. You can extract the self-signed certificate from the `opschain-ca-key-pair` secret by running the following command:
+By default, OpsChain will issue a self-signed certificate for accessing the default secret vault on the host name you provided, this certificate must be trusted by anyone who will be accessing the secret vault UI. Once OpsChain is installed, you can extract the self-signed certificate from the `opschain-ca-key-pair` secret by running the following command:
 
 ```bash
 kubectl -n opschain get secret opschain-ca-key-pair -o jsonpath="{.data.ca\.crt}" | base64 -d > opschain-ca.pem
@@ -207,9 +221,9 @@ kubectl -n opschain create secret tls my-custom-certificate --cert=path/to/tls.c
 
 :::
 
-### Using an external secret vault as the default
+### Option 2. Using an external secret vault as the default
 
-If you would like to use an external secret vault as the default secret vault, you can set the `OPSCHAIN_USE_DEFAULT_VAULT`, the `openbao.global.enabled` and the `openbao.server.enabled` settings to false and provide the external secret vault settings in the `values.yaml` file.
+If you would like to use an external secret vault as the default secret vault, you can set the `openbao.global.enabled` and the `openbao.server.enabled` settings to `false` and provide the external secret vault settings in the `values.yaml` file.
 
 For example:
 
@@ -233,7 +247,6 @@ vaultClientOptions: {}
 env:
   ...
   # Ensure these match what is set in the settings above
-  OPSCHAIN_USE_DEFAULT_VAULT: false
   OPSCHAIN_VAULT_ADDRESS: "http://vault.example.com:8200"
   OPSCHAIN_VAULT_AUTH_METHOD: token
   OPSCHAIN_VAULT_TOKEN: "my_token"
@@ -520,16 +533,6 @@ Vault settings can be overriden at a project, environment or asset level, allowi
 
 :::tip Multiple vaults
 You can provision the default secret vault on installation and configure individual projects, environments or assets to access external vaults.
-:::
-
-#### OPSCHAIN_USE_DEFAULT_VAULT
-
-Default value: _true_
-
-Whether OpsChain should provision the default secret vault on installation. If this is set to true, the settings below will be automatically configured by OpsChain. If this is false, you can provide a custom secret vault configuration with these settings.
-
-:::warning Default secret vault hostname
-When using the default secret vault, you must provide an external hostname for it in the `values.yaml` file, as described in the [mandatory secret vault settings](#mandatory-secret-vault-settings) section.
 :::
 
 #### OPSCHAIN_VAULT_ADDRESS
