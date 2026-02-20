@@ -5,9 +5,9 @@ description: Learn about new releases of OpsChain, including new features and up
 
 # Changelog
 
-## [unreleased]
+## [2026-02-20]
 
-### Added {#unreleased-added}
+### Added {#2026-02-20-added}
 
 - OpsChain now supports [agents](/key-concepts/agents.md), a mechanism for executing long-running agents.
 - New Agents UI pages now allow you to view agent info, status, logs and events, as well as add, update and manage agents.
@@ -15,7 +15,7 @@ description: Learn about new releases of OpsChain, including new features and up
 - MintModel compare screen now automatically loads the last two MintModels for comparison.
 - Text on the titlebar of all dialogs is now selectable and doesn't drag the dialog when trying to select text.
 
-### Changed {#unreleased-changed}
+### Changed {#2026-02-20-changed}
 
 - Template versions Git SHA's are now only refreshed if the Git revision is changed, or the fetch is specifically requested.
 - All settings are now encrypted at rest.
@@ -28,7 +28,7 @@ description: Learn about new releases of OpsChain, including new features and up
   - Breadcrumbs are visually more subtle and now show dropdowns for listing workflows as well.
   - Various fixes to workflow editor for increased reliability when editing details.
 
-### Fixed {#unreleased-fixed}
+### Fixed {#2026-02-20-fixed}
 
 - MintModel ERB rendering has been fixed.
 - Fetch failures that are caused by remote files not existing now reflect this rather than reporting that the Git remote does not exist.
@@ -40,7 +40,7 @@ description: Learn about new releases of OpsChain, including new features and up
   - Various fixes to the workflow editor for increased reliability when editing details.
   - The node navigation is now split in two sections (navigation and settings/properties) and has a refreshed design.
 
-### Known limitations {#unreleased-known-limitations}
+### Known limitations {#2026-02-20-known-limitations}
 
 - OpsChain agents debug logs are only available for the `event-ttl` as configured in k3s. This is one hour by default.
 
