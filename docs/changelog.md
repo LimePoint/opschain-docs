@@ -5,11 +5,50 @@ description: Learn about new releases of OpsChain, including new features and up
 
 # Changelog
 
+## [unreleased]
+
+### Added {#unreleased-added}
+
+- OpsChain now supports [agents](/key-concepts/agents.md), a mechanism for executing long-running agents.
+- New Agents UI pages now allow you to view agent info, status, logs and events, as well as add, update and manage agents.
+- New Agent settings section added under `Administration -> Configuration`.
+- MintModel compare screen now automatically loads the last two MintModels for comparison.
+- Text on the titlebar of all dialogs is now selectable and doesn't drag the dialog when trying to select text.
+
+### Changed {#unreleased-changed}
+
+- Template versions Git SHA's are now only refreshed if the Git revision is changed, or the fetch is specifically requested.
+- All settings are now encrypted at rest.
+- The log aggregator now buffers logs in disk rather than memory, reducing the risk of losing logs if Fluentd can't flush them. The PVC size can be configured via the `logAggregator.volume.size` setting in your `values.yaml` file. The default value is `1GB`.
+- Logs from step runners, template version action generation and agent tasks will now be buffered and their respective pods will try forwarding them to the log aggregator for up to 5 minutes before these logs are lost. Workers will now try forwarding change, step, build and workflow run transitions logs to the log aggregator until their memory buffers are full. If that happens, the logs will be written directly to the database, meaning they won't be sent to your [additional log output plugins](/administration/log-forwarding.md) in case of a persistent log aggregator failure.
+- The `members` column from the LDAP groups table has been temporarily removed for an upcoming API change.
+- Visual overhaul to headers across all pages for a consistent look and feel focusing on UX improvements.
+  - All pages share the same header with distinct actionable sections for info, navigation, and context aware actions.
+  - Header badges to clearly differentiate between pages.
+  - Breadcrumbs are visually more subtle and now show dropdowns for listing workflows as well.
+  - Various fixes to workflow editor for increased reliability when editing details.
+
+### Fixed {#unreleased-fixed}
+
+- MintModel ERB rendering has been fixed.
+- Fetch failures that are caused by remote files not existing now reflect this rather than reporting that the Git remote does not exist.
+- Viewing converged properties for templated assets now include template-specific properties
+- UI/UX fixes:
+  - Pressing escape after search on canvas view (tree renderers) closes the search box instead of not doing anything.
+  - The date and time selector component now has more compact time fields, ensuring they don't overflow the calendar's width area.
+  - The bookmarks component now shows the node type instead of the word "node".
+  - Various fixes to the workflow editor for increased reliability when editing details.
+  - The node navigation is now split in two sections (navigation and settings/properties) and has a refreshed design.
+
+### Known limitations {#unreleased-known-limitations}
+
+- OpsChain agents debug logs are only available for the `event-ttl` as configured in k3s. This is one hour by default.
+
 ## [2026-01-27]
 
 ### Important breaking changes {#2026-01-27-important-breaking-changes}
 
-- OpsChain database is now managed by the CNPG operator. Configuring the operator is required to successfully upgrade to this version. Before upgrading, follow the steps described in the [install the CNPG operator section](/advanced/high-availability-setup.md#installing-the-cnpg-operator) of the high availability setup guide to install the operator in your cluster. We recommend you read the entire guide to understand the upgrade implications and the new features provided by the operator. After installing the CNPG operator, follow the steps in the [DB upgrade guide](/setup/db_upgrade.md) to complete the upgrade process.
+- OpsChain database is now managed by the CNPG operator. Configuring the operator is required to successfully upgrade to this version. Before upgrading, follow the steps described in the [install the CNPG operator section](/advanced/high-availability-setup.md#installing-the-cnpg-operator) of the high availability setup guide to install the operator in your cluster. We recommend you read the entire guide to understand the upgrade implications and the new features provided by the operator. After installing the CNPG operator, follow the steps in the [DB upgrade guide](/versioned_docs/version-2026-01-27/setup/db_upgrade.md) to complete the upgrade process.
 
 ### Added {#2026-01-27-added}
 

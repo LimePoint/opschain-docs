@@ -1,9 +1,0 @@
-{
-  "label": "Operations",
-  "position": 4,
-  "link": {
-    "type": "generated-index",
-    "slug": "/operations",
-    "description": "Operations guides for OpsChain, including security, installation and upgrade guides."
-  }
-}

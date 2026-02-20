@@ -1,13 +1,13 @@
 ---
-sidebar_position: 12
-description: Altering project, environment and asset specific settings.
+sidebar_position: 13
+description: Altering project, environment, agent and asset specific settings.
 ---
 
 # Settings
 
-The project, environment and asset settings are stored in JSON format and allow you to specify configuration options that apply to changes and events within the node. Settings that are deemed sensitive (e.g. password, tokens) are automatically encrypted when saved. Settings can be configured at the project, environment or asset level.
+The project, environment, agent and asset settings are stored in JSON format and allow you to specify configuration options that apply to changes and events within the node. Settings that are deemed sensitive (e.g. password, tokens) are automatically encrypted when saved. Settings can be configured at the project, environment, agent or asset level.
 
-The following configurations can be included in your project, environment or asset settings:
+The following configurations can be included in your project, environment, agent or asset settings:
 
 ```json
 {
@@ -26,7 +26,7 @@ The following configurations can be included in your project, environment or ass
 ```
 
 :::note
-If a setting is configured at both the project, environment and asset levels, the asset setting will override the environment setting, which overrides the project settings.
+If a setting is configured at the project, environment and asset levels, the asset setting will override the environment setting, which overrides the project settings.
 :::
 
 In addition to the settings listed above (that can be configured at the project, environment or asset level), projects can have an additional setting - `allow_parallel.runs_of_same_workflow` which will affect workflow runs within that project.
@@ -51,6 +51,10 @@ opschain project set-settings -p <project code> -f /tmp/updated_project_settings
 :::
 
 ## Setting descriptions
+
+### agent.script_path
+
+The path to the script that will be launched upon starting an [agent](agents.md).
 
 ### allow_parallel.changes
 
@@ -84,9 +88,9 @@ Whether to allow a workflow to be run multiple times in parallel.
 
 Default value: _Dockerfile_
 
-The filename to use for the `Dockerfile` for building the [custom step runner Dockerfile](/key-concepts/step-runner.md#custom-step-runner-dockerfiles).
+The filename to use for the `Dockerfile` for building the [custom step runner Dockerfile](/key-concepts/step-runner.md#custom-step-runner-dockerfiles) or the [agent](agents.md) image.
 
-_This setting is ignored when using an asset template Dockefile because it takes higher priority._
+_This setting is ignored when using an agent template or asset template Dockefile because it takes higher priority._
 
 ### log_aggregator_additional_output_settings
 

@@ -55,29 +55,6 @@ kubectl apply -f metrics-server.yaml
 
 Installing the metrics server is optional, but it is recommended if you want to see some of your node's metrics in the OpsChain UI.
 
-## Helm
+## What to do next
 
-OpsChain is deployed using Helm. You can download, install and validate it with the following commands:
-
-```bash
-curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | DESIRED_VERSION="v3.17.2" bash
-
-# validate helm
-helm version
-```
-
-### Jetstack `cert-manager`
-
-OpsChain uses Jetstack's `cert-manager` to manage authentication within internal components via certificates.
-
-```bash
-helm repo add jetstack https://charts.jetstack.io
-helm repo update
-helm upgrade --install cert-manager jetstack/cert-manager --namespace cert-manager --create-namespace --version v1.16.1 --set "crds.enabled=true" --set "featureGates=AdditionalCertificateOutputFormats=true" --set "webhook.extraArgs={--feature-gates=AdditionalCertificateOutputFormats=true}"
-```
-
-Along with internal certificates used by OpsChain, `cert-manager` will issue self-signed certificates for the OpsChain image registry and API server. To use these certificates, the `cert-manager` CA certificate must be trusted by the container runtime on your Kubernetes nodes, and by any systems from which you will access the OpsChain API.
-
-Alternatively, `cert-manager` can be configured to issue certificates from an external certificate authority (e.g. Let's Encrypt, Vault, Venafi) - see the [cert-manager documentation](https://cert-manager.io/docs/) for more information.
-
-If you'd rather bring your own certificates, the OpsChain Helm chart provides settings to configure the image registry and API server certificates.
+- Proceed with the [installing K3s guide](/setup/installing_k3s.md) to configure your server and install K3s and Helm.

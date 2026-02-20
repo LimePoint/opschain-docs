@@ -11,6 +11,7 @@ After following this guide you should know:
 
 - how to stop the OpsChain pods
 - how to resume the OpsChain pods
+- how to stop K3s when not in use
 
 ## Stopping OpsChain
 
@@ -25,3 +26,17 @@ Do not use the `opschain server stop` command whilst steps and changes are being
 ## Starting OpsChain
 
 If the `opschain server stop` CLI subcommand has been used to stop OpsChain, then the `opschain server start` CLI subcommand can be used to start it again.
+
+## Stopping K3s
+
+If you are not using K3s for other purposes, you can stop it to free up any CPU or RAM that it uses.
+
+The `systemctl stop k3s` command will stop the K3s service.
+
+:::caution
+Do not stop K3s whilst steps and changes are being executed in OpsChain.
+:::
+
+## Starting K3s
+
+If the `systemctl stop k3s` command has been used to stop K3s, then the `systemctl start k3s` command can be used to start it again.

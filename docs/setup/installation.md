@@ -29,7 +29,7 @@ You must have access to the following URLs from your network either directly or 
 
 ### Preparing configuration
 
-Before you proceed, please ensure you have a valid `values.yaml` file configured. Refer to the [Understanding OpsChain configuration variables guide](/setup/understanding-opschain-variables.md) for more details.
+Before you proceed, please ensure you have a valid `values.yaml` file configured. Refer to the [Understanding OpsChain configuration variables](/setup/understanding-opschain-variables.md) and [TLS configuration](/setup/tls/introduction.md) guides for more details.
 
 ## Installation
 
@@ -100,7 +100,7 @@ This step is required even if you are not planning to use the high availability 
 With Helm connected to LimePoint's registry and using your configured `values.yaml` and environment variables, we can install the specific OpsChain version in the desired namespace by running the following command:
 
 ```bash
-helm upgrade --install opschain "oci://docker.io/limepoint/opschain" --version ${OPSCHAIN_CHART_VERSION} --create-namespace -n ${KUBERNETES_NAMESPACE} -f values.yaml --wait --timeout 30m --insecure-skip-tls-verify
+helm upgrade --install opschain "oci://docker.io/limepoint/opschain" --version ${OPSCHAIN_CHART_VERSION} --create-namespace -n ${KUBERNETES_NAMESPACE} -f values.yaml --wait --timeout 30m --insecure-skip-tls-verify --debug
 ```
 
 This will start the OpsChain server and its dependent services in separate Kubernetes pods. For more information on these containers see the [architecture overview](/getting-started/overview.md#architecture-overview).
@@ -118,30 +118,6 @@ kubectl get all -n ${KUBERNETES_NAMESPACE}
 ```
 
 While the installation is running, you can move to the next step where we'll set up the OpsChain CLI for interacting with the API and create your first OpsChain user.
-
-#### Configure the hosts file
-
-To allow OpsChain to access its internal image registry, we need to add the following entry to our hosts file:
-
-```text
-127.0.0.1 opschain-image-registry.local.gd
-```
-
-That can be achieved by running the following command:
-
-```bash
-echo "127.0.0.1 opschain-image-registry.local.gd" >> /etc/hosts
-```
-
-This may vary if you have used a different [domain name for the internal image registry](/setup/understanding-opschain-variables.md#opschain_image_registry_host) in your `values.yaml` file.
-
-#### Internal TLS certificate setup
-
-If you are using TLS for this OpsChain instance then the certificate being used by the OpsChain ingress must be trusted on the k3s host.
-
-If [you configured OpsChain with `cert-manager`](/setup/installing_k3s.md#option-1-deploy-cert-manager); or [you configured OpsChain with the provided self-signed certificates](/setup/installing_k3s.md#option-2a-using-provided-self-signed-certificates), then you will need to trust the OpsChain certificate CA on the k3s host. Follow the steps in the [TLS Kubernetes certificate setup using self-signed certificates](/administration/tls.md#kubernetes-certificate-setup-using-self-signed-certificates) guide before proceeding.
-
-If you are providing your own certificates then you will need to ensure they are trusted by the k3s host by configuring it accordingly.
 
 ### Install the OpsChain CLI
 
@@ -306,7 +282,7 @@ Once you're able to login, you can [familiarise yourself with the OpsChain GUI](
 
 ### Accessing the OpsChain default secret vault
 
-If you have opted to use the default secret vault provided by OpsChain, you can access its UI by navigating to the address configured in your `values.yaml` file. If you haven't provided a custom certificate for it, you'll need to [trust the self-signed certificate](/setup/understanding-opschain-variables.md#self-signed-certificate) generated for it.
+If you have opted to use the default secret vault provided by OpsChain, you can access its UI by navigating to the address configured in your `values.yaml` file.
 
 Refer to the [secret vault settings](/setup/understanding-opschain-variables.md#secret-vault-settings) for information on the credentials needed to access the secret vault UI.
 

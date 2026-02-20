@@ -1,9 +1,0 @@
-{
-  "label": "Administration",
-  "position": 7,
-  "link": {
-    "type": "generated-index",
-    "slug": "/administration",
-    "description": "Administration guides for OpsChain, including security, data management and system configuration."
-  }
-}

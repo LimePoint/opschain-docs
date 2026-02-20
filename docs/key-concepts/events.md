@@ -1,5 +1,5 @@
 ---
-sidebar_position: 7
+sidebar_position: 8
 description: Learn about the events OpsChain tracks for auditing and reporting purposes.
 ---
 

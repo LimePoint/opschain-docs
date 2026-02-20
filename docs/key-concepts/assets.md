@@ -1,5 +1,5 @@
 ---
-sidebar_position: 4
+sidebar_position: 5
 description: Details of OpsChain's asset templates and template versions
 ---
 
@@ -28,23 +28,19 @@ More than that, asset templates are also used to:
 
 ### Documented template actions
 
-The actions available in the `actions.rb` for an asset can be documented via an `opschain.yaml` file in the asset's repository. Any actions listed in the `opschain.yaml` file will be available in the dropdown list on the asset's create change dialog.
+All actions defined in the asset template's `actions.rb` file that include a `description` as part of their definition, will be listed in the action dropdown list on the asset's "run or schedule a change" dialog. Actions that do not include a `description` remain available to run, however the user must know their name and manually key it into the action field.
 
-Below is an example of an `opschain.yaml`:
+Below is an example of actions with and without a description:
 
-```yaml
-actions:
-  - name: provision
-    description: Provision an instance on existing infrastructure
-  - name: destroy
-    description: Destroy the installation (but not the infrastructure)
-  - name: soa:apply_patches
-    description: Apply patches listed in the ERB file to each of the SOA installations
+```ruby
+action :available_in_dropdown, description: "This action and description will appear in the asset's action tab, and in the actions available in the run or schedule a change dialog" do
+  log.info "Here is the action implementation"
+end
+
+action :can_be_run_manually do  # This action can be run from the UI, but won't appear in the dropdown list
+  log.info "Here is the action implementation"
+end
 ```
-
-:::note
-It is not necessary to document an action to use it. Undocumented actions can be run by manually entering the action via the `advanced mode` option when creating a change for the asset.
-:::
 
 ### Asset template versions
 

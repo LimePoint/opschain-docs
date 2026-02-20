@@ -32,9 +32,7 @@ If along the database replication you'd also like to run OpsChain instances (API
 - An external LDAP/AD server must be used for user authentication.
 - The image registry password must be the same across all clusters.
 
-## Configuration
-
-### Installing the CNPG operator
+## Installing the CNPG operator
 
 Before deploying OpsChain with CNPG, you need to install the operator in each Kubernetes cluster where OpsChain will be deployed. To do so, run the following commands in each cluster:
 
@@ -44,10 +42,27 @@ First, create the operator namespace:
 kubectl create namespace cnpg-system
 ```
 
-Then create the secret used by the operator to pull images. Change `<username>` and `<password>` to the Docker Hub credentials that were provided to you as part of your licence.
+Set the `DOCKER_USERNAME` and `DOCKER_PASSWORD` environment variables to the Docker Hub credentials that were provided to you as part of your licence in your shell profile:
 
 ```bash
-kubectl create secret docker-registry opschain-operator-secret --docker-server=docker.io --docker-username=<username> --docker-password=<password> -n cnpg-system
+vi ~/.bash_profile
+```
+
+```bash
+export DOCKER_USERNAME=<username>
+export DOCKER_PASSWORD=<password>
+```
+
+And source it for the changes to take effect:
+
+```bash
+source ~/.bash_profile
+```
+
+Then create the secret used by the operator to pull images:
+
+```bash
+kubectl create secret docker-registry opschain-operator-secret --docker-server=docker.io --docker-username=$DOCKER_USERNAME --docker-password=$DOCKER_PASSWORD -n cnpg-system
 ```
 
 Finally, apply the operator's YAML file:
@@ -67,6 +82,8 @@ kubectl get pods -n cnpg-system
 :::warning Operator scope
 The CNPG operator is installed at the cluster level, with CRDs, controllers and service accounts deployed in the `cnpg-system` namespace.
 :::
+
+## Configuration
 
 ### Cluster configuration
 

@@ -1,5 +1,5 @@
 ---
-sidebar_position: 9
+sidebar_position: 10
 description: Storing environment variables, files and key value pairs in the OpsChain properties framework.
 ---
 
@@ -70,8 +70,9 @@ For example, given the below property folder structure in your repository:
 ```folder
 └── opschain
     └── properties
+        ├── common-for-all-projects.json (option 1)
         └── projects
-            ├── common-for-all-projects.json
+            ├── common-for-all-projects.json (option 2)
             ├── bank
             │   ├── bank-project-properties.json
             │   └── environments
@@ -91,7 +92,7 @@ For example, given the below property folder structure in your repository:
 Here are some of the possible scenarios:
 
 - When your target is the `soa` asset, the property files will be loaded and merged as follows:
-    1. load the `common-for-all-projects.json` properties
+    1. load the `common-for-all-projects.json` properties (_either option can be used - if both exist the `projects` folder file will be loaded and merged after the `properties` folder file_)
     2. load the `bank-project-properties.json` properties, merging them with the `common-for-all-projects.json` properties
     3. load the `common-for-all-envs-in-bank-project.json` properties, merging them with the result of the previous step
     4. load the `dev-env-properties.json` properties, merging them with the result of the previous step
