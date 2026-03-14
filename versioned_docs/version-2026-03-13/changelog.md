@@ -13,19 +13,19 @@ description: Learn about new releases of OpsChain, including new features and up
 
 ### Added {#2026-03-13-added}
 
-- Agents running in OpsChain are now configured with access to the API. [Learn more](advanced/agent-development.md#accessing-the-opschain-api-from-an-agent).
-- When using [automated certificate management](setup/tls/cert-manager), the generated CA is now automatically loaded into the trusted CA store in OpsChain.
+- Agents running in OpsChain are now configured with access to the API. [Learn more](/advanced/agent-development.md#accessing-the-opschain-api-from-an-agent).
+- When using [automated certificate management](/setup/tls/cert-manager.md), the generated CA is now automatically loaded into the trusted CA store in OpsChain.
 - When starting an agent, the desired image SHA can now be specified. This must be an image SHA that corresponds with an image build for the same template version. This means the agent can't be started until an image build has succeeded for the current template version.
 - Events for action generation and agent tasks are now included in the event list API.
-- Users can now configure their slack member id in their notification preferences to receive notifications via slack (requires a global slack bot channel to be configured in the administration screens).
+- Users can now configure their Slack member id in their notification preferences to receive notifications via Slack (requires a global Slack bot channel to be configured in the administration screens).
 - If users have an email address configured in their LDAP record, or they supply a value in their notification preferences, this will be used to send email notifications to the user. (requires a global SMTP channel to be configured in the administration screens).
 - Workflow wait steps and approval steps now notify the relevant user(s) that the workflow is waiting for approval/to be continued
 - Change approval steps now notify the relevant user(s) that the change is waiting for approval.
-- Users can now elect to be notified when:
+- Users can now elect to be [notified](/administration/notifications.md) when:
     - properties or settings are changed for a project, environment or asset they have access to.
-      -various workflow events (started, cancelled, completed, failed) occur for workflows they have access to.
-      -various change events (started, cancelled, completed, failed) occur for changes they have access to.
-- A new event subscription system has been implemented allowing filters to be created to identify specific OpsChain events and then perform tasks in response. These tasks can be calling external webhooks, sending notifications to users or channels, or running changes or workflows..
+    - various workflow events (started, cancelled, completed, failed) occur for workflows they have access to.
+    - various change events (started, cancelled, completed, failed) occur for changes they have access to.
+- A new event subscription system has been implemented allowing filters to be created to identify specific OpsChain events and then perform tasks in response. These tasks can be calling external webhooks, sending notifications to users or channels, or running changes or workflows.
 
 ### Changed {#2026-03-13-changed}
 
