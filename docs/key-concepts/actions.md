@@ -761,8 +761,73 @@ The `state_capital` action uses:
 - the `controller` keyword to call the `report_weather` method on `melbourne`'s controller
 
 :::info
-Within an `action` block, OpsChain does not allow calling other resource's actions directly (e.g. `melbourne.send_postcard` can not be used from the `state_capital` action above). If the `send_postcard` action is required from other resources, it should be moved to a method in the resource type's controller, making it accessible via the `controller` keyword.
+Within an `action` block, OpsChain does not allow calling other resource's actions directly (e.g. `melbourne.send_postcard` can not be used from the `state_capital` action above). If the `state_capital` action is required from other resources, it should be moved to a method in the resource type's controller, making it accessible via the `controller` keyword.
 :::
+
+:::info
+To handle the case where variables are used to define resource names, OpsChain resolves the `controller` or `properties` on a string (or [symbol](https://docs.ruby-lang.org/en/master/Symbol.html)) variable that matches the name of a resource. For example the following code would work:
+
+```ruby
+capital = 'melbourne' # or :melbourne
+namespace :victoria do
+  action :state_capital do
+    puts "The capital of Victoria is #{capital.properties.name}."
+    capital.controller.report_weather
+  end
+
+  city capital do
+    name 'Melbourne'
+    weather 'good'
+  end
+end
+```
+
+Note: The only fields that are looked up automatically are `controller` and `properties`.
+
+:::
+
+### Literal property evaluation
+
+OpsChain will automatically look for a resource with the name that matches the string passed to a property as part of it's resource resolution.
+
+To avoid this automatic lookup, the `literal` keyword can be used
+
+```ruby
+class CityController
+  attr_reader :neighbour, :neighbour_name
+
+  def initialize(options)
+    @neighbour = options[:neighbour]
+    @neighbour_name = options[:neighbour_name]
+  end
+end
+
+resource_type :city do
+  controller CityController
+  property :neighbour
+  property :neighbour_name
+end
+
+city :melbourne
+city :geelong do
+  neighbour 'melbourne'
+  neighbour_name literal 'melbourne'
+end
+
+action :example do
+  OpsChain.logger.info "Neighbour: #{geelong.controller.neighbour}"
+  OpsChain.logger.info "Neighbour name: #{geelong.controller.neighbour_name}"
+end
+```
+
+Given the example above, the `example` action will output:
+
+```text
+Neighbour: #<CityController:0x00007c725cbec800>
+Neighbour name: melbourne
+```
+
+Which shows that the `neighbour 'melbourne'` configuration has referenced the `melbourne` resource (which is shown as the `#<CityController:0x00007c725cbec800>` reference), whilst `neighbour_name literal 'melbourne'` has the literal value `melbourne` because the resource wasn't resolved (thanks to the `literal` keyword).
 
 ### Setting multiple properties
 

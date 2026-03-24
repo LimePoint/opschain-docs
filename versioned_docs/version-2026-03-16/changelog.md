@@ -7,6 +7,10 @@ description: Learn about new releases of OpsChain, including new features and up
 
 ## [2026-03-16]
 
+### Important breaking changes {#2026-03-16-important-breaking-changes}
+
+- OpsChain agents must be stopped before upgrading. Following the upgrade, each agent image must be rebuilt, and then the agent can be started.
+
 ### Added {#2026-03-16-added}
 
 - Changes and workflow runs can now be created via the event subscriber system. These activities will be tagged with the source event that triggered them, allowing you to click through to the source event in the GUI and view the event details.
@@ -28,6 +32,7 @@ description: Learn about new releases of OpsChain, including new features and up
 ### Important breaking changes {#2026-03-13-important-breaking-changes}
 
 - OpsChain now requires the `OPSCHAIN_GUI_BASE_URL` variable to be included in your `values.yaml` file. This variable should specify the base URL for the OpsChain GUI (e.g. `https://opschain.example.com`). It is required to ensure links within external notifications are valid and the OpsChain API pod will fail to startup if it is not configured.
+- OpsChain agents must be stopped before upgrading. Following the upgrade, each agent image must be rebuilt, and then the agent can be started.
 
 ### Added {#2026-03-13-added}
 
