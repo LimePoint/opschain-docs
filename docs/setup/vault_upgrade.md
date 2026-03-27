@@ -8,7 +8,7 @@ description: Upgrading the secret vault to the latest version.
 OpsChain's secret vault storage backend has changed to be database-based rather than file-based, allowing the secret vault to operate in high availability setups. Follow this guide to upgrade to this version. Failure to do so might result in data loss.
 
 :::warning
-This process is only required if you're upgrading from an OpsChain version prior to 2026-03-25 and you are using or want to use the default secret vault.
+This process is only required if you're upgrading from an OpsChain version prior to 2026-03-27 and you are using or want to use the default secret vault.
 :::
 
 ## Stop OpsChain
