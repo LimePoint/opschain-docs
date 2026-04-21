@@ -1,9 +1,0 @@
-{
-  "label": "TLS/HTTPS connectivity",
-  "position": 3,
-  "link": {
-    "type": "generated-index",
-    "slug": "/setup/configuration/tls",
-    "description": "The following guides will walk you through the options available for configuring TLS/HTTPS connectivity for OpsChain."
-  }
-}

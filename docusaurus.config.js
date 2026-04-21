@@ -16,6 +16,7 @@ const config = {
   markdown: {
     hooks: {
       onBrokenMarkdownLinks: 'throw',
+      onBrokenMarkdownImages: 'throw',
     },
   },
   favicon: 'img/favicon.ico',

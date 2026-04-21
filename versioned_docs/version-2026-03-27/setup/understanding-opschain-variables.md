@@ -64,10 +64,10 @@ OpsChain provides an out-of-the-box secret vault that can be used to store secur
 
 To use the default secret vault provided by OpsChain (default configuration), you must define the hostname its UI will be accessible at, as described in the [TLS/HTTPS configuration guide](/setup/tls/introduction.md).
 
-You must also define the seal key for the secret vault by setting the `secretVault.unsealKey` setting in your `values.yaml` file. The key must be 32 characters long and you can use the following command to generate a random key:
+You must also define the seal key for the secret vault by setting the `secretVault.unsealKey` setting in your `values.yaml` file. The key must be a 32 characters long, base64 encoded string and you can use the following command to generate a random key:
 
 ```bash
-openssl rand -hex 16
+openssl rand -base64 32
 ```
 
 This key must be the same across all OpsChain instances in a [high availability setup](/advanced/high-availability-setup.md).

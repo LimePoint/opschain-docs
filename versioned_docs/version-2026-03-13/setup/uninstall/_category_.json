@@ -1,9 +1,0 @@
-{
-  "label": "Uninstall OpsChain",
-  "position": 5,
-  "link": {
-    "type": "generated-index",
-    "slug": "/uninstall",
-    "description": "The following guides will walk you through the process of uninstalling OpsChain."
-  }
-}

@@ -16,8 +16,8 @@
     "prettier:write": "prettier --write ."
   },
   "dependencies": {
-    "@docusaurus/core": "^3.9.1",
-    "@docusaurus/preset-classic": "^3.9.1",
+    "@docusaurus/core": "^3.9.2",
+    "@docusaurus/preset-classic": "^3.9.2",
     "@easyops-cn/docusaurus-search-local": "^0.45.0",
     "@fontsource/poppins": "^5.1.0",
     "@fontsource/rubik": "^5.1.0",
@@ -31,8 +31,8 @@
     "use-local-storage": "^3.0.0"
   },
   "devDependencies": {
-    "@docusaurus/module-type-aliases": "^3.9.1",
-    "baseline-browser-mapping": "^2.10.0",
+    "@docusaurus/module-type-aliases": "^3.9.2",
+    "baseline-browser-mapping": "^2.10.17",
     "husky": "^9.1.6",
     "lint-staged": "^15.2.10",
     "prettier": "^3.3.3"
