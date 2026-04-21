@@ -18,7 +18,7 @@ description: Learn about new releases of OpsChain, including new features and up
 - The `agent.image_override`, `mintmodel_executor.image_override`, `runner.image_override` and `worker.image_override` settings have been added.
 - A new [debug toolbox](/operations/maintenance/debug-toolbox.md) has been added to help debugging and troubleshooting OpsChain deployments and networking issues.
 - OpsChain now provides better error messages for typos in resources, for example suggesting a property name that may have been intended instead.
-- The OpsChain DSL now provides the `OpsChain.run_action` keyword for running another action programmatically.
+- The OpsChain DSL now provides the [`OpsChain.run_action` keyword](/key-concepts/actions.md#running-other-actions-within-another-action) for running another action programmatically.
 - A new OpsChain dashboard has been added to the GUI to provide a high-level overview of the system's status and health, as well as quick access to important resources and information.
 - A new `OPSCHAIN_DATABASE_STATEMENT_TIMEOUT` settings has been added to allow configuring a timeout for database statements to prevent long-running queries from impacting the performance of the system. The default value is `50s`.
 - The [`update_local_user_email_address`](/setup/setup-instance.md#updating-a-locally-authenticated-user-email-address) utility has been added.
