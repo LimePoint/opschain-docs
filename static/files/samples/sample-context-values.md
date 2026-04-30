@@ -19,7 +19,7 @@ change:
   created_at: '2020-05-20T10:00:00.000000Z'
   started_at: '2020-05-20T10:00:05.000000Z'
   finished_at:
-  updated_at: '2026-04-23T02:10:16.534615Z'
+  updated_at: '2026-04-30T08:32:59.138185Z'
   asset_name:
   environment_name: Receivables
   project_name: Finance
@@ -34,17 +34,20 @@ step:
   continued_by: []
   requires_approval_from:
   action: deploy
-  name: deploy
   step_type: standard
   child_execution_strategy: sequential
   change_id: 3a97c789-8f4e-497c-a1aa-04efaa2e87e7
   skip_on_retry: false
   step_sequence: 1
   full_path: deploy
+  input_arguments: {}
+  name: deploy
   created_at: '2020-05-20T10:00:00.000000Z'
   started_at: '2020-05-20T10:00:05.000000Z'
   finished_at:
-  updated_at: '2026-04-23T02:10:16.534615Z'
+  updated_at: '2026-04-30T08:32:59.138185Z'
+  image_build_started_at: '2026-04-30T08:26:23.878863Z'
+  image_build_ended_at:
   status_code: running
 user:
   name: mary
@@ -62,7 +65,7 @@ parents:
     name: Finance
     description: Finance applications
     archived: false
-    created_by: billie
+    created_by: esteban
     project_type: Standard
   environment:
     id: 530d796b-60ff-4bc6-ad09-ac3eaf1afa45
@@ -70,5 +73,5 @@ parents:
     name: Receivables
     description: RMS
     archived: false
-    created_by: jerry.lindgren
+    created_by: loren
 ```
