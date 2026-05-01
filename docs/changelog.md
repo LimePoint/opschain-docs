@@ -23,10 +23,15 @@ Follow the [upgrade guide](operations/upgrading.md) for more information on how 
 
 - Handling of resource property resource resolution has now been improved to avoid infinite recursion.
 - It is no longer possible to refetch a template version Git revision while a change is running for this template version because this would lead to the change failing.
+- Fixed issue where the run change and run workflow dialog would hold on to previous values.
+- Improved search on available actions of an asset including a total and filtered count.
 
 ### Changed {#2026-04-30-changed}
 
 - The full error message is now shown when MintModel generation fails.
+- Tabs on run change and workflow dialog now show a small checkmark if the values under the respective tabs have been altered or added from a previously run change. These include property and setting overrides, as well as metadata.
+- Minor adjustments to colours on the dashboard widgets.
+- Minor adjustments to colours on trees (change, workflow run, workflow overview and available actions).
 
 ### Added {#2026-04-30-added}
 
@@ -36,6 +41,7 @@ Follow the [upgrade guide](operations/upgrading.md) for more information on how 
 - On change failure OpsChain will now output the details of the resource whose action failed. See the [troubleshooting guide](troubleshooting.md#output-resource-attributes-on-error) for more information.
 - The [keyword `ref`](key-concepts/actions.md#the-ref-or-resource-method) now has an alias `resource` to make it clearer what it returns. Both names can be used interchangeably.
 - When an action fails to execute, the error now shows where the action was defined.
+- Change properties now show a loader when fetching change/step properties.
 
 ## [2026-04-23]
 
