@@ -12,8 +12,10 @@
     "serve": "docusaurus serve",
     "write-translations": "docusaurus write-translations",
     "write-heading-ids": "docusaurus write-heading-ids",
-    "postinstall": "husky install",
-    "prettier:write": "prettier --write ."
+    "postinstall": [
+      "patch-package",
+      "husky install"
+    ]
   },
   "dependencies": {
     "@docusaurus/core": "^3.10.0",
@@ -34,6 +36,7 @@
     "@docusaurus/module-type-aliases": "^3.9.2",
     "husky": "^9.1.6",
     "lint-staged": "^15.2.10",
+    "patch-package": "^8.0.1",
     "prettier": "^3.3.3"
   },
   "browserslist": {

@@ -1,0 +1,25 @@
+diff --git a/node_modules/@easyops-cn/docusaurus-search-local/dist/client/client/utils/tokenize.js b/node_modules/@easyops-cn/docusaurus-search-local/dist/client/client/utils/tokenize.js
+index e79541d..71e875f 100644
+--- a/node_modules/@easyops-cn/docusaurus-search-local/dist/client/client/utils/tokenize.js
++++ b/node_modules/@easyops-cn/docusaurus-search-local/dist/client/client/utils/tokenize.js
+@@ -14,7 +14,7 @@ export function tokenize(text, language) {
+             .tokenizer(text)
+             .map((token) => token.toString());
+     }
+-    let regExpMatchWords = /[^-\s]+/g;
++    let regExpMatchWords = /[^-\s\.]+/g;
+     // Especially optimization for `zh`.
+     if (language.includes("zh")) {
+         // Currently only works fine with letters in Latin alphabet and Chinese.
+diff --git a/node_modules/@easyops-cn/docusaurus-search-local/dist/server/server/utils/buildIndex.js b/node_modules/@easyops-cn/docusaurus-search-local/dist/server/server/utils/buildIndex.js
+index 19c788d..03018e9 100644
+--- a/node_modules/@easyops-cn/docusaurus-search-local/dist/server/server/utils/buildIndex.js
++++ b/node_modules/@easyops-cn/docusaurus-search-local/dist/server/server/utils/buildIndex.js
+@@ -9,6 +9,7 @@ let plugin;
+ function buildIndex(allDocuments, { language, removeDefaultStopWordFilter, removeDefaultStemmer, zhUserDict, zhUserDictPath, }) {
+     if (!pluginInitialized) {
+         pluginInitialized = true;
++        lunr_1.default.tokenizer.separator = /[\s\-\.]+/;
+         if (language.length > 1 || language.some((item) => item !== "en")) {
+             require("lunr-languages/lunr.stemmer.support")(lunr_1.default);
+         }
