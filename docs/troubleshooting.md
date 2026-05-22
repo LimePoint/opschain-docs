@@ -302,3 +302,25 @@ Failed to build step runner image
 Your Kernel version might not support `overlayfs` and couldn't find a compatible snapshotter. You can enable the out-of-the-box `fuse-overlayfs` snapshotter via your `values.yaml` file.
 
 Refer to the [image building settings](/setup/configuration/additional-settings.md#image-building-settings) section of the configuration guide for more information.
+
+### Error - Decode error on login
+
+This likely means `token.secret_key` is unset.
+
+#### Solution - Update the value of `token.secret_key`
+
+To update the value from the backend, run the following:
+
+```bash
+kubectl exec -n ${KUBERNETES_NAMESPACE} deploy/opschain-api -- /usr/bin/container_start.sh "rails runner 'ConfigurationService.update({ %(token) => { %(secret_key) => SecureRandom.hex(64) } })'"
+```
+
+:::info
+
+After doing this, all users will need to log back in.
+
+:::
+
+#### Solution - Clear cookies
+
+Clearing your browser cookies may be required after updating the `token.secret_key` value (although this is unlikely).
