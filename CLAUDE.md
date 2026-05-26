@@ -23,7 +23,7 @@ This is a [Docusaurus 3](https://docusaurus.io/) documentation site for OpsChain
 - `docs/` — "next" (unreleased/in-progress) documentation
 - `versioned_docs/version-<date>/` — released versions (e.g. `2026-04-21`)
 - `versioned_sidebars/` — sidebar configs per released version
-- `versions.json` — ordered list of released versions
+- `versions.json` — ordered list of released versions (most recent first)
 
 When creating a new release, run `npm run docusaurus docs:version <date>` to snapshot `docs/` into a new versioned copy.
 
@@ -31,13 +31,130 @@ When creating a new release, run `npm run docusaurus docs:version <date>` to sna
 
 **Static assets in `static/`**:
 - `static/api-docs/` — pre-built API reference (linked from navbar)
-- `static/files/` — downloadable config examples and sample files
+- `static/files/samples/` — downloadable sample files (Dockerfile, step_context.json, etc.)
+- `static/files/config_file_examples/` — downloadable config examples (values.yaml, opschainrc)
 
 **Custom components** live in `src/` (React/JSX, Babel-compiled). Theme overrides are in `src/theme/`.
 
 ## Key constraints
 
 - `onBrokenLinks: 'throw'` and `onBrokenAnchors: 'throw'` — the build fails on any broken internal link or anchor. Always run `npm run build` to validate after adding or removing pages.
-- Prettier: 120-char line width, single quotes, trailing commas (ES5 mode). Run `npm run prettier:write` before committing.
+- Prettier: 120-char line width, single quotes, trailing commas (ES5 mode). Run `npm run prettier:write` before committing. Note: Prettier does **not** format markdown files (excluded via `.prettierignore`).
 - Markdown linting excludes MD013 (line length) and MD033 (inline HTML). Numbered lists must use `ordered` style (MD029).
 - Pre-commit hooks (Husky + lint-staged) run Prettier automatically on staged files.
+
+## Writing style
+
+- **Australian English** throughout. Use Australian spellings: `licence` (not `license`), `behaviour` (not `behavior`), `colour` (not `color`), `organise` (not `organize`), `recognise` (not `recognize`), etc.
+- **Sentence case** for all headings, page titles, sidebar labels, and `_category_.json` labels. Capitalise only the first word and proper nouns.
+  - Correct: `## Runner image settings`, `"label": "Getting started"`
+  - Incorrect: `## Runner Image Settings`, `"label": "Getting Started"`
+- **Proper nouns only** are capitalised mid-sentence. Product and technology names are proper nouns: OpsChain, MintPress, LimePoint, Kubernetes, Helm, Ruby, AlmaLinux, Docker, GitHub, etc. Generic terms are not: runner, executor, worker, step, change, action, project, environment, asset, workflow.
+
+## Markdown conventions
+
+### Front matter
+
+Every page should have a `sidebar_position` integer and optionally a `description`:
+
+```yaml
+---
+sidebar_position: 3
+description: One-sentence summary used for SEO and generated index pages.
+---
+```
+
+The markdown linter ignores front matter, so YAML syntax is not validated by `mdl`.
+
+### Directory sidebar config
+
+Directories use `_category_.json` to set their sidebar label, position, and optional index page:
+
+```json
+{
+  "label": "Key concepts",
+  "position": 6,
+  "link": {
+    "type": "generated-index",
+    "description": "One-sentence description for the generated index page."
+  }
+}
+```
+
+Labels in `_category_.json` follow the same sentence case rule as headings.
+
+### Internal links
+
+Use absolute paths with a leading `/`. Include the `.md` extension for files; omit it for directories:
+
+```markdown
+See [changes](/key-concepts/changes.md) for more detail.
+See the [setup guides](/setup/) for installation steps.
+```
+
+Anchor links are auto-generated from heading text (lowercased, hyphenated). Custom anchor IDs can be set explicitly — this is required in the changelog to keep stable links across versions:
+
+```markdown
+### Added {#2026-05-21-added}
+```
+
+### Admonitions
+
+Use Docusaurus admonition syntax. Choose the type that matches the severity:
+
+- `:::note` — supplementary information or caveats
+- `:::tip` — best practices or helpful guidance
+- `:::info` — contextual or background information
+- `:::warning` — important warnings, breaking changes, data-loss risk
+- `:::caution` — less severe warnings
+
+### Code blocks
+
+Always include a language identifier:
+
+````markdown
+```bash
+opschain changes list
+```
+
+```ruby
+action :deploy do
+  sh 'echo hello'
+end
+```
+````
+
+Supported languages with syntax highlighting: `ruby`, `bash`, `yaml`, `json`, `dockerfile`.
+
+### Images and screenshots
+
+Screenshots live alongside the markdown file (e.g. in `docs/ui/`). Use the webpack image loader and add `className="image-border"` for the standard green border:
+
+```jsx
+<img alt='Change details screen' src={require('!url-loader!./change-details.png').default} className='image-border' />
+```
+
+### Reusable content
+
+`static/files/partials/git-revision.md` is a shared partial. Import it into a page with:
+
+```jsx
+import GitRevision from '/files/partials/git-revision.md'
+
+<GitRevision />
+```
+
+The `<ProductName />` component (from `src/components/ProductName.js`) renders the product name from site config and can be used in MDX pages.
+
+## Versioning workflow
+
+- All new or in-progress content goes in `docs/`. This is the "next" (unreleased) version.
+- Do not edit files in `versioned_docs/` directly — those are historical snapshots.
+- On release, run `npm run docusaurus docs:version <YYYY-MM-DD>` to snapshot `docs/` into a new versioned copy. Add the date to `versions.json` at the top of the array.
+
+## Changelog conventions
+
+- Unreleased changes go under `## [Unreleased]`.
+- Released sections are headed `## [YYYY-MM-DD]` matching the version date.
+- Each section uses explicit anchor IDs on its headings (e.g. `{#2026-05-21-added}`) so links remain stable when the changelog is copied into versioned docs.
+- Standard subsections: `Added`, `Changed`, `Fixed`, `Important breaking changes`, `Known issues`.

@@ -32,6 +32,8 @@ ARG GIT_SHA
 RUN opschain_configure_project_repo.sh "$GIT_SHA"
 
 # Run any Dockerfile commands that rely on the contents of the Git repository here.
+# An example of doing this with good caching could be:
+# RUN --mount=type=cache,id=dnf,target=/var/cache/dnf,sharing=locked dnf --set keepcache=1 install -y <dep>
 
 # Run any Dockerfile commands that rely on using `opschain-exec` here. Copy the --mount lines used in the "bundle_and_lint.sh" RUN
 # command below if you require access to OpsChain secrets and/or properties environment variables.
