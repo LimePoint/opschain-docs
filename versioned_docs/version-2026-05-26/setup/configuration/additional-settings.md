@@ -62,11 +62,19 @@ Set to `0` to disable this feature (meaning queries will not be terminated).
 
 Queries are terminated to prevent overloading the database.
 
+:::note
+This value would be in milliseconds if no suffix was added. Add the suffix `s` for seconds (as the default does), `min` for minutes, `h` for hours.
+:::
+
 ### OPSCHAIN_WORKER_DATABASE_STATEMENT_TIMEOUT
 
 Default values: _0_ (do not timeout)
 
 Configures the database [`statement_timeout`](https://www.postgresql.org/docs/current/runtime-config-client.html#GUC-STATEMENT-TIMEOUT) for SQL statements executed within the OpsChain worker. This means queries to the database will be terminated if this timeout is exceeded.
+
+:::note
+This value would be in milliseconds if no suffix was added. Add the suffix `s` for seconds, `min` for minutes, `h` for hours.
+:::
 
 ## Authentication settings
 

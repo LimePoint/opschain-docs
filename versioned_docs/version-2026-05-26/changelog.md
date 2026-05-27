@@ -24,6 +24,7 @@ Follow the [upgrade guide](operations/upgrading.md) for more information on how 
   - This means the `mintpress` user has been removed from the image, hence the image always runs as `opschain`.
   - The `/opt/mintpress` path still exists and contains the MintPress SDK.
   - The home directory of the `opschain` user remains `/opt/opschain`.
+  - The `worker.name` configuration default has been updated to `opschain-runner-enterprise`. This is an automated update.
 
 ## [2026-05-21]
 

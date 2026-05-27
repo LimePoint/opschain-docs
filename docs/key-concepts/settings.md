@@ -334,54 +334,6 @@ Scope: _global, project_
 
 Whether to allow a workflow to be run multiple times in parallel.
 
-## MintModel executor image settings
-
-These settings modify the base `FROM` MintModel executor image, used to build change step runners. The MintModel executor image string is constructed in the following way:
-
-```dockerfile
-FROM {repository}/{name}:{image_tag}
-```
-
-:::info
-MintModel executor pods are only used when running a change of an [asset with a MintModel](/key-concepts/assets.md#asset-templates-with-a-mintmodel).
-:::
-
-### mintmodel_executor.image_override
-
-Default value: _not configured (there is no image override)_
-
-This setting overrides the whole image string used in the `FROM` directive and hence the `name`, `repository`, and `image_tag` settings will be ignored. This allows you to provide an alternative image registry, for example: `https://customer-registry.example.com/customer/mintmodel-image:version` or `ghcr.io/customer/mintmodel-image:version`.
-
-:::info
-The Kubernetes cluster running OpsChain must be able to pull images from the specified registry. [Learn more](https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/).
-
-The `opschain-image-secret` secret in the Kubernetes cluster must have credentials for the registry to allow the OpsChain build service to pull the images.
-:::
-
-### mintmodel_executor.image_pull_policy
-
-Default value: _not configured (the Kubernetes cluster default pull policy is used)_
-
-The image pull policy for the MintModel step executor. [Learn more](https://kubernetes.io/docs/concepts/containers/images/#image-pull-policy).
-
-### mintmodel_executor.image_tag
-
-Default: _Current version, e.g. `2025-01-01`_.
-
-The tag of the MintModel executor image.
-
-### mintmodel_executor.name
-
-Default: _opschain-mintmodel-executor_
-
-The name of the MintModel executor image.
-
-### mintmodel_executor.repository
-
-Default: _limepoint_
-
-The repository where the MintModel executor image is stored. Refers to a Docker registry or a container image repository.
-
 ## Notifications
 
 Refer to [notifications](/operations/notifications.md) for the notifications configuration.
@@ -393,10 +345,6 @@ These settings modify the base `FROM` runner image, used to build change step ru
 ```dockerfile
 FROM {repository}/{name}:{image_tag}
 ```
-
-:::info
-These settings are used for generating actions for assets. When running changes, they are only used when `pod_per_change_step` is set to `true`.
-:::
 
 ### runner.image_override
 
@@ -427,6 +375,28 @@ The name of the runner image.
 Default: _limepoint_
 
 The repository where the runner image is stored. Refers to a Docker registry or a container image repository.
+
+### runner.reuse_actions_rb
+
+Default value: _true_
+
+Improves change performance by only loading the actions defined in the `actions.rb` once.
+
+This means that code at the top level of the file can't change - e.g. you can't define a variable at the top level and attempt to change it between steps. This can still be done within an action.
+
+```ruby
+top_level_var = rand > 0.5 ? something : something_else # this wouldn't work as expected because the value wouldn't change
+
+action :test do
+  var = rand > 0.5 ? something : something_else # this would work because it would be run in the action
+end
+```
+
+:::note
+
+This setting is ignored when `pod_per_change_step` is `true`.
+
+:::
 
 ## Vault settings
 
@@ -518,66 +488,10 @@ Whether to use OpsChain's encryption to encrypt the values before storing them i
 
 ## Worker settings
 
-These settings only apply when running a change with `pod_per_change_step` set to `false` or when running a change with a [MintModel](/key-concepts/assets.md#asset-templates-with-a-mintmodel).
+These settings only apply when running a change with `pod_per_change_step` set to `false`.
 
 ### remove_change_worker_pod
 
 Default value: _true_
 
-Setting that enables the change worker / MintModel executor pod to be left running once the change finishes so we can execute into them and perform debug operations.
-
-### worker.reuse_actions_rb
-
-Default value: _true_
-
-Improves change performance by only loading the actions defined in the `actions.rb` once. This means that code at the top level of the file can't change - e.g. you can't define a variable at the top level and attempt to change it between steps. This can still be done within an action.
-
-```ruby
-top_level_var = rand > 0.5 ? something : something_else # this wouldn't work as expected because the value wouldn't change
-
-action :test do
-  var = rand > 0.5 ? something : something_else # this would work because it would be run in the action
-end
-```
-
-### Worker image settings
-
-These settings modify the base `FROM` worker image, used to build change runners. The worker image string is constructed in the following way:
-
-```dockerfile
-FROM {repository}/{name}:{image_tag}
-```
-
-:::info
-Change workers are only used when `pod_per_change_step` is set to `false` when running a non-MintModel change.
-:::
-
-#### worker.image_override
-
-Default value: _not configured (there is no image override)_
-
-This setting overrides the whole image string used in the `FROM` directive and hence the `name`, `repository`, and `image_tag` settings will be ignored. This allows you to provide an alternative image registry, for example: `https://customer-registry.example.com/customer/worker-image:version` or `ghcr.io/customer/worker-image:version`.
-
-:::info
-The Kubernetes cluster running OpsChain must be able to pull images from the registry. [Learn more](https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/).
-
-The `opschain-image-secret` secret in the Kubernetes cluster must have credentials for the registry to allow the OpsChain build service to pull the images.
-:::
-
-#### worker.image_tag
-
-Default: _Current version, e.g. `2025-01-01`_.
-
-The tag of the worker image.
-
-#### worker.name
-
-Default: _opschain-mintmodel-executor_
-
-The name of the worker image.
-
-#### worker.repository
-
-Default: _limepoint_
-
-The repository where the worker image is stored. Refers to a Docker registry or a container image repository.
+Setting that enables the change worker pod to be left running once the change finishes so we can execute into them and perform debug operations.

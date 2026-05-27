@@ -572,7 +572,7 @@ The tag of the worker image.
 
 #### worker.name
 
-Default: _opschain-mintmodel-executor_
+Default: _opschain-runner-enterprise_
 
 The name of the worker image.
 
