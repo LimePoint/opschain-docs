@@ -156,7 +156,7 @@ There are a few options available for configuring TLS/HTTPS connectivity for Ops
 3. Bringing [your own certificates](setup/tls/manual-cert-management.md). This option is the most flexible if you are running in an enterprise environment and can only trust your own certificates.
 4. Using a combination of `cert-manager` and your own certificates. You can use `cert-manager` to automatically manage certificates for the internal services while providing your own certificates for the API, UI and secret vault, for example. Refer to the [cert-manager guide](setup/tls/cert-manager.md) to install cert-manager and then refer to the [manual certificate management guide](setup/tls/manual-cert-management.md) to configure your own certificates.
 
-:::note Considerations
+:::note[Considerations]
 Remember that TLS certificates expire and need to be renewed. Depending on your chosen option, you will need to manually renew your certificates before they expire to ensure that your instance continues to function properly. Check the relevant guide for more information on how to renew your certificates.
 :::
 

@@ -21,7 +21,7 @@ OpsChain's log aggregator is provided with a shared 1GB PVC for buffering logs, 
 
 ![OpsChain log forwarding overview](/img/log_forwarding.png)
 
-:::tip PVC size
+:::tip[PVC size]
 If you need to increase the PVC size, you can do so by modifying your `values.yaml` file and setting the `logAggregator.volume.size` value to the desired size and (re)deploying OpsChain.
 
 ```yaml

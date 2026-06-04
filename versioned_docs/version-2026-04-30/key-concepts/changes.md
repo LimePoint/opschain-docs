@@ -24,7 +24,7 @@ OpsChain changes can be created via the OpsChain CLI, GUI, or by directly POSTin
 - If running the change on a project or environment, a [Git remote](/key-concepts/git-remotes.md) and Git revision (tag/branch/SHA). Assets are already linked to a Git remote and Git revision
 - The OpsChain [action](/key-concepts/actions.md) to execute
 
-:::tip Creating changes
+:::tip[Creating changes]
 For more information on using the CLI to create a change, see `opschain change create --help`.
 
 For more information on using the GUI to create a change, see [creating a new change](/getting-started/familiarisation/gui/activity.md#run-change).
@@ -90,7 +90,7 @@ When retrying a change, the existing change is duplicated as a new change and st
 
 As steps are rerun from the start we suggest only retrying changes/steps that are idempotent.
 
-:::note NOTES
+:::note[NOTES]
 
 1. When OpsChain retries a change, it will retry it using the code from the resolved Git SHA stored with the original change. If you wish to retry a change using updated Git repository code, a new change must be created so OpsChain can resolve the new Git SHA.
 2. The logs for the original change are not included on the new change. However, they can still be seen in the original change page.
@@ -145,7 +145,7 @@ When querying changes via the change API, you can use OpsChain's [API filtering]
 curl -G --user "{{username}}:{{password}}" 'http://<host>/api/changes' --data-urlencode 'filter[metadata_text_cont]=CR921'
 ```
 
-:::note NOTES
+:::note[NOTES]
 Update the username, password, host and port to reflect your OpsChain server configuration.
 :::
 

@@ -25,7 +25,7 @@ To backup the OpsChain database, you must run a few manual steps on the host whe
 - The backup should ideally be performed when no changes, workflows or agents are running. If any of these are running, it's possible that they will be in an inconsistent state when restoring from the backup.
 - When in a high availability setup, replica database clusters will need to be recreated after the backup is restored.
 
-:::info Limited backup
+:::info[Limited backup]
 Backing up the database is limited to the data that is stored in the database. While this includes change and step states, it will not include the actual long-running agents, change deployments or their respective resources.
 :::
 
@@ -127,7 +127,7 @@ Open that file and make the following changes:
 - Replace the `<image-tag>` placeholder with the tag for the OpsChain version you're recovering from.
 - Replace the `secretName` settings with the names of the Kubernetes secrets that contain the TLS certificates for the database cluster. The names in this sample are for the auto-generated certificates using the default configuration.
 
-:::tip Existing secrets
+:::tip[Existing secrets]
 You can check the existing Kubernetes secrets by running the following command:
 
 ```bash
@@ -163,7 +163,7 @@ BACKUP_DATE=$(date +%Y%m%d_%H%M%S)
 BACKUP_DIR="/opt/backup/${BACKUP_DATE}"
 ```
 
-:::tip Timezone difference
+:::tip[Timezone difference]
 The backup date is generated with the timezone set in the pod, which might diverge from your expected timezone.
 :::
 
@@ -173,7 +173,7 @@ Then, generate the backup:
 pg_basebackup -h opschain-db-rw -U streaming_replica -D "$BACKUP_DIR" -Ft -z --compress=6 -P -v --wal-method=stream --checkpoint=fast --max-rate=100M
 ```
 
-:::tip Export rate
+:::tip[Export rate]
 The `--max-rate` option is used to limit the export rate to 100MB/s. You can adjust this value to your needs.
 :::
 
@@ -267,17 +267,17 @@ Recover the `values.yaml` file for the version of OpsChain you're recovering fro
 
 To restore OpsChain from a database backup, ensure you're deploying into an empty namespace. This is important to avoid conflicts with existing resources. Refer to the [uninstall](/setup/uninstall/uninstall.md#remove-the-opschain-containers-and-data) guide for more information on how to clean up the Kubernetes namespace.
 
-:::warning High availability clusters
+:::warning[High availability clusters]
 If you're restoring from a backup in a high availability setup, check the [extra requirements for high availability clusters](/advanced/high-availability-setup.md#recovery-from-a-backup) when restoring from a backup.
 :::
 
 Then, do a regular installation of OpsChain as described in the [installation](/setup/installation.md) guide, but with the additional `--set stopped=true` and `--set stopDatabase=true` flags in the Helm command, as described in the [deploy OpsChain in stopped mode](/advanced/high-availability-setup.md#deploy-opschain-in-stopped-mode) and [hibernating the database](/advanced/high-availability-setup.md#hibernating-the-database) sections.
 
-:::info OpsChain version
+:::info[OpsChain version]
 You may try to restore the backup to a newer version of OpsChain, but beware of breaking changes between the versions. It's recommended to first restore the backup to the same version of OpsChain as the backup was created with and then upgrade to the latest version.
 :::
 
-:::tip Secret vault
+:::tip[Secret vault]
 While in hibernated mode, it's expected that the default secret vault errors and restarts, given it's failing to access the database. If you'd like to avoid the overhead, scale it down to 0 replicas until you resume OpsChain.
 
 ```bash

@@ -1800,7 +1800,7 @@ OPSCHAIN_INSECURE=true opschain projects list
 
 ### Common errors and remediation
 
-<!-- markdownlint-disable MD056 -->
+{/* <!-- markdownlint-disable MD056 --> */}
 | Error | Likely cause | Fix |
 |---|---|---|
 | `failed to load config: profile 'X' not found` | Profile doesn't exist | Run `opschain config profiles list` and fix spelling, or create the profile |
@@ -1814,4 +1814,4 @@ OPSCHAIN_INSECURE=true opschain projects list
 | `context deadline exceeded` / timeout | Request took too long | Increase `timeout` in profile or use `OPSCHAIN_TIMEOUT=300` |
 | TLS handshake error | Self-signed cert | Add `insecure: true` to profile or use `--insecure` |
 | `unpermitted parameter: auth_provider` | Sending read-only fields in assignment request | Do not send `auth_provider` in assignment JSON |
-<!-- markdownlint-enable MD056 -->
+{/* <!-- markdownlint-enable MD056 --> */}

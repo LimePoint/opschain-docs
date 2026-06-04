@@ -95,7 +95,7 @@ See the [setup guides](/setup/) for installation steps.
 Anchor links are auto-generated from heading text (lowercased, hyphenated). Custom anchor IDs can be set explicitly — this is required in the changelog to keep stable links across versions:
 
 ```markdown
-### Added {#2026-05-21-added}
+### Added {/* #2026-05-21-added */}
 ```
 
 ### Admonitions
@@ -107,6 +107,14 @@ Use Docusaurus admonition syntax. Choose the type that matches the severity:
 - `:::info` — contextual or background information
 - `:::warning` — important warnings, breaking changes, data-loss risk
 - `:::caution` — less severe warnings
+
+When adding a title for an admonition, use the following syntax:
+
+```markdown
+:::warning[Title]
+Content
+:::
+```
 
 ### Code blocks
 

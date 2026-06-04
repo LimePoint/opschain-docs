@@ -27,7 +27,7 @@ If you have installed OpsChain with the default secret vault, you can access its
 
 Once logged in the secret vault UI, you can view, create and update the secrets stored in the secret vault KV engine. Make a note of the paths for the secrets you want to access in your actions and properties.
 
-:::info Custom vault
+:::info[Custom vault]
 If you have your own secret vault, the KV engine may be mounted to a different path, this will be reflected in the path you use to access the secrets in your actions and properties. Check the secret vault settings in your `values.yaml` file to find the path to the KV engine.
 :::
 
@@ -39,7 +39,7 @@ To have a secret that OpsChain will read from, we'll create a secret named `mana
 
 We'll also create another secret named `managed_server/web_server` with the credentials to access a private Gem repository. This secret will only contain a key for the `github_token`.
 
-:::note Secret data
+:::note[Secret data]
 Notice that the keys of our secret are all under the `data` key. This pattern must be followed when using the default secret vault KV engine.
 
 You can also see that the secrets are encrypted at rest. This is due to the double encryption used by OpsChain, configured by the [double encryption setting](/setup/understanding-opschain-variables.md#opschain_vault_use_mint_encryption).
@@ -126,7 +126,7 @@ Note that the format for accessing the secret vault from within the properties m
 
 Since we have one asset in the `Development` environment and one in the `Staging` environment, we can update the properties of both assets to access the `hostname` property from the secret vault or point each to a different secret.
 
-:::tip Secrets from properties
+:::tip[Secrets from properties]
 All the secrets accessed from OpsChain' properties will be decrypted and ready for use when accessed within your resources and actions.
 :::
 
@@ -142,7 +142,7 @@ Let's update the properties of our `Development` environment to define the `gith
 
 ![Securing the image build process](./images/managed-server-build-env.png)
 
-:::warning Environment variables visibility
+:::warning[Environment variables visibility]
 Beware that the environment variables defined in the `opschain.env` section of the properties are also available to the actions running inside the image.
 :::
 
@@ -156,7 +156,7 @@ And we can see that when running the image build process, the value of the `BUND
 
 ![Secured image build process logs](./images/managed-server-build-logs.png)
 
-:::info Environment variables scope
+:::info[Environment variables scope]
 Beware that OpsChain will only setup the environment variables for commands that are run via `opschain-exec`.
 :::
 

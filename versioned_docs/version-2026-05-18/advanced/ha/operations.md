@@ -113,7 +113,7 @@ db:
           replicationTLSSecret: "opschain-db-south-streaming-certs"
 ```
 
-:::warning Database credentials
+:::warning[Database credentials]
 Each Kubernetes cluster will have its own `opschain-db-credentials` secret, but the credentials should be the same across all clusters.
 :::
 
@@ -172,7 +172,7 @@ kubectl annotate cluster opschain-db -n ${KUBERNETES_NAMESPACE} cnpg.io/hibernat
 
 A failover is the process of promoting a replica cluster to primary while demoting the current primary to a replica, ensuring data is not lost and that the new primary is ready to serve requests as soon as possible. With a simple declarative approach, you can do a planned failover in a few steps. We'll use the North and South clusters defined above as an example.
 
-:::warning Downtime
+:::warning[Downtime]
 Failover requires a short downtime of OpsChain. The estimated downtime is the amount of time it takes to apply the changes to both clusters (primary and replica) + the time it takes for the databases to synchronize + the time it takes to redeploy the OpsChain instance such that it connects to the new primary database.
 :::
 
@@ -218,13 +218,13 @@ db:
       promotionToken: "<demotion-token>"
 ```
 
-:::danger Promoting the cluster
+:::danger[Promoting the cluster]
 The changes in these fields in the promoted cluster must be applied at exactly the same time, otherwise, data loss may occur and the former primary cluster will need to be rebuilt from scratch.
 :::
 
 Once you patch OpsChain with the updated `values.yaml` file, the South cluster will be promoted to primary, copying over the remaining WAL files from the North cluster, switching the WAL timeline and ensuring the North cluster can now fetch information from it. The OpsChain instance will automatically connect to the new primary database once deployed. Remember to deploy the South cluster without the `stopped: true` setting if you wish to use the OpsChain instance from that cluster.
 
-::::note Remaining clusters
+::::note[Remaining clusters]
 If you have more than two clusters, you must modify the `replica.primary` and `replica.source` fields for each remaining cluster to point to the new primary cluster.
 ::::
 
@@ -324,11 +324,11 @@ kubectl scale statefulset opschain-secret-vault --replicas=1 -n ${KUBERNETES_NAM
 
 If at any point you want to split your clusters, you can do so by simply changing the `replica.enabled` field to `false` in the `values.yaml` file of the cluster you want to split and redeploying it. The cluster will then become a standalone primary cluster with the data it had already replicated and will not replicate from any other cluster.
 
-:::info Vault access
+:::info[Vault access]
 You will also need to manually delete the secret vault pod in the cluster you're splitting from, such that it can pick up the new primary cluster's configuration to successfully connect to it and acquire the lock to the database.
 :::
 
-:::warning Rejoining a cluster
+:::warning[Rejoining a cluster]
 Note that it is not possible to rejoin a cluster to the topology after splitting it. If you want it to get back into the topology, you will need to delete the cluster and redeploy it as a replica, which it will then replicate from zero.
 :::
 

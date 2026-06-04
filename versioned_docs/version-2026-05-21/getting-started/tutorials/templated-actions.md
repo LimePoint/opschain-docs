@@ -32,7 +32,7 @@ Let's walk through how to create and use an asset template for managing differen
 
 OpsChain will look for asset templates in a folder that matches the template's code in the root of your Git repository. For example, if you have a template called `disk_check`, OpsChain will look for a folder called `disk_check`.
 
-:::note Codes
+:::note[Codes]
 OpsChain only supports lowercase letters, numbers and underscores in template codes, so plan your folder structure accordingly.
 :::
 
@@ -120,7 +120,7 @@ end
 
 The `actions.rb` for a template follows the same rules and conventions as the `actions.rb` in the root folder. You can read more about it in the [actions reference](/key-concepts/actions.md) guide.
 
-:::warning Action compounding
+:::warning[Action compounding]
 If you are using the same repository as the previous tutorial, you will have the `disk_check` action already defined in the `actions.rb` file in the root folder.
 If you don't remove it from that file, OpsChain will first run the action from the root folder, and then the action from the template folder. This follows the pattern of [Rake tasks](https://ruby.github.io/rake/), where actions with the same name will be appended to each other.
 
@@ -145,7 +145,7 @@ We then give this new version a name and specify the Git revision it should be l
 
 ![Create a template version](./images/template-version-create.png)
 
-:::tip Asset template versions
+:::tip[Asset template versions]
 You can read more about template versions in the [asset templates guide](/key-concepts/assets.md#asset-template-versions).
 :::
 
@@ -187,7 +187,7 @@ When we run the action with the overriden properties, we can see that the disk s
 
 It is important to note that we could also override these properties in the project, the asset or in the change individually. This allows you to have a single template that can be used in different environments with properties overrides in different levels, making your actions much more flexible and reusable. You can refer to the [properties](/key-concepts/properties.md) documentation for more details on how you can override properties at different levels and how they are merged together.
 
-:::info Auditability
+:::info[Auditability]
 The properties in projects, environments and assets are versioned and any change to them is tracked, so you can always see the history of changes and revert to a previous version if needed.
 :::
 

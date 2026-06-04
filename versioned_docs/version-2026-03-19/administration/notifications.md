@@ -11,7 +11,7 @@ OpsChain can be configured to send notifications via email and [Slack](https://s
 
 You can configure notification channels in the _notification settings_ section of the administration configuration tab.
 
-:::info Default channels
+:::info[Default channels]
 You can configure as many channels as necessary. However, only one channel can be marked as the default channel for each notification type.
 
 To change the default channel for a notification type, untick and save the current default channel's default checkbox and then tick the checkbox for the new default channel.
@@ -25,7 +25,7 @@ Select _add email channel_ from the _new channel_ dropdown to add an email chann
 
 Select _add Slack channel_ from the _new channel_ dropdown to add a Slack channel. Use the dialog to configure and save the Slack bot settings, marking the server as the default Slack channel if you wish to use this server as the primary outbound server for user Slack notifications. Once saved, you can test the settings to confirm they can be used to send messages by editing the channel and using the _send test message_ feature in the edit channel dialog.
 
-:::tip Creating a Slack bot
+:::tip[Creating a Slack bot]
 To create a Slack bot in your organisation's Slack workspace, follow the instructions provided [here](https://appriseit.com/services/slack/#method-2-create-a-bot).
 :::
 
@@ -100,7 +100,7 @@ From the user menu in the top right corner, select the _manage all notifications
 | Properties events   | These are the events described in the [properties & settings](#properties--settings) section above.                             |
 | Settings events     | These are the events described in the [properties & settings](#properties--settings) section above.                             |
 
-:::tip editing notifications from the manage notifications page
+:::tip[editing notifications from the manage notifications page]
 
 - The _change events_, _workflow run events_, _properties events_ and _settings events_ can be modified by clicking the edit icon to the left of the row. This will open the notifications dialog for the relevant project, environment or asset.
 - The _action events_ and _workflow events_ can be modified by clicking the entry in the column for the specific action or workflow you wish to modify the notifications for.

@@ -23,7 +23,7 @@ This command might take a few minutes to complete as all the OpsChain containers
 
 OpsChain will be uninstalled, but some persistent data will remain in your Kubernetes cluster in case you would like to reinstall OpsChain in the future. This is described in more detail in the [persistent data](/setup/uninstall/persistent-data.md) guide.
 
-:::tip Deleting persistent data
+:::tip[Deleting persistent data]
 To fully clear the OpsChain installation from your Kubernetes cluster, you can also delete the OpsChain namespace. This will delete all persistent data:
 
 ```bash

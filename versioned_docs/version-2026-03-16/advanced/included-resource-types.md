@@ -164,7 +164,7 @@ The `ssh_key_pair` resource type provides the following actions:
 | `create`            | Creates an SSH public/private key pair inside the `key_path` folder with the filenames specified by `public_key`/`private_key` and optionally stores the files in OpsChain properties. <br/>_Note: If the `private_key` or `public_key` exists in the `key_path`, they will be overwritten_. |
 | `create_if_missing` | Validates that the `private_key` and `public_key` exists in the `key_path`. If either is missing, generates a new key pair and optionally stores the key pair in the OpsChain properties.                                                                                                    |
 
-:::note Notes on key storage
+:::note[Notes on key storage]
 The SSH key pair will be generated inside the OpsChain step runner container. By default the key pair will be stored in the OpsChain environment properties, making them accessible to future changes run in this environment (and subsequent steps in the current change). If you wish to use the key pair in other environments within the project, set the `store_in` resource property to `:project`. The key pair will then be stored in the OpsChain project properties and available to all changes run in that project.
 
 If you do not wish to store the key pair in the OpsChain properties, `store_in` can be set to `nil`. _Please note: If you do not store the generated keys in OpsChain properties, they will cease to exist when the step runner container is removed. For this reason, ensure the step stores the keys (e.g. in [Hashicorp Vault](https://www.vaultproject.io), as a [Kubernetes secret](https://kubernetes.io/docs/concepts/configuration/secret/), on another server, etc.) to allow them to be used in the future._

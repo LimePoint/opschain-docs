@@ -19,6 +19,14 @@ const config = {
       onBrokenMarkdownImages: 'throw',
     },
   },
+  future: {
+    faster: true,
+    v4: true
+  },
+  storage: {
+    type: 'localStorage',
+    namespace: true,
+  },
   favicon: 'img/favicon.ico',
 
   // Even if you don't use internalization, you can use this field to set useful

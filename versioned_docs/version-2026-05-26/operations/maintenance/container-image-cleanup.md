@@ -12,7 +12,7 @@ OpsChain generates and stores images in its internal image registry whenever a c
 
 In high-availability topologies, each cluster has its own Trow registry, meaning that reconciliation must be configured individually in each cluster.
 
-:::info Agent images
+:::info[Agent images]
 Agent images are persisted in the Trow registry until they are cleaned up by a [data cleanup definition](/operations/maintenance/data-cleaning.md). This provides more fine-grained control over which agent images to keep for possible reuse, etc.
 :::
 
@@ -123,7 +123,7 @@ sudo systemctl restart k3s
 
 These values are a reasonable starting point for OpsChain clusters. Lower the thresholds further if disk pressure persists, or raise `minimum-image-ttl-duration` if you observe images being evicted too soon, causing subsequent steps to re-pull the image.
 
-:::info GC is threshold-driven, not periodic
+:::info[GC is threshold-driven, not periodic]
 The kubelet only triggers image garbage collection when image-filesystem usage crosses the high threshold. A cluster with plenty of headroom will not garbage collect even with tight thresholds — there is nothing to do. These settings bring forward the _point_ at which cleanup starts; they do not schedule a sweep on a timer.
 :::
 

@@ -105,7 +105,7 @@ To create a new template version, go to the asset template page and click on the
 
 Provide a version name, description and the Git revision for this version and click on "Create template version" at the bottom of the dialog. OpsChain will then fetch the Git revision, identify the actions available for the given template version and make them available for all the assets using it.
 
-:::info Resolving a template version
+:::info[Resolving a template version]
 For security concerns, OpsChain will resolve a template version at the time of creation. This means that if you provide a branch name as a revision, OpsChain will resolve the branch to the latest commit at the time of creation and will not fetch new changes unless you manually update the template version.
 :::
 

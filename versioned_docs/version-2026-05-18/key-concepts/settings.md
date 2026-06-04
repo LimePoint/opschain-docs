@@ -90,7 +90,7 @@ Default value: _false_
 
 Defines whether OpsChain will use a single Kubernetes pod for running the entire change (value set to `false`) or if it will create one pod for each individual step (value set to `true`). This setting has no effect when running a change with a [MintModel](/key-concepts/assets.md#asset-templates-with-a-mintmodel).
 
-:::tip Image settings
+:::tip[Image settings]
 To configure the change runner or worker image, refer to the [runner image settings](/key-concepts/settings.md#runner-image-settings) when this is set to `true` or to the [worker settings](/key-concepts/settings.md#worker-settings) when it is `false`.
 :::
 
@@ -404,7 +404,7 @@ Some examples of valid vault configurations:
 }
 ```
 
-:::note Credential visibility
+:::note[Credential visibility]
 The `user`, `password`, and `token` fields will be automatically encrypted once the setting is saved.
 :::
 

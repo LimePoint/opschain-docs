@@ -19,7 +19,7 @@ OpsChain uses [Fluentd](https://www.fluentd.org/) as its log aggregator. Fluentd
 
 OpsChain's log aggregator is provided with a shared 1GB PVC for buffering logs, of which half (500MB) is reserved for buffering logs for OpsChain's internal logging infrastructure. The other half of the log aggregator's buffer is left for you to use for your additional outputs. Refer to Fluentd's [buffer configuration](https://docs.fluentd.org/configuration/buffer-section) guide on how to configure the buffer for your outputs.
 
-:::tip PVC size
+:::tip[PVC size]
 If you need to increase the PVC size, you can do so by modifying your `values.yaml` file and setting the `logAggregator.volume.size` value to the desired size and (re)deploying OpsChain.
 
 ```yaml

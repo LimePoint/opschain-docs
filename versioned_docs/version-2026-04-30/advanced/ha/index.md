@@ -83,7 +83,7 @@ The method to use to update the primary database instance when performing a data
 - `restart`: Restart the primary database instance, potentially causing a short downtime.
 - `switchover`: Perform a database switchover to the updated primary instance.
 
-:::warning Switchover requires multiple database instances
+:::warning[Switchover requires multiple database instances]
 Setting this to `switchover` and not having two or more database instances will have the same effect of using `restart`.
 :::
 
@@ -154,7 +154,7 @@ By default, CNPG issues self-signed certificates for its managed clusters. These
 kubectl get secrets -n ${KUBERNETES_NAMESPACE} | grep "opschain-db"
 ```
 
-:::tip Providing alternative DNS names
+:::tip[Providing alternative DNS names]
 You can provide alternative DNS names for the CNPG-generated TLS certificates by using the `db.cnpg.security.tls.serverAltDNSNames` setting (provide values as an array of strings).
 :::
 
@@ -353,7 +353,7 @@ db:
           key: ca.crt
 ```
 
-:::note Pre-defined clusters
+:::note[Pre-defined clusters]
 By default, OpsChain adds a self-reference entry for the current cluster, enabling CNPG to reference itself.
 :::
 

@@ -50,7 +50,7 @@ The following setup guides will assume that you are installing OpsChain on a sel
 
 Create a user named `opschain` on the Linux VM. The user need not be called `opschain`, it can be whatever name you want. For purpose of this guide, we will assume the linux user is `opschain`.  If you decide to use any other username, please replace all occurrences of the `opschain` user in this guide to the name of your choice.
 
-:::info Root user
+:::info[Root user]
 The following commands require root user access. Once the sudo rules have been granted, you can switch to the installation user for further steps. Do not proceed if you haven't been able to provide sudo access to the user you created.
 :::
 
@@ -59,7 +59,7 @@ groupadd --gid 1001 opschain
 useradd --uid 1001 --gid opschain --create-home opschain
 ```
 
-:::note UID & GID
+:::note[UID & GID]
 If there are any existing users with the same UID or GID, please change them to unique values.
 :::
 
@@ -79,7 +79,7 @@ opschain ALL=(ALL) NOPASSWD:ALL
 
 Once the user has been created and configured as a sudoer, switch to the `opschain` user by running `su - opschain`.
 
-:::note Installation user
+:::note[Installation user]
 The rest of the commands from here on should be run with the installation user you created.
 :::
 
@@ -186,7 +186,7 @@ sudo firewall-cmd --reload # skip if no firewall is running
 
 ### Download & install K3s
 
-:::info K3s version
+:::info[K3s version]
 We recommend installing K3s version `v1.35.3+k3s1` or later, but this requires that your operating system uses cgroups v2, given cgroups v1 is deprecated in Kubernetes versions beyond v1.35. If your operating system does not support cgroups v2, you can proceed with installing K3s version `v1.34.6+k3s1` instead.
 
 In most Linux distributions, you can check if your system uses cgroups v2 by running the following command:

@@ -17,7 +17,7 @@ Whichever CA is used, its certificate will need to be trusted by the container r
 
 ## Installation
 
-:::warning Ensure Helm is installed
+:::warning[Ensure Helm is installed]
 Please ensure you have installed and validated Helm as described in the [installing K3s](/setup/installing_k3s.md#download-helm) guide.
 :::
 

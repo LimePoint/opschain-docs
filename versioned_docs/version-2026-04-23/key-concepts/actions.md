@@ -189,7 +189,7 @@ Please [let us know](mailto:opschain-support@limepoint.com) if you would like to
 
 OpsChain allows you to dynamically alter a parent's child steps from within the action's block.
 
-:::note NOTES
+:::note[NOTES]
 
 - the step tree displayed by the CLI when running a change will not reflect dynamic child steps until the parent action executes
 - the `append_child_steps` and `replace_child_steps` methods accept any value that can be supplied via the `steps:` argument when defining an action (see the valid argument values under [child steps](#child-steps))
@@ -292,7 +292,7 @@ In the example above actions would run in this order:
 1. `do_something`
 2. `do_something_after` and `do_something_else_after`
 
-:::note NOTES
+:::note[NOTES]
 
 - Parallel task execution is limited by the number of available OpsChain workers
 - Care must be taken when modifying properties from within parallel steps. See the [changing properties in parallel steps](/key-concepts/properties.md#changing-properties-in-concurrent-steps) section of the [OpsChain properties guide](/key-concepts/properties.md) for more information
@@ -401,7 +401,7 @@ These resources will automatically include the `name` and `weather` properties, 
 
 `The weather in Melbourne looks cold`
 
-:::note NOTES
+:::note[NOTES]
 
 1. The resource type name (`city`) and resource name (`melbourne`) should conform to ruby variable naming standards. This means the name can include alphanumeric characters and the underscore character however it cannot start with a number or a capital letter. This ensures it can be easily referenced from other ruby code or the command line.
 2. The action description assigned via the `desc` keyword in the example above is optional. When working in the [OpsChain development environment](/advanced/development-environment.md), project actions with a description can be listed with the `opschain-action -T` command. To view all actions (with or without a description) the `opschain-action -AT` command can be used. This is useful as internal actions can be hidden by omitting a description, but are discoverable if needed.
@@ -442,7 +442,7 @@ end
 
 Now a call to the weather bureau API for a city's weather will only be made if an action requests the value of its `weather` property.
 
-:::info Identifying the lazy property's Ruby class
+:::info[Identifying the lazy property's Ruby class]
 The [`is_a?`](https://ruby-doc.org/core/Object.html#method-i-is_a-3F), [`kind_of?`](https://ruby-doc.org/core/Object.html#method-i-kind_of-3F) and [`instance_of?`](https://ruby-doc.org/core/Object.html#method-i-instance_of-3F) Ruby methods allow you to test the class of an object. Prior to resolving the lazy property's value, these will all respond with `true` when supplied the argument `LazyPropertyValue` e.g.
 
 ```ruby
@@ -490,7 +490,7 @@ resource_type :city do
 end
 ```
 
-:::note NOTES
+:::note[NOTES]
 
 1. The `action_methods` keyword will expose each controller method supplied to it as an action on the resource.
 2. If you would like to provide descriptions for your controller actions, the array supplied to the `action_methods` keyword can include a [Ruby hash](https://ruby-doc.org/core-2.7.0/Hash.html) for each method. E.g. `action_methods: [{ name: :report_weather, description: 'Output how the weather looks in the city' }]`.
@@ -500,7 +500,7 @@ end
 
 Resources created from this `city` resource type would have the same actions (and same action output) as those created from the earlier type definition.
 
-:::note NOTES
+:::note[NOTES]
 
 - The class constructor must accept a single [Ruby hash](https://ruby-doc.org/core-2.7.0/Hash.html) parameter, which will include each of the resource properties defined on the resource. This hash is the resource's `properties` at the time the controller is constructed.
 - The action methods must not require parameters.
@@ -542,7 +542,7 @@ end
 
 Once again, resources created from this `city` resource type would have the same actions (and same action output) as those created from the earlier type definitions.
 
-:::note NOTES
+:::note[NOTES]
 
 1. If you supply the `action_methods:` parameter when defining the resource type's controller, the controller's `resource_type_actions` will be ignored and only those methods passed to `action_methods:` will be exposed.
 2. As per the values that can be supplied to the `action_methods:` keyword described in the previous example, the controller's `resource_type_actions` class method can return an array containing a mixture of action names and descriptive hashes. E.g.
@@ -1070,7 +1070,7 @@ This would define the following actions:
 - `melbourne:collingwood:local_team:barrack`
 - `melbourne:barrack_all` - this will call the `local_team:barrack` action on the `city` composite's children (`richmond` and `collingwood`).
 
-:::note NOTES
+:::note[NOTES]
 
 - Each team's `barrack` action makes use of the `country` property defined on the parent `city` composite resource type
 - `actions` can't be created directly inside the `each_child` block, and instead must be on a resource
@@ -1163,7 +1163,7 @@ custom_logger = CustomLogger.new('command.log')
 exec_command('rake test', logger: custom_logger)
 ```
 
-:::note Change logs
+:::note[Change logs]
 The logs shown for a change are any lines emitted to the runner's STDOUT and STDERR. If your custom logger sends the output elsewhere, these will not be shown in the change logs.
 :::
 
@@ -1232,7 +1232,7 @@ If you'd like to alias the `log` object to something else, you can still refer t
 OpsChain.logger.info 'Informational message'
 ```
 
-:::info Log levels
+:::info[Log levels]
 
 The OpsChain logger supports the following log levels:
 
@@ -1245,7 +1245,7 @@ The OpsChain logger supports the following log levels:
 Each log level is more severe than the last, so `DEBUG` is the least severe and `FATAL` is the most severe.
 :::
 
-:::tip Change log levels
+:::tip[Change log levels]
 The OpsChain logger's default log level can be configured via the `OPSCHAIN_LOG_LEVEL` environment variable using OpsChain's [properties](/key-concepts/properties.md#environment-variables).
 :::
 

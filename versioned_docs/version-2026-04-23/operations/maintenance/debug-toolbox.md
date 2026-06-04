@@ -30,7 +30,7 @@ kubectl -n ${KUBERNETES_NAMESPACE} debug pod/${api_pod} --image=limepoint/opscha
 
 With this approach, the container you'll be dropped into will share the process namespace of the `opschain-api` container, allowing you to inspect and signal its internal processes.
 
-:::tip Identifying containers
+:::tip[Identifying containers]
 To identify the containers within a pod, you can use the following command:
 
 ```bash
@@ -39,7 +39,7 @@ kubectl -n ${KUBERNETES_NAMESPACE} get pod/<pod_name> -o jsonpath='{.spec.contai
 
 :::
 
-:::info Limitations
+:::info[Limitations]
 Although the debug container is running within the same pod as the `opschain-api` container, it will not have access to the container's image layers, filesystem and environment variables.
 :::
 
@@ -54,7 +54,7 @@ debugToolbox:
 
 When enabled, every time you deploy OpsChain, a deployment named `opschain-debug-toolbox` will be created or updated, which will instantiate a Kubernetes pod with the debug image.
 
-:::tip Environment variables
+:::tip[Environment variables]
 The deployment pods will have its environment variables sourced from the `opschain-config` config map - just like most other OpsChain deployments.
 :::
 
@@ -81,7 +81,7 @@ openssl s_client -connect opschain-api:3000 -servername opschain-api </dev/null
 openssl s_client -connect opschain-db-rw:5432 -starttls postgres </dev/null
 ```
 
-:::info Limitations
+:::info[Limitations]
 Although the deployment pod will have the same environment variables as the OpsChain API, they will not have access to any other service's image layers, filesystem or process namespaces.
 :::
 
@@ -103,11 +103,11 @@ Once you deploy OpsChain with these changes, you can execute into the sidecar an
 kubectl exec -n ${KUBERNETES_NAMESPACE} deploy/opschain-api -c debug-toolbox -it -- bash
 ```
 
-:::tip Environment variables
+:::tip[Environment variables]
 The sidecar containers will have the same environment variables as the OpsChain API.
 :::
 
-:::info Limitations
+:::info[Limitations]
 Although the sidecar containers will have the same environment variables as the OpsChain API in this example, they will not share the application container's process namespace or its root filesystem from the service image. Paths that are mounted into the pod and shared with the service (as described above) are available in the sidecar; other files from the application image are not.
 
 The database, image registry and the OpsChain secret vault services do not support this sidecar. To debug these services more thoroughly, you can use the [debug deployment](#deployment) or the [image as a debug container](#image) instead.

@@ -170,7 +170,7 @@ The API address can be overridden by setting an [OpsChain property environment v
 The agent pod is given a [`hostAlias`](https://kubernetes.io/docs/tasks/network/customize-hosts-file-for-pods/) to ensure it can access the OpsChain API via the [`api.hostName` setting value](/setup/understanding-opschain-variables.md#envopschain_api_host_name-and-apihostname) that is configured for the API pod and ingress. This is to ensure that the ingress can present the correct certificate to the request. If this is not desired (e.g. the `api.hostName` setting value should resolve to another host, such as a reverse proxy or similar) this `hostAlias` can be disabled via the [`agent.disable_host_alias` setting](/key-concepts/settings.md#agentdisable_host_alias).
 :::
 
-:::tip Testing API access
+:::tip[Testing API access]
 The OpsChain API includes a simple healthcheck endpoint. This endpoint is useful for verifying agent API access as it does not require any authentication. An example of accessing this endpoint is `curl "${OPSCHAIN_API_ADDRESS}"/api/healthcheck`.
 :::
 

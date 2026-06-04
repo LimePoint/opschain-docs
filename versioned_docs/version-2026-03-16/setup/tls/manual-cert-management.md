@@ -200,7 +200,7 @@ The secret vault's internal certificate also requires the CA's certificate and a
 kubectl -n opschain create secret generic secret-vault-cert --from-file=ca.crt=path/to/ca.crt --from-file=tls.crt=path/to/tls.crt --from-file=tls.key=path/to/tls.key --from-file=tls-combined.pem=path/to/tls-combined.pem
 ```
 
-:::tip Combining certificate and private key into a single file
+:::tip[Combining certificate and private key into a single file]
 You can combine the certificate and private key into a single file by running the following command:
 
 ```bash
@@ -211,7 +211,7 @@ cat tls.crt tls.key > tls-combined.pem
 
 When overriding the secret vault internal certificate (`internalCertificateSecretName`), you must ensure that all the existing volumes in `.openbao.server.volumes` are still specified in addition to your modifications, otherwise the volume won't be created and your vault won't be able to start.
 
-:::info Default volume configuration
+:::info[Default volume configuration]
 Use `helm show values oci://docker.io/limepoint/opschain --version ${OPSCHAIN_CHART_VERSION} --jsonpath '{.openbao.server.volumes}'` to show the default values, and provide it as `.openbao.server.volumes` with the `secretName` modified.
 :::
 

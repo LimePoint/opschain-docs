@@ -109,7 +109,7 @@ security add-trusted-cert -k ~/Library/Keychains/login.keychain-db -p ssl opscha
 # You will be prompted for your admin password in a macOS dialog
 ```
 
-:::caution Restart Docker Desktop
+:::caution[Restart Docker Desktop]
 You must restart Docker Desktop to complete the custom CA setup.
 :::
 

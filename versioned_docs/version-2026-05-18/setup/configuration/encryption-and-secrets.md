@@ -15,7 +15,7 @@ Your `values.yaml` file might come with settings that are not mentioned in this 
 
 The settings to secure your OpsChain installation as well as sensitive credentials must be provided before installing the application. These are unique keys that should not be modified after the initial installation and not shared with anyone. All these keys should be alpha-numeric and should not contain any special characters.
 
-:::info Generating keys and passwords
+:::info[Generating keys and passwords]
 You can generate a random key of specific `<key_length>` for the following settings with:
 
 ```bash
@@ -71,7 +71,7 @@ To install the OpsChain vault along with OpsChain, you must define a seal key fo
 openssl rand -base64 32
 ```
 
-:::info OpsChain secret vault token
+:::info[OpsChain secret vault token]
 Be aware that the seal key is NOT the same as the token used to access the secret vault. An access root token will be generated and stored in the `opschain-vault-config` secret when the OpsChain application starts up for the first time. Refer to the [OpsChain vault settings](/setup/configuration/additional-settings.md#secret-vault-settings) for more information.
 :::
 

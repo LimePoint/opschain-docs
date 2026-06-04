@@ -105,7 +105,7 @@ helm upgrade --install opschain "oci://docker.io/limepoint/opschain" --version $
 
 This will start the OpsChain server and its dependent services in separate Kubernetes pods. For more information on these containers see the [architecture overview](/getting-started/overview.md#architecture-overview).
 
-:::warning Installation time
+:::warning[Installation time]
 The command may take several minutes (up to 30 mins) to start as the OpsChain images are downloaded, especially with slower internet connections.
 
 Do not close or end the shell session while the installation is still ongoing, doing so might render your installation unusable.
@@ -121,7 +121,7 @@ While the installation is running, you can move to the next step where we'll set
 
 ### Install the OpsChain CLI
 
-:::info kubectl context
+:::info[kubectl context]
 For the next steps, we recommend switching your `kubectl` default context to the configured OpsChain namespace. You can achieve that by running:
 
 ```bash
@@ -152,7 +152,7 @@ To validate the CLI is working, run the following:
 
 This should print OpsChain's CLI help guide. If that is not the case, please contact LimePoint support.
 
-:::tip Accessing the OpsChain CLI
+:::tip[Accessing the OpsChain CLI]
 We suggest moving the binary to a location in your `PATH` to ensure it is easily accessible. By doing so, we can run the next commands from anywhere by just calling `opschain`.
 :::
 
@@ -270,7 +270,7 @@ security add-trusted-cert -k ~/Library/Keychains/login.keychain-db -p ssl opscha
 # You will be prompted for your admin password in a macOS dialog
 ```
 
-:::caution Restart Docker Desktop
+:::caution[Restart Docker Desktop]
 You must restart Docker Desktop to complete the custom CA setup.
 :::
 

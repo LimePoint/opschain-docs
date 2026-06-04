@@ -57,7 +57,7 @@ git add .opschain/Dockerfile
 git commit -m "Adding a custom Dockerfile."
 ```
 
-:::note NOTES
+:::note[NOTES]
 
 1. commits prior to this point won't use the custom Dockerfile because it is not present in the repository.
 2. if you no longer wish to use the custom Dockerfile, `.opschain/Dockerfile` can be removed from the project repository.
@@ -171,7 +171,7 @@ _Environment properties:_
 }
 ```
 
-:::note NOTES
+:::note[NOTES]
 
 1. Project and environment secrets are loaded in the order they are specified in your configuration - project secrets then environment secrets. If an environment variable exists in multiple Kubernetes secrets, the value from the most recently loaded secret will be supplied
 2. If you have configured `env:build_secrets` in your project or environment configuration, the environment variables in the `opschain-build-env` secret will not be supplied to your image build. To include them, simply add `opschain-build-env` to the project or environment `env:build_secrets` configuration

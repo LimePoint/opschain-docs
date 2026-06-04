@@ -109,7 +109,7 @@ security add-trusted-cert -k ~/Library/Keychains/login.keychain-db -p ssl opscha
 # You will be prompted for your admin password in a macOS dialog
 ```
 
-:::caution Restart Docker Desktop
+:::caution[Restart Docker Desktop]
 You must restart Docker Desktop to complete the custom CA setup.
 :::
 
@@ -119,7 +119,7 @@ Using a web browser, you can access the OpsChain GUI by navigating to the addres
 
 Once you're able to login, you can [familiarise yourself with the OpsChain GUI](/getting-started/familiarisation/gui/overview.md).
 
-:::info Basic authentication and HTTP
+:::info[Basic authentication and HTTP]
 If you have configured the `OPSCHAIN_ENABLE_BASIC_AUTH` setting to `false`, it's recommended you connect to the OpsChain GUI via HTTPS. Refer to the [basic authentication and HTTP](/setup/configuration/additional-settings.md#opschain_enable_basic_auth) setting reference for more information.
 :::
 

@@ -55,7 +55,7 @@ fi
 echo "--- Disk space check complete ---"
 ```
 
-:::tip File permissions
+:::tip[File permissions]
 Don't forget to make the script executable. You can do this by running `chmod +x disk_check.sh` after creating the file.
 :::
 
@@ -94,7 +94,7 @@ To run Python scripts, we need to ensure we have Python and the necessary packag
 
 ### Configuring your runner image
 
-:::warning Default runner image configuration
+:::warning[Default runner image configuration]
 To properly run changes in OpsChain, some functionalities are required on all runner images. So it is important not to remove any of the original lines from the default runner image. Instead, simply add your custom configuration in the relevant areas. You can read more about the default runner image in the [key concepts guide](/key-concepts/step-runner.md#creating-a-custom-step-runner-dockerfile).
 :::
 

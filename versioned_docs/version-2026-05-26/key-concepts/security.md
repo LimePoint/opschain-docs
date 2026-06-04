@@ -50,7 +50,7 @@ An authorisation rule affects what a user can do at a path. The supported action
 - `update` - whether the user can create, update or delete the target, for example creating a project
 - `execute` - whether the user can execute the target, for example executing a change or a workflow
 
-:::info Action precedence
+:::info[Action precedence]
 When either the `update` or `execute` actions are enabled, the `read` action is automatically assigned to the same path.
 :::
 
@@ -110,7 +110,7 @@ To make an existing user a superuser, you can assign them to the policy via the 
 kubectl exec -n ${KUBERNETES_NAMESPACE} deploy/opschain-api -- /usr/bin/container_start.sh "rake release:setup_superuser[username]"
 ```
 
-:::caution Security risk
+:::caution[Security risk]
 It is recommended to keep the number of users with superuser access as minimal as possible.
 :::
 
@@ -118,7 +118,7 @@ It is recommended to keep the number of users with superuser access as minimal a
 
 This policy blocks access to all resources within OpsChain. This policy is the recommended approach when you want to fully block access to OpsChain for certain users. This policy can be applied via the [manage security](/getting-started/familiarisation/gui/manage_security.md) page. This policy trumps all other policies, including the [superuser policy](#superuser-policy).
 
-:::caution Lost access
+:::caution[Lost access]
 If you need to restore access to the security endpoints for a user, you can [restore the authorisation endpoints access](#restoring-authorisation-endpoints-access) for that user.
 :::
 

@@ -37,7 +37,7 @@ For example, if you want to install the release named `2025-01-01`, the chart ve
 export OPSCHAIN_CHART_VERSION=2025.1.1
 ```
 
-:::tip Setup shell
+:::tip[Setup shell]
 To make life easier, you can add these two settings to your shell profile. This will allow you to use the same environment variables in subsequent sessions. For example:
 
 ```bash
@@ -74,7 +74,7 @@ First, create the operator namespace:
 kubectl create namespace cnpg-system
 ```
 
-:::warning Operator scope
+:::warning[Operator scope]
 The CNPG operator is installed at the Kubernetes cluster level, with CRDs, controllers and service accounts deployed in the `cnpg-system` namespace.
 :::
 

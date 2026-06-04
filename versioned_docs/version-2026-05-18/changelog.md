@@ -13,7 +13,7 @@ Follow the [upgrade guide](operations/upgrading.md) for more information on how 
 
 ## [2026-05-18]
 
-### Fixed {#2026-05-18-fixed}
+### Fixed {/* #2026-05-18-fixed */}
 
 - When an action fails to execute, the error indicating where the action was defined has been improved to handle MintPress SDK actions.
 - Correct rebuilding of agent image when the template version changes.
@@ -30,7 +30,7 @@ Follow the [upgrade guide](operations/upgrading.md) for more information on how 
 - Fixed the activity volume chart on the dashboard, where the legend and chart area were displaying incorrect colours.
 - Fixed elapsed time in the activities list to count from when a change was created rather than when it started running, giving a more accurate total duration.
 
-### Added {#2026-05-18-added}
+### Added {/* #2026-05-18-added */}
 
 - OpsChain actions and wait steps can now be defined with a custom `step_name`. When the OpsChain GUI displays the step tree for a change, the step that executes the action will be labelled with the supplied `step_name` rather than the action method name.
 - You can now include input steps in your `actions.rb`. These act like regular wait steps however they require the user to provide specific input values in order to continue the step. See the [input steps documentation](key-concepts/actions.md#input-steps) for more information.
@@ -49,7 +49,7 @@ Follow the [upgrade guide](operations/upgrading.md) for more information on how 
 - When a step in a change requires user-provided values before it can proceed, a dedicated dialog is now shown to collect those inputs. Each field is presented with its name, type, and description. Once submitted, the change continues automatically. After a step has been continued, users can view the values that were supplied at the time — the same dialog opens in a read-only mode, showing what was entered and who submitted it (including any message they left).
 - The `ignore_failure` option has been added to actions with child steps. Child step failure will no longer cause the parent step to fail when this option is enabled. This can be used to allow a change to continue running even if a non-critical step fails.
 
-### Changed {#2026-05-18-changed}
+### Changed {/* #2026-05-18-changed */}
 
 - The long-running database query timeout configuration has now been split.
   - The [`OPSCHAIN_API_DATABASE_STATEMENT_TIMEOUT`](/setup/configuration/additional-settings.md#opschain_api_database_statement_timeout) setting is used for API requests.
@@ -68,7 +68,7 @@ Follow the [upgrade guide](operations/upgrading.md) for more information on how 
 - **Change Git details**: The Git remote URL and revision are now truncated in the change detail card for readability, with the full values available on hover. A direct "Go to commit" link also appears in the hover card.
 - **Top activities panel**: The dashboard activity table column order and layout have been improved.
 
-### Removed {#2026-05-18-removed}
+### Removed {/* #2026-05-18-removed */}
 
 - The bespoke singular MintPress SSH key support has been removed. This means the `mintPressSSHKey` configuration has been removed from the chart.
   - This means the `mintpress-ssh-key` secret can be removed after update (this secret is not removed automatically). The [uninstall documentation](https://docs.mintpress.io/docs/operations/uninstall/persistent-data#secrets) shows how secrets can be removed. (_Note, it references different secrets._)
@@ -93,27 +93,27 @@ Follow the [upgrade guide](operations/upgrading.md) for more information on how 
 
 ## [2026-04-30]
 
-### Important breaking changes {#2026-04-30-important-breaking-changes}
+### Important breaking changes {/* #2026-04-30-important-breaking-changes */}
 
 - [`lazy` blocks](key-concepts/actions.md#lazy-property-evaluation) no longer automatically derive a resource (or controller). This means the property definition such as `lazy_property(lazy { :resource })` needs to be called with [`ref` (or `resource`)](key-concepts/actions.md#the-ref-or-resource-method), e.g. `lazy_property(lazy { ref(:resource).controller })`.
 - Strings and symbols no longer provide access to a controller with an equivalent name automatically (i.e. `'resource'.controller` is no longer supported). The resource must be reference via [`ref` (or `resource`)](key-concepts/actions.md#the-ref-or-resource-method) explicitly, e.g. `ref('resource').controller`.
 - The `literal` keyword has been removed. Due to the changes to `lazy` blocks (above) it is no longer required.
 
-### Fixed {#2026-04-30-fixed}
+### Fixed {/* #2026-04-30-fixed */}
 
 - Handling of resource property resource resolution has now been improved to avoid infinite recursion.
 - It is no longer possible to refetch a template version Git revision while a change is running for this template version because this would lead to the change failing.
 - Fixed issue where the run change and run workflow dialog would hold on to previous values.
 - Improved search on available actions of an asset including a total and filtered count.
 
-### Changed {#2026-04-30-changed}
+### Changed {/* #2026-04-30-changed */}
 
 - The full error message is now shown when MintModel generation fails.
 - Tabs on run change and workflow dialog now show a small checkmark if the values under the respective tabs have been altered or added from a previously run change. These include property and setting overrides, as well as metadata.
 - Minor adjustments to colours on the dashboard widgets.
 - Minor adjustments to colours on trees (change, workflow run, workflow overview and available actions).
 
-### Added {#2026-04-30-added}
+### Added {/* #2026-04-30-added */}
 
 - The change step response now includes details about how long the image took to build. Note: this may be `null` if the step didn't need to build an image.
 - The action server now sets a process title (`OpsChain action server`) so that it can be more easily identified when debugging.
@@ -125,28 +125,28 @@ Follow the [upgrade guide](operations/upgrading.md) for more information on how 
 
 ## [2026-04-23]
 
-### Added {#2026-04-23-added}
+### Added {/* #2026-04-23-added */}
 
 - When an action raises an exception during processing, OpsChain will now output the names of all resource types and resources that have been defined by the actions.rb. Where possible, the property values of each resource's properties will also be included.
 
-### Changed {#2026-04-23-changed}
+### Changed {/* #2026-04-23-changed */}
 
 - The OpsChain API now uses less memory (in particular [PSS](https://en.wikipedia.org/wiki/Proportional_set_size)).
 
-### Fixed {#2026-04-23-fixed}
+### Fixed {/* #2026-04-23-fixed */}
 
 - Only MintModel actions that are specified with `available_actions` are displayed in the GUI. _This only affects MintModel actions._
 - When a MintPress change API returns a `unprocessable_content` response, it no longer creates change that will be stuck in `initializing`.
 
 ## [2026-04-21]
 
-### Important breaking changes {#2026-04-21-important-breaking-changes}
+### Important breaking changes {/* #2026-04-21-important-breaking-changes */}
 
 - The `mintpress.executor_image.name` and `mintpress.executor_image.pull_policy` properties have been replaced by settings. To override the MintModel executor image, configure the [MintModel executor](key-concepts/settings.md#mintmodel_executorimage_tag) settings. Due to the schema used in OpsChain properties, these properties need to be removed before changes can be run, etc.
 - The OpsChain API can now be accessed using bearer tokens. See the [Tokens](https://docs.opschain.io/api-docs/#tag/Tokens) endpoints in the Security section of the OpsChain API docs for more information. To support the new token generation logic, you will need to add the `OPSCHAIN_TOKEN_SECRET_KEY` to your `values.yaml` before deployment. The Ruby `SecureRandom.hex(64)` method can be used to generate a 512bit (128 character) secure string to use as the token secret key.
 - An email address is now required when creating users with the OpsChain user utilities.
 
-### Added {#2026-04-21-added}
+### Added {/* #2026-04-21-added */}
 
 - The `agent.image_override`, `mintmodel_executor.image_override`, `runner.image_override` and `worker.image_override` settings have been added.
 - A new [debug toolbox](/operations/maintenance/debug-toolbox.md) has been added to help debugging and troubleshooting OpsChain deployments and networking issues.
@@ -156,7 +156,7 @@ Follow the [upgrade guide](operations/upgrading.md) for more information on how 
 - A new `OPSCHAIN_DATABASE_STATEMENT_TIMEOUT` settings has been added to allow configuring a timeout for database statements to prevent long-running queries from impacting the performance of the system. The default value is `50s`.
 - The [`update_local_user_email_address`](/setup/setup-instance.md#updating-a-locally-authenticated-user-email-address) utility has been added.
 
-### Changed {#2026-04-21-changed}
+### Changed {/* #2026-04-21-changed */}
 
 - The blocking queue and waiting queue information is now reported separately in the API and GUI for better visibility of the reason why a change or workflow run is waiting to start.
 - The performance of OpsChain action execution has been improved when a large number of resources are defined.
@@ -165,7 +165,7 @@ Follow the [upgrade guide](operations/upgrading.md) for more information on how 
 - The OpsChain API and workers now terminate long-running database queries based on the `OPSCHAIN_DATABASE_STATEMENT_TIMEOUT` setting.
 - The [`create_user`](/setup/setup-instance.md#creating-an-ldap-authenticated-user) and [`create_local_user`](/setup/setup-instance.md#creating-a-locally-authenticated-user) commands now require an email address.
 
-### Fixed {#2026-04-21-fixed}
+### Fixed {/* #2026-04-21-fixed */}
 
 - Action description are displayed correctly for actions defined within a controller.
 - MintModel assets now generate their actions correctly.
@@ -179,13 +179,13 @@ Follow the [upgrade guide](operations/upgrading.md) for more information on how 
 - Accessing post change converged properties for an aborted change will no longer report an error and instead return the properties before the change as aborted.
 - The performance of LDAP queries has been improved, in turn improving the performance of the various security screens in the GUI.
 
-### Known issues {#2026-04-21-known-issues}
+### Known issues {/* #2026-04-21-known-issues */}
 
 - When a typo is present in `actions.rb`, the error message may report `ArgumentError: wrong number of arguments (given 4, expected 0..3) (ArgumentError)`. If this happens, the actual cause will be shown further down.
 
 ## [2026-03-27]
 
-### Important breaking changes {#2026-03-27-important-breaking-changes}
+### Important breaking changes {/* #2026-03-27-important-breaking-changes */}
 
 - OpsChain's secret vault storage backend has changed to be database-based rather than file-based, allowing the secret vault to operate in high availability setups. Follow the [secret vault update guide](/versioned_docs/version-2026-03-27/setup/vault_upgrade.md) to upgrade to this version. Failure to do so might result in data loss.
 - When running a change with `pod_per_change_step` set to `false`, OpsChain will now only parse the `actions.rb` once. This means the top level of this file can't contain any variables that are expected to change throughout the run.
@@ -193,7 +193,7 @@ Follow the [upgrade guide](operations/upgrading.md) for more information on how 
 - A new `OPSCHAIN_ENCRYPTION_SEED_KEY` setting has been added to the `values.yaml` file to supersede the `mintpressTransportableKey` setting. This key is used to seed the encryption of sensitive data within OpsChain. If you're upgrading from a previous version, set this to the same value as the `mintpressTransportableKey` setting in your `values.yaml` file or the contents of the `~/.limepoint/localKey` file - if present in your system. The `mintpressTransportableKey` setting will be ignored in a future release. Refer to the [encryption keys](/setup/configuration/encryption-and-secrets.md#encryption-keys) guide for more information.
 - The `original_change` and `original_workflow_run` metadata attributes in changes and workflow runs have been nested under an `opschain` parent in the metadata object to avoid potential conflicts with user-defined metadata attributes. In addition, they have been renamed to `original_change_id` and `original_workflow_run_id` respectively to better reflect their content.
 
-### Added {#2026-03-27-added}
+### Added {/* #2026-03-27-added */}
 
 - The `literal` keyword has been added to OpsChain actions.
 - Code which calls `.controller` or `.properties` on a string or symbol will now resolve the controller or properties (respectively) for an equivalently named resource (if defined). [Learn more.](/key-concepts/actions.md#using-resources-in-actions)
@@ -201,28 +201,28 @@ Follow the [upgrade guide](operations/upgrading.md) for more information on how 
 - OpsChain [bulk property assignment](key-concepts/actions.md#setting-multiple-properties) can now use the [`lazy` keyword](key-concepts/actions.md#lazy-property-evaluation), e.g. `properties(lazy { { something: 'slow' } })`.
 - If an OpsChain change or workflow run encounters a system failure, a new status "system error" will be applied to the activity.
 
-### Changed {#2026-03-27-changed}
+### Changed {/* #2026-03-27-changed */}
 
 - When not using `pod_per_change_step`, the `actions.rb` file will only be loaded once (by default) to improve change performance.
   - To get the old experience (where `actions.rb` is loaded once per step) set [`worker.reuse_actions_rb`](/key-concepts/settings.md#workerreuse_actions_rb) to `false`.
 - Asset index responses no longer include the asset's actions. This information can be retrieved from the asset show endpoint.
 
-### Fixed {#2026-03-27-fixed}
+### Fixed {/* #2026-03-27-fixed */}
 
 - If the child step definitions returned from an action are invalid, the error will now be properly reported in the parent step's logs rather than causing the entire change to fail without explanation.
 
 ## [2026-03-19]
 
-### Important breaking changes {#2026-03-19-important-breaking-changes}
+### Important breaking changes {/* #2026-03-19-important-breaking-changes */}
 
 - OpsChain agents must be stopped before upgrading. Following the upgrade, each agent image must be rebuilt, and then the agent can be started.
 
-### Added {#2026-03-19-added}
+### Added {/* #2026-03-19-added */}
 
 - A new policy assignment show endpoint has been created to allow the API to return a single policy assignment for a given authorisation policy.
 - Encrypted settings are now able to be decrypted in the GUI when the user has the appropriate permissions.
 
-### Fixed {#2026-03-19-fixed}
+### Fixed {/* #2026-03-19-fixed */}
 
 - Attempting to save multiple default channels of the same type now results in a humanised error message.
 - The OpsChain audit history screen now recognises the superuser role and display all events. Where a user is not the superuser, the security mappings have been corrected to ensure the user can view all events they have access to.
@@ -231,22 +231,22 @@ Follow the [upgrade guide](operations/upgrading.md) for more information on how 
 
 ## [2026-03-16]
 
-### Important breaking changes {#2026-03-16-important-breaking-changes}
+### Important breaking changes {/* #2026-03-16-important-breaking-changes */}
 
 - OpsChain agents must be stopped before upgrading. Following the upgrade, each agent image must be rebuilt, and then the agent can be started.
 
-### Added {#2026-03-16-added}
+### Added {/* #2026-03-16-added */}
 
 - Changes and workflow runs can now be created via the event subscriber system. These activities will be tagged with the source event that triggered them, allowing you to click through to the source event in the GUI and view the event details.
 
-### Fixed {#2026-03-16-fixed}
+### Fixed {/* #2026-03-16-fixed */}
 
 - OpsChain no longer reports an error for actions with the same name defined in different resources or namespaces.
 - Resolved issue with step context validation for null requires_approval_from values.
 - API documentation for the workflow create endpoint has been updated to include references to the `create_new_version` meta attribute.
 - It is no longer possible to provide an empty array as the value for the `user_names` array in the `requires_approval_from` setting.
 
-### Changed {#2026-03-16-changed}
+### Changed {/* #2026-03-16-changed */}
 
 - The workflow and change wait step notifications have been enhanced to provide additional information to the notified user.
 - Stack traces in the event data are now displayed in a more readable format by the audit history screens.

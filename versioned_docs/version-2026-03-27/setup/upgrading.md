@@ -60,7 +60,7 @@ source ~/.bash_profile
 
 Some OpsChain updates might change the settings in the `values.yaml` file. To ensure you don't lose any of your custom settings, carefully update your file, ensuring the new settings are applied and your custom settings are preserved. Refer to the [changelog](/changelog.md) for the version you're upgrading to for any new settings that need to be applied or breaking changes. If you are unsure, refer to the [understanding OpsChain variables](/setup/understanding-opschain-variables.md) guide for more information.
 
-:::note OpsChain version
+:::note[OpsChain version]
 Ensure all the settings that have an image tag match the OpsChain version you're patching to, otherwise your installation will be running with outdated images.
 :::
 
@@ -72,7 +72,7 @@ With the environment variables configured and the `values.yaml` file updated, up
 helm upgrade --install opschain "oci://docker.io/limepoint/opschain" --version ${OPSCHAIN_CHART_VERSION} --create-namespace -n ${KUBERNETES_NAMESPACE} -f /limepoint/values.yaml --wait --timeout 30m --insecure-skip-tls-verify --debug
 ```
 
-:::warning Upgrade time
+:::warning[Upgrade time]
 The command may take several minutes (upto 30 mins) to start as the OpsChain images are downloaded, especially with slower internet connections.
 
 Do not close or end the shell session while the upgrade is still ongoing, doing so might render your installation unusable.

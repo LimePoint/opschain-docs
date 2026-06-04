@@ -11,7 +11,7 @@ OpsChain is deployed using [Helm](https://helm.sh/), a package manager for Kuber
 
 The OpsChain installation is customized by modifying a `values.yaml` file, which is then used by Helm to deploy the OpsChain application and its dependencies to your Kubernetes cluster. This file contains all the configuration options for OpsChain and its services, including encryption keys, passwords, TLS and hostname settings, database configuration, LDAP settings and more.
 
-:::info Setting management
+:::info[Setting management]
 When making changes to your `values.yaml` file, the changes will only take effect when you deploy OpsChain. Some deployment settings can only be configured at installation time, meaning that changing them after installation will have no effect, these settings are marked as such throughout the documentation.
 
 Settings that change the application's behaviour can be modified at any time via dedicated pages in the OpsChain GUI and endpoints in the OpsChain API.
@@ -19,7 +19,7 @@ Settings that change the application's behaviour can be modified at any time via
 
 The settings defined in this file overwrite the default values defined in the OpsChain Helm chart.
 
-:::tip Patching
+:::tip[Patching]
 By running the installation command with a modified `values.yaml` file, you'll be patching OpsChain to use these new settings. Refer to the [patching guide](/operations/upgrading.md) for more information.
 :::
 
@@ -27,7 +27,7 @@ As OpsChain receives new releases, the Helm chart might be updated to include ne
 
 ### Obtaining a full `values.yaml` from the chart
 
-:::warning Advanced usage
+:::warning[Advanced usage]
 This method is recommended for advanced users who are familiar with the OpsChain Helm chart and its configuration options. If you are unsure about any configuration, we recommend removing them from the file and falling back to the default values.
 :::
 

@@ -313,7 +313,7 @@ When running a change, all property secrets will be decrypted using the vault se
 }
 ```
 
-:::note Credential visibility
+:::note[Credential visibility]
   The `user`, `password`, and `token` fields will be automatically encrypted once the setting is saved.
 :::
 

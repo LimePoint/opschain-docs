@@ -105,7 +105,7 @@ configs:
       ca_file: /limepoint/rancher/k3s/certs/opschain-ca.pem
 ```
 
-:::tip Certificate renewal and skipping TLS verification
+:::tip[Certificate renewal and skipping TLS verification]
 Note that you will need to update the CA certificate file and restart K3s every time the OpsChain image registry certificate is renewed. You can check the certificate expiry and renewal dates by running the following command:
 
 ```bash
@@ -124,7 +124,7 @@ configs:
 [Learn more](https://docs.k3s.io/installation/private-registry#registries-configuration-file) about registry configuration in the K3s documentation.
 :::
 
-:::warning Restart K3s
+:::warning[Restart K3s]
 You must restart K3s to complete the custom CA setup.
 
 ```bash
@@ -141,7 +141,7 @@ Using a web browser, you can access the OpsChain GUI by navigating to the addres
 
 Once you're able to login, you can [familiarise yourself with the OpsChain GUI](/getting-started/familiarisation/gui/overview.md).
 
-:::info Basic authentication and HTTP
+:::info[Basic authentication and HTTP]
 If you have configured the `OPSCHAIN_ENABLE_BASIC_AUTH` setting to `false`, it's recommended you connect to the OpsChain GUI via HTTPS. Refer to the [basic authentication and HTTP](/setup/configuration/additional-settings.md#opschain_enable_basic_auth) setting reference for more information.
 :::
 

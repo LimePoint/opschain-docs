@@ -38,7 +38,7 @@ We'll define some shell scripts to simulate the actions we'll be performing on t
     └── disk_check.sh
 ```
 
-:::tip File permissions
+:::tip[File permissions]
 Make sure the scripts are executable by running `chmod +x managed_server/*.sh`.
 :::
 
@@ -178,7 +178,7 @@ db_server :db do
 end
 ```
 
-:::note Actions visibility
+:::note[Actions visibility]
 The actions we've defined in this file will not be visible in the OpsChain UI. You can imagine them as lower-level actions that perform actions in the resources individually, but we want to orchestrate them in our `actions.rb` file, providing organized, higher-level actions for any assets created from this template.
 :::
 
@@ -217,7 +217,7 @@ Inside the page for the asset template we've just created, we define the templat
 
 OpsChain will proccess the code and identify the actions available for the given template version, making them available for all the assets using it.
 
-:::note Action list
+:::note[Action list]
 OpsChain will only show actions that have been given a description in the `actions.rb` file.
 :::
 
@@ -225,7 +225,7 @@ OpsChain will only show actions that have been given a description in the `actio
 
 Now that we have successfully linked our code with OpsChain, we can create two different assets that use the *same* template but have different configurations. We'll create an asset in the `Development` environment and one in the `Staging` environment.
 
-:::tip Creating environments and assets
+:::tip[Creating environments and assets]
 Refer to the [structure tutorial](./structure.md) for more details on how to create environments and assets.
 :::
 
@@ -275,7 +275,7 @@ As soon as we've created the assets, OpsChain will automatically lookup the acti
 
 These actions can be run from the actions page by clicking on the `Run action` button next to the action name.
 
-:::note Action processing
+:::note[Action processing]
 It might take a few minutes for OpsChain to build the image and process your actions. You can check the status of the action processing in the `Actions` tab and you can see previous action generations in the `Generation history` tab.
 :::
 

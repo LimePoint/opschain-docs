@@ -32,7 +32,7 @@ E.g.
 curl --user 'opschain:password' 'http://localhost:3000/api/projects' -G --data-urlencode 'filter[sorts]=archived desc'
 ```
 
-:::tip Avoid storing credentials
+:::tip[Avoid storing credentials]
 To avoid potentially storing credentials in the shell history the password can be omitted and filled in when prompted.
 :::
 

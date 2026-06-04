@@ -35,7 +35,7 @@ OpsChain.properties[:server][:setting]
 OpsChain.properties['server']['setting']
 ```
 
-:::note NOTES
+:::note[NOTES]
 
 1. You will not be able to use dot notation to access a property with the same name as a method on the properties object (for example `keys`). In this case you must use square bracket notation instead.
 2. Any arrays in the properties will be overwritten during a deep merge (use JSON objects with keys instead to ensure they are merged).
@@ -104,7 +104,7 @@ Here are some of the possible scenarios:
 
 Within each action, the result of merging the properties in these files will be available via `OpsChain.repository_properties`.
 
-:::note NOTES
+:::note[NOTES]
 Property files within the same folder are loaded alphabetically (including their extension name). For example, if the following property files are within a single folder they will be loaded and merged in the following order:
 
 ```text
@@ -119,7 +119,7 @@ common2.json
 
 :::
 
-:::note NOTES
+:::note[NOTES]
 
 1. Files with extensions other than `.json`, `.yaml`, or `.toml` will not be processed.
 2. File extensions must be in lowercase (e.g. `.json` instead of `.JSON`). Files with non-lowercase extensions will not be processed.
@@ -127,7 +127,7 @@ common2.json
 
 :::
 
-:::note NOTES
+:::note[NOTES]
 The repository properties are read only within each action (as OpsChain cannot modify the underlying Git repository to store any changes).
 :::
 

@@ -18,8 +18,9 @@
     ]
   },
   "dependencies": {
-    "@docusaurus/core": "^3.10.0",
-    "@docusaurus/preset-classic": "^3.10.0",
+    "@docusaurus/core": "^3.10.1",
+    "@docusaurus/faster": "^3.10.1",
+    "@docusaurus/preset-classic": "^3.10.1",
     "@easyops-cn/docusaurus-search-local": "^0.45.0",
     "@fontsource/poppins": "^5.1.0",
     "@fontsource/rubik": "^5.1.0",
@@ -33,7 +34,7 @@
     "use-local-storage": "^3.0.0"
   },
   "devDependencies": {
-    "@docusaurus/module-type-aliases": "^3.9.2",
+    "@docusaurus/module-type-aliases": "^3.10.1",
     "husky": "^9.1.6",
     "lint-staged": "^15.2.10",
     "patch-package": "^8.0.1",
