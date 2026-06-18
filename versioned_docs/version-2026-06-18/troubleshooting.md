@@ -303,6 +303,36 @@ Your Kernel version might not support `overlayfs` and couldn't find a compatible
 
 Refer to the [image building settings](/setup/configuration/additional-settings.md#image-building-settings) section of the configuration guide for more information.
 
+### Image build failing with `p11-kit: couldn't create file`
+
+When running a change or generating actions, the step runner image build may fail with a log entry such as:
+
+```text
+#14 26.53 p11-kit: couldn't create file: /etc/pki/ca-trust/extracted/openssl/ca-bundle.trust.crt: Unknown error 13
+```
+
+#### Solution - update the FROM image version
+
+Enable the `system logs` option in the activity details to view the full image build output. Look for the `FROM` line in the build log, e.g.:
+
+```dockerfile
+FROM opschain-image-registry:8000/limepoint/opschain-runner-enterprise:{{version}}
+```
+
+The image tag must be `2026-06-17` or greater. Update your project's Dockerfile to reference an image at that version or later and retry the change.
+
+:::note
+
+This error most commonly occurs with [custom runner images](/key-concepts/step-runner.md#custom-step-runner-dockerfiles). After upgrading OpsChain (including to `2026-06-17`), ensure any custom runner images are rebuilt against the new base image before running changes.
+
+In that case, the `FROM` line would look like:
+
+```dockerfile
+FROM {{custom-runner-image}}
+```
+
+:::
+
 ### Error - Decode error on login
 
 This likely means `token.secret_key` is unset.
