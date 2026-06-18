@@ -12,6 +12,7 @@ ADD ./opschain-trust-store.tar .
 
 # OpsChain Step Runner Docker images must be based on an opschain-runner(-*) base image.
 FROM ${OPSCHAIN_BASE_RUNNER}
+USER opschain
 
 # Run any Dockerfile commands that don't rely on the contents of the Git repository here to avoid rerunning them when the Git repo changes.
 
@@ -33,7 +34,9 @@ RUN opschain_configure_project_repo.sh "$GIT_SHA"
 
 # Run any Dockerfile commands that rely on the contents of the Git repository here.
 # An example of doing this with good caching could be:
+# USER root
 # RUN --mount=type=cache,id=dnf,target=/var/cache/dnf,sharing=locked dnf --set keepcache=1 install -y <dep>
+# USER opschain
 
 # Run any Dockerfile commands that rely on using `opschain-exec` here. Copy the --mount lines used in the "bundle_and_lint.sh" RUN
 # command below if you require access to OpsChain secrets and/or properties environment variables.
@@ -43,7 +46,6 @@ RUN opschain_configure_project_repo.sh "$GIT_SHA"
 # will be available for Bundler configuration (eg for authentication details).
 # By default, the OpsChain lint command will be run to look for errors before execution. To skip linting, pass "false" to the
 # `bundle_and_lint.sh` script.
-USER opschain
 RUN --mount=type=secret,required=true,id=env_context_zip,uid=10001,gid=10001,target=/opt/opschain/.opschain/step_context.json.zip \
     --mount=type=secret,required=false,id=mintpress_license,uid=10001,gid=10001,target=/opt/opschain/.environmint/mintpress.license \
     bundle_and_lint.sh
