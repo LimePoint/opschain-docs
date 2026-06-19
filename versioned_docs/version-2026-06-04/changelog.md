@@ -24,6 +24,11 @@ Follow the [upgrade guide](operations/upgrading.md) for more information on how 
 
 ### Changed {/* #2026-06-04-changed */}
 
+:::warning[PostgreSQL downtime on upgrade]
+This upgrade modified the default PostgreSQL settings for the database cluster. When deploying, this will cause a short downtime of the database cluster. To avoid any downtime, you can increase the number of database replicas locally and set the `db.cnpg.primaryUpdateMethod` setting to `switchover` in your `values.yaml` file before deploying. See the [database settings](/advanced/ha/index.md#dbcnpgprimaryupdatemethod) documentation for more information.
+:::
+
+- The PostgreSQL settings have been adjusted to improve performance in production workloads.
 - The registry reconciliation job is now enabled by default. To disable it, you must now set the `registryReconcile.enabled` setting to `false` in your `values.yaml` file before deploying. See the [image cleanup settings](/setup/configuration/additional-settings.md#image-cleanup-settings) and the [container image cleanup](/operations/maintenance/container-image-cleanup.md) guides for more information.
 - The `worker.*` and `mintmodel_executor.*` settings have been removed and consolidated into the `runner.*` settings.
   - The existing `worker.*` or `mintmodel_executor.*` settings (globally, for projects, for environments, and for assets) are automatically migrated to `runner.*` on upgrade (but not for changes). Note, if you used these settings you must audit the updates - see the `opschain:migration:update` event referenced below.

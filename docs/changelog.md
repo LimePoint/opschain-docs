@@ -11,9 +11,9 @@ OpsChain should be upgraded sequentially, one version at a time. Skipping versio
 Follow the [upgrade guide](operations/upgrading.md) for more information on how to upgrade OpsChain.
 :::
 
-## [2026-06-17]
+## [2026-06-18]
 
-### Added {/* #2026-06-17-added */}
+### Added {/* #2026-06-18-added */}
 
 - Container image builds now automatically retry up to 3 times when a transient BuildKit error is detected (e.g. a gRPC connection drop). The retry count is configurable via the [`build_service.max_image_build_retries`](/key-concepts/settings.md#build_servicemax_image_build_retries) setting.
 - A new `OpsChain.step` helper creates a composable wrapper step that combines wait, input, and ignore failure behaviours in a single call. See the [step wrapper](/key-concepts/actions.md#step-wrapper) documentation for more information.
@@ -44,7 +44,7 @@ Follow the [upgrade guide](operations/upgrading.md) for more information on how 
 - Audit history project and workflow names in source — where previously only internal codes were shown, source links in the audit history now display human-readable names for projects and workflows.
 - Bulk delete for authorisation policies — You can now select multiple authorisation policies from the table and delete them all at once using the new "Bulk actions" menu. A confirmation dialog lists the policies to be deleted before anything is removed, and any failures are reported individually without blocking the rest of the deletions.
 
-### Fixed {/* #2026-06-17-fixed */}
+### Fixed {/* #2026-06-18-fixed */}
 
 - When generating a MintModel, a new history record is now only skipped if the asset's most recent MintModel history entry already references the same MintModel. Previously, any existing history entry for the same MintModel would be reused, meaning a return to an older model state would not be recorded in the asset's history.
 - Fixed use of nested MintModel steps within an `actions.rb` (it would inconsistently fail before).
@@ -57,7 +57,7 @@ Follow the [upgrade guide](operations/upgrading.md) for more information on how 
 - Actions list sorted alphabetically (case-insensitive) — The list of actions available on an asset is now sorted in a consistent case-insensitive alphabetical order, so actions starting with uppercase or lowercase letters appear in the expected position rather than grouped by case.
 - Git remote link on change details was broken — The link to the git repository on the change detail page was navigating to the truncated display label instead of the full URL. This has been corrected so the link always opens the right destination.
 
-### Changed {/* #2026-06-17-changed */}
+### Changed {/* #2026-06-18-changed */}
 
 - MintModel generation is now skipped during change initialisation when a cached model already exists for the current properties. This avoids a redundant MintModel API call when the asset's MintModel and properties have not changed since the last generation.
 - MintModel "Latest" tab — the latest MintModel view now shows when the MintModel was generated, and surfaces phase output and render log buttons directly in the toolbar when available. If the asset does not have a valid MintModel, a clear message is shown with a Retry button and a shortcut to the Generate tab.
@@ -79,6 +79,11 @@ Follow the [upgrade guide](operations/upgrading.md) for more information on how 
 
 ### Changed {/* #2026-06-04-changed */}
 
+:::warning[PostgreSQL downtime on upgrade]
+This upgrade modified the default PostgreSQL settings for the database cluster. When deploying, this will cause a short downtime of the database cluster. To avoid any downtime, you can increase the number of database replicas locally and set the `db.cnpg.primaryUpdateMethod` setting to `switchover` in your `values.yaml` file before deploying. See the [database settings](/advanced/ha/index.md#dbcnpgprimaryupdatemethod) documentation for more information.
+:::
+
+- The PostgreSQL settings have been adjusted to improve performance in production workloads.
 - The registry reconciliation job is now enabled by default. To disable it, you must now set the `registryReconcile.enabled` setting to `false` in your `values.yaml` file before deploying. See the [image cleanup settings](/setup/configuration/additional-settings.md#image-cleanup-settings) and the [container image cleanup](/operations/maintenance/container-image-cleanup.md) guides for more information.
 - The `worker.*` and `mintmodel_executor.*` settings have been removed and consolidated into the `runner.*` settings.
   - The existing `worker.*` or `mintmodel_executor.*` settings (globally, for projects, for environments, and for assets) are automatically migrated to `runner.*` on upgrade (but not for changes). Note, if you used these settings you must audit the updates - see the `opschain:migration:update` event referenced below.
