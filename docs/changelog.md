@@ -50,6 +50,7 @@ Follow the [upgrade guide](operations/upgrading.md) for more information on how 
 
 ### Changed {/* #2026-06-29-changed */}
 
+- The [installation guide](/setup/installing_k3s.md) has been updated to limit access to the installation user and clarify the required sudo privileges.
 - Settings that can be configured via the GUI or API no longer require a restart of the OpsChain API to take effect.
 - A defined set of settings is now managed by the deployment. These are only configurable via your `values.yaml` file and apply at install and upgrade time. See [settings managed by the deployment](/setup/configuration/additional-settings.md#settings-managed-by-the-deployment) for the full list.
 - The `skip_on_retry` attribute on steps is now computed from the owning change's or workflow run's `skip_steps` array. Patching a step with `skip_on_retry: true/false` continues to work and translates into an update to that array. _`skip_on_retry` is deprecated and will be removed in a future release. Migrate to `skip_steps` on the change or workflow run._
