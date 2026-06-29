@@ -12,7 +12,8 @@ npm run serve        # Serve built site locally (includes search index)
 npm run clear        # Clear Docusaurus build cache
 
 npm run prettier:write  # Format all files
-mdl docs/            # Lint markdown files (uses .mdlrc + .mdl_style.rb)
+mdl docs/            # Lint all markdown files (uses .mdlrc + .mdl_style.rb)
+mdl docs/path/to/file.md  # Lint an individual markdown file
 ```
 
 ## Architecture
@@ -39,12 +40,14 @@ When creating a new release, run `npm run docusaurus docs:version <date>` to sna
 ## Key constraints
 
 - `onBrokenLinks: 'throw'` and `onBrokenAnchors: 'throw'` — the build fails on any broken internal link or anchor. Always run `npm run build` to validate after adding or removing pages.
+- Markdown must pass linting. After modifying a file, lint it on its own with `mdl docs/path/to/file.md` — only the modified file needs to pass. A full `mdl docs/` run can be offered as a final validation step, but do not force it on the user.
 - Prettier: 120-char line width, single quotes, trailing commas (ES5 mode). Run `npm run prettier:write` before committing. Note: Prettier does **not** format markdown files (excluded via `.prettierignore`).
 - Markdown linting excludes MD013 (line length) and MD033 (inline HTML). Numbered lists must use `ordered` style (MD029).
 - Pre-commit hooks (Husky + lint-staged) run Prettier automatically on staged files.
 
 ## Writing style
 
+- **User-facing, feature-centric perspective**. This is end-user documentation — not a technical record of what changed internally. Write from the user's point of view: what can they now do, what has changed about their experience, what do they need to know. Lead with the capability or outcome, not the implementation. Prefer _"It is now possible to skip specific steps when starting a change"_ over _"A new `skip_steps` field is available on the change resource"_. Avoid mentioning internal model names, database columns, serializer attributes, or API field names as the primary subject of a sentence — they can appear as supporting detail, but the user-visible behaviour comes first.
 - **Australian English** throughout. Use Australian spellings: `licence` (not `license`), `behaviour` (not `behavior`), `colour` (not `color`), `organise` (not `organize`), `recognise` (not `recognize`), etc.
 - **Sentence case** for all headings, page titles, sidebar labels, and `_category_.json` labels. Capitalise only the first word and proper nouns.
   - Correct: `## Runner image settings`, `"label": "Getting started"`
@@ -166,3 +169,9 @@ The `<ProductName />` component (from `src/components/ProductName.js`) renders t
 - Released sections are headed `## [YYYY-MM-DD]` matching the version date.
 - Each section uses explicit anchor IDs on its headings (e.g. `{#2026-05-21-added}`) so links remain stable when the changelog is copied into versioned docs.
 - Standard subsections: `Added`, `Changed`, `Fixed`, `Important breaking changes`, `Known issues`.
+
+## Rebasing docs branches onto origin/edge
+
+`origin/edge` is always ahead of `master` and already contains a populated `## [unreleased]` section with other in-progress changelog entries. When a feature branch adds a new changelog entry and is rebased onto `origin/edge`, a conflict in `docs/changelog.md` is expected and normal.
+
+Resolve the conflict by inserting the branch's new entry into the existing `[unreleased]` section — do not create a second `## [unreleased]` heading and do not discard either side's entries. The resolved file should have exactly one `## [unreleased]` section containing all accumulated entries from both sides.

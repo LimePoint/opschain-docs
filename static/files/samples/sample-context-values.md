@@ -17,15 +17,16 @@ change:
   state_timing:
     running:
       ended_at:
-      started_at: '2026-06-18T09:23:34.075398Z'
+      started_at: '2026-06-29T07:55:22.235158Z'
   state_timing_summary: {}
   notify: {}
+  skip_steps: []
   status_code: running
   mintmodel_change: false
   created_at: '2020-05-20T10:00:00.000000Z'
   started_at: '2020-05-20T10:00:05.000000Z'
   finished_at:
-  updated_at: '2026-06-18T09:23:34.278469Z'
+  updated_at: '2026-06-29T07:55:22.475805Z'
   asset_name:
   environment_name: Receivables
   project_name: Finance
@@ -44,20 +45,21 @@ step:
   child_execution_strategy: sequential
   full_path: deploy
   ignore_failure: false
-  input_arguments: {}
-  skip_on_retry: false
+  input_arguments: []
   state_timing:
     running:
       ended_at:
-      started_at: '2026-06-18T09:23:34.075398Z'
+      started_at: '2026-06-29T07:55:22.235158Z'
   step_sequence: 1
   step_type: standard
   description:
   name: deploy
+  skip_requested: false
+  skip_on_retry: false
   created_at: '2020-05-20T10:00:00.000000Z'
   started_at: '2020-05-20T10:00:05.000000Z'
   finished_at:
-  updated_at: '2026-06-18T09:23:34.278469Z'
+  updated_at: '2026-06-29T07:55:22.475805Z'
   status_code: running
 user:
   name: mary
@@ -75,7 +77,7 @@ parents:
     name: Finance
     description: Finance applications
     archived: false
-    created_by: brigitte
+    created_by: concepcion_kunde
     project_type: Standard
   environment:
     id: 530d796b-60ff-4bc6-ad09-ac3eaf1afa45
@@ -83,6 +85,6 @@ parents:
     name: Receivables
     description: RMS
     archived: false
-    created_by: garry_murphy
+    created_by: stephaine_lebsack
 api_key: eyJhbGciOiJIUzI1NiJ9.example.jwt
 ```
