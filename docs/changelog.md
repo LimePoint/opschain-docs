@@ -11,6 +11,12 @@ OpsChain should be upgraded sequentially, one version at a time. Skipping versio
 Follow the [upgrade guide](operations/upgrading.md) for more information on how to upgrade OpsChain.
 :::
 
+## [unreleased]
+
+### Added {/* #unreleased-added */}
+
+- A bell icon in the change and workflow run actions bar lets you watch an active run and receive a browser desktop notification when it completes. The bell is always visible while a run is in progress: clicking it when browser notifications are not yet configured opens the Notification preferences dialog. Settings are persisted per-browser in local storage. An optional _auto-watch_ setting in Notification preferences automatically watches any active run you open, so you never need to click the bell manually. See [browser notifications](getting-started/familiarisation/gui/activity_details.md#browser-notifications) for more information.
+
 ## [2026-06-29]
 
 ### Added {/* #2026-06-29-added */}

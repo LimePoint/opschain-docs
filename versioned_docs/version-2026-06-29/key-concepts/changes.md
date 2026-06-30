@@ -95,6 +95,20 @@ As steps are rerun from the start we suggest only retrying changes/steps that ar
 
 :::
 
+#### Skipping steps
+
+When creating or retrying a change, you can supply a `skip_steps` array of glob patterns. Steps whose identifier matches a pattern are automatically skipped at runtime — `full_path` is matched for change steps; MintModel steps are matched by their hierarchical step name as it appears in the step tree (e.g. `**/Install jdk Binaries`).
+
+The `skip_steps` mask is carried forward automatically on retry — previously-skipped steps remain skipped without needing to be resubmitted. The mask can be overridden at retry time.
+
+:::note
+Approval steps are always exempt from skipping — a step with `requires_approval_from` set will run regardless of any matching pattern. Creating or retrying a change where `skip_steps` would skip the root step is rejected with a validation error.
+:::
+
+:::tip
+The same `skip_steps` feature is available on workflow runs. See [skipping steps](/key-concepts/workflows.md#skipping-steps) for more information.
+:::
+
 ### Limitations
 
 The OpsChain properties guide highlights a number of limitations that must be taken into account when [changing properties in concurrent steps](/key-concepts/properties.md#changing-properties-in-concurrent-steps).

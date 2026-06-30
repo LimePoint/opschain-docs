@@ -174,13 +174,14 @@ The MintModel tab displays the MintModel that was used to run the change. You ca
 
 ### Managing changes
 
-Depending on the status of the change, you will see either an _approve_, _reject_, _cancel_, or _retry_ button.
+Depending on the status of the change, you will see either an _approve_, _reject_, _cancel_, _retry_, or _watch_ button.
 
-| Button             | Description                                                                                      |
-|--------------------|--------------------------------------------------------------------------------------------------|
-| **Approve/reject** | Visible when a change requires human approval before it runs.                                    |
-| **Cancel**         | Visible when a change is currently running. Clicking this will halt the execution of the change. |
-| **Retry**          | Shown if a change has failed, allowing you to attempt to re-execute the change.                  |
+| Button             | Description                                                                                                                                                                                      |
+|--------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **Approve/reject** | Visible when a change requires human approval before it runs.                                                                                                                                    |
+| **Cancel**         | Visible when a change is currently running. Clicking this will halt the execution of the change.                                                                                                 |
+| **Retry**          | Shown if a change has failed, allowing you to attempt to re-execute the change.                                                                                                                  |
+| **Watch (bell)**   | Visible while a change or workflow run is active. Click to receive a browser desktop notification when the run completes. See [browser notifications](#browser-notifications) for setup details. |
 
 :::note
 If a change is cancelled, all finalised steps (i.e. in the success or error state) remain in their existing state, and all pending, queued, or running steps are transitioned to the aborted state. There is no rollback of any kind; steps that have not yet started will not start, and steps that are in progress are stopped immediately.
@@ -195,6 +196,31 @@ See [retrying changes](/key-concepts/changes.md#retrying-changes) for the full s
 #### Repeating a change
 
 When you repeat a change, OpsChain starts a fresh change using the same properties, settings and Git revision. When repeating a change for an asset, the new change will use the asset's current template version.
+
+#### Browser notifications
+
+OpsChain can show a browser desktop notification when a watched change or workflow run completes, so you can navigate away and be alerted without checking the page.
+
+To set up browser notifications:
+
+1. Open the user menu (top right) and select _notification preferences_.
+2. In the _browser notifications_ section, enable the toggle and click _request permission_ to grant the browser the required permission.
+
+Once enabled, a bell icon appears in the actions bar of any active change or workflow run. Click it to start watching that run — the bell turns highlighted to confirm. Click again to stop watching. When the run completes, a notification pops up with a link back to the details page.
+
+:::tip[Auto-watch]
+Enable the _auto-watch active runs_ option in Notification preferences to automatically watch every active change or workflow run you open, without needing to click the bell each time.
+:::
+
+:::note[Limitations]
+
+- **Tab must stay open.** Notifications are driven by polling in the browser tab. Closing the browser or all OpsChain tabs stops the watcher — there is no background service that can deliver notifications when no tab is open.
+- **Per-browser, per-device.** The watch list and settings are stored in browser local storage and are not synced across devices or browsers. You need to enable the feature separately in each browser you use.
+- **Browser permission is required.** If you dismiss the permission prompt or your browser is set to block notifications, you must re-enable it in your browser's site settings — OpsChain cannot prompt you again automatically once permission has been denied.
+- **OS-level do-not-disturb.** Your operating system's focus assist or do-not-disturb mode may suppress browser notifications regardless of browser settings.
+- **Multiple tabs deduplicated.** If you have the same run open in more than one tab, only one notification fires. OpsChain coordinates across tabs automatically.
+
+:::
 
 ### Workflow run details
 
