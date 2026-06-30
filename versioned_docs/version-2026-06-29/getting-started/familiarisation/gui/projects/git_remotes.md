@@ -102,4 +102,3 @@ When changing the URL, keep the following in mind:
 
 - The new URL is verified as reachable before the change is saved, just as it is when creating a remote.
 - The host and repository path are immutable. You can change the credentials, scheme, or port, but a URL that points the remote at a different repository is rejected — the on-disk clone and recorded commit history are tied to the original repository. To point at a different repository, create a new Git remote instead.
-- If you switch to an SSH URL whose host is not yet trusted, superusers can tick _Trust host_ to scan and trust the host's SSH key as part of the update. See [trusting a new host](#trusting-a-new-host) for details.
