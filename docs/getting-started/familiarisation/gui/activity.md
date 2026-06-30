@@ -33,7 +33,7 @@ Each row includes:
 | **Started by**      | The user who initiated the activity. |
 | **Last updated**    | Timestamp for when the activity was last updated - its last status transition. |
 | **Metadata**        | The metadata for the activity. |
-| **Revision**        | The Git reference used for the activity either as Git repository + revision name or the template version name for changes. It shows the workflow version for workflow runs. |
+| **Revision**        | The Git reference used for the activity either as Git repository + revision name or the template version name for changes. It shows the workflow version for workflow runs. While the revision is being fetched, a **Resolving commit** button appears — click it to view the Git fetch logs. |
 
 #### Buttons & links
 

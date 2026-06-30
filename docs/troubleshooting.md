@@ -16,12 +16,52 @@ When errors are encountered with OpsChain, the following high-level checklist ma
 - check the log output from any relevant changes
 - check the log output from Kubernetes, e.g. via [`kubetail -n opschain --since 0`](https://github.com/johanhaleby/kubetail)
   - to see the logs for a specific OpsChain service using `kubetail`, run `kubetail {{service}} -n opschain` (use `kubectl get deployments -n opschain` to see the list of OpsChain services)
+- check the [audit history](/getting-started/familiarisation/gui/audit_history.md) for system-generated error events — scheduled changes that silently failed to fire, git fetch failures, action generation errors, and unexpected settings changes are all recorded there
 - ensure the OpsChain [hardware/VM prerequisites](/setup/prerequisites.md) are met
   - ensure that adequate disk space is still available
 - ensure the system time is accurate
 - check [known issues](#known-issues) below
 - restart OpsChain and try again
 - [contact us](/support.md#how-to-contact-us) for support
+
+### Checking the audit history
+
+The audit history records system-generated errors that do not appear in change logs — for example, a scheduled change that failed to create, a git remote that couldn't be fetched, or an action generation failure. These are often the first sign of a problem that hasn't yet produced a visible failed change.
+
+When diagnosing unexpected system behaviour, filter the audit history by event type prefix `error:` to isolate failures. The detail page for each error event includes a `data` payload containing the actual error message.
+
+A few event types are particularly useful during troubleshooting:
+
+| Event type                                   | What it signals                                              |
+|----------------------------------------------|--------------------------------------------------------------|
+| `error:git_remote:fetch`                     | A git remote couldn't be reached — connectivity or credentials |
+| `error:scheduled_changes:change_creation`    | A scheduled change failed to create                          |
+| `error:scheduled_changes:git_sha`            | A scheduled change couldn't resolve its git ref              |
+| `error:generate_actions_request:generate`    | Action generation failed for an asset                        |
+| `api:settings:update`                        | A setting was changed — includes who and what                |
+| `warn:settings:override`                     | An `OPSCHAIN_OVERRIDE_*` deployment variable was applied at boot |
+
+:::note
+Repeated errors of the same type are deduplicated — OpsChain records them at most once per hour, so a single event entry may represent multiple occurrences.
+:::
+
+### Identifying running OpsChain processes
+
+OpsChain sets meaningful process titles so that active steps are identifiable in process monitoring tools such as `ps` or `top`:
+
+| Process title                 | Description                                               |
+|-------------------------------|-----------------------------------------------------------|
+| `OpsChain action server`      | The action server that coordinates step execution         |
+| `opschain-action <action>`    | A forked step process running the named action            |
+| `mintpress_ctl.rb run_action` | A forked MintModel step process                           |
+
+To list these processes on an OpsChain worker pod:
+
+```bash
+kubectl exec -n ${OPSCHAIN_KUBERNETES_NAMESPACE} deploy/opschain-api-worker -- ps -eo pid,args
+```
+
+This is useful for correlating a resource-consuming process with the specific step or action currently executing.
 
 ### Output resource attributes on error
 

@@ -71,7 +71,7 @@ The commands in this section must be run as `root` (or by your platform team dur
 
 ### Installation user
 
-Create a user named `opschain` on the Linux VM. The user need not be called `opschain`, it can be whatever name you want. For purpose of this guide, we will assume the Linux user is `opschain`. If you decide to use any other username, please replace all occurrences of the `opschain` user in this guide to the name of your choice.
+Create a user named `opschain` on the Linux VM. The user does not need to be called `opschain`, it can be whatever name you want. For the purpose of this guide, we will assume the Linux user is `opschain`. If you decide to use any other username, please replace all occurrences of the `opschain` user in this guide to the name of your choice.
 
 ```bash
 groupadd --gid 1001 opschain
@@ -96,14 +96,27 @@ And paste in the following (adjust binary paths to match your distribution if ne
 opschain ALL=(ALL) NOPASSWD: /usr/local/bin/k3s-killall.sh, \
   /usr/bin/systemctl start k3s, /usr/bin/systemctl stop k3s, \
   /usr/bin/systemctl restart k3s, \
-  /usr/local/bin/crictl, /usr/local/bin/ctr, /usr/bin/firewall-cmd
+  /usr/local/bin/k3s crictl *, /usr/local/bin/k3s ctr *, \
+  /usr/bin/firewall-cmd
 ```
 
-Then grant the installation user read-only access to the system journal so it can inspect K3s logs and service status without sudo, by adding it to the `systemd-journal` group:
+Then grant the installation user read-only access to the system journal so it can inspect K3s logs and service status without sudo. The recommended way is to add it to the `systemd-journal` group:
 
 ```bash
 usermod -aG systemd-journal opschain
 ```
+
+After this, `journalctl -u k3s` and `systemctl status k3s` work for the `opschain` user with no sudo.
+
+:::note[If the `systemd-journal` group isn't honoured]
+Where identities are managed centrally (LDAP/SSSD) and local membership in `systemd-journal` is not applied, the `usermod` above may not take effect. Instead, add a scoped, pager-disabled `journalctl` entry to the sudo allowlist:
+
+```bash
+opschain ALL=(ALL) NOPASSWD: /usr/bin/journalctl --no-pager *
+```
+
+The command will then be available for the `opschain` user via `sudo journalctl --no-pager <arguments>`.
+:::
 
 :::danger[Every entry in the sudo allowlist is a security decision]
 Commands granted via `NOPASSWD` run as root, so each must be safe against privilege escalation before you add it.
@@ -112,7 +125,7 @@ The allowlist above covers everything OpsChain's documented operations need. If 
 :::
 
 :::note[Installation user]
-After the host-provisioning steps below are complete, switch to the `opschain` user with `su - opschain`. Most commands from the [installation guide](/setup/installation.md) onwards run as that unprivileged user.
+After the host-provisioning steps below are complete, switch to the `opschain` user with `su - opschain`. From the [installation guide](/setup/installation.md) onwards, most steps run as that unprivileged user — but a few later operations (for example the post-deploy CA-trust setup and backups) still require root, and are flagged where they occur.
 :::
 
 ### Kernel & Ulimit settings
@@ -177,7 +190,7 @@ sysctl -p /etc/sysctl.d/99-k3s-inotify.conf
 
 ## Installing K3s and Helm
 
-These steps complete the host-provisioning phase: they create the data directories, configure the firewall, and install the K3s and Helm binaries. They write to system locations (`/`, `/etc`, `/usr/local/bin`) and register a systemd service, so they must be run as root. After Helm is installed, switch to the unprivileged `opschain` user for everything that follows.
+These steps complete the host-provisioning phase: they create the data directories, configure the firewall, and install the K3s and Helm binaries. They write to system locations (`/`, `/etc`, `/usr/local/bin`) and register a systemd service, so they must be run as root. After Helm is installed, switch to the unprivileged `opschain` user for the steps that follow.
 
 ### Setup proxy
 
@@ -198,7 +211,7 @@ ln -s /limepoint/rancher /etc/rancher
 ```
 
 :::warning[Keep the K3s data directory root-owned]
-The unprivileged `opschain` user does not need to own this directory. It reads the cluster's kubeconfig (world-readable at mode `644`) via its own [`~/.kube/config` copy](#setup-shell), and the few operations that write under `/limepoint` (trusting the registry CA, editing `registries.yaml`) are root tasks performed during host provisioning.
+The unprivileged `opschain` user does not need to own this directory. It reads the cluster's kubeconfig (world-readable at mode `644`) via its own [`~/.kube/config` copy](#setup-shell), and the few operations that write under `/limepoint` (trusting the registry CA, editing `registries.yaml`) are tasks that should be performed by the root user, not the installation user.
 :::
 
 ### Firewall setup
@@ -287,8 +300,8 @@ vi ~/.bash_profile
 export KUBECONFIG=$HOME/.kube/config
 # Replace with your preferred installed editor.
 export KUBE_EDITOR=vim
-alias crictl='sudo env "PATH=$PATH" crictl --config /limepoint/k3s/agent/etc/crictl.yaml'
-alias ctr='sudo env "PATH=$PATH" ctr'
+alias crictl='sudo /usr/local/bin/k3s crictl --config /limepoint/k3s/agent/etc/crictl.yaml'
+alias ctr='sudo /usr/local/bin/k3s ctr'
 ```
 
 :::note[Your copy of the kubeconfig]
@@ -298,7 +311,7 @@ Working as `root` instead? Point `KUBECONFIG` straight at `/etc/rancher/k3s/k3s.
 :::
 
 :::note[Scoped sudo]
-The `crictl` and `ctr` aliases use `sudo` because they talk to the root-owned container runtime socket. They work with the [scoped sudoers allowlist](#scoped-sudo-for-the-installation-user) configured during host provisioning. If you prefer to avoid sudo for these entirely, add the `opschain` user to the group that owns the containerd socket instead.
+The `crictl` and `ctr` aliases call the K3s-bundled subcommands (`k3s crictl` / `k3s ctr`), which talk to the root-owned container runtime socket and work via the [scoped sudoers allowlist](#scoped-sudo-for-the-installation-user) configured during host provisioning.
 :::
 
 And then source the file for changes to take effect:

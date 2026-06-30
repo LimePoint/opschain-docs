@@ -201,10 +201,12 @@ And note it down, you will need it in the next step. Once you've verified that t
 
 ##### Step 4: Copy the backup files to the host filesystem
 
-Back to the host filesystem, create a directory to store the backup:
+Back to the host filesystem, create a directory to store the backups. Because the K3s data directory `/limepoint` is root-owned, create this directory once as root and assign it to the `opschain` group created during the [installation](/setup/installing_k3s.md) process, so the unprivileged installation user can write backups into it without sudo (the setgid bit keeps new files in the `opschain` group):
 
 ```bash
 mkdir -p /limepoint/backups
+chown root:opschain /limepoint/backups
+chmod 2775 /limepoint/backups
 ```
 
 And copy the backup files to it:

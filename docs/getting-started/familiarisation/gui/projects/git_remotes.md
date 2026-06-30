@@ -39,10 +39,14 @@ The Git remote is tested when you create the Git remote and, if your SSH key is 
 
 #### Trusting a new host
 
-If the Git host you are connecting to is not already in the trusted `known_hosts` list, the connection test fails and the remote is not added. Rather than editing the global configuration in advance, superusers can tick the **Trust host** option when [creating the Git remote](#creating-a-git-remote). OpsChain then scans the host's SSH key and adds it to the [`known_hosts` setting](/key-concepts/settings.md#known_hosts) before testing the connection, so the new remote can be added straight away.
+<p align='center'>
+  <img alt='Trust host screen' src={require('!url-loader!../images/project-git-remotes-create-trusted-host.png').default} className='image-border'/>
+</p>
+
+If the Git host you are connecting to is not already in the trusted `known_hosts` list, the connection test fails and the remote is not added. Rather than editing the global configuration in advance, superusers can tick the **Add repository host to trusted hosts** option when [creating the Git remote](#creating-a-git-remote). OpsChain then scans the host's SSH key and adds it to the [`known_hosts` setting](/key-concepts/settings.md#known_hosts) before testing the connection, so the new remote can be added straight away.
 
 :::note
-The **Trust host** option only appears for superusers, and only when the Git remote URL is an SSH-style URL (for example `git@github.com:my-org/my-repo.git`). Trusting a host accepts whichever SSH host key the host presents at the time (trust on first use), so only enable it for hosts you recognise. The trusted key is stored in the global `known_hosts` setting and is therefore available to all subsequent Git remotes.
+The **Add repository host to trusted hosts** option only appears for superusers, and only when the Git remote URL is an SSH-style URL (for example `git@github.com:my-org/my-repo.git`). Trusting a host accepts whichever SSH host key the host presents at the time (trust on first use), so only enable it for hosts you recognise. The trusted key is stored in the global `known_hosts` setting and is therefore available to all subsequent Git remotes.
 :::
 
 ## Project Git remotes list
