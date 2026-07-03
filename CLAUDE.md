@@ -169,6 +169,7 @@ The `<ProductName />` component (from `src/components/ProductName.js`) renders t
 - Released sections are headed `## [YYYY-MM-DD]` matching the version date.
 - Each section uses explicit anchor IDs on its headings (e.g. `{#2026-05-21-added}`) so links remain stable when the changelog is copied into versioned docs.
 - Standard subsections: `Added`, `Changed`, `Fixed`, `Important breaking changes`, `Known issues`.
+- **Dating a release's changelog.** To cut a release, rename the `## [unreleased]` heading to `## [YYYY-MM-DD]` (the release date) and update its subsection anchor IDs to match — `#unreleased-added` → `#YYYY-MM-DD-added`, and likewise for `fixed`/`changed` and any other subsections. That single rename is the whole change: do **not** add a fresh empty `## [unreleased]` placeholder in the same edit (a new one is created later when the next in-progress entry lands), and do not otherwise alter the entries. After editing, lint (`mdl docs/changelog.md`) and `npm run build` to confirm no anchors broke.
 
 ## Rebasing docs branches onto origin/edge
 
