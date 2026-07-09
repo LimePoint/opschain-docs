@@ -55,7 +55,7 @@ Backups are written to a dedicated `opschain-db-backup` persistent volume claim.
 - `logical` — a `pg_dump` (custom format) export. This is portable across database versions and is recommended for the pre-deploy backup, as it can be restored even after an upgrade changes the database schema or major version.
 
 :::warning[Copy your backups off the host]
-With the default local storage, the backup volume lives on a single node and shares a failure domain with that node. Copy your backups to a safe location off the host — for example a file server on your local network — regularly. The backup volume should be treated as a staging area, not as your only copy.
+With the default local storage, the backup volume lives on a single node and shares a failure domain with that node. Copy your backups to a safe location off the host — for example a file server on your local network — regularly. The backup volume should be treated as a staging area, not as your only copy. See the [copying backups off the host](#copying-backups-off-the-host) section for available options.
 :::
 
 ##### Backup reliability
@@ -67,6 +67,33 @@ Retention (`db.backup.retention.count` and `days`) is applied to completed backu
 :::note[Backups and high availability]
 The `opschain-db-backup` volume is preserved when a cluster changes role (primary to replica, or back) during failover or failback, and is intentionally retained when OpsChain is uninstalled — see [persistent data](/operations/uninstall/persistent-data.md). Only the primary cluster runs backups, but the volume and its history stay in place so they remain available after a failover.
 :::
+
+##### Copying backups off the host
+
+In the host filesystem, create a directory to store the backups. Because the K3s data directory `/limepoint` is root-owned, create this directory once as root and assign it to the `opschain` group created during the [installation](/setup/installing_k3s.md) process, so the unprivileged installation user can write backups into it without sudo (the setgid bit keeps new files in the `opschain` group):
+
+```bash
+mkdir -p /limepoint/backups
+chown root:opschain /limepoint/backups
+chmod 2775 /limepoint/backups
+```
+
+To extract the backups from the PVC, you can either copy it directly from the volume or use the recovery helper pod.
+
+1. Copying directly from the volume: the volume is a directory on the host, so you can copy it as regular files. This is the most efficient option and is easy to schedule (for example a cron job that copies to a file server on your local network):
+
+   ```bash
+   VOL=$(kubectl -n ${KUBERNETES_NAMESPACE} get pvc opschain-db-backup -o jsonpath='{.spec.volumeName}')
+   DIR=$(kubectl get pv "$VOL" -o jsonpath='{.spec.local.path}')
+   cp -r "$DIR/"/* /limepoint/backups/
+   ```
+
+2. Using the recovery helper pod: enable the recovery helper (`db.backup.recovery.enabled: true`), which mounts the backup volume read-only, redeploy with the configuration change and then copy the backups out of it:
+
+   ```bash
+   POD=$(kubectl -n ${KUBERNETES_NAMESPACE} get pod -l app=opschain-db-recovery -o jsonpath='{.items[0].metadata.name}')
+   kubectl cp ${KUBERNETES_NAMESPACE}/$POD:/opt/backup /limepoint/backups/
+   ```
 
 ##### Scheduled backups
 
