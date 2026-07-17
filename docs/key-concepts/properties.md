@@ -538,3 +538,124 @@ In the above example, when the `OpsChain.properties.my_password` property is acc
   "my_password": "secret-vault://vault/path/to/secrets/secret_key?length=20&include_numbers=false"
 }
 ```
+
+## MintPress properties
+
+### ERB template properties
+
+When an asset is backed by a [MintModel](/getting-started/familiarisation/gui/projects/asset_templates.md#asset-templates-with-a-mintmodel), OpsChain will generate the MintModel by concretising the template's MintModel erb file, using the asset's properties. The properties supplied to the MintModel are uniquely converged using the following process:
+
+1. The [repository properties](/key-concepts/properties.md#git-repository) for the asset are converged. No database properties are included in this step.
+2. The `mintpress` key/value pair from the fully converged properties (database properties included) is extracted.
+3. The `mintmodel_overrides` value from the `mintpress` value is removed from (2).
+4. The final properties supplied to the MintModel erb are then constructed as follows:
+   i. the hash from (3) is merged over the hash from (1)
+   ii. the `mintpress` key/value pair from (2) is merged over the hash from (i)
+
+This is unlike the normal property merging process, where database properties naturally override repository properties. The reason for this is that a MintModel is considered "invalid" if the properties used to construct it are different from the asset's current properties. If all database properties were considered when assessing the asset's current properties, any unrelated change to a project property would invalidate every asset's MintModel in that project!
+
+An example of the merging process is shown below:
+
+#### Converged repository properties
+
+```json
+{
+  "project": {
+    "repo": "property"
+  },
+  "environment": {
+    "repo": "property"
+  },
+  "mintpress": {
+    "target": {
+      "platform": "x86-64"
+    },
+    "ssh": {
+      "use_key": true,
+      "key_file": "/home/limepoint/.ssh/id_rsa"
+    }
+  }
+}
+```
+
+#### Fully converged properties
+
+```json
+{
+  "project": {
+    "repo": "property",
+    "db": "property"
+  },
+  "environment": {
+    "repo": "property",
+    "db": "property"
+  },
+  "mintpress": {
+    "target": {
+      "platform": "x86-64"
+    },
+    "ssh": {
+      "use_key": true,
+      "key_file": "/home/limepoint/.ssh/id_rsa"
+    },
+    "sudo": {
+      "enabled": true,
+      "username": "limepoint"
+    },
+    "mintmodel_overrides": {
+      "custom": "override",
+      "environment": {
+        "repo": "overridden"
+      }
+    }
+  }
+}
+```
+
+#### ERB properties
+
+```json
+{
+  "custom": "override",               <<-- from mintmodel_overrides
+  "project": {
+    "repo": "property"
+  },
+  "environment": {
+    "repo": "overridden"              <<-- from mintmodel_overrides
+  },
+  "mintpress": {
+    "target": {
+      "platform": "x86-64"
+    },
+    "ssh": {
+      "use_key": true,
+      "key_file": "/home/limepoint/.ssh/id_rsa"
+    },
+    "sudo": {                         <<-- from database properties
+      "enabled": true,
+      "username": "limepoint"
+    }
+  }
+}
+```
+
+### MintModel steps derivation properties
+
+Once the MintModel has been concretised, the concrete MintModel is used to derive the actions that the asset can run. The MintModel action derivation routines accept various options to configure the actions returned. The `mintpress` properties can be set at the [project, environment or asset level](#opschain-properties) and are merged in the standard fashion, so shared defaults can live on the project or environment while individual assets override only the values they need. Any value you leave unset falls back to the default shown below, so most assets only need to specify the handful of settings that differ from the defaults.
+
+:::note
+The `mintpress` key is validated against a strict schema when properties are saved. Only the keys documented below are permitted - an unrecognised key, or a value of the wrong type, will be rejected with a validation error. The one exception is `mintmodel_overrides`, whose contents are free-form.
+:::
+
+### Available options
+
+| Property               | Type    | Default                                            | Description                                                                                                                                                                                                                                                                             |
+|:-----------------------|:--------|:---------------------------------------------------|:----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `target.platform`      | string  | `x86-64`                                           | The platform architecture of the target hosts the model will be applied to.                                                                                                                                                                                                             |
+| `ssh.use_key`          | boolean | `true`                                             | Whether to authenticate to the target hosts using an SSH key (rather than a password).                                                                                                                                                                                                  |
+| `ssh.key_file`         | string  | `/home/limepoint/.ssh/id_rsa`                      | Path, on the change worker, to the SSH private key file used to connect to the target hosts. Use OpsChain [file properties](/docs/key-concepts/properties.md#file-properties) to write the file on the runner. The file contents can be sourced from secret vault to maintain security. |
+| `sudo.enabled`         | boolean | `true`                                             | Whether commands on the target hosts are run via `sudo`.                                                                                                                                                                                                                                |
+| `sudo.username`        | string  | `limepoint`                                        | The user to `sudo` to when running commands on the target hosts.                                                                                                                                                                                                                        |
+| `chef.server_url`      | string  | _(the `OPSCHAIN_MINTPRESS_CHEF_SERVER_URL` value)_ | The URL of the Chef server to use. Supplying a value enables Chef server integration for the asset's MintModel steps; leaving it unset (and the environment default empty) disables it.                                                                                                 |
+| `ignore_missing_hosts` | string  | `default`                                          | If the `default` value is used, MintPress SDK will be instructed to error if a host is not found. If it is set to `true`, the MintPress SDK will ignore missing hosts.                                                                                                                  |
+| `mintmodel_overrides`  | object  | `{}`                                               | ERB template properties to override the repository properties with before supplying properties to the MintModel template generator.                                                                                                                                                     |

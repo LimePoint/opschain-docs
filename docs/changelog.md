@@ -11,20 +11,20 @@ OpsChain should be upgraded sequentially, one version at a time. Skipping versio
 Follow the [upgrade guide](operations/upgrading.md) for more information on how to upgrade OpsChain.
 :::
 
-## [Unreleased]
+## [2026-07-17]
 
-### Upgrade notes {/* #unreleased-notes */}
+### Upgrade notes {/* #2026-07-17-notes */}
 
 - See the warning added to the [upgrade guide](operations/upgrading.md#upgrade-opschain) regarding upgrading from versions prior to `2026.07.09`. Failure to scale down the `opschain-api-worker` deployment before upgrading may result in error events being generated in the audit history during the upgrade process.
 - The standalone MintModel API deployment has been removed now that MintModel requests run in short-lived, on-demand pods. Remove any `mintModelApi` settings (for example `mintModelApi.enabled`, `mintModelApi.replicas`, and `mintModelApi.env`) from your `values.yaml` before upgrading, as they are no longer recognised.
 - If you configured a proxy following the [advanced proxy setup](advanced/advanced-proxy-setup.md#determine-the-no_proxy-service-list) guide, remove the `opschain-mintmodel-api` entry from your `no_proxy` service list, as that service no longer exists.
 
-### Important breaking changes {/* #unreleased-important-breaking-changes */}
+### Important breaking changes {/* #2026-07-17-important-breaking-changes */}
 
 - The `name` field on the change and step API resources — and in the step context passed to actions — has been renamed to `step_name`. Any integrations or action code that read a step's or change's `name` from these payloads must be updated to read `step_name` instead. Existing `actions.rb` files are otherwise unaffected.
 - Step runner and template action image builds no longer include the Git repository's `.git` directory by default. The default step runner Dockerfile never used it, but if you have a custom Dockerfile that relies on `.git` being present (for example, to run Git commands during the build), enable the new [`include_git_history`](/key-concepts/settings.md#include_git_history) setting after upgrading.
 
-### Added {/* #unreleased-added */}
+### Added {/* #2026-07-17-added */}
 
 - It is now possible to have a change's wait steps continue automatically. When enabled, wait steps that require no approval and whose input arguments all have defaults progress on their own instead of pausing for manual input. The option is available when running, scheduling, or repeating a change.
 - Actions can now be declared directly with human-readable display names — including spaces and capitalisation — which OpsChain slugifies into a valid task name while keeping the friendly name as the step's label. Prerequisites can reference these friendly names too, and existing actions continue to work unchanged. See [actions](/key-concepts/actions.md) for more information.
@@ -33,8 +33,9 @@ Follow the [upgrade guide](operations/upgrading.md) for more information on how 
 - The settings overrides editor in the [run change dialog](/getting-started/familiarisation/gui/activity.md#run-change) now provides JSON schema autocomplete and inline validation — suggesting keys and values and flagging invalid keys as you type — matching the behaviour of the [settings editors](/getting-started/familiarisation/gui/projects/properties_and_settings.md#settings).
 - A _Fetch revision_ button is now available in the template version header, so a version's Git revision can be re-fetched directly from its details page. See [asset template versions](/getting-started/familiarisation/gui/projects/asset_templates.md#about-asset-template-versions) for more information.
 - The browser tab's title and icon now reflect the status of the workflow run you are viewing — matching the existing behaviour for changes — so you can keep track of progress from another tab. See [activity details](/getting-started/familiarisation/gui/activity_details.md#understanding-the-activity-details-screen) for more information.
+- The assets table now shows when each asset's available actions were last refreshed, so you can see at a glance how current the action list is.
 
-### Changed {/* #unreleased-changed */}
+### Changed {/* #2026-07-17-changed */}
 
 - Improved step runner and template action image build performance by no longer archiving and hashing the Git repository's full commit history on every build unless it's actually needed — see the new [`include_git_history`](/key-concepts/settings.md#include_git_history) setting.
 - Step logs now clearly indicate when a runner image is being built without the Docker cache, making it obvious that caching has been disabled for that build.
@@ -48,8 +49,9 @@ Follow the [upgrade guide](operations/upgrading.md) for more information on how 
 - Improved load time for a project's page when it has a large number of bookmarks or child nodes.
 - Improved load time for the workflow runs list when a run has a large step tree.
 - Reduced the frequency of garbage-collection pauses on the API server and background worker by pre-sizing the Ruby heap at boot, improving responsiveness for large requests such as fetching a change with a big step tree or generating a MintModel diff.
+- Step logs now show the full commit context banner — Git revision, SHA, author and message — when a cached runner image is reused, not only when an image is built, so you can always see which commit a step's image corresponds to.
 
-### Fixed {/* #unreleased-fixed */}
+### Fixed {/* #2026-07-17-fixed */}
 
 - Fixed an issue where a momentary database connection or transaction fault during a step transition could permanently fail the step, and its parent change, with a system error. Such transient faults are now retried automatically for a short period before the step is failed.
 - Fixed an issue where the MintModel API could enter a crash loop (`CrashLoopBackOff`) under load. MintModel requests now run in short-lived, on-demand pods, with the number running at once bounded by the new `concurrent.mintmodel_limit` setting — see [runner pod concurrency settings](/key-concepts/settings.md#runner-pod-concurrency-settings) for more information.
@@ -65,6 +67,8 @@ Follow the [upgrade guide](operations/upgrading.md) for more information on how 
 - Fixed an issue where generating a MintModel with debug output enabled (`enable_mintmodel_debug`) could crash with a server error, because the debug logs were returned as a raw list rather than the expected categorized structure.
 - Fixed a rare issue where using `skip_steps` on a workflow run could leave a skipped step's sibling permanently stuck "queued" and the parent step (and the run) stuck "running" indefinitely, when the skip targeted a step running in parallel with others.
 - Fixed an issue where listing changes for a project, environment, or asset with a large number of steps could fail with a database timeout error.
+- Fixed an issue where an action's description was truncated at its first sentence. The full description defined with `description:` — including multi-sentence descriptions — is now retained and carried through to the steps of a change. See [actions](/key-concepts/actions.md#gui-display) for more information.
+- Fixed a security issue where the OpsChain secret vault session token could appear unmasked in MintModel render logs; this token is now scrubbed before the logs are returned.
 
 ## [2026-07-09]
 

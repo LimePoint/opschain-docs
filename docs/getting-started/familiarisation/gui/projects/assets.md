@@ -22,6 +22,7 @@ Each row includes:
 | **Name**            | The name describing the asset.                             |
 | **Code**            | Shows the asset's unique code.                             |
 | **Description**     | Provides a short summary or purpose of the asset.          |
+| **Actions**         | Shows the action-generation status and, where available, when the asset's available actions were last refreshed. |
 | **Archived**        | Indicates the archival status of the asset.                |
 
 ## Buttons & links

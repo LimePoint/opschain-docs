@@ -75,6 +75,8 @@ action :hello_world, description: 'An action that logs "hello world"' do
 end
 ```
 
+A description can span multiple sentences; the full description is retained and carried through onto the steps of a change, not just the first sentence.
+
 :::note
 Actions without a description can still be run via the GUI however the user will need to specify the action manually in the run change dialog.
 :::
