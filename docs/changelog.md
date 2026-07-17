@@ -11,6 +11,61 @@ OpsChain should be upgraded sequentially, one version at a time. Skipping versio
 Follow the [upgrade guide](operations/upgrading.md) for more information on how to upgrade OpsChain.
 :::
 
+## [Unreleased]
+
+### Upgrade notes {/* #unreleased-notes */}
+
+- See the warning added to the [upgrade guide](operations/upgrading.md#upgrade-opschain) regarding upgrading from versions prior to `2026.07.09`. Failure to scale down the `opschain-api-worker` deployment before upgrading may result in error events being generated in the audit history during the upgrade process.
+- The standalone MintModel API deployment has been removed now that MintModel requests run in short-lived, on-demand pods. Remove any `mintModelApi` settings (for example `mintModelApi.enabled`, `mintModelApi.replicas`, and `mintModelApi.env`) from your `values.yaml` before upgrading, as they are no longer recognised.
+- If you configured a proxy following the [advanced proxy setup](advanced/advanced-proxy-setup.md#determine-the-no_proxy-service-list) guide, remove the `opschain-mintmodel-api` entry from your `no_proxy` service list, as that service no longer exists.
+
+### Important breaking changes {/* #unreleased-important-breaking-changes */}
+
+- The `name` field on the change and step API resources — and in the step context passed to actions — has been renamed to `step_name`. Any integrations or action code that read a step's or change's `name` from these payloads must be updated to read `step_name` instead. Existing `actions.rb` files are otherwise unaffected.
+- Step runner and template action image builds no longer include the Git repository's `.git` directory by default. The default step runner Dockerfile never used it, but if you have a custom Dockerfile that relies on `.git` being present (for example, to run Git commands during the build), enable the new [`include_git_history`](/key-concepts/settings.md#include_git_history) setting after upgrading.
+
+### Added {/* #unreleased-added */}
+
+- It is now possible to have a change's wait steps continue automatically. When enabled, wait steps that require no approval and whose input arguments all have defaults progress on their own instead of pausing for manual input. The option is available when running, scheduling, or repeating a change.
+- Actions can now be declared directly with human-readable display names — including spaces and capitalisation — which OpsChain slugifies into a valid task name while keeping the friendly name as the step's label. Prerequisites can reference these friendly names too, and existing actions continue to work unchanged. See [actions](/key-concepts/actions.md) for more information.
+- The run and schedule change dialogs now let you build the runner image without the Docker cache directly from the GUI, and the setting is carried over when repeating a change.
+- Templates can now be deleted. A template cannot be deleted while it is still assigned to a node or referenced by a change.
+- The settings overrides editor in the [run change dialog](/getting-started/familiarisation/gui/activity.md#run-change) now provides JSON schema autocomplete and inline validation — suggesting keys and values and flagging invalid keys as you type — matching the behaviour of the [settings editors](/getting-started/familiarisation/gui/projects/properties_and_settings.md#settings).
+- A _Fetch revision_ button is now available in the template version header, so a version's Git revision can be re-fetched directly from its details page. See [asset template versions](/getting-started/familiarisation/gui/projects/asset_templates.md#about-asset-template-versions) for more information.
+- The browser tab's title and icon now reflect the status of the workflow run you are viewing — matching the existing behaviour for changes — so you can keep track of progress from another tab. See [activity details](/getting-started/familiarisation/gui/activity_details.md#understanding-the-activity-details-screen) for more information.
+
+### Changed {/* #unreleased-changed */}
+
+- Improved step runner and template action image build performance by no longer archiving and hashing the Git repository's full commit history on every build unless it's actually needed — see the new [`include_git_history`](/key-concepts/settings.md#include_git_history) setting.
+- Step logs now clearly indicate when a runner image is being built without the Docker cache, making it obvious that caching has been disabled for that build.
+- Improved the performance of retrying a change or workflow run. Retries are processed in the background instead of synchronously, and the retry cascade itself is more efficient — it no longer re-queries each step's children individually — so retrying a large action tree is faster and no longer makes the API wait for every step to be reset before responding.
+- Reduced the number of database queries performed during step transitions (for example, starting, completing, or entering a waiting state), improving throughput for changes and workflow runs with many steps.
+- Improved performance when saving global settings on an instance with a large number of nodes.
+- Reduced background processing load when transitioning asynchronous workflow steps, such as nested workflow runs or changes running as part of a workflow.
+- Generating an asset's MintModel is now non-blocking — the request returns immediately and the model is concretised in the background, which you can follow for progress. If concretisation fails, its render logs are surfaced against the task so the failure can be diagnosed.
+- Breadcrumb dropdowns now sort their entries naturally (for example, `asset-2` before `asset-10`) and are context aware — selecting a sibling project, environment or asset now takes you to the equivalent page for that resource where one exists, rather than always returning to its landing page.
+- Long action descriptions in an asset's available actions list and expected actions tree are now truncated to keep the lists compact; hover over a description to see the full text.
+- Improved load time for a project's page when it has a large number of bookmarks or child nodes.
+- Improved load time for the workflow runs list when a run has a large step tree.
+- Reduced the frequency of garbage-collection pauses on the API server and background worker by pre-sizing the Ruby heap at boot, improving responsiveness for large requests such as fetching a change with a big step tree or generating a MintModel diff.
+
+### Fixed {/* #unreleased-fixed */}
+
+- Fixed an issue where a momentary database connection or transaction fault during a step transition could permanently fail the step, and its parent change, with a system error. Such transient faults are now retried automatically for a short period before the step is failed.
+- Fixed an issue where the MintModel API could enter a crash loop (`CrashLoopBackOff`) under load. MintModel requests now run in short-lived, on-demand pods, with the number running at once bounded by the new `concurrent.mintmodel_limit` setting — see [runner pod concurrency settings](/key-concepts/settings.md#runner-pod-concurrency-settings) for more information.
+- Fixed an issue where saving OpsChain secret vault settings without specifying every option could fail validation, because unset numeric and boolean options were stored as empty strings.
+- Fixed an issue where a failed install could leave behind image-pull-secret resources that blocked every subsequent install with a `rolebindings … already exists` error; these resources are now cleared before each install.
+- Fixed slow performance when viewing an asset with a broken MintModel template — generation failures are now cached, so a deterministically broken template no longer re-runs the full MintModel generation against the external API on every request.
+- Fixed a rare race condition where deleting a resource at the same moment it became in use could fail with a system error; the deletion is now handled cleanly — either reporting that the resource is in use, or archiving it instead.
+- Fixed the internal application caching of generated MintModels because they were incorrectly shared across assets in some situations previously. This was done by removing this cache.
+- Fixed an issue where the change and workflow run detail pages could stop refreshing automatically, leaving the page stale until it was reloaded. Details now continue to refresh even while the browser tab is in the background.
+- Fixed an issue where switching the workflow version in the run workflow dialog did not update the sample properties pre-populated in the properties overrides tab.
+- Fixed an issue where the template, template version and actions columns in a template version's linked assets table were displayed empty.
+- Fixed an issue where a MintModel node reached through an `actions.rb` combo action's `steps:` list could fail with a "Don't know how to build task" error instead of running, because it was misclassified as a regular runner step.
+- Fixed an issue where generating a MintModel with debug output enabled (`enable_mintmodel_debug`) could crash with a server error, because the debug logs were returned as a raw list rather than the expected categorized structure.
+- Fixed a rare issue where using `skip_steps` on a workflow run could leave a skipped step's sibling permanently stuck "queued" and the parent step (and the run) stuck "running" indefinitely, when the skip targeted a step running in parallel with others.
+- Fixed an issue where listing changes for a project, environment, or asset with a large number of steps could fail with a database timeout error.
+
 ## [2026-07-09]
 
 ### Added {/* #2026-07-09-added */}

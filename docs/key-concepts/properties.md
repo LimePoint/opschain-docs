@@ -145,6 +145,18 @@ If multiple files exist for a given project, environment or asset code (e.g. `.o
 Access to the individual file contents is not available via the `repository_properties_for` API. Requiring access to the individual files may indicate a brittle properties implementation. If access is required then the individual files can be read manually using normal Ruby APIs, e.g. `File.read` etc.
 :::
 
+#### Template folder properties
+
+When an asset uses an [asset template](/getting-started/familiarisation/gui/projects/asset_templates.md), OpsChain also loads properties from the template's folder - the folder named after the template's code that contains its [`actions.rb`](/getting-started/tutorials/templated-actions.md). Any `.json`, `.yaml`, or `.toml` file placed directly in this folder is loaded and merged into the repository properties, following the same naming and format rules described [above](#git-repository).
+
+This lets you ship a set of default properties alongside the actions they support, so every asset created from the template starts with sensible defaults without having to duplicate them under `opschain/properties`.
+
+:::note
+Only files placed directly in the template folder are loaded - property files in nested subfolders are not processed.
+:::
+
+The template folder properties are merged after the project and environment repository properties, but before the asset repository properties. In other words, template folder properties override project and environment values, while asset specific values still override the template's. They can also be accessed on their own via `OpsChain.repository_properties_for(:template_version)`.
+
 ### Database
 
 Properties stored in the database are encrypted prior to being written to disk such that they are encrypted-at-rest. Within each action, project, environment and asset properties are available via `OpsChain.properties_for(:project)`, `OpsChain.properties_for(:environment)` and `OpsChain.properties_for(:asset)` respectively. Actions can modify these properties at runtime and any changes will be persisted to the database (see [modifiable properties](#modifiable-properties) below).

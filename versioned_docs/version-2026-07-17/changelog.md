@@ -1,0 +1,461 @@
+---
+sidebar_position: 1
+description: Learn about new releases of OpsChain, including new features and updates.
+---
+
+# Changelog
+
+:::warning
+OpsChain should be upgraded sequentially, one version at a time. Skipping versions may result in data loss and unexpected behaviour.
+
+Follow the [upgrade guide](operations/upgrading.md) for more information on how to upgrade OpsChain.
+:::
+
+## [2026-07-17]
+
+### Upgrade notes {/* #2026-07-17-notes */}
+
+- See the warning added to the [upgrade guide](operations/upgrading.md#upgrade-opschain) regarding upgrading from versions prior to `2026.07.09`. Failure to scale down the `opschain-api-worker` deployment before upgrading may result in error events being generated in the audit history during the upgrade process.
+- The standalone MintModel API deployment has been removed now that MintModel requests run in short-lived, on-demand pods. Remove any `mintModelApi` settings (for example `mintModelApi.enabled`, `mintModelApi.replicas`, and `mintModelApi.env`) from your `values.yaml` before upgrading, as they are no longer recognised.
+- If you configured a proxy following the [advanced proxy setup](advanced/advanced-proxy-setup.md#determine-the-no_proxy-service-list) guide, remove the `opschain-mintmodel-api` entry from your `no_proxy` service list, as that service no longer exists.
+
+### Important breaking changes {/* #2026-07-17-important-breaking-changes */}
+
+- The `name` field on the change and step API resources — and in the step context passed to actions — has been renamed to `step_name`. Any integrations or action code that read a step's or change's `name` from these payloads must be updated to read `step_name` instead. Existing `actions.rb` files are otherwise unaffected.
+- Step runner and template action image builds no longer include the Git repository's `.git` directory by default. The default step runner Dockerfile never used it, but if you have a custom Dockerfile that relies on `.git` being present (for example, to run Git commands during the build), enable the new [`include_git_history`](/key-concepts/settings.md#include_git_history) setting after upgrading.
+
+### Added {/* #2026-07-17-added */}
+
+- It is now possible to have a change's wait steps continue automatically. When enabled, wait steps that require no approval and whose input arguments all have defaults progress on their own instead of pausing for manual input. The option is available when running, scheduling, or repeating a change.
+- Actions can now be declared directly with human-readable display names — including spaces and capitalisation — which OpsChain slugifies into a valid task name while keeping the friendly name as the step's label. Prerequisites can reference these friendly names too, and existing actions continue to work unchanged. See [actions](/key-concepts/actions.md) for more information.
+- The run and schedule change dialogs now let you build the runner image without the Docker cache directly from the GUI, and the setting is carried over when repeating a change.
+- Templates can now be deleted. A template cannot be deleted while it is still assigned to a node or referenced by a change.
+- The settings overrides editor in the [run change dialog](/getting-started/familiarisation/gui/activity.md#run-change) now provides JSON schema autocomplete and inline validation — suggesting keys and values and flagging invalid keys as you type — matching the behaviour of the [settings editors](/getting-started/familiarisation/gui/projects/properties_and_settings.md#settings).
+- A _Fetch revision_ button is now available in the template version header, so a version's Git revision can be re-fetched directly from its details page. See [asset template versions](/getting-started/familiarisation/gui/projects/asset_templates.md#about-asset-template-versions) for more information.
+- The browser tab's title and icon now reflect the status of the workflow run you are viewing — matching the existing behaviour for changes — so you can keep track of progress from another tab. See [activity details](/getting-started/familiarisation/gui/activity_details.md#understanding-the-activity-details-screen) for more information.
+- The assets table now shows when each asset's available actions were last refreshed, so you can see at a glance how current the action list is.
+
+### Changed {/* #2026-07-17-changed */}
+
+- Improved step runner and template action image build performance by no longer archiving and hashing the Git repository's full commit history on every build unless it's actually needed — see the new [`include_git_history`](/key-concepts/settings.md#include_git_history) setting.
+- Step logs now clearly indicate when a runner image is being built without the Docker cache, making it obvious that caching has been disabled for that build.
+- Improved the performance of retrying a change or workflow run. Retries are processed in the background instead of synchronously, and the retry cascade itself is more efficient — it no longer re-queries each step's children individually — so retrying a large action tree is faster and no longer makes the API wait for every step to be reset before responding.
+- Reduced the number of database queries performed during step transitions (for example, starting, completing, or entering a waiting state), improving throughput for changes and workflow runs with many steps.
+- Improved performance when saving global settings on an instance with a large number of nodes.
+- Reduced background processing load when transitioning asynchronous workflow steps, such as nested workflow runs or changes running as part of a workflow.
+- Generating an asset's MintModel is now non-blocking — the request returns immediately and the model is concretised in the background, which you can follow for progress. If concretisation fails, its render logs are surfaced against the task so the failure can be diagnosed.
+- Breadcrumb dropdowns now sort their entries naturally (for example, `asset-2` before `asset-10`) and are context aware — selecting a sibling project, environment or asset now takes you to the equivalent page for that resource where one exists, rather than always returning to its landing page.
+- Long action descriptions in an asset's available actions list and expected actions tree are now truncated to keep the lists compact; hover over a description to see the full text.
+- Improved load time for a project's page when it has a large number of bookmarks or child nodes.
+- Improved load time for the workflow runs list when a run has a large step tree.
+- Reduced the frequency of garbage-collection pauses on the API server and background worker by pre-sizing the Ruby heap at boot, improving responsiveness for large requests such as fetching a change with a big step tree or generating a MintModel diff.
+- Step logs now show the full commit context banner — Git revision, SHA, author and message — when a cached runner image is reused, not only when an image is built, so you can always see which commit a step's image corresponds to.
+
+### Fixed {/* #2026-07-17-fixed */}
+
+- Fixed an issue where a momentary database connection or transaction fault during a step transition could permanently fail the step, and its parent change, with a system error. Such transient faults are now retried automatically for a short period before the step is failed.
+- Fixed an issue where the MintModel API could enter a crash loop (`CrashLoopBackOff`) under load. MintModel requests now run in short-lived, on-demand pods, with the number running at once bounded by the new `concurrent.mintmodel_limit` setting — see [runner pod concurrency settings](/key-concepts/settings.md#runner-pod-concurrency-settings) for more information.
+- Fixed an issue where saving OpsChain secret vault settings without specifying every option could fail validation, because unset numeric and boolean options were stored as empty strings.
+- Fixed an issue where a failed install could leave behind image-pull-secret resources that blocked every subsequent install with a `rolebindings … already exists` error; these resources are now cleared before each install.
+- Fixed slow performance when viewing an asset with a broken MintModel template — generation failures are now cached, so a deterministically broken template no longer re-runs the full MintModel generation against the external API on every request.
+- Fixed a rare race condition where deleting a resource at the same moment it became in use could fail with a system error; the deletion is now handled cleanly — either reporting that the resource is in use, or archiving it instead.
+- Fixed the internal application caching of generated MintModels because they were incorrectly shared across assets in some situations previously. This was done by removing this cache.
+- Fixed an issue where the change and workflow run detail pages could stop refreshing automatically, leaving the page stale until it was reloaded. Details now continue to refresh even while the browser tab is in the background.
+- Fixed an issue where switching the workflow version in the run workflow dialog did not update the sample properties pre-populated in the properties overrides tab.
+- Fixed an issue where the template, template version and actions columns in a template version's linked assets table were displayed empty.
+- Fixed an issue where a MintModel node reached through an `actions.rb` combo action's `steps:` list could fail with a "Don't know how to build task" error instead of running, because it was misclassified as a regular runner step.
+- Fixed an issue where generating a MintModel with debug output enabled (`enable_mintmodel_debug`) could crash with a server error, because the debug logs were returned as a raw list rather than the expected categorized structure.
+- Fixed a rare issue where using `skip_steps` on a workflow run could leave a skipped step's sibling permanently stuck "queued" and the parent step (and the run) stuck "running" indefinitely, when the skip targeted a step running in parallel with others.
+- Fixed an issue where listing changes for a project, environment, or asset with a large number of steps could fail with a database timeout error.
+- Fixed an issue where an action's description was truncated at its first sentence. The full description defined with `description:` — including multi-sentence descriptions — is now retained and carried through to the steps of a change. See [actions](/key-concepts/actions.md#gui-display) for more information.
+- Fixed a security issue where the OpsChain secret vault session token could appear unmasked in MintModel render logs; this token is now scrubbed before the logs are returned.
+
+## [2026-07-09]
+
+### Added {/* #2026-07-09-added */}
+
+- Notification emails now include a formatted HTML body. Change, workflow run, step, property, settings and waiting notifications render as a readable table — showing the project/environment/asset hierarchy, the action or workflow, the initiator and relevant links — instead of the terse text still used for Slack and Teams messages. See [notifications](/operations/notifications.md) for more information.
+- Git remotes can now record a public URL, used as the prefix when generating links to individual commits in the source repository. See [git remotes](/getting-started/familiarisation/gui/projects/git_remotes.md) for more information.
+- The OpsChain secret vault can now be configured with password-generation options (length, character classes, symbol set, auto-creation) and TLS certificate verification. See [vault settings](/key-concepts/settings.md#vault-settings) for more information.
+- OpsChain can now back up its database automatically. Scheduled backups run on a configurable cron schedule, and a backup can also be taken automatically before each upgrade. Backups run inside the cluster and stay on your local network, write to a dedicated volume, are pruned according to a retention policy, and only run on the primary cluster. An optional recovery helper pod can also be enabled to restore from a backup with a single `kubectl exec`. See [automated backups](/operations/maintenance/backups.md#automated-backups) and [database recovery](/operations/maintenance/backups.md#database-recovery) for details.
+  - :::warning[Backup storage size]
+    Ensure you configure the backup volume size in your `values.yaml` to accommodate the amount of space you have available. See [backup storage size](/setup/configuration/additional-settings.md#dbbackupstoragesize) for more information.
+    :::
+  - The backup utilities' `imagePullPolicy` is set to `Always` by default to ensure your cluster will pull the latest database image. **Leave this setting as-is** on the first deployment to this version. Once your nodes have the updated `opschain-db` image you may set it to `IfNotPresent` to skip the per-run registry check.
+- Bulk run actions from the assets table — You can now select multiple assets and run a chosen action across all of them at once using the new “Bulk run action” option in the assets table. The dialog lets you pick a shared action to apply to all selected assets, or assign a different action per asset. Results are tracked and reported individually as each change is created.
+- Notifications tab on change details — When a change was started with notification targets configured (users, email addresses, LDAP groups, or specific events), a “Notifications” tab now appears on the [change detail page](/getting-started/familiarisation/gui/activity_details.md), giving you a clear view of who will be notified and when.
+- Repeat a change with its notifications preserved — When repeating a change, any notification settings from the original change are now carried over into the repeat dialog, so you don’t have to reconfigure them each time.
+- Time selectors in activity date range filters — The date range filters on the activity log and audit history now include time-of-day pickers, allowing you to narrow results to a specific hour, minute, and second — not just a day.
+- Email hints for usernames in the [workflow editor](/getting-started/familiarisation/gui/workflows.md#workflow-editor) — When editing workflow YAML, usernames listed under user_names: now display the associated user’s email address as a subtle inline hint, helping you confirm you have the right person without leaving the editor.
+- API cache management in admin settings — A new “API Cache” section is available in the admin settings page (superusers only) with a button to manually clear the backend API cache. Useful when cached data needs to be refreshed immediately.
+- Commit links use the Git remote’s public URL — Where a Git remote has a public_url configured, commit links in the UI (on change detail and template version pages) now use that URL, allowing links to open in a publicly accessible web interface (e.g. GitHub or GitLab) even when the remote itself uses an internal SSH address.
+
+### Changed {/* #2026-07-09-changed */}
+
+- MintModel render logs are now grouped into labelled categories (step generation, MintModel API, property convergence, command errors) rather than a flat list. The GUI displays them as formatted JSON and automatically collapses all but the most relevant section, so failures and output are visible without scrolling.
+- When pre-populating sample properties in the _Run workflow_ dialog, the values are now left empty (only the property keys are provided) so you are prompted to enter each value rather than passively accepting pre-filled defaults.
+
+### Fixed {/* #2026-07-09-fixed */}
+
+- Fixed a security issue where decrypted secret values could appear in MintModel render logs and downloaded debug archives; these values are now masked.
+- Fixed an issue where notifications sent to external (non-OpsChain) email addresses were added as blind-carbon-copy recipients rather than direct recipients.
+- Fixed an issue where retrying a change did not carry over its notification (event subscription) settings; retried changes now reuse the original change's settings unless new ones are supplied.
+- Fixed a rare race condition that could leave a workflow run stuck _running_ indefinitely when several parallel steps finished at almost the same moment.
+- Fixed a rare race condition on a single-pod runner where a completed step could be processed twice, logging an "Unable to construct a step result processor" error.
+- Fixed an issue where supplying an explicit `null` value for a property override returned a server error instead of a clear validation error.
+- Workflow overview correctly shows multiple-target steps — Step nodes in the workflow overview now display a count of targets when a step runs across multiple targets. Hovering the node shows the full target list in a tooltip.
+- MintModel render logs focused on the relevant section on error — When viewing render logs after a generation failure, the log viewer now automatically collapses less relevant sections and expands the most meaningful one (e.g. step generation details), saving you from scrolling through noise to find the failure detail.
+
+## [2026-07-03]
+
+### Added {/* #2026-07-03-added */}
+
+- A bell icon in the change and workflow run actions bar lets you watch an active run and receive a browser desktop notification when it completes. The bell is always visible while a run is in progress: clicking it when browser notifications are not yet configured opens the Notification preferences dialog. Settings are persisted per-browser in local storage. An optional _auto-watch_ setting in Notification preferences automatically watches any active run you open, so you never need to click the bell manually. See [browser notifications](getting-started/familiarisation/gui/activity_details.md#browser-notifications) for more information.
+- When retrying a failed change, you can now choose which steps to skip. The retry dialog shows the full step tree with checkboxes — select individual steps or entire subtrees to bypass on the next run. Skipped steps appear with a "Skipped" badge in the step tree, and steps that already ran successfully in a previous attempt are labelled "Ran previously" to help you see what still needs to complete.
+- A "Run" button is now available in the workflow editor toolbar, letting you run the currently loaded published workflow version directly from the editor without navigating away. See [Workflow details and actions](getting-started/familiarisation/gui/workflows#workflow-details-and-actions).
+- A "Run" button is now also available in the [workflow details page](getting-started/familiarisation/gui/projects/workflows#buttons--links-1).
+- The "Trust host" option — which scans and accepts the server's SSH host key — is now available when editing an existing Git remote, not only when creating a new one. See [Editing a git remote](getting-started/familiarisation/gui/projects/git_remotes#editing-a-git-remote).
+- When selecting a workflow version in the "Run workflow" dialog, any sample properties defined for that version are now automatically pre-populated in the properties override tab, giving you a ready-to-use starting point.
+- Change input arguments now support array and hash (JSON object) types. Arrays display a list of string values with add and remove controls; hashes display a JSON editor with inline validation.
+- The email notification channel configuration now includes a "from" field, allowing you to set a custom sender address for OpsChain email notifications.
+- Step nodes in the change tree now show a small copy icon next to the truncated action name. Clicking it copies the full action name to your clipboard. [More details about step lifecycle](getting-started/familiarisation/gui/activity_details#step-lifecycle).
+- Runner images are now reused across changes and steps: when a step or change would build an image identical to one already built, OpsChain reuses the existing image instead of rebuilding it, reducing build times and load on the image build service. Reuse is on by default and configurable via the new `image_reuse` setting — see [image build settings](/key-concepts/settings.md#image-build-settings).
+- OpsChain now caps how many runner and actions-refresh pods run at once on a cluster, so busy clusters don't create more pods than they can schedule. The caps share capacity between the two pools and are configurable via the new `concurrent` setting — see [runner pod concurrency settings](/key-concepts/settings.md#runner-pod-concurrency-settings).
+
+### Fixed {/* #2026-07-03-fixed */}
+
+- Fixed an issue where a MintModel action's connect-user override (`mintpress.sudo.username`) could be silently ignored on some steps, causing the action to run as the wrong user.
+- Fixed an issue where running a MintModel action as a workflow step could fail because the acting user was not set from the workflow run's creator.
+- Fixed an issue where redundant MintModel history records could be created for an asset; existing duplicate history entries are collapsed on upgrade.
+- Fixed an issue where image build throttling and reuse could incorrectly block or throttle builds across separate OpsChain clusters that share a single PostgreSQL database.
+- MintModel step logs now show the exact `mintpress_ctl.rb` command that was run, including the resolved MintModel JSON path and SSH key path, instead of the raw (unresolved) command template — making it easier to diagnose issues by reproducing the command directly.
+- Fixed mouse wheel zoom and panning on the step tree canvas in Firefox. Delta values are now normalised and clamped, eliminating the large unexpected jumps that could occur when scrolling.
+- Fixed an issue where opening a properties comparison dialog followed by a settings comparison dialog (or vice versa) could cause the wrong data to be displayed in the second dialog.
+- Fixed an issue where retrying an incomplete change could fail with an error, or silently miss newly-added default settings, when the settings schema had changed since the change first ran. Retried changes now reconcile their settings against the current schema, dropping any override settings that are no longer valid (recorded in the change's events).
+
+### Changed {/* #2026-07-03-changed */}
+
+- The global search bar now uses fuzzy matching, producing more relevant results even when your search term doesn't exactly match a node's name or code. Results appear immediately as you type with no delay.
+- You can now supply custom sample properties when validating a workflow that has already been run.
+- Changes and workflow runs that are queued behind another run — because parallel execution is disabled, or because they must run in creation order — now start promptly when the run ahead of them finishes, instead of waiting for the next poll.
+
+## [2026-06-29]
+
+### Added {/* #2026-06-29-added */}
+
+- The Git fetch command is now logged at the start of the fetch output, making it easier to diagnose connectivity and authentication failures by showing the exact command OpsChain ran. See [activity details](/getting-started/familiarisation/gui/activity.md#activity-details) for more information.
+- The FUSE device plugin daemonset now supports additional environment variables via `fuseDevicePlugin.env` in `values.yaml`. See [fuseDevicePlugin.env](/setup/configuration/additional-settings.md#fusedevicepluginenv) for details.
+- Administrators now have a _Clusters_ tab in the system information area that shows every high availability cluster's deployment configuration. You can compare two clusters against each other to spot configuration drift, and compare versions of a cluster's recorded configuration over time.
+- Authentication settings can now be configured via the GUI in the system configuration page.
+- The name of the cluster you are currently connected to is now shown in the [version info dialog](/getting-started/familiarisation/gui/version_info.md).
+- If an editable setting is misconfigured in a way that prevents you from signing in, an operator can now recover by overriding it from the deployment. Setting `OPSCHAIN_OVERRIDE_<SETTING>` in your `values.yaml` re-applies the supplied value to the matching setting on the next boot, and the override is recorded in the audit history. See [overriding a database setting from a deploy](/setup/configuration/additional-settings.md#overriding-a-database-setting-from-a-deploy) for more information.
+- Concurrent image builds can now be throttled to improve performance on busy clusters. See [image build settings](/key-concepts/settings.md#image-build-settings) for details.
+- Forked step processes now set a meaningful process title (e.g. `opschain-action deploy`, `mintpress_ctl.rb run_action`) so that active steps are identifiable by their script and action in process monitoring tools such as `ps` or `top`. See [identifying running OpsChain processes](troubleshooting.md#identifying-running-opschain-processes) for more information.
+- The expected actions tree for an asset now expands MintModel steps in an `actions.rb` change to include their full tree — matching what will execute at runtime. For more information about running MintModel steps from an `actions.rb`, see [running MintModel actions as child steps](/key-concepts/actions.md#running-mintmodel-actions-as-child-steps).
+- It is now possible to skip specific steps when starting or retrying a change or workflow run. Set a `skip_steps` array of glob patterns on the change, workflow run, scheduled change, or scheduled workflow — any step whose identifier matches a pattern is automatically skipped at runtime (`full_path` is matched for change steps; MintModel steps are matched by their hierarchical step name as it appears in the step tree (e.g. `**/Install jdk Binaries`); `name` for workflow steps). See [skipping steps](/key-concepts/changes.md#skipping-steps) for more information.
+  - The mask is carried forward automatically on retry, so previously-skipped steps remain skipped without needing to be resubmitted. It can also be overridden at retry time.
+  - Approval steps are always exempt — a step with `requires_approval_from` set will run regardless of any matching pattern.
+  - Creating or retrying a change where `skip_steps` would skip the root step is rejected with a validation error.
+- A new [`runner.use_fork_for_mintpress_ctl_rb`](/key-concepts/settings.md#runneruse_fork_for_mintpress_ctl_rb) setting controls whether the MintModel executor forks or spawns a new process when running `mintpress_ctl.rb`. The default (`true`) preserves existing behaviour; set to `false` to run in a new process instead.
+- Assigning a [template version](/getting-started/familiarisation/gui/projects/asset_templates.md#asset-template-details-and-versions) to multiple assets at once now automatically refreshes each asset's actions, so the available actions reflect the newly assigned version without a manual refresh. If an asset's actions cannot be refreshed, the assignment still succeeds and the affected assets are reported in the response warnings.
+- The [settings editors](/getting-started/familiarisation/gui/projects/properties_and_settings.md#settings) now provide JSON schema autocomplete and inline validation. As you edit the settings for a project, environment, asset, agent, or template version (or the system configuration), you now get key and value suggestions and invalid keys are flagged, matching the schema the server enforces on save.
+- The image build logs now show the commit author alongside the commit SHA and message, making it easier to identify who authored the code an image was built from.
+- It is now possible to update an existing [Git remote's](/getting-started/familiarisation/gui/projects/git_remotes.md) URL, allowing its credentials, scheme, or port to be changed without recreating the remote. The host and repository path are immutable — a URL that points the remote at a different repository is rejected, since the existing clone and recorded commit SHAs are tied to the original. As when creating a remote, superusers can opt to scan and trust the new host's SSH key when switching to an SSH URL.
+- Git remotes that use an SSH URL now accept a dedicated passphrase for the SSH key, kept separate from HTTP(S) passwords. SSH key data is required when using an SSH URL, and supplying a passphrase for a non-SSH remote (or a password for an SSH remote) is rejected with a clear error.
+- Two additional settings are now configurable from the admin settings page in the GUI: `git_remote.fetch_stale_threshold`, which controls how long OpsChain waits before retrying a stale in-progress Git fetch, and `log.step_pod_events`, which controls whether Kubernetes pod events are included in step logs.
+- When a MintModel generation fails, a "View generated MintModel" button is now shown alongside the error, allowing you to inspect whatever partial output was produced before the failure.
+- The [workflow editor](/getting-started/familiarisation/gui/workflows.md#workflow-editor) now offers autocomplete suggestions when configuring child steps, making it easier to select the correct step name without having to remember exact identifiers.
+
+### Fixed {/* #2026-06-29-fixed */}
+
+- Fixed an issue where cancelling the generation of an asset's actions could leave the asset displaying actions belonging to a different asset.
+- Fixed a rare issue where registering a value for sensitive-data masking could cause a step to hang indefinitely if the masker was unavailable. Masking now uses a bounded timeout with retries, so the step fails promptly instead of hanging.
+- You can now trust additional SSH hosts for Git authentication via the new [`known_hosts` global setting](/key-concepts/settings.md#known_hosts), without replacing the bundled `known_hosts` file. Entries are merged with the bundled defaults, and because they are stored in the database they are preserved across Helm upgrades and redeploys and replicate across high availability clusters. Each entry is validated when saved, so malformed lines are rejected. See [adding entries via the `known_hosts` setting](/setup/configuration/additional-settings.md#adding-entries-via-the-known_hosts-setting) for more information.
+- When [creating a Git remote](/getting-started/familiarisation/gui/projects/git_remotes.md), superusers can now opt to automatically scan and trust the remote's SSH host key. OpsChain registers the scanned key in the `known_hosts` setting before testing connectivity (trust on first use), so a remote can be added even when its host was not previously trusted. The scanned entry is returned in the response, and the operation is restricted to superusers.
+- Fixed an issue where the step input arguments form was not rendering correctly after an API response format change, causing arguments to be displayed incorrectly or not at all.
+- Fixed an issue where MintModel generation errors were not correctly surfacing any partial results or the phase output and render log viewer buttons.
+- Fixed an issue in the workflow step tree where an incorrect change label was shown in the tooltip on workflow run steps.
+
+### Changed {/* #2026-06-29-changed */}
+
+- The [installation guide](/setup/installing_k3s.md) has been updated to limit access to the installation user and clarify the required sudo privileges.
+- Settings that can be configured via the GUI or API no longer require a restart of the OpsChain API to take effect.
+- A defined set of settings is now managed by the deployment. These are only configurable via your `values.yaml` file and apply at install and upgrade time. See [settings managed by the deployment](/setup/configuration/additional-settings.md#settings-managed-by-the-deployment) for the full list.
+- The `skip_on_retry` attribute on steps is now computed from the owning change's or workflow run's `skip_steps` array. Patching a step with `skip_on_retry: true/false` continues to work and translates into an update to that array. _`skip_on_retry` is deprecated and will be removed in a future release. Migrate to `skip_steps` on the change or workflow run._ See [skipping steps](/key-concepts/changes.md#skipping-steps) for more information.
+- Image builds now pull `docker.io` base images through the bundled in-cluster registry mirror rather than reaching out to Docker Hub directly, reducing external egress and avoiding Docker Hub rate limits.
+- When debug mode is enabled for an asset, the MintModel render logs now also include the MintPress context, the asset's properties, the filtered properties, and the MintPress properties supplied to the MintModel Steps API, making MintModel generation failures easier to diagnose.
+- The [Git remote add and edit form](/getting-started/familiarisation/gui/projects/git_remotes.md#creating-a-git-remote) has been redesigned with a clearer HTTPS/SSH credential selector. When editing an existing remote, the URL can now also be updated directly in the form.
+- The MintModel "Latest" tab now independently fetches the freshest asset state each time it is opened, ensuring the view always reflects up-to-date data.
+- When an asset does not have a valid MintModel, the messaging on the "Latest" tab has been simplified — detailed error information is no longer shown inline, and instead a direct link to the Generate tab is provided.
+- The admin settings page has been reorganised: Authentication settings now have their own dedicated section, the API settings section has been removed, and Build service settings have been consolidated into a single section.
+
+## [2026-06-18]
+
+### Added {/* #2026-06-18-added */}
+
+- Container image builds now automatically retry up to 3 times when a transient BuildKit error is detected (e.g. a gRPC connection drop). The retry count is configurable via the [`build_service.max_image_build_retries`](/key-concepts/settings.md#build_servicemax_image_build_retries) setting.
+- A new `OpsChain.step` helper creates a composable wrapper step that combines wait, input, and ignore failure behaviours in a single call. See the [step wrapper](/key-concepts/actions.md#step-wrapper) documentation for more information.
+- A new `OpsChain.ignore_failure_step` helper is available for wrapping actions as child steps. It creates a thin wrapper action with `ignore_failure: true` so the change continues even if the step fails. See the [ignore failure steps](/key-concepts/actions.md#ignore-failure-steps) documentation for more information. This is particularly useful for MintModel steps which can't be marked as `ignore_failure` in the `actions.rb` natively.
+- A new `OpsChain.query` helper allows action code to query the OpsChain API server directly, retrieving live node, MintModel, properties, or settings data during a change. The request authenticates with the short-lived API key injected into the step context, which is only generated when the [`token.change_api_key_expiry_days`](/key-concepts/settings.md#tokenchange_api_key_expiry_days) (or [`token.agent_api_key_expiry_days`](/key-concepts/settings.md#tokenagent_api_key_expiry_days)) setting is enabled. See the [querying the API](/key-concepts/actions.md#querying-the-api) documentation for more information.
+- The Git logs can now be viewed whilst a template version is being refreshed.
+- API responses now support sparse fieldsets, allowing clients to restrict the fields returned for each resource type using `fields[resource_type]=field1,field2` query parameters. See the [sparse fieldsets](/advanced/api-filtering.md#sparse-fieldsets) guide for more information.
+- The steps API now returns an additional `description` field. This is populated for MintModel steps, to provide additional details.
+- A new `git_remote.fetch_stale_threshold` setting controls how long OpsChain will wait for an in-progress Git fetch before performing a fresh fetch of its own. See the [Git remote settings](/key-concepts/settings.md#git_remotefetch_stale_threshold) documentation for more information.
+- An event is now created when the actions are regenerated for an asset.
+- A timestamp now shows how long it took to generate a MintModel when running a change.
+- New `on_failure.dump_properties` setting controls whether resolved resource properties are dumped to the change logs, when a resource controller fails during a change. See the [`on_failure.dump_properties`](/key-concepts/settings.md#on_failuredump_properties) documentation for more information.
+- New `controller.mask_properties` settings controls whether sensitive properties supplied to resource controllers are added to the data masker prior to being supplied to the controller. See the [`controller.mask_properties`](/key-concepts/settings.md#controllermask_properties) documentation for more information.
+- The list MintModels and list MintModel history API endpoints now support the `limit` query parameter to restrict results and filtering and sorting via `filter` query parameters. See the [API filtering & sorting](/advanced/api-filtering.md) guide for more information.
+- The MintModels and MintModel history API endpoints now support the `include` query parameter, allowing related resources (e.g. `mintmodel_history`, `mintmodel`, `opschain_changes`) to be sideloaded in a single request. The MintModel history show endpoint includes `mintmodel` and `opschain_changes` by default; pass `include=` (empty) to suppress them.
+- Step tree search — a search bar is now available at the top of the step tree on changes, workflow runs, and workflow overviews. You can type to highlight matching step names and navigate through results with the arrow keys or Enter, making it much easier to locate a specific step in large or complex runs.
+- Step status filter badges — the step tree header now shows a summary of how many steps are in each status (running, waiting, failed, succeeded, etc.). Clicking a status badge highlights all matching steps on the canvas and jumps to the first one, allowing you to quickly focus on steps that need attention without scrolling through the entire tree.
+- Canvas minimap — a minimap overlay now appears in the bottom-right corner of the step tree canvas for changes, workflow runs, and workflow overviews. You can click or drag on the minimap to jump to any part of the tree, which is particularly useful for large runs with many steps.
+- Canvas zoom and fit controls — zoom in, zoom out, fit-to-view, and fit-to-width buttons are now available on the step tree canvas. These controls appear as a floating toolbar, replacing the need to use the scroll wheel alone.
+- Expand/collapse by depth level — the step tree toolbar now includes controls to expand or collapse the tree to a specific depth level. You can step through levels one at a time, making it easier to get an overview of a large change before drilling into details.
+- MintModel phased output viewer — when viewing the latest or generated MintModel for an asset, a "View phased outputs" button is now available when phase output data exists. This opens a panel showing the asset's data at each stage of the MintModel generation pipeline (initial, post-scaleout, post-business-rules, post-resolve, and final). You can also compare any two phases side by side using a diff view.
+  - _Note: this is only shown when `enable_mintmodel_debug` is present and set to `true` under the asset settings._
+- MintModel render logs viewer — a "View render logs" button now appears on the MintModel page when render logs are available, allowing you to inspect the raw output from the rendering process.
+- Git revision fetch progress — when a template version is fetching its git revision, a live progress indicator now appears showing the current fetch stage (e.g. counting objects, receiving objects) along with a percentage. A full scrollable log of the fetch output can be viewed by clicking the indicator.
+- Assets table additional columns — the assets listing table now shows the assigned template name, template version number and state, and the status of action generation (e.g. "Generated", "Generating", "Not available") for each asset. MintModel assets are also labelled directly in the Name column.
+- Data cleanup audit history filter — a new option to delete audit history (jobs) is now available in the data cleanup configuration, with an optional age filter so that only records older than a specified number of days are removed.
+- Audit history richer source links and detail — events in the audit history now include contextual links directly to the relevant resource (change, step, template version, workflow, scheduled activity, git remote, policy, etc.). Hovering a source link shows a tooltip with key details such as status, action, project, and who created it. The individual event detail page now presents the message, path, and progress log as distinct readable sections rather than a raw JSON dump.
+- Audit history project and workflow names in source — where previously only internal codes were shown, source links in the audit history now display human-readable names for projects and workflows.
+- Bulk delete for authorisation policies — You can now select multiple authorisation policies from the table and delete them all at once using the new "Bulk actions" menu. A confirmation dialog lists the policies to be deleted before anything is removed, and any failures are reported individually without blocking the rest of the deletions.
+
+### Fixed {/* #2026-06-18-fixed */}
+
+- When generating a MintModel, a new history record is now only skipped if the asset's most recent MintModel history entry already references the same MintModel. Previously, any existing history entry for the same MintModel would be reused, meaning a return to an older model state would not be recorded in the asset's history.
+- Fixed use of nested MintModel steps within an `actions.rb` (it would inconsistently fail before).
+- Orphaned template versions whose parent template had been deleted are removed on upgrade. An `opschain:migration:update` event is created for each removed record to allow for auditing.
+- Orphaned MintModel history records whose parent MintModel no longer exists are removed on upgrade. An `opschain:migration:update` event is created for each removed record to allow for auditing.
+- Fixed conversion of WebLogic property names by forcing the `activesupport` camelcase implementation in `mintpress_ctl.rb`.
+- Audit history invalid source links — source links were previously broken for several event types including deleted resources, scheduled activities, git remotes, and authorisation policies. These now resolve correctly.
+- MintModel compare wrong versions loaded — selecting a MintModel version to compare was previously using an incorrect identifier, causing the wrong data to be loaded. This has been corrected.
+- Logs from MintModel steps that were shown on error cleanup are now shown as expected.
+- Actions list sorted alphabetically (case-insensitive) — The list of actions available on an asset is now sorted in a consistent case-insensitive alphabetical order, so actions starting with uppercase or lowercase letters appear in the expected position rather than grouped by case.
+- Git remote link on change details was broken — The link to the git repository on the change detail page was navigating to the truncated display label instead of the full URL. This has been corrected so the link always opens the right destination.
+
+### Changed {/* #2026-06-18-changed */}
+
+- MintModel generation is now skipped during change initialisation when a cached model already exists for the current properties. This avoids a redundant MintModel API call when the asset's MintModel and properties have not changed since the last generation.
+- MintModel "Latest" tab — the latest MintModel view now shows when the MintModel was generated, and surfaces phase output and render log buttons directly in the toolbar when available. If the asset does not have a valid MintModel, a clear message is shown with a Retry button and a shortcut to the Generate tab.
+- MintModel "Compare" tab — the compare view now fetches its own history independently rather than relying on shared data, and errors during loading are handled gracefully with a proper error state.
+- Audit history refresh rate — the audit history page now refreshes every 5 seconds (previously 15 seconds) so that new events appear more promptly.
+- The OpsChain pods now enforce `runAsNonRoot: true` and avoid entering the pod as root.
+- The LDAP refresh events now carry more detail. The start events record the search base, filter, and timeout, the success event records the per-type entry counts (distinguishing freshly searched counts from cached counts when a type is skipped) and the elapsed search time for each type searched, and all refresh events now include the LDAP host and port. A start event is now only emitted when a filter is actually searched, avoiding a misleading event when the group filter is absent or invalid.
+
+## [2026-06-04]
+
+### Added {/* #2026-06-04-added */}
+
+- The `api.env`, `apiWorker.env`, `imageCopyJob.env`, `ldap.env`, `logAggregator.env`, `mintModelApi.env`, `mintModelStepsApi.env`, and `registryReconcile.env` `values.yaml` settings have been added to allow additional environment variables to be injected into their respective containers. See the [additional settings](/setup/configuration/additional-settings.md) guide for more information.
+- The MintModel executor now logs the `mintpress_ctl.rb` command that will be run during MintModel steps.
+- An `actions.rb` file can now run steps defined by the asset's MintModel. [Learn more](/key-concepts/actions.md#running-mintmodel-actions-as-child-steps).
+- You can now compare any two nodes (projects, environments, assets, or agents) side by side. The comparison shows differences in settings, properties, assigned templates, agents, and MintModel output between the two nodes. An indicator is shown on the node when it is part of an active comparison.
+- A new LDAP refresh button is available in the Manage Security section to manually trigger an LDAP directory sync without having to wait for the next scheduled refresh.
+- A new deletable permission can now be configured in authorisation policies, giving finer control over who can delete resources.
+
+### Changed {/* #2026-06-04-changed */}
+
+:::warning[PostgreSQL downtime on upgrade]
+This upgrade modified the default PostgreSQL settings for the database cluster. When deploying, this will cause a short downtime of the database cluster. To avoid any downtime, you can increase the number of database replicas locally and set the `db.cnpg.primaryUpdateMethod` setting to `switchover` in your `values.yaml` file before deploying. See the [database settings](/advanced/ha/index.md#dbcnpgprimaryupdatemethod) documentation for more information.
+:::
+
+- The PostgreSQL settings have been adjusted to improve performance in production workloads.
+- The registry reconciliation job is now enabled by default. To disable it, you must now set the `registryReconcile.enabled` setting to `false` in your `values.yaml` file before deploying. See the [image cleanup settings](/setup/configuration/additional-settings.md#image-cleanup-settings) and the [container image cleanup](/operations/maintenance/container-image-cleanup.md) guides for more information.
+- The `worker.*` and `mintmodel_executor.*` settings have been removed and consolidated into the `runner.*` settings.
+  - The existing `worker.*` or `mintmodel_executor.*` settings (globally, for projects, for environments, and for assets) are automatically migrated to `runner.*` on upgrade (but not for changes). Note, if you used these settings you must audit the updates - see the `opschain:migration:update` event referenced below.
+  - The `worker.reuse_actions_rb` setting is now `runner.reuse_actions_rb`.
+  - An `opschain:migration:update` event is created for the settings that were changed during upgrade to allow for auditing.
+  - _Note: changes that had override settings for `worker.*` or `mintmodel_executor.*` won't be able to be retried after this update (they can still be repeated, but you will need to update the settings)._
+- The agent base image is now based on the same image as the runner, executor and worker.
+- Locally authenticated user accounts can now log in to OpsChain whilst the LDAP server is inaccessible (without needing to change any config).
+- The asset's MintModel history is now updated when actions are refreshed (if the MintModel has changed). Previously, the MintModel used during action refresh was not saved to the asset's history.
+- LDAP integration has been modified to use a background job to synchronise a local store of the LDAP users and groups. See the [LDAP synchronisation settings](key-concepts/settings.md#ldap-synchronisation-settings) documentation for more information on the new LDAP settings.
+- The template type field is now read-only when editing an existing template, preventing accidental changes to a type that may already be in use.
+- The worker image configuration fields (repository, name, and tag) have been removed from the runner configuration page in Admin settings, as these are no longer managed from the GUI.
+- MintModel generation changes:
+  - it now provides more explicit details of failures found when parsing `lib` classes and modules.
+  - a new `enable_mintmodel_debug` settings has been added to enable extra debug logging for MintModel generation.
+  - `OpsChain.context` and `OpsChain.properties` are now available within your ERB template to provide more context when concretising the MintModel.
+
+### Fixed {/* #2026-06-04-fixed */}
+
+- The edit option in the template actions menu was not opening the edit dialog correctly. This has been fixed.
+- The link to update a git remote from the template layout actions was pointing to the wrong location. This has been fixed.
+- When opening the edit dialog for an existing template, the form fields were not being filled in with the current values. This has been fixed.
+- Navigating to the latest MintModel tab could show stale data. It now re-fetches automatically when the tab is opened.
+- When validating multiple template versions with the same commit, the first validation result no longer causes the others to be removed.
+- The `create_local_user` task can now be used when the LDAP server is unreachable.
+- The performance of the back end queries that support the policy administrator screens have been improved.
+- The Activities queries have been optimised to improve performance when there are large numbers of activities and user authorisation rules.
+
+## [2026-05-26]
+
+### Added {/* #2026-05-26-added */}
+
+- The authorisation of scheduled activities has been improved.
+- A job to clean up images from the OpsChain image registry has been added and can be configured via the `values.yaml` file. See the [image cleanup settings](/setup/configuration/additional-settings.md#image-cleanup-settings) and the [container image cleanup](/operations/maintenance/container-image-cleanup.md) guide for more information.
+
+### Changed {/* #2026-05-26-changed */}
+
+- The runner, executor and worker images are all based on the same base image.
+  - This means the `mintpress` user has been removed from the image, hence the image always runs as `opschain`.
+  - The `/opt/mintpress` path still exists and contains the MintPress SDK.
+  - The home directory of the `opschain` user remains `/opt/opschain`.
+  - The `worker.name` configuration default has been updated to `opschain-runner-enterprise`. This is an automated update.
+
+## [2026-05-21]
+
+### Added {/* #2026-05-21-added */}
+
+- The `requires_approval_from` usernames and ldap groups can now be sourced from the relevant node's properties. See the [settings documentation](key-concepts/settings.md#requires_approval_from) for more information.
+
+### Important breaking changes {/* #2026-05-21-important-breaking-changes */}
+
+- The OpsChain API will no longer start if the `token.secret_key` setting (which is originally set from the `OPSCHAIN_TOKEN_SECRET_KEY` value in your values.yaml) is not set or is empty. This setting was introduced in 2026-04-21 and must be set as part of the security configuration. OpsChain will no longer startup with it unset to prevent accidental misconfiguration.
+  - This relates to CVE-2026-45363.
+  - _Note that changing the value of `token.secret_key` was broken previously, see the [release notes below](#2026-05-18-known-issues) for more details._
+  - **To verify before updating**, go to the "administration"->"configuration" screen in the GUI. Switch to "advanced mode" and view the value of "token"->"secret_key". A value must be present, for example `{AES2}+abyGjcoVen3vRw76L2CpQ=={/IV}U...`. If the value is not present, set it to a 128 character long random string (for example a value generated by the following Ruby code: `SecureRandom.hex(64)`). _Note: once the value is updated you will likely encounter the [known issue below](#2026-05-18-known-issues)_.
+  - See the [troubleshooting guide](troubleshooting.md#error---decode-error-on-login) if necessary.
+
+### Changed {/* #2026-05-21-changed */}
+
+- Upgraded all images to AlmaLinux 9.7.
+- [CVE-2026-45363](https://github.com/advisories/GHSA-c32j-vqhx-rx3x) has been mitigated.
+
+### Fixed {/* #2026-05-21-fixed */}
+
+- Changing the `token.secret_key` setting now works as expected.
+- The 2026-05-18 release introduced a bug in the secret resolution API which caused manual lookup of secrets to fail. This has been fixed.
+
+## [2026-05-18]
+
+### Known issues {/* #2026-05-18-known-issues */}
+
+- Changing the `token.secret_key` setting will make the server return 500 errors for any user who was logged in before the setting changed. Clearing your browser cookies for the OpsChain server will fix this for the affected user.
+
+### Fixed {/* #2026-05-18-fixed */}
+
+- When an action fails to execute, the error indicating where the action was defined has been improved to handle MintPress SDK actions.
+- Correct rebuilding of agent image when the template version changes.
+- When multiple parallel steps modify properties in ways that can't be handled, the step moves to `failed` (rather than `system error`). This improves/fixes retry of these changes.
+- Steps that report `Unable to construct a step result processor for step "..." due to: No such file or directory @ rb_sysopen /steps/.../step_result.json` are now marked as failed.
+- Fixed `syntax error found (SyntaxError)` and `invalid multibyte character 0xE2` reported in `actions.rb` due to incorrect character encoding handling.
+- Fixed issue where the build service would get stuck in a `Pending` state during an upgrade due to an issue with the `fuse-device-plugin`. See the [FUSE device plugin settings](/setup/configuration/additional-settings.md#fusedevicepluginenabled) for more information.
+- Running nested steps from the actions GUI for MintModel actions now works.
+- Refresh tokens (and refresh cookies) are now properly revoked when a token destroy request is made to the API.
+- When a page fails to load, the error message is now shown in a consistent position rather than floating in the middle of the page.
+- When a user does not have permission to view properties or settings, a clear "not authorised" message is now shown instead of an unhandled error.
+- Fixed an issue where the admin settings editor did not correctly respect the user's update permissions.
+- Fixed repeating a change that involved nested actions — the correct action path is now used.
+- Fixed the activity volume chart on the dashboard, where the legend and chart area were displaying incorrect colours.
+- Fixed elapsed time in the activities list to count from when a change was created rather than when it started running, giving a more accurate total duration.
+
+### Added {/* #2026-05-18-added */}
+
+- OpsChain actions and wait steps can now be defined with a custom `step_name`. When the OpsChain GUI displays the step tree for a change, the step that executes the action will be labelled with the supplied `step_name` rather than the action method name.
+- You can now include input steps in your `actions.rb`. These act like regular wait steps however they require the user to provide specific input values in order to continue the step. See the [input steps documentation](key-concepts/actions.md#input-steps) for more information.
+- Each change step now includes a `state_timing` object in the step response that includes timestamps for when the step entered and exited each state.
+- On completion, the change response now includes a `state_timing_summary` object, providing a summary of the number of seconds spent building the image, running the step, waiting for user input, and system overhead.
+- The settings version and properties versions endpoints now accept the `limit` query parameter to limit the rows returned.
+- The default OpsChain Dockerfile can now be downloaded from the OpsChain server. [Learn more](/key-concepts/step-runner.md#creating-a-custom-step-runner-dockerfile).
+- New `converged_settings` endpoints have been added to the API to allow retrieval of the converged settings for a change, template version, asset, environment or project. These endpoints mimic the existing `converged_properties` endpoints, returning settings rather than properties.
+- The notify JSON supplied when creating a change is now stored with the change and is available in the change response under `notify`.
+- When a change re-uses the result of a step that already ran successfully in a previous attempt, this is now clearly indicated in the step tree. A history icon appears on the step node, and the step detail panel shows a notice with a link to the original run where the step completed.
+- Steps that require approval now show a full breakdown of all required approvers, their groups, and the current state of each approval in a popover. You can see who has approved or rejected, when they did so, and any message they left. The summary on the step node updates as approvals come in (e.g. "Requires approval (1 of 3)").
+- A new **Inherited settings** tab is available on the settings page for all node types (projects, environments, assets, and agents). This shows the fully resolved settings that a node will use at runtime, accounting for values inherited from parent nodes. Each setting can be annotated with its source via a "Show/Hide sources" toggle. The same view is also available on the Change settings tab.
+- Settings can now be viewed and compared directly from a template version's detail page.
+- All notification toasts (success, error, and info) now include a **Copy** button to copy the message text to the clipboard. Notifications also stay visible for longer before auto-dismissing.
+- When opening the "Compare versions" tab for settings or properties, the two most recent versions are now pre-selected automatically, so you can see what changed straight away without having to pick versions manually. Up to 500 versions are now loaded, and they are listed in chronological order.
+- When a step in a change requires user-provided values before it can proceed, a dedicated dialog is now shown to collect those inputs. Each field is presented with its name, type, and description. Once submitted, the change continues automatically. After a step has been continued, users can view the values that were supplied at the time — the same dialog opens in a read-only mode, showing what was entered and who submitted it (including any message they left).
+- The `ignore_failure` option has been added to actions with child steps. Child step failure will no longer cause the parent step to fail when this option is enabled. This can be used to allow a change to continue running even if a non-critical step fails.
+
+### Changed {/* #2026-05-18-changed */}
+
+- The long-running database query timeout configuration has now been split.
+  - The [`OPSCHAIN_API_DATABASE_STATEMENT_TIMEOUT`](/setup/configuration/additional-settings.md#opschain_api_database_statement_timeout) setting is used for API requests.
+  - The [`OPSCHAIN_WORKER_DATABASE_STATEMENT_TIMEOUT`](/setup/configuration/additional-settings.md#opschain_worker_database_statement_timeout) setting is used for SQL statements executed in the OpsChain worker.
+- The `fuse-device-plugin` will now only run if the `buildService.rootless` and `fuseDevicePlugin.enabled` settings are set to `true`. Consider enabling it if you are running a Kernel version older than 5.11. Refer to the [FUSE device plugin settings](/setup/configuration/additional-settings.md#fusedevicepluginenabled) for more information.
+- The change approval feature has been enhanced to support action specific approval. See the requires approval from setting in the [settings documentation](key-concepts/settings.md#requires_approval_from) for more information.
+- The step and change `approved_by`, `continued_by`, `rejected_by` and `cancelled_by` attributes will now be returned in the same format `[{ "username": "peter", "message": "user supplied message", "date": "2026-05-12T04:53:05Z"}]`
+- The log_lines link in each step response now reflects the actual step where the logs where generated. For a regular change, this will be a link to the current step's logs. For a retried change, if the original step succeeded during one of the previous attempts, the link will point to the original step's logs.
+- Changes will now store the converged settings that were used to run the change. Settings queries during the change execution will use the persisted settings for the change rather than the current system values. This ensures changes will be unaffected by any settings changes that occur during their execution.
+- The `updated_at` date for a token is now updated to the current date and time each time the token is used.
+- the `action_methods` argument for the `controller` method in `actions.rb` has been removed and its functionality has been absorbed into the `available_actions` argument. See the [actions documentation](key-concepts/actions.md) for more information.
+- The timing section on a change's detail page now shows a breakdown of how time was spent during the change run. At a glance you can see execution time and system time as separate figures. Clicking the timing area opens a detailed view that breaks down time spent in each phase — such as time spent running, waiting for approvals, and building images — alongside a full state-by-state timeline with start and end times.
+- When a waiting step requires input arguments before it can continue, the GUI now presents a dedicated **"Provide input arguments"** dialog instead of the plain continue action.
+- **Repeating a change**: When repeating a change, the original override settings and properties are now fetched accurately — including for changes that were themselves a repeat of an earlier run. A loading indicator is shown while this is happening, and a clear error message is displayed if the values cannot be retrieved.
+- Links to git commits and repositories now work correctly for a wider range of Git hosting providers, including Azure DevOps (both modern and legacy URLs), AWS CodeCommit, Oracle Cloud Infrastructure, and Sourcehut, in addition to GitHub, GitLab, and Bitbucket. SSH remote URLs are now also converted into browser-friendly links automatically.
+- **Change Git details**: The Git remote URL and revision are now truncated in the change detail card for readability, with the full values available on hover. A direct "Go to commit" link also appears in the hover card.
+- **Top activities panel**: The dashboard activity table column order and layout have been improved.
+
+### Removed {/* #2026-05-18-removed */}
+
+- The bespoke singular MintPress SSH key support has been removed. This means the `mintPressSSHKey` configuration has been removed from the chart.
+  - This means the `mintpress-ssh-key` secret can be removed after update (this secret is not removed automatically). The [uninstall documentation](https://docs.mintpress.io/docs/operations/uninstall/persistent-data#secrets) shows how secrets can be removed. (_Note, it references different secrets._)
+  - We suggest putting SSH keys into [OpsChain file properties](/key-concepts/properties.md#file-properties) (via the [secret vault](/key-concepts/properties.md#opschain-secret-vault)) instead as it is more flexible. The example below shows how this can be added to your properties (do not remove any existing properties):
+
+    ```json
+    {
+      "opschain": {
+        "files": {
+          "/opt/mintpress/.ssh/id_rsa": {
+            "format": "base64",
+            "mode": "0600",
+            "content": "{{ SSH private key contents, base64 encoded - just like `mintPressSSHKey` }}"
+          }
+        },
+        "env": {
+          "SSH_KEY_PATH": "/opt/mintpress/.ssh/id_rsa"
+        }
+      }
+    }
+    ```
+
+## [2026-04-30]
+
+### Important breaking changes {/* #2026-04-30-important-breaking-changes */}
+
+- [`lazy` blocks](key-concepts/actions.md#lazy-property-evaluation) no longer automatically derive a resource (or controller). This means the property definition such as `lazy_property(lazy { :resource })` needs to be called with [`ref` (or `resource`)](key-concepts/actions.md#the-ref-or-resource-method), e.g. `lazy_property(lazy { ref(:resource).controller })`.
+- Strings and symbols no longer provide access to a controller with an equivalent name automatically (i.e. `'resource'.controller` is no longer supported). The resource must be reference via [`ref` (or `resource`)](key-concepts/actions.md#the-ref-or-resource-method) explicitly, e.g. `ref('resource').controller`.
+- The `literal` keyword has been removed. Due to the changes to `lazy` blocks (above) it is no longer required.
+
+### Fixed {/* #2026-04-30-fixed */}
+
+- Handling of resource property resource resolution has now been improved to avoid infinite recursion.
+- It is no longer possible to refetch a template version Git revision while a change is running for this template version because this would lead to the change failing.
+- Fixed issue where the run change and run workflow dialog would hold on to previous values.
+- Improved search on available actions of an asset including a total and filtered count.
+
+### Changed {/* #2026-04-30-changed */}
+
+- The full error message is now shown when MintModel generation fails.
+- Tabs on run change and workflow dialog now show a small checkmark if the values under the respective tabs have been altered or added from a previously run change. These include property and setting overrides, as well as metadata.
+- Minor adjustments to colours on the dashboard widgets.
+- Minor adjustments to colours on trees (change, workflow run, workflow overview and available actions).
+
+### Added {/* #2026-04-30-added */}
+
+- The change step response now includes details about how long the image took to build. Note: this may be `null` if the step didn't need to build an image.
+- The action server now sets a process title (`OpsChain action server`) so that it can be more easily identified when debugging. See [identifying running OpsChain processes](troubleshooting.md#identifying-running-opschain-processes) for more information.
+- The `parallel_change_worker_steps` setting can now be overridden with change settings overrides, or via the parent asset, environment, or project.
+- On change failure OpsChain will now output the details of the resource whose action failed. See the [troubleshooting guide](troubleshooting.md#output-resource-attributes-on-error) for more information.
+- The [keyword `ref`](key-concepts/actions.md#the-ref-or-resource-method) now has an alias `resource` to make it clearer what it returns. Both names can be used interchangeably.
+- When an action fails to execute, the error now shows where the action was defined.
+- Change properties now show a loader when fetching change/step properties.
+
+## [2026-04-23]
+
+### Added {/* #2026-04-23-added */}
+
+- When an action raises an exception during processing, OpsChain will now output the names of all resource types and resources that have been defined by the actions.rb. Where possible, the property values of each resource's properties will also be included.
+
+### Changed {/* #2026-04-23-changed */}
+
+- The OpsChain API now uses less memory (in particular [PSS](https://en.wikipedia.org/wiki/Proportional_set_size)).
+
+### Fixed {/* #2026-04-23-fixed */}
+
+- Only MintModel actions that are specified with `available_actions` are displayed in the GUI. _This only affects MintModel actions._
+- When a MintPress change API returns a `unprocessable_content` response, it no longer creates change that will be stuck in `initializing`.

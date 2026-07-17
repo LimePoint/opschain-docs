@@ -23,6 +23,10 @@ After reading this guide you should understand:
 
 Actions are defined in the `actions.rb` file in the root directory of a Git repository. If required, actions can also be defined in separate files and [required](https://www.rubydoc.info/stdlib/core/Kernel%3Arequire) into the `actions.rb`.
 
+:::note
+When your Git repository is used by an [asset template](/getting-started/familiarisation/gui/projects/asset_templates.md), the template's `actions.rb` is loaded from its named folder, and any property files placed in that same folder are loaded automatically - see [template folder properties](/key-concepts/properties.md#template-folder-properties).
+:::
+
 The `action` definition extends the Rake `task` definition, so standard [Rake features](https://ruby.github.io/rake/) can be used. In its simplest form, an action requires a name, and the instructions to perform when it is executed (between the `do` and `end` keywords). The term "block" will be used to describe these instructions throughout the OpsChain documentation.
 
 ```ruby
@@ -50,6 +54,16 @@ end
 ```
 
 In the example above, the action's name is `hello_world`, but the step name that will be displayed in the OpsChain GUI when the action is run will be "Hello world action".
+
+Alternatively, you can declare the action directly with a human-readable name — including spaces and capitalisation. OpsChain slugifies the name into a valid task name (used when referencing the action, for example on the command line) while retaining the original as the step name displayed in the GUI:
+
+```ruby
+action 'Hello world action' do
+  log.info "hello world!"
+end
+```
+
+In the example above, the action is registered under the slugified task name `hello_world_action`, and "Hello world action" is used as the step name. [Prerequisite actions](#prerequisite-actions) can reference the friendly name too. Existing actions defined with a plain name continue to work unchanged.
 
 ### GUI display
 
@@ -456,6 +470,19 @@ This will add a step with the name `Wait for network team` into the change's ste
 :::note
 The `step_name` argument can also be included when creating timed wait steps, for example: `OpsChain.wait_step(seconds: 90, step_name: 'Wait for server restart')`
 :::
+
+### Automatically continuing wait steps
+
+A change can be configured to continue its wait steps automatically, rather than pausing for a user. This is useful when you want the structure of a wait step in a change (for example so it can optionally be paused), but do not always need manual intervention.
+
+When a change is created with this option enabled, a wait step continues automatically only when:
+
+- it does not require approval, and
+- all of its input arguments have default values (or it has none).
+
+Wait steps that require approval, or that have input arguments without defaults, still pause and wait for a user. Each automatically continued step is recorded in the change's audit history.
+
+The option can be set when running, scheduling, or repeating a change from the GUI — see the run or schedule change dialog.
 
 ## Input steps
 
