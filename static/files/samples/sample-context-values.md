@@ -18,15 +18,16 @@ change:
   state_timing:
     running:
       ended_at:
-      started_at: '2026-07-20T02:46:16.529765Z'
+      started_at: '2026-07-23T12:32:55.215876Z'
   state_timing_summary: {}
   notify: {}
   skip_steps: []
+  starting_step:
   status_code: running
   created_at: '2020-05-20T10:00:00.000000Z'
   started_at: '2020-05-20T10:00:05.000000Z'
   finished_at:
-  updated_at: '2026-07-20T02:46:16.738108Z'
+  updated_at: '2026-07-23T12:32:55.402126Z'
   asset_name:
   environment_name: Receivables
   project_name: Finance
@@ -49,17 +50,16 @@ step:
   state_timing:
     running:
       ended_at:
-      started_at: '2026-07-20T02:46:16.529765Z'
+      started_at: '2026-07-23T12:32:55.215876Z'
   step_sequence: 1
   step_type: standard
   description:
   step_name: deploy
   skip_requested: false
-  skip_on_retry: false
   created_at: '2020-05-20T10:00:00.000000Z'
   started_at: '2020-05-20T10:00:05.000000Z'
   finished_at:
-  updated_at: '2026-07-20T02:46:16.738108Z'
+  updated_at: '2026-07-23T12:32:55.402126Z'
   status_code: running
 user:
   name: mary
@@ -77,7 +77,7 @@ parents:
     name: Finance
     description: Finance applications
     archived: false
-    created_by: sierra
+    created_by: lorean.quitzon
     project_type: Standard
   environment:
     id: 530d796b-60ff-4bc6-ad09-ac3eaf1afa45
@@ -85,6 +85,6 @@ parents:
     name: Receivables
     description: RMS
     archived: false
-    created_by: arnoldo
+    created_by: louis
 api_key: eyJhbGciOiJIUzI1NiJ9.example.jwt
 ```
