@@ -118,6 +118,10 @@ The secret name for the certificates you provide must be configured in the corre
 When a certificate secret name is configured, `cert-manager` will NOT manage that certificate for the corresponding service.
 :::
 
+:::note[Restarting services after updating a certificate]
+Updating one of these secrets later - for example, to rotate a certificate before it expires - doesn't necessarily take effect immediately. Some services only read their certificate from disk once, when they start. See [restarting services after renewing a leaf certificate](/setup/configuration/tls/cert-manager.md#restarting-services-after-renewing-a-leaf-certificate) for which services need a manual restart and which pick up the change automatically.
+:::
+
 The DNS `subjectAlternativeName` used in your certificates must follow the hostname configuration rules, as described in the [hostname configuration](setup/configuration/tls/index.md#hostname-configuration) section and properly configured in the `values.yaml` file.
 
 Below is a subset example of how you should configure your `values.yaml` file when using your own certificates for all services:

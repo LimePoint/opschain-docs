@@ -11,15 +11,15 @@ OpsChain should be upgraded sequentially, one version at a time. Skipping versio
 Follow the [upgrade guide](operations/upgrading.md) for more information on how to upgrade OpsChain.
 :::
 
-## [unreleased]
+## [2026-07-23]
 
-### Important breaking changes {/* #unreleased-important-breaking-changes */}
+### Important breaking changes {/* #2026-07-23-important-breaking-changes */}
 
 - Skipping individual steps via `PATCH /api/steps/{step_id}` and `PATCH /api/workflow_steps/{step_id}` is no longer supported. These endpoints have been removed. Use `skip_steps` on the change or workflow run to control which steps are skipped — see the [skipping steps](/key-concepts/changes.md#skipping-steps) documentation for more information.
 - Step and workflow step API responses no longer include a `skip_on_retry` attribute. Each step now has a `skip_requested` boolean instead, indicating whether that step currently matches a pattern in the owning change's or workflow run's `skip_steps` array.
 - [`OpsChain.step`](/key-concepts/actions.md#step-wrapper) with `wait:` or `input_arguments:` no longer wraps the wait/input step and the wrapped action as sibling steps under a separate wrapper step. Instead, the wrapped action is now a child of the wait/input step, and only starts once the wait/input step is continued or approved — it never runs if the wait/input step itself is rejected, times out, or errors. `step_name:`/`wait_step_name:` now both name the same single step rather than two separate steps.
 
-### Added {/* #unreleased-added */}
+### Added {/* #2026-07-23-added */}
 
 - The number of API worker processes running in each `opschain-api` pod can now scale automatically in response to request queuing, instead of always running a fixed count. This is controlled by the new [`api_autoscaler`](/key-concepts/settings.md#api-worker-autoscaling-settings) setting, which defaults to a safe mode that only records what it would do without changing anything.
 - [`OpsChain.wait_step`](/key-concepts/actions.md#nesting-child-steps-under-a-wait-step) and [`OpsChain.input_step`](/key-concepts/actions.md#nesting-child-steps-under-an-input-step) now accept a `steps:` option, nesting the given steps as children that only start once the wait/input step is continued, approved, or submitted.
@@ -33,16 +33,16 @@ Follow the [upgrade guide](operations/upgrading.md) for more information on how 
 - The GUI header now shows an **active runs** indicator with the number of changes and workflow runs currently in flight; selecting it lists those runs with a link to each. See [the GUI overview](/getting-started/familiarisation/gui/overview.md).
 - The [manage activity](/getting-started/familiarisation/gui/manage_activity.md#bulk-actions) screen can now action multiple waiting steps at once - continue or cancel on the continue tab, and approve, reject or cancel on the approval tab - by selecting rows and choosing a bulk action. Its rows now also show the target path, step, waiting status and time, and link through to their change or workflow run.
 
-### Changed {/* #unreleased-changed */}
+### Changed {/* #2026-07-23-changed */}
 
 - The GUI's secret vault tool has been reorganised: the **Store** and **Decrypt** actions are now combined into a single **Secret vault** tab with a Store | Retrieve toggle that keeps the shared owner and path fields populated when switching, and the encrypt/decrypt-only tool is relabelled **AES encryption** to make clear it does not touch the vault. Input and results are now preserved when switching between the tools, and existing `?tool=store` and `?tool=decrypt` links continue to work.
 - More node and instance settings are now editable through dedicated GUI form fields - including image reuse, API worker autoscaling, runner pod concurrency, and additional build and node-default options - each with a description, rather than only through the raw JSON advanced editor, which remains available. See [settings](/getting-started/familiarisation/gui/projects/properties_and_settings.md#settings).
 - Running an action across multiple assets from the bulk action dialog now offers the same run options as running a single change, so options such as building the runner image without the Docker cache can be set for the whole batch. See [run change](/getting-started/familiarisation/gui/activity.md#run-change).
-- The `opschain-ca` certificate managed by `cert-manager` now has a 10 year duration instead of the previous ~90 days, so it renews far less often. Upgrading to this version changes `opschain-ca`'s spec, and `cert-manager` will reissue it to match at some point on its own — to avoid that landing as a surprise maintenance task within the next 90 days, force it immediately after upgrading by running [`cmctl renew opschain-ca -n ${KUBERNETES_NAMESPACE}`](https://cert-manager.io/docs/reference/cmctl/#renew), then, if you manually trust this CA on a host (for example a self-hosted K3s node's registry configuration), re-extract and re-trust it once, following the [certificate renewal](setup/setup-instance.md#setup-the-custom-ca) steps.
+- The `opschain-ca` certificate managed by `cert-manager`, and the leaf certificates it issues (`opschain-api-cert`, `opschain-image-registry-cert`, `opschain-secret-vault-external-cert`, `opschain-secret-vault-cert`, `opschain-build-service-cert`), now all have a 10 year duration instead of the previous ~90 days, so they renew far less often. Upgrading to this version changes each certificate's spec, and `cert-manager` will reissue them to match at some point on its own — to avoid that landing as a surprise maintenance task within the next 90 days, force it immediately after upgrading by [renewing the CA](setup/configuration/tls/cert-manager.md#renewing-the-ca) followed by [renewing the leaf certificates](setup/configuration/tls/cert-manager.md#renewing-the-leaf-certificates), then, if you manually trust the CA on a host (for example a self-hosted K3s node's registry configuration), re-extract and re-trust it once, following the [certificate renewal](setup/setup-instance.md#setup-the-custom-ca) steps.
 - Reduced the memory footprint of the `opschain-api` pod by loading the application once before forking its worker processes, rather than after.
 - Improved the performance of loading projects, environments, and assets by removing redundant database queries: authorised child nodes are only preloaded when actually requested via `include`, and repeated template version history and background task lookups within the same request are now cached instead of re-queried.
 
-### Fixed {/* #unreleased-fixed */}
+### Fixed {/* #2026-07-23-fixed */}
 
 - Fixed an issue where webhook notifications configured on an event subscriber were never delivered. The notification job failed before it could send the request, and the failure was not recorded anywhere, so the notification appeared to have simply been dropped.
 - Fixed an issue where input and wait steps added to a non-templated change lost their custom name and, for input steps, their input arguments once created — the step fell back to its generated action name and, for input steps, showed no fields to fill in.

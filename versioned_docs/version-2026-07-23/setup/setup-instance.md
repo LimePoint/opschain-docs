@@ -109,6 +109,10 @@ configs:
       ca_file: /limepoint/rancher/k3s/certs/opschain-ca.pem
 ```
 
+:::note[Not using cert-manager?]
+This section assumes `opschain-ca` is managed by `cert-manager`. If you [supplied your own certificates](/setup/configuration/tls/manual-cert-management.md) instead, you won't have this secret to renew - but you'll still need to re-extract and re-trust your CA in K3s (as above) whenever you rotate it yourself.
+:::
+
 :::tip[Certificate renewal and skipping TLS verification]
 The `ca_file` above needs to match the **CA** (`opschain-ca`), not the image registry's own leaf certificate. `opschain-ca` is issued with a 10 year duration precisely so it's rarely renewed, and renewing the leaf certificate on its own (which `cert-manager` still does periodically) re-signs it with the same CA and doesn't change `ca.crt` - no action is needed here for that.
 
@@ -119,11 +123,7 @@ kubectl -n ${KUBERNETES_NAMESPACE} get secret opschain-ca-key-pair -o jsonpath="
 sudo systemctl restart k3s
 ```
 
-Rather than waiting for `cert-manager` to renew the CA on its own schedule, you can trigger this deliberately - for example straight after an upgrade that changes `opschain-ca`'s `duration`/`renewBefore` - with the [`cmctl`](https://cert-manager.io/docs/reference/cmctl/) CLI, so the re-extract above happens in the same maintenance window instead of as a surprise later on:
-
-```bash
-cmctl renew opschain-ca -n ${KUBERNETES_NAMESPACE}
-```
+Rather than waiting for `cert-manager` to renew the CA on its own schedule, you can trigger this deliberately - for example straight after an upgrade that changes `opschain-ca`'s `duration`/`renewBefore` - so the re-extract above happens in the same maintenance window instead of as a surprise later on. See [renewing the CA](/setup/configuration/tls/cert-manager.md#renewing-the-ca) for how to force it, and [renewing the leaf certificates](/setup/configuration/tls/cert-manager.md#renewing-the-leaf-certificates) if you need to renew the other OpsChain certificates too.
 
 You can check the CA certificate's current expiry and renewal dates by running the following command:
 
