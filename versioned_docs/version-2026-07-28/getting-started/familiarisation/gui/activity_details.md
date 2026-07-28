@@ -46,27 +46,28 @@ From left to right:
 
 For changes, available tabs include:
 
-- the change's swim lane
 - the change's step tree
+- the change's swim lane
 - the change's logs
 - the change's properties
 - the change's settings
 - the change's MintModel, if any was used
 - the change's metadata, if any was added
+- the change's audit history
 
-The swim lane, step tree and change logs tabs are three different views of the same activity. Use the view settings menu (the cog next to the tabs) to choose which one opens first when you view a change or workflow run - your choice is remembered in the browser.
+The step tree, swim lane and change logs tabs are three different views of the same activity. The step tree opens by default; use the view settings menu (the cog next to the tabs) to choose which view opens first when you view a change or workflow run - your choice is remembered in the browser.
 
 #### Swim lane
 
-The swim lane view is the default view when you open a change or workflow run. It groups the activity's steps into a handful of columns - or _lanes_ - by their current status, giving you an at-a-glance summary of what is up next, what is waiting, what is running and what has finished.
+The swim lane view groups the activity's steps into a handful of columns - or _lanes_ - by their current status, giving you an at-a-glance summary of what is up next, what is waiting, what is running and what has finished. The step tree opens first by default; select the swim lane tab, or make it your default view, to use it.
 
-| Lane           | Contains                                                                        |
-|----------------|---------------------------------------------------------------------------------|
-| **Up next**    | Steps that are initializing, pending or queued.                                 |
-| **Waiting**    | Steps waiting for manual continuation or approval.                              |
-| **Running**    | Steps that are currently executing.                                             |
-| **Completed**  | Steps that finished successfully, or were skipped, approved or continued.       |
-| **Finished**   | Steps that ended in error, or were cancelled, aborted, rejected or removed.     |
+| Lane            | Contains                                                                        |
+|-----------------|---------------------------------------------------------------------------------|
+| **Up next**     | Steps that are initializing, pending or queued.                                 |
+| **Waiting**     | Steps waiting for manual continuation or approval.                              |
+| **Running**     | Steps that are currently executing.                                             |
+| **Incomplete**  | Steps that ended in error, or were cancelled, aborted, rejected or removed.     |
+| **Completed**   | Steps that finished successfully, or were skipped, approved or continued.       |
 
 Within a lane, steps are grouped under their parent (wrapper) step, and each lane has its own status filter so you can narrow a busy lane down to a particular status. A search box lets you find a step by its name or action across every lane. The same step actions available in the step tree - opening logs, continuing, approving and so on - are available from each card.
 
@@ -193,6 +194,10 @@ The settings tab displays the settings overrides that the change ran with, conve
 #### MintModel
 
 The MintModel tab displays the MintModel that was used to run the change. You can read more about MintModel changes in the [MintModel asset templates guide](/getting-started/familiarisation/gui/projects/asset_templates.md#asset-templates-with-a-mintmodel).
+
+#### Audit history
+
+The audit history tab shows the [events](/key-concepts/events.md) raised for the change, including those raised by any of its steps, so you can review everything that happened during the change from one place. It uses the same table and filters as the [node](/getting-started/familiarisation/gui/audit_history.md#node--agent-audit-history) and global [audit history](/getting-started/familiarisation/gui/audit_history.md) screens, scoped to this change.
 
 ### Managing changes
 

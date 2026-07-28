@@ -29,7 +29,7 @@ Each row includes:
 
 | Buttons & links               | Function                                                               |
 |-------------------------------|------------------------------------------------------------------------|
-| **Bulk actions**              | Perform operations on multiple assets, such as archiving.              |
+| **Bulk actions**              | Perform operations on multiple assets, such as archiving, running an action across the selected assets, or refreshing their available actions. |
 | **Search bar**                | Filter the contents of the table based on these criteria.              |
 | **Show archived**             | Toggle to show archived assets in the table.                           |
 | **Columns**                   | Hide or display columns in the table.                                  |
@@ -62,7 +62,13 @@ This intentional two-step promotion ensures you're in control of when a new code
 
 The _run_ button at the top of the page lets you run any of the template version's MintModel or documented actions by selecting it from the dropdown. Use the _advanced mode_ option to manually enter an action defined in `actions.rb` that does not include a `description` (and is therefore not listed in the dropdown).
 
+You can also select several of the asset's available actions using their checkboxes and choose _Run selected_ to run them together from a single dialog, rather than starting each change one at a time.
+
 See the [run change dialog](/getting-started/familiarisation/gui/activity.md#run-change) for a walkthrough of the form fields.
+
+## Refreshing an asset's available actions
+
+An asset's available actions are read from its template version's `actions.rb`. To pick up newly added or changed actions, refresh them - either from an individual asset, or for several assets at once by selecting them in the assets table and choosing _Refresh actions_ from the _Bulk actions_ menu. The **Actions** column shows when each asset's actions were last refreshed.
 
 ## Archiving an asset
 

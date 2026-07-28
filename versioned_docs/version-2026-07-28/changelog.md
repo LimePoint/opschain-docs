@@ -20,6 +20,9 @@ Follow the [upgrade guide](operations/upgrading.md) for more information on how 
 - Property update events now record which properties changed, so an event subscriber can be triggered by a change to one specific property rather than by any property update — for example, starting a change whenever a particular password is rotated.
 - A template version that becomes stuck refreshing no longer stays that way. A stalled refresh is now detected and re-attempted automatically, and an in-progress refresh can also be cancelled explicitly, returning the version to its previous commit.
 - New API list filters make it possible to fetch every event for a change and its steps in one request, and to filter steps by whether they define input arguments. See [API filtering & sorting](/advanced/api-filtering.md).
+- It is now possible to run several of an asset's actions at once - select the actions you want on the asset's actions list and choose **Run selected** to run them together from a single dialog. See [running changes on an asset](/getting-started/familiarisation/gui/projects/assets.md#running-changes-on-an-asset).
+- The available actions for several assets can now be refreshed in one go by selecting the assets and choosing **Refresh actions** from the assets table's bulk actions menu. See [refreshing an asset's available actions](/getting-started/familiarisation/gui/projects/assets.md#refreshing-an-assets-available-actions).
+- Changes now have an **Audit history** tab listing the events raised for the change and its steps, using the same filters as the other audit history screens. See [change audit history](/getting-started/familiarisation/gui/activity_details.md#audit-history).
 
 ### Changed {/* #2026-07-28-changed */}
 
@@ -27,6 +30,9 @@ Follow the [upgrade guide](operations/upgrading.md) for more information on how 
 - Improved the performance of the activity feed and audit history by removing a redundant, unindexed database query used to look up each change's ancestor breadcrumb.
 - Eliminated a redundant join in the change details endpoint that could unnecessarily multiply returned rows for changes with many audit events or child steps.
 - Improved the performance of authorisation checks used when listing a node's children and viewing the activity feed, by removing a redundant subquery from node child-authorisation lookups and computing the activity feed's authorised rule set once per request instead of up to four times.
+- Improved the performance of listing a change's audit events, used by the activity feed.
+- Improved the performance of admitting steps to run under pod capacity limits.
+- Improved the performance of viewing a change or workflow run with many steps — resolving each step's full path during serialisation now costs a flat number of queries regardless of step count, instead of one extra query per step still awaiting its path.
 - Improved the performance of node path lookups by bounding a recursive database query to only the requested paths instead of scanning the entire node tree.
 - The [`api_autoscaler.mode`](/key-concepts/settings.md#api_autoscalermode) setting now defaults to `active` instead of `dry_run`, so new installs automatically scale API worker processes in response to request queuing instead of only recording what they would do. Existing installs still on the previous `dry_run` default are migrated to `active` automatically; installs that have already explicitly chosen a mode (including `dry_run`) are left unchanged.
 - Improved the performance of polling a change's or workflow run's step list — used by the GUI's swim lane, step tree, and logs views while an activity is in progress — by adding HTTP conditional GET support. A poll that finds nothing new now costs a couple of cheap aggregate queries instead of the full step query and serialization.
@@ -35,6 +41,7 @@ Follow the [upgrade guide](operations/upgrading.md) for more information on how 
 - Refreshing the actions of many assets that share a template is now far faster, as those assets no longer queue behind one another waiting for an image build that never runs for MintModel-only templates.
 - While a step waits on an image build that is already running elsewhere, the log now names the template, version and asset that build is for, instead of only reporting that an identical build is in progress.
 - The concretisation log now reports progress while an asset's MintModel is being rendered, rather than falling silent until the render finishes.
+- The change and workflow run swim lane view has been refined in response to early feedback: the step tree is once again the view that opens by default, the lane previously labelled **Finished** is now **Incomplete**, and the **Completed** lane always appears last. See [swim lane](/getting-started/familiarisation/gui/activity_details.md#swim-lane).
 
 ### Fixed {/* #2026-07-28-fixed */}
 
