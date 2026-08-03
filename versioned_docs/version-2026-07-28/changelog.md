@@ -57,10 +57,12 @@ Follow the [upgrade guide](operations/upgrading.md) for more information on how 
 - Fixed an issue where refreshing the actions of many assets of one template at once could fail some of those refreshes, because the simultaneous image pulls were throttled by Kubernetes and treated as a permanent failure.
 - Fixed an issue where an error response from the container image registry caused image reconciliation and the registry maintenance tasks to fail outright, instead of reporting that no images were found.
 - Fixed an issue where an asset whose MintModel took longer than 60 seconds to render could never be concretised, and the render's own log output was lost when it failed.
+- Fixed an issue where rendering a large MintModel could run out of memory and fail the concretisation.
 - Fixed an issue where a properties conflict reported while processing a step's results could be replaced by a bare error backtrace, hiding the patch and the before and after properties needed to diagnose it.
 - Fixed an issue where steps could still intermittently fail with a database connection error when many ran in parallel — this time because the action server process inherited, and then corrupted, the database connections of the worker that forked it.
 - Fixed an issue where the system configuration screen offered to decrypt secret settings to every user, regardless of their permissions.
 - Fixed an issue where a workflow run's property overrides tab showed nothing at all. It now lists the run's overrides, and secret values within them can be decrypted.
+- Fixed an issue where an action's prerequisite failed with `Don't know how to build task '...'` if it referenced a file task whose path contained an uppercase letter (for example a version string like `3.99.0-SNAPSHOT`). The prerequisite was incorrectly treated as a friendly display name and slugified, so it no longer matched the file task actually defined for it. Prerequisites that already match a defined task are now left unchanged.
 
 ## [2026-07-23]
 
