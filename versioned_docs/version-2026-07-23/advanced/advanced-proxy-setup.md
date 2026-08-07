@@ -1,6 +1,5 @@
 ---
 sidebar_position: 1
-title: Advanced proxy setup
 ---
 
 # Advanced proxy setup
