@@ -168,8 +168,19 @@ The `<ProductName />` component (from `src/components/ProductName.js`) renders t
 - Unreleased changes go under `## [Unreleased]`.
 - Released sections are headed `## [YYYY-MM-DD]` matching the version date.
 - Each section uses explicit anchor IDs on its headings (e.g. `{#2026-05-21-added}`) so links remain stable when the changelog is copied into versioned docs.
-- Standard subsections: `Added`, `Changed`, `Fixed`, `Important breaking changes`, `Known issues`.
+- Standard subsections, in this order: `Before upgrading`, `Important breaking changes`, `Added`, `Changed`, `Fixed`, `Known issues`.
+- **Anything the customer has to do goes first.** Steps a customer must carry out themselves before running `helm upgrade` go in a `### Before upgrading` subsection at the very top of the release, above `Important breaking changes` — never part way down the release notes, where an admonition buried inside `Changed` is easily missed by someone skimming. Example: a release requiring the CNPG operator manifest to be re-applied before upgrading had that warning sitting mid-way through `Changed`, rather than at the top where it needed to be read first.
 - **Dating a release's changelog.** To cut a release, rename the `## [unreleased]` heading to `## [YYYY-MM-DD]` (the release date) and update its subsection anchor IDs to match — `#unreleased-added` → `#YYYY-MM-DD-added`, and likewise for `fixed`/`changed` and any other subsections. That single rename is the whole change: do **not** add a fresh empty `## [unreleased]` placeholder in the same edit (a new one is created later when the next in-progress entry lands), and do not otherwise alter the entries. After editing, lint (`mdl docs/changelog.md`) and `npm run build` to confirm no anchors broke.
+
+## Product branding branches (edge and mp4)
+
+The docs exist as two parallel branded lines: `origin/edge` is the OpsChain-branded documentation, and `origin/mp4` is the MintPress-branded equivalent of the same content.
+
+Write for the branch you are on. On `edge`, say OpsChain; do not hedge prose to cover both products, and do not add "or MintPress" qualifiers — the `mp4` branch carries its own rebranded copy of each page, so a new page written on `edge` is ported there as a separate manual change. The two branches have diverged substantially and `mp4` is not a rebase target for an `edge` branch. `mp4` has no `CLAUDE.md` of its own, so these conventions are the ones to follow on both.
+
+Most Kubernetes object names are the same on both branches. Names such as `opschain-api`, `opschain-api-worker` and `opschain-secret-vault` are hardcoded in the first-party Helm chart templates and stay `opschain-` prefixed on a MintPress installation, which is why the `mp4` pages still show `kubectl ... deploy/opschain-api`.
+
+Two objects do differ, because they are owned by Helm subcharts and so take the Helm release name: the ingress and the reloader. Write them as `opschain-ingress` and `opschain-reloader` on `edge`, and as `mintpress-ingress` and `mintpress-reloader` on `mp4`. Handle this by naming them correctly for the branch you are on rather than by explaining the difference in the prose — a reader of either branch should see only the names their own installation uses.
 
 ## Rebasing docs branches onto origin/edge
 

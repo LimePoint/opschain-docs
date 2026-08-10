@@ -32,7 +32,7 @@ OpsChain services listen on the following ports by default:
 | Secret vault | 8200, 8201 |
 
 :::info
-These ports are only accessible internally from the Kubernetes cluster and the machine it is hosted on. Unless you expose them via an external service, they won't be accessible from outside the cluster.
+These ports are only accessible internally from the Kubernetes cluster and the machine it is hosted on. Unless you expose them via an external service, they won't be accessible from outside the cluster. See the [Kubernetes topology reference](/operations/maintenance/kubernetes-topology-reference.md) for the services these ports belong to.
 :::
 
 Additionally, when enabling external services for the secret vault or the [database (for high availability setups)](/advanced/ha/index.md#external-service), these ports will need to be opened on the firewall to allow incoming connections from the other instances.

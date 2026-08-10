@@ -7,6 +7,10 @@ description: A guide to enabling a CNPG session-mode connection pooler in front 
 
 This guide covers OpsChain's optional CNPG session-mode connection pooler: what it does, when to enable it, how to verify it, and how to roll it back.
 
+:::warning[Feature preview]
+Database connection pooling is a feature preview and is not recommended for production installations. Enable it only in a non-production environment, or where OpsChain support has advised you to.
+:::
+
 ## Background
 
 OpsChain's database runs as a [CloudNative PostgreSQL (CNPG)](https://cloudnative-pg.io/) cluster. By default, the API and worker pods connect directly to the cluster's primary service (`<db.cnpg.clusterName>-rw`) — every new database connection pays the cost of a TCP/TLS handshake and password authentication.
@@ -28,7 +32,7 @@ Session mode keeps one backend connection assigned to a client for the entire se
 
 ## When to use it
 
-The pooler is opt-in and disabled by default. Consider enabling it if you're running a large deployment with many worker threads or elevated change concurrency and want to reduce database-side connection setup overhead. It is not required for typical installations.
+The pooler is opt-in and disabled by default, and while it remains a feature preview it should be left that way on a production installation. It is not required for typical installations. In a non-production environment it may be worth evaluating if you're running a large deployment with many worker threads or elevated change concurrency and want to reduce database-side connection setup overhead.
 
 ## Enabling the pooler
 

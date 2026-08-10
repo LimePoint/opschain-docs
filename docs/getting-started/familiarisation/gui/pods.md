@@ -57,7 +57,7 @@ The **Pod type** filter narrows the list to a particular part of OpsChain:
 | **Workers**             | The API worker pods.                                                 |
 
 :::note
-A pod whose name matches none of these types — the ingress and webhook pods among them — is only listed while the **Pod type** filter is left unset. If a pod you expect to see is missing, clear the filter.
+A pod whose name matches none of these types — the ingress and webhook pods among them — is only listed while the **Pod type** filter is left unset. If a pod you expect to see is missing, clear the filter. The [Kubernetes topology reference](/operations/maintenance/kubernetes-topology-reference.md) describes every pod an installation can contain.
 :::
 
 Both filters apply as soon as you change them, and both accept more than one value at a time. They also apply on top of each other, so selecting the **Failed** state and the **Change worker** type lists only the change pods that failed.

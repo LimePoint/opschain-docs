@@ -31,6 +31,8 @@ Each part of this environment is deployed using [Kubernetes](https://kubernetes.
 - **log-aggregator** accepts log output from the workers and ships it to the API where it can then be accessed
 - **runner** represents the transient containers that will be spawned by the api-workers to complete each step of a change
 
+For the full list of Kubernetes objects that make up an installation, including the supporting services not shown above, see the [Kubernetes topology reference](/operations/maintenance/kubernetes-topology-reference.md).
+
 ## [Familiarisation guides](../category/familiarisation)
 
 Familiarisation guides for OpsChain to help you get started with the OpsChain GUI and CLI.

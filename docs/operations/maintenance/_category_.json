@@ -3,6 +3,6 @@
   "position": 6,
   "link": {
     "type": "generated-index",
-    "description": "Information about backing up OpsChain and configuration options to manage data retention, archiving and overall disk usage."
+    "description": "Information about backing up OpsChain, the Kubernetes objects that make up an installation, and configuration options to manage data retention, archiving and overall disk usage."
   }
 }

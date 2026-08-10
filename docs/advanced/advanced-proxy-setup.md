@@ -166,7 +166,7 @@ opschain-api,opschain-build-service,opschain-db-rw,opschain-image-registry,opsch
 
 ### Add proxy environment variables to deployment specs
 
-Add the following environment variables to each OpsChain deployment, substituting the `no_proxy` values with the output from the command above:
+Add the following environment variables to each OpsChain deployment, substituting the `no_proxy` values with the output from the command above. The [Kubernetes topology reference](/operations/maintenance/kubernetes-topology-reference.md) lists the deployments an installation contains:
 
 ```yaml
 env:

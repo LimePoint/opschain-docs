@@ -120,11 +120,13 @@ In addition to the action name, OpsChain's DSL allows you to specify [prerequisi
 
 ### Referencing actions by name or step name
 
-Wherever an action is referenced — in an action's `steps:` list, as the action passed to `opschain-action`, or as the action a change runs — it can be named by its action name or its [step name](#change-step-naming). OpsChain resolves the reference to the real action name: an exact match is tried first, then a case-insensitive match against every action's name and step name.
+Wherever an action is referenced — in an action's `steps:` list, in its [prerequisites](#prerequisite-actions), as the action passed to `opschain-action`, or as the action a change runs — it can be named by its action name or its [step name](#change-step-naming). OpsChain resolves the reference to the real action name: an exact match is tried first, then a case-insensitive match against every action's name and step name.
 
 :::note
 A reference that matches more than one action — for example, two actions whose step names differ only by case — is rejected with an ambiguity error, so step names must be unique to be used as a reference.
 :::
+
+A child step that matches no action is treated as a [MintModel action](#running-mintmodel-actions-as-child-steps). A prerequisite cannot be satisfied by a MintModel action, so a prerequisite that matches nothing is reported as an error while your actions are loaded.
 
 Every other place an action is named is matched the same way, so the capitalisation you use is never significant. This includes [`skip_steps`](/key-concepts/changes.md#skipping-steps) patterns and [`starting_step`](/key-concepts/changes.md#starting-a-change-partway-through), the rule that allows only one change with a given action name to run at a time for a project, environment or asset (see [change execution options](/key-concepts/changes.md#change-execution-options)), [event filter](/operations/notifications.md#subscribing-to-events) rules that match on an action or step name, and [authorisation rules](/getting-started/familiarisation/gui/manage_security.md#resource-paths) whose resource path targets an action.
 
@@ -241,6 +243,8 @@ OpsChain allows you to dynamically alter a parent's child steps from within the 
 - the `append_child_steps` and `replace_child_steps` methods accept any value that can be supplied via the `steps:` argument when defining an action (see the valid argument values under [child steps](#child-steps))
 
 :::
+
+A step added this way is shown in the change's step tree with the same detail as one declared up front — its [step name](#change-step-naming), description, [prerequisites](#prerequisite-actions) and, for a [wait step](#wait-steps) or an [input step](#input-steps), the arguments it asks the user for.
 
 ##### Append child steps
 
@@ -559,11 +563,9 @@ action :do_something,
       step_name: 'Server details',
       input_arguments: [
         :comments,
-        {
-          server_name: { path: '/database/server', gui_name: 'Server name', description: 'Name of the server to restart' },
-          patch_number: { path: '/patches', gui_name: 'Patch number', description: 'Optional patch to apply before restart', required: false },
-          restart_after_hours: { path: '/restart_after_hours', gui_name: 'Restart after hours', required: true, type: :boolean, default_value: true }
-        }
+        server_name: { path: '/database/server', gui_name: 'Server name', description: 'Name of the server to restart' },
+        patch_number: { path: '/patches', gui_name: 'Patch number', description: 'Optional patch to apply before restart', required: false },
+        restart_after_hours: { path: '/restart_after_hours', gui_name: 'Restart after hours', required: true, type: :boolean, default_value: true }
       ]
     ),
     :do_something_with_input
@@ -578,21 +580,56 @@ Each input argument can accept the following options:
 
 | Parameter       | Description                                                                                                                                                                                                                                                                             | Default                                                                  |
 |-----------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------|
-| `default_value` | The default value to be displayed to the user for the input argument.                                                                                                                                                                                                                   | nil                                                                      |
+| `default_value` | The default value to be displayed to the user for the input argument. It is converted to the argument's `type` and, if `valid_values` are supplied, it must be one of them.                                                                                                             | nil                                                                      |
 | `description`   | A description to be displayed to the user for the input argument.                                                                                                                                                                                                                       | nil                                                                      |
 | `gui_name`      | The name to be displayed to the user for the input argument.                                                                                                                                                                                                                            | The argument's name in title case (e.g. "Server name" for `server_name`) |
 | `overwrite`     | Whether the value provided by the user for the input argument should overwrite any existing value in the converged properties at the specified `path`.                                                                                                                                  | false                                                                    |
-| `path`          | The path in the change override properties where the value will be nested under. E.g. in the example above, if the user supplied 'db1' for the `server_name` argument, OpsChain will update the change override properties to include `{ database: { server: { server_name: db1 } } }`. | `/`                                                                      |
+| `path`          | The path in the change override properties where the value will be stored. E.g. in the example above, if the user supplied 'db1' for the `server_name` argument, OpsChain will update the change override properties to include `{ database: { server: 'db1' } }`. Each argument must be given a different path. | `/<argument name>` (the root path, `/`, is not allowed)                  |
 | `required`      | Whether the user must provide a value for the input argument before they can submit the form to continue the change.                                                                                                                                                                    | true                                                                     |
 | `type`          | The data type of the input argument. Available options are :boolean, :date, :float, :integer, :string, :array, :hash.                                                                                                                                                                   | `:string`                                                                |
+| `valid_values`  | The list of values the user can select from for the input argument, displayed as a list of choices rather than a free text field. Only available for the :boolean, :date, :float, :integer and :string types.                                                                           | nil                                                                      |
 
-The input arguments field accepts an array or hash of argument definitions. In the example above, the `comments` argument assumes default values for the various parameters. e.g.
+The input arguments must be supplied as an array. Each element of the array is either an argument name, or a hash of argument names and their options. In the example above, the `comments` argument assumes default values for the various parameters. e.g.
 
 ```ruby
-comments: { default_value: nil, description: nil, gui_name: 'Comments', overwrite: false, path: '/', required: true, type: :string }`.
+comments: { default_value: nil, description: nil, gui_name: 'Comments', overwrite: false, path: '/comments', required: true, type: :string }
 ```
 
 The remaining arguments in the example override these defaults as needed. For example the `restart_after_hours` argument will require a boolean response from the user rather than a string.
+
+Each argument stores its value at its own `path`, so no two arguments in the same input step can share one. Two arguments claiming the same path would leave only one of the supplied values in the change override properties, so this is reported as an error while your actions are loaded, naming the path and the arguments competing for it.
+
+### Restricting the values a user can supply
+
+Supplying `valid_values` for an input argument limits the user to a fixed set of values. Rather than being able to type any value, the user selects one of the values you have listed. e.g.
+
+```ruby
+action :deploy,
+  steps: [
+    OpsChain.input_step(
+      step_name: 'Deployment options',
+      input_arguments: [
+        target: { path: '/deploy/target', gui_name: 'Target environment', valid_values: %w[development test production], default_value: 'test' },
+        replicas: { path: '/deploy/replicas', type: :integer, valid_values: [1, 2, 4, 8] },
+        cutover_date: { path: '/deploy/cutover_date', type: :date, valid_values: ['2026-06-30', '2026-09-30'], required: false }
+      ]
+    ),
+    :deploy_application
+  ]
+```
+
+Valid values:
+
+- must be supplied as a non empty array
+- can only be supplied for the `:boolean`, `:date`, `:float`, `:integer` and `:string` types — the `:array` and `:hash` types do not support them
+- are converted to the argument's `type`, with any duplicates removed — e.g. `valid_values: ['1', 1, 2]` for an `:integer` argument becomes `[1, 2]`
+- must include the argument's `default_value`, if one is supplied
+
+### Input argument value conversion
+
+The `default_value` and `valid_values` you supply do not need to be written in the argument's `type` — OpsChain converts them when it loads your `actions.rb`. e.g. an `:integer` argument with `default_value: '10'` presents a default of `10`, and a `:boolean` argument with `default_value: 'yes'` presents a default of `true`.
+
+Values that cannot be converted without losing information are rejected as the actions are loaded, allowing you to find the problem before the change reaches the input step. e.g. `default_value: 1.5` for an `:integer` argument, or `valid_values: %w[yes no maybe]` for a `:boolean` argument, will report an error identifying the argument and the offending value.
 
 ### Nesting child steps under an input step
 
@@ -627,13 +664,13 @@ In this example `Shutdown` will run, but if it raises an error the change contin
 
 `OpsChain.step` is a convenience helper that combines wait, input, and ignore failure behaviours around an existing action in a single call. It takes the name of an existing action and one or more options:
 
-| Option | Default | Description |
-|---|---|---|
-| `ignore_failure:` | `false` | If `true`, the change will continue even if the wrapped action fails. |
-| `wait:` | `false` | If `true`, the wrapped action becomes a **child** of a new wait step — the change pauses for manual continuation before the wrapped action starts. Pass an integer to sleep for that many seconds instead. |
-| `input_arguments:` | `nil` | The wrapped action becomes a **child** of a new input step — the change pauses and prompts the user for input before the wrapped action starts. Mutually exclusive with `wait:`. |
-| `step_name:` | `nil` | A custom display name for the resulting step — the wait/input step when `wait:`/`input_arguments:` is used, or the wrapper step otherwise. |
-| `wait_step_name:` | `nil` | A custom display name for the wait or input step specifically. Only relevant alongside `wait:`/`input_arguments:`; takes precedence over `step_name:` if both are given. |
+| Option             | Default | Description                                                                                                                                                                                                |
+|--------------------|---------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `ignore_failure:`  | `false` | If `true`, the change will continue even if the wrapped action fails.                                                                                                                                      |
+| `wait:`            | `false` | If `true`, the wrapped action becomes a **child** of a new wait step — the change pauses for manual continuation before the wrapped action starts. Pass an integer to sleep for that many seconds instead. |
+| `input_arguments:` | `nil`   | The wrapped action becomes a **child** of a new input step — the change pauses and prompts the user for input before the wrapped action starts. Mutually exclusive with `wait:`.                           |
+| `step_name:`       | `nil`   | A custom display name for the resulting step — the wait/input step when `wait:`/`input_arguments:` is used, or the wrapper step otherwise.                                                                 |
+| `wait_step_name:`  | `nil`   | A custom display name for the wait or input step specifically. Only relevant alongside `wait:`/`input_arguments:`; takes precedence over `step_name:` if both are given.                                   |
 
 ```ruby
 action :destroy, steps: [

@@ -17,7 +17,7 @@ After following this guide you should know:
 
 The pods that make up the OpsChain installation can be stopped to halt the OpsChain processes and free up any CPU or RAM that they use. Stopping OpsChain does not delete any persistent volumes (whereas uninstalling does).
 
-The kubectl `scale` command can be used to reduce all the Kubernetes replicas to zero to stop all OpsChain deployments. For example:
+The kubectl `scale` command can be used to reduce all the Kubernetes replicas to zero to stop all OpsChain deployments. The [Kubernetes topology reference](/operations/maintenance/kubernetes-topology-reference.md) lists the deployments an installation contains. For example:
 
 ```bash
 kubectl scale deploy/opschain-api --replicas=0
