@@ -584,7 +584,7 @@ Each input argument can accept the following options:
 | `description`   | A description to be displayed to the user for the input argument.                                                                                                                                                                                                                       | nil                                                                      |
 | `gui_name`      | The name to be displayed to the user for the input argument.                                                                                                                                                                                                                            | The argument's name in title case (e.g. "Server name" for `server_name`) |
 | `overwrite`     | Whether the value provided by the user for the input argument should overwrite any existing value in the converged properties at the specified `path`.                                                                                                                                  | false                                                                    |
-| `path`          | The path in the change override properties where the value will be stored. E.g. in the example above, if the user supplied 'db1' for the `server_name` argument, OpsChain will update the change override properties to include `{ database: { server: 'db1' } }`. Each argument must be given a different path. | `/<argument name>` (the root path, `/`, is not allowed)                  |
+| `path`          | The path in the change override properties that the value will be nested under, by the argument's name. E.g. in the example above, if the user supplied 'db1' for the `server_name` argument, OpsChain will update the change override properties to include `{ database: { server: { server_name: 'db1' } } }`. | `/` (the root path)                                                      |
 | `required`      | Whether the user must provide a value for the input argument before they can submit the form to continue the change.                                                                                                                                                                    | true                                                                     |
 | `type`          | The data type of the input argument. Available options are :boolean, :date, :float, :integer, :string, :array, :hash.                                                                                                                                                                   | `:string`                                                                |
 | `valid_values`  | The list of values the user can select from for the input argument, displayed as a list of choices rather than a free text field. Only available for the :boolean, :date, :float, :integer and :string types.                                                                           | nil                                                                      |
@@ -592,12 +592,12 @@ Each input argument can accept the following options:
 The input arguments must be supplied as an array. Each element of the array is either an argument name, or a hash of argument names and their options. In the example above, the `comments` argument assumes default values for the various parameters. e.g.
 
 ```ruby
-comments: { default_value: nil, description: nil, gui_name: 'Comments', overwrite: false, path: '/comments', required: true, type: :string }
+comments: { default_value: nil, description: nil, gui_name: 'Comments', overwrite: false, path: '/', required: true, type: :string }
 ```
 
 The remaining arguments in the example override these defaults as needed. For example the `restart_after_hours` argument will require a boolean response from the user rather than a string.
 
-Each argument stores its value at its own `path`, so no two arguments in the same input step can share one. Two arguments claiming the same path would leave only one of the supplied values in the change override properties, so this is reported as an error while your actions are loaded, naming the path and the arguments competing for it.
+Arguments are free to share a `path` — each value is nested under it by the argument's own name, so nothing is overwritten. What must be unique is the argument name, and a name cannot contain a `/`. Both are reported as an error while your actions are loaded, naming the offending argument and the `actions.rb` line the input arguments were declared on.
 
 ### Restricting the values a user can supply
 
@@ -609,9 +609,9 @@ action :deploy,
     OpsChain.input_step(
       step_name: 'Deployment options',
       input_arguments: [
-        target: { path: '/deploy/target', gui_name: 'Target environment', valid_values: %w[development test production], default_value: 'test' },
-        replicas: { path: '/deploy/replicas', type: :integer, valid_values: [1, 2, 4, 8] },
-        cutover_date: { path: '/deploy/cutover_date', type: :date, valid_values: ['2026-06-30', '2026-09-30'], required: false }
+        target: { path: '/deploy', gui_name: 'Target environment', valid_values: %w[development test production], default_value: 'test' },
+        replicas: { path: '/deploy', type: :integer, valid_values: [1, 2, 4, 8] },
+        cutover_date: { path: '/deploy', type: :date, valid_values: ['2026-06-30', '2026-09-30'], required: false }
       ]
     ),
     :deploy_application
@@ -1720,7 +1720,7 @@ The first argument is the type of resource to query and the keyword arguments id
 
 | Endpoint type | Required arguments | Optional arguments | Returns |
 |---------------|--------------------|--------------------|---------|
-| `:node`       | `project`          | `environment`, `asset` | The project, environment, or asset resource, including its `id`, `type`, and `attributes`. |
+| `:node`       | `project`          | `environment`, `asset`, `agent`, `list` | The project, environment, asset, or agent resource, including its `id`, `type`, and `attributes` — or, when `list` is supplied, an array of the [child node resources](#listing-child-nodes). |
 | `:mintmodel`  | `project`, `asset` | `environment`      | The data of the asset's [MintModel](/getting-started/familiarisation/gui/projects/asset_templates.md#asset-templates-with-a-mintmodel). |
 | `:properties` | one of the [node combinations](#node-argument-combinations) below | | The converged [properties](/key-concepts/properties.md) document for the node (or template version). |
 | `:settings`   | one of the [node combinations](#node-argument-combinations) below | | The converged [settings](/key-concepts/settings.md) document for the node (or template version). |
@@ -1728,6 +1728,8 @@ The first argument is the type of resource to query and the keyword arguments id
 :::note[Using the full path]
 Like the other OpsChain keywords, `query` is available at the top level of your `actions.rb` and `resources.rb` files, and within the `action` and `resource_type` blocks you define there. Code inside your own classes — a resource type [controller](#controller), for example — must use the full path to it, `OpsChain.query`. The two are equivalent.
 :::
+
+Every argument that identifies a node must be supplied with a value. Passing `nil` — `environment: OpsChain.environment_code` in a project level change, for example — raises an error rather than querying the parent node.
 
 ### Authentication
 
@@ -1745,6 +1747,45 @@ action :show_environment do
   OpsChain.logger.info("Environment name: #{environment[:attributes][:name]}")
 end
 ```
+
+The arguments supplied must identify a node in the project's node hierarchy, so they must form one of the following combinations:
+
+- `project`
+- `project`, `environment`
+- `project`, `asset`
+- `project`, `environment`, `asset`
+- `project`, `agent`
+
+Any other combination raises an error — supplying an `agent` alongside an `environment`, for example, as agents belong directly to a project.
+
+### Listing child nodes
+
+Adding the `list` argument returns every child node of the requested type rather than a single node. This lets action code discover the nodes that exist rather than hard coding their codes:
+
+```ruby
+action :show_environments do
+  environments = query(:node, project: 'demo', list: :environments)
+  codes = environments.map { |environment| environment.dig(:attributes, :code) }
+  OpsChain.logger.info("Environment codes: #{codes.join(', ')}")
+end
+```
+
+The `list` argument accepts `:environments`, `:assets`, or `:agents`, and the arguments supplied alongside it must identify the parent node:
+
+| Arguments | Returns |
+|-----------|---------|
+| `project`, `list: :environments` | Every environment in the project. |
+| `project`, `list: :assets` | Every asset that belongs directly to the project. |
+| `project`, `environment`, `list: :assets` | Every asset in the environment. |
+| `project`, `list: :agents` | Every agent in the project. |
+
+Any other combination raises an error — supplying an `environment` alongside `list: :environments`, for example.
+
+Each element of the returned array is a node resource with its own `id`, `type`, and `attributes`, in the same form as the single node query returns. A parent with no children of that type returns an empty array.
+
+:::note
+`project` with `list: :assets` returns only the assets that belong directly to the project. Assets that belong to an environment are returned by supplying that `environment` as well.
+:::
 
 ### Querying properties and settings
 

@@ -368,6 +368,20 @@ When enabled, the MintModel generation response will include a `phase_output` co
 
 The MintModel render logs are also enriched, adding the MintPress context, the asset's properties, the filtered properties, and the MintPress properties supplied to the MintModel Steps API, making MintModel generation failures easier to diagnose.
 
+#### mintmodel_render_timeout
+
+Default value: _300_<br/>
+Accepted values: _300 to 1800_<br/>
+Scope: _global, project, environment, asset_
+
+How long, in seconds, an asset's MintModel is allowed to take to render before the render is abandoned and reported as a failure.
+
+The default of 300 seconds suits most MintModels. Raise it for an asset whose MintModel is large enough to need longer — because the setting applies at the asset level, doing so does not affect any other node. The value cannot be lowered below the default, as the render pod spends part of the allowance starting up.
+
+:::note
+This setting governs how long a single render may take. The number of renders that may run at once is governed separately by [`concurrent.mintmodel_limit`](#concurrentmintmodel_limit), so raising this setting also raises how long one render can occupy a MintModel pod slot.
+:::
+
 ### Parallelism settings
 
 #### allow_parallel.changes

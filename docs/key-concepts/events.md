@@ -188,88 +188,243 @@ Events can be linked to:
 
 ### System event types
 
-Currently, the following system events are supported. These values will be present in the `type` field for an event:
+Every system event type is made up of a level, a subject and an action, separated by colons. The level tells you how to react to the event:
 
-- `api:authorisation_policies:create`
-- `api:authorisation_policies:destroy`
-- `api:authorisation_policies:update`
-- `api:authorisation_rules:create`
-- `api:authorisation_rules:destroy`
-- `api:authorisation_rules:update`
-- `api:bookmarks:create`
-- `api:bookmarks:update`
-- `api:bookmarks:destroy`
-- `api:changes:create`
-- `api:changes:start`
-- `api:changes:success`
-- `api:changes:error`
-- `api:changes:cancel`
-- `api:changes:abort`
-- `api:changes:destroy`
-- `api:event_filter:error`
-- `api:nodes:create`
-- `api:nodes:update`
-- `api:nodes:destroy`
-- `api:git_remotes:create`
-- `api:git_remotes:update`
-- `api:git_remotes:destroy`
-- `api:ldap_refresh:success`
-- `api:ldap_refresh:warn`
-- `api:ldap_refresh:error`
-- `api:templates:create`
-- `api:templates:update`
-- `api:template_versions:update`
-- `api:policy_assignments:create`
-- `api:policy_assignments:destroy`
-- `api:policy_rules:create`
-- `api:policy_rules:destroy`
-- `api:projects:create`
-- `api:projects:update`
-- `api:projects:destroy`
-- `api:properties:update`
-- `api:scheduled_changes:create`
-- `api:scheduled_workflows:create`
-- `api:scheduled_changes:destroy`
-- `api:scheduled_workflows:destroy`
-- `api:secrets:encrypt`
-- `api:secrets:resolve`
-- `api:settings:update`
-- `api:steps:start`
-- `api:steps:approve`
-- `api:steps:approve:denied`
-- `api:steps:continue`
-- `api:steps:success`
-- `api:steps:error`
-- `api:steps:cancel`
-- `api:steps:abort`
-- `api:workflow_runs:create`
-- `api:workflow_runs:start`
-- `api:workflow_runs:success`
-- `api:workflow_runs:error`
-- `api:workflow_runs:cancel`
-- `api:workflow_runs:abort`
-- `api:workflow_runs:destroy`
-- `api:workflow_steps:start`
-- `api:workflow_steps:success`
-- `api:workflow_steps:error`
-- `api:workflow_steps:cancel`
-- `api:workflow_steps:abort`
-- `api:workflows:create`
-- `api:workflows:update`
-- `error:api_autoscaler:tick_failed`
-- `error:data_cleanup:activities`
-- `error:data_cleanup:events`
-- `error:data_cleanup:jobs`
-- `error:scheduled_changes:change_creation`
-- `error:scheduled_changes:git_sha`
-- `error:scheduled_workflows:skipped`
-- `info:api_autoscaler:grow`
-- `info:api_autoscaler:shrink`
-- `info:data_cleanup:activities`
-- `info:data_cleanup:events`
-- `info:data_cleanup:jobs`
-- `warn:api_autoscaler:grow_blocked_memory`
-- `warn:settings:override`
+- `api:` — a normal operation was carried out, usually via the API.
+- `audit:` — a user made an approval decision. These are kept as a record of who approved or rejected what.
+- `info:` — OpsChain did something in the background worth knowing about.
+- `warn:` and `warning:` — something was not right, but OpsChain carried on.
+- `error:` — an operation failed. The reason is in the event's `error` data key, and a `backtrace` is often included.
+
+Some events are throttled, meaning OpsChain records at most one of them in the stated period no matter how often the underlying condition occurs. This keeps a repeating failure from filling the event history.
+
+#### Changes
+
+- `api:changes:create` — a change was created.
+- `api:changes:start` — a change was started.
+- `api:changes:success` — every step in the change completed successfully.
+- `api:changes:error` — the change stopped because one of its steps failed.
+- `api:changes:cancel` — the change was cancelled.
+- `api:changes:abort` — the change was aborted.
+- `api:changes:retry_settings_pruned` — an incomplete change was retried and some of its settings overrides were dropped because they are no longer valid for a change. The `dropped_settings` data key lists them.
+- `api:changes:destroy` — a change was deleted.
+- `api:change_listener:error` — the listener that picks up change cancellations failed.
+- `error:change_worker:delete` — the change's runner pod could not be removed after the change finished. The pod may need to be removed by hand.
+
+#### Steps
+
+- `api:steps:start` — a step was started.
+- `api:steps:approve` — a step was approved.
+- `api:steps:reject` — a step was rejected.
+- `api:steps:continue` — a waiting step was continued.
+- `api:steps:success` — the step's action completed successfully.
+- `api:steps:error` — a step transition could not be applied.
+- `api:steps:cancel` — the step was cancelled.
+- `api:steps:abort` — the step was aborted.
+- `error:step:action` — the step's action raised an error.
+- `error:step:processing` — OpsChain could not process the step at all, so it was failed.
+- `error:step:aasm_failure` — a step status transition raised an error.
+- `error:steps:transient_error` — a temporary database error stopped a step transition being applied. OpsChain retries, and moves the step to `system_error` if the retries are exhausted. Throttled to one event per hour.
+- `api:assign_system_error_job:error` — the job that moves a step to `system_error` failed.
+
+#### Step approvals
+
+- `audit:steps:approve` — a user approved a step that was waiting for approval.
+- `audit:steps:reject` — a user rejected a step that was waiting for approval, aborting it.
+- `audit:steps:continue` — a user continued a step that was waiting.
+- `audit:steps:approve:denied` — a user tried to approve a step they are not an approver for.
+- `audit:steps:reject:denied` — a user tried to reject a step they are not an approver for.
+- `audit:workflow_steps:approve` — a user approved a workflow step that was waiting for approval.
+- `audit:workflow_steps:reject` — a user rejected a workflow step that was waiting for approval, aborting it.
+- `audit:workflow_steps:continue` — a user continued a workflow step that was waiting.
+- `audit:workflow_steps:approve:denied` — a user tried to approve a workflow step they are not an approver for.
+- `audit:workflow_steps:reject:denied` — a user tried to reject a workflow step they are not an approver for.
+- `warn:approval_identity_unresolved` — identities stored in a `requires_approval_from` setting no longer exist as OpsChain users or LDAP groups. Steps waiting on them cannot be approved until the setting is corrected. Throttled to one event per hour.
+- `warn:approval_identity_validation_skipped` — `requires_approval_from` identities were accepted without being checked because the LDAP directory could not be reached. Throttled to one event per hour.
+
+#### Workflows
+
+- `api:workflows:create` — a workflow was created.
+- `api:workflows:update` — a workflow was updated.
+- `api:workflow_runs:create` — a workflow run was created.
+- `api:workflow_runs:start` — a workflow run was started.
+- `api:workflow_runs:success` — every step in the workflow run completed successfully.
+- `api:workflow_runs:error` — the workflow run stopped because one of its steps failed.
+- `api:workflow_runs:cancel` — the workflow run was cancelled.
+- `api:workflow_runs:abort` — the workflow run was aborted.
+- `api:workflow_runs:destroy` — a workflow run was deleted.
+- `api:workflow_steps:start` — a workflow step was started.
+- `api:workflow_steps:approve` — a workflow step was approved.
+- `api:workflow_steps:reject` — a workflow step was rejected.
+- `api:workflow_steps:continue` — a waiting workflow step was continued.
+- `api:workflow_steps:success` — the workflow step completed successfully.
+- `api:workflow_steps:error` — the workflow step failed.
+- `api:workflow_steps:cancel` — the workflow step was cancelled.
+- `api:workflow_steps:abort` — the workflow step was aborted.
+- `error:workflow_step:aasm_failure` — a workflow step status transition raised an error.
+- `error:workflow_step:run_failure` — running the workflow step raised an error.
+
+#### Scheduled changes and workflows
+
+- `api:scheduled_changes:create` — a scheduled change was created.
+- `api:scheduled_changes:destroy` — a scheduled change was deleted.
+- `api:scheduled_workflows:create` — a scheduled workflow was created.
+- `api:scheduled_workflows:destroy` — a scheduled workflow was deleted.
+- `api:scheduled_changes:change_creation:create` — a scheduled change came due and started creating its change.
+- `api:scheduled_changes:change_creation:success` — a scheduled change created its change successfully.
+- `api:scheduled_workflows:workflow_run_creation:create` — a scheduled workflow came due and started creating its workflow run.
+- `api:scheduled_workflows:workflow_run_creation:success` — a scheduled workflow created its workflow run successfully.
+- `error:scheduled_changes:change_creation` — a scheduled change could not create its change.
+- `error:scheduled_changes:git_sha` — the Git SHA for a scheduled change could not be resolved, so no change was created.
+- `error:scheduled_workflows:workflow_run_creation` — a scheduled workflow could not create its workflow run.
+- `warning:scheduled_activity:skipped` — a scheduled change or workflow was skipped because one it created earlier was still running and it does not allow parallel execution. Throttled to one event per hour.
+
+#### Projects, environments and assets
+
+- `api:projects:create` — a project was created.
+- `api:projects:update` — a project was updated.
+- `api:projects:destroy` — a project was deleted.
+- `api:nodes:create` — an environment, asset or agent was created.
+- `api:nodes:update` — an environment, asset or agent was updated.
+- `api:nodes:destroy` — an environment, asset or agent was deleted.
+- `api:bookmarks:create` — a bookmark was created.
+- `api:bookmarks:update` — a bookmark was updated.
+- `api:bookmarks:destroy` — a bookmark was deleted.
+
+#### Properties and settings
+
+- `api:properties:update` — properties were updated.
+- `api:settings:update` — settings were updated.
+- `warn:settings:override` — a setting was overridden by an `OPSCHAIN_OVERRIDE_` environment variable supplied by the deployment, so it takes precedence over the value stored in OpsChain.
+
+#### Templates and template versions
+
+- `api:templates:create` — a template was created.
+- `api:templates:update` — a template was updated.
+- `api:template_versions:update` — a template version was updated.
+- `api:action_refresh:warn` — an asset's actions could not be refreshed after its template version changed. The asset keeps its previous actions, and the `error` data key holds the reason.
+- `info:template_version:fetch_initialize` — a template version was created and queued for its first fetch.
+- `info:template_version:fetch` — the fetch of a template version's Git repository started. Its `progress` data key is updated as the fetch produces output, so this event doubles as the live fetch log.
+- `info:template_version:fetch_complete` — the fetch finished. The `success` data key records whether it worked.
+- `info:template_version:refresh_cancelled` — an in-progress actions refresh was cancelled.
+- `error:template_version:fetch` — the template version's Git repository could not be fetched. The `fetch_output` data key holds the Git output.
+- `error:template_version:commit_verification` — the template version's Git remote and revision could not be verified.
+- `error:template_version:broken` — the template version was marked broken and cannot be used until it is corrected.
+- `error:template_version:build_agent_image` — the agent image for the template version could not be built.
+- `error:template_version:refresh_actions` — the template version's actions could not be refreshed.
+- `error:template_version:refresh_cancelled` — cancelling an in-progress actions refresh failed.
+
+#### MintModel
+
+- `api:generate_actions_request:create` — a request to generate an asset's actions was created. The `trigger` data key records what prompted it.
+- `error:generate_actions_request:generate` — an actions generation request failed.
+- `error:mintmodel:generate` — the MintModel API could not generate the asset's MintModel. The converged properties sent to the API are included to help diagnose the failure.
+- `error:mintmodel:derive_actions` — the asset's actions could not be derived from its MintModel.
+- `error:mintmodel:actions_cache_not_persisted` — the generated actions could not be cached, so they will be regenerated every time they are needed until this is resolved. Throttled to one event per hour.
+- `error:mint_model_concretise_task:concretise` — a MintModel concretisation task failed.
+
+#### Agents
+
+- `api:agent:start` — an agent was asked to start and the task to create its container was created.
+- `api:agent:started` — the agent's container is running.
+- `api:agent:stop` — an agent was asked to stop and the task to remove its container was created.
+- `api:agent:stopped` — the agent's container was removed.
+- `error:agent:start` — the agent's container could not be created.
+- `error:agent:stop` — the agent's container could not be removed.
+- `error:build_agent_image_task:build` — building the agent's image failed.
+
+#### Image builds
+
+- `info:image_build:queued` — an image build was held back because the configured number of concurrent image builds was already running. The `queued_behind` data key lists the builds ahead of it.
+- `info:image_build:started` — an image build started.
+- `info:image_build:completed` — an image build finished successfully.
+- `info:image_build:failed` — an image build failed.
+- `warn:image_build:content_key_error` — the key used to recognise an equivalent existing image could not be calculated, so the image was built again instead of being reused.
+- `warn:image_build:required_check_error` — OpsChain could not work out whether an image build was needed, so it built one to be safe.
+
+#### Runner base image
+
+- `info:runner_base_image_warm:completed` — the runner base image was pulled into the build service cache ahead of time, so the next runner image build does not have to wait for it. The `duration_seconds` data key records how long it took.
+- `warn:runner_base_image_warm:failed` — the runner base image could not be pulled into the build service cache. Runner image builds still work, but the first one pays the download cost. Throttled to one event per hour.
+
+#### Image registry
+
+- `info:registry_reconcile:summary` — the image registry was reconciled against the images OpsChain still needs, and unused images were removed.
+- `error:registry_reconcile:failure` — reconciling the image registry failed.
+
+#### Git remotes
+
+- `api:git_remotes:create` — a Git remote was created.
+- `api:git_remotes:update` — a Git remote was updated.
+- `api:git_remotes:destroy` — a Git remote was deleted.
+- `error:git_remote:create` — the Git remote could not be reached when it was created. It is still created, but changes using it will fail until it is reachable.
+- `error:git_remote:update` — the Git remote could not be reached after it was updated.
+- `error:git_remote:fetch` — fetching from the Git remote failed.
+
+#### Secrets and the secret vault
+
+- `api:secrets:encrypt` — a value was encrypted and stored in the secret vault.
+- `api:secrets:resolve` — a stored secret was decrypted and returned.
+- `info:secret_vault_pod_roll:summary` — secret vault pods running out-of-date configuration were restarted.
+- `error:secret_vault_pod_roll:failure` — restarting out-of-date secret vault pods failed.
+
+#### Authorisation
+
+- `api:authorisation_policies:create` — an authorisation policy was created.
+- `api:authorisation_policies:update` — an authorisation policy was updated.
+- `api:authorisation_policies:destroy` — an authorisation policy was deleted.
+- `api:authorisation_rules:create` — an authorisation rule was created.
+- `api:authorisation_rules:update` — an authorisation rule was updated.
+- `api:authorisation_rules:destroy` — an authorisation rule was deleted.
+- `api:policy_assignments:create` — a policy was assigned to a user or group.
+- `api:policy_assignments:destroy` — a policy assignment was removed.
+- `api:policy_rules:create` — a rule was added to a policy.
+- `api:policy_rules:destroy` — a rule was removed from a policy.
+
+#### Users and LDAP
+
+- `api:ldap_refresh:user_start` — a refresh of the cached LDAP user entries started. The search base and filter used are included.
+- `api:ldap_refresh:group_start` — a refresh of the cached LDAP group entries started.
+- `api:ldap_refresh:success` — the LDAP refresh completed, and the entry counts are recorded in the event data.
+- `api:ldap_refresh:warn` — the LDAP refresh completed but something was not right. The cached entries were left as they were.
+- `api:ldap_refresh:error` — the LDAP refresh failed, or completed with problems serious enough that stale cached entries were removed.
+
+#### Events and notifications
+
+- `api:event_filter:error` — an event filter could not be evaluated, so its subscribers were not notified.
+- `api:event_subscriber:error` — an event subscriber could not be notified. Throttled to one event per hour.
+- `api:event_processor:error` — an event could not be processed. Throttled to one event per hour.
+- `api:notification:error` — a notification could not be delivered. Throttled to one event per hour.
+
+#### Data cleaning
+
+- `info:data_cleanup:activities` — a data cleaning rule removed finished changes and workflow runs. The `removed_count` and `filters` data keys record how many were removed and the rule that removed them.
+- `info:data_cleanup:events` — a data cleaning rule removed old events.
+- `info:data_cleanup:jobs` — a data cleaning rule removed old job history.
+- `info:data_cleanup:agent_images` — a data cleaning rule removed unused agent images.
+- `error:data_cleanup:activities` — removing finished changes and workflow runs failed.
+- `error:data_cleanup:events` — removing old events failed.
+- `error:data_cleanup:jobs` — removing old job history failed.
+- `error:data_cleanup:agent_images` — removing unused agent images failed.
+
+#### Resource slots
+
+- `warn:resource_slot_pool:full` — every slot in a resource slot pool was in use, so work that needed one had to wait. The `pool` and `configured_limit` data keys identify which pool and its limit. Throttled per cluster and pool.
+- `api:resource_slot_freed_listener:error` — the listener that wakes work waiting on a freed resource slot failed. Waiting work still runs, but starts later than it could have.
+
+#### API autoscaler
+
+- `info:api_autoscaler:grow` — an API worker was added because the request backlog stayed high.
+- `info:api_autoscaler:shrink` — an API worker was removed because the request backlog had cleared.
+- `warn:api_autoscaler:grow_blocked_connections` — the autoscaler wanted to add an API worker but did not, because too few database connections were spare. Throttled to one event every five minutes.
+- `warn:api_autoscaler:grow_blocked_memory` — the autoscaler wanted to add an API worker but did not, because the pod had too little spare memory. Throttled to one event every five minutes.
+- `error:api_autoscaler:tick_failed` — an autoscaler evaluation failed. Throttled to one event every five minutes.
+
+#### Platform and background jobs
+
+- `error:api:controller:unhandled` — an API request failed with an error OpsChain did not expect. The `request_method` and `request_path` data keys identify the request.
+- `api:job:error` — a recurring background job could not be re-queued, so it may not run until the next attempt.
+- `error:fluentd:log_failure` — step logs could not be sent to the log aggregator and were written straight to the database instead. The logs are not lost, but log queries may be slower.
 
 Custom (i.e. user created) events can have any `type` as it is specified when the event is created.
 
