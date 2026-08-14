@@ -80,7 +80,18 @@ Clicking on a specific asset template row will open its details page, where you 
 
 - Editing the asset template name and description
 - Adding, editing and archiving its asset template versions
+- Editing the template's properties and settings
 - Enabling/disabling the asset template
+
+### Template properties and settings
+
+The template details page carries **Properties** and **Settings** tabs alongside its versions, holding the values shared by every version of the template. Each version has its own properties and settings as well, so put a value on the template when every version should have it, and on a version when only the assets assigned that version should.
+
+Both are edited in the same [properties and settings editors](/getting-started/familiarisation/gui/projects/properties_and_settings.md) used elsewhere. They resolve between the environment and the template version, so an asset's own values still override them — see [properties](/key-concepts/properties.md#template-and-template-version-properties). A template's settings are validated against the same schema a project's are, since a template belongs to a project rather than to a single node.
+
+:::note
+Properties and settings cannot be edited on an archived template, or on a locked template version. Each tab is read only where you do not have permission to see the values behind it.
+:::
 
 ### About asset template versions
 
@@ -90,13 +101,31 @@ Whenever a template version is created or updated, OpsChain fetches the Git revi
 
 If OpsChain is unable to fetch the provided Git revision or resolve the template actions, the version will be marked as "broken" and it will not be usable until the issue is resolved.
 
-A template version's Git revision can be re-fetched at any time — for example, after resolving a fetch failure, or to pick up new commits on an unlocked floating revision — using the _Fetch revision_ button in the template version header.
+A template version's Git revision can be re-fetched at any time — for example, after resolving a fetch failure, or to pick up new commits on a branch or tag — using the _Fetch revision_ button in the template version header.
 
 Revisions can also be fetched in bulk: select rows in the template versions table and choose _Fetch revision_ from the _Bulk actions_ menu, or select rows in the templates table and choose _Fetch revision for newest version_ to re-fetch the newest version of each selected template. Both offer a force option to re-fetch versions that are currently in use, and report each failure individually alongside a summary of the successes.
 
 While a fetch is in progress the version is shown as initializing. If the fetch is interrupted before it finishes — for example by the worker running it being restarted — OpsChain detects the stalled fetch and re-attempts it, so the version resolves back to ready or is marked broken rather than staying stuck. An in-progress fetch can also be cancelled through the API's `cancel_refresh` endpoint, which returns the version to the revision it had previously resolved, or marks it broken if it has none.
 
 You can only update a template version if no assets are using it. If you have a version being used by multiple assets, it is recommended to create a new template version instead and promote each asset as needed.
+
+A template version that has never resolved a Git revision, or whose last fetch failed, cannot be assigned to an asset or an agent, and a change cannot be created against one. Resolve the fetch failure and re-fetch the revision to make the version usable again.
+
+### Following a Git revision
+
+A template version normally stays on the commit its Git revision resolved to when it was created, so the code an asset runs does not move underneath it. A version can instead be set to **follow** its Git revision, which suits a version pointing at a branch you expect to move — a development branch, or a `main` you want assets to track.
+
+When a version follows its revision, OpsChain periodically checks the branch or tag for new commits as part of its [background Git fetching](/key-concepts/settings.md#periodic-git-remote-fetches). When the revision moves, OpsChain resolves the new commit and rebuilds the actions of the assets using that version, without anyone asking for it.
+
+Following can be switched on and off from the waves icon in the template versions table, from the version's actions menu, and when adding a version. To set it for several versions at once, select the rows and use _Enable floating Git revision_ or _Disable floating Git revision_ from the _Bulk actions_ menu.
+
+:::note
+Following a Git revision and locking a version are mutually exclusive — locking exists to stop the commit moving, which is exactly what following it does. OpsChain rejects an attempt to do both, and the control that would do so is disabled with the reason.
+:::
+
+Changes already running are unaffected: a change runs against the actions and the commit resolved when it was created, so a revision that moves mid-change does not disturb it. Assets are not promoted between template versions either — following a revision moves the commit within one version, it does not move an asset onto a different version.
+
+If OpsChain cannot resolve the revision — the branch has been deleted, or the remote cannot be reached — the version keeps serving the commit it already had rather than being marked broken, and reports why it last failed to follow its revision until it succeeds again. A revision that resolves to the same commit as before is not a move, so nothing is rebuilt.
 
 :::info
 Creating new template versions does not automatically update the assets using the template. You must intentionally promote each asset to use the new template version, or create new assets against the new version. This puts you in control of the changes made to your assets and avoids unexpected or unintended changes.
@@ -111,6 +140,7 @@ Each row includes:
 | Column              | Description                                                                                                              |
 |---------------------|--------------------------------------------------------------------------------------------------------------------------|
 | **Lock icon**       | Allows you to lock the version. This will ensure that it does not float to newer Git revisions until it is unlocked.     |
+| **Waves icon**      | Whether the version [follows its Git revision](#following-a-git-revision), and the control to switch that on or off. Where the last automatic refresh failed, the reason is shown here. |
 | **Version**         | The version number or identifier for the asset template.                                                                 |
 | **Description**     | Provides a short summary or purpose of the template version.                                                             |
 | **Assets**          | Shows the assets that are using this template version.                                                                   |
@@ -124,7 +154,7 @@ Each row includes:
 
 | Buttons & links               | Function                                                               |
 |-------------------------------|------------------------------------------------------------------------|
-| **Bulk actions**              | Allows you to archive or restore multiple asset template versions, or fetch their Git revision in bulk. |
+| **Bulk actions**              | Allows you to archive or restore multiple asset template versions, fetch their Git revision in bulk, or turn [following a Git revision](#following-a-git-revision) on or off for the selected versions. |
 | **Search bar**                | Filter the contents of the table based on these criteria.              |
 | **Show archived**             | Toggle to show archived template versions in the table.                |
 | **Columns**                   | Hide or display columns in the table.                                  |

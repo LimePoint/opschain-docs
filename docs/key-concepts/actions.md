@@ -1788,9 +1788,27 @@ Every argument that identifies a node must be supplied with a value. Passing `ni
 
 ### Authentication
 
-`query` authenticates using a short-lived API key that OpsChain injects into the step context. This key is only generated when the relevant token expiry setting is enabled — [`token.change_api_key_expiry_days`](/key-concepts/settings.md#tokenchange_api_key_expiry_days) for changes and [`token.agent_api_key_expiry_days`](/key-concepts/settings.md#tokenagent_api_key_expiry_days) for agents. Both default to `0`, which disables key generation.
+`query` authenticates using a short-lived API key that OpsChain injects into the step context. The key is supplied automatically and needs no configuration.
 
-If no API key is present in the step context, `query` raises an error. The key inherits the permissions of the user that created the change (or started the agent), so a query will only succeed for nodes that user is authorised to view.
+It inherits the permissions of the user that created the change, started the agent, or triggered the derivation of an asset's actions, so a query only succeeds for the nodes that user is authorised to view. Each key is revoked as soon as the change, agent or actions derivation that owns it finishes.
+
+### Querying while your actions are being discovered
+
+OpsChain loads your actions for two different reasons: to run a step, and to discover what your actions are without running any of them — when it derives an asset's actions from its template version, or builds a change's step tree.
+
+A `query` made while your actions are being *discovered* is skipped by default. It returns an empty result — `{}` for a `:node`, `:mintmodel`, `:properties` or `:settings` query, and `[]` for a list query — so the surrounding code has something of the expected shape to work with, and OpsChain logs a warning naming the `actions.rb` line that made the call, the arguments it was given, and what was returned in its place.
+
+Skipping it avoids issuing a request for data that discovery has no intention of using, and avoids failing discovery for a reason that has nothing to do with the actions being discovered. Supply `run_in_dry_run: true` when the answer shapes the actions or the step tree, and the query runs at this point as well:
+
+```ruby
+query(:node, project: 'demo', list: :environments, run_in_dry_run: true).each do |environment|
+  action :"deploy_#{environment.dig(:attributes, :code)}" do
+    OpsChain.logger.info("Deploying #{environment.dig(:attributes, :code)}")
+  end
+end
+```
+
+The arguments are validated whether or not the query runs, so a malformed query is reported while your actions are being discovered rather than only when a step runs.
 
 ### Querying a node
 

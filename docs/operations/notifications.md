@@ -23,6 +23,18 @@ A disabled channel is never used, even while it remains marked as the default. I
 
 Select _add email channel_ from the _new channel_ dropdown to add an email channel. Use the dialog to configure and save the server settings, marking the server as the default email channel if you wish to use this server as the primary outbound server for user email notifications. Once saved, you can test the settings to confirm they can be used to send email by editing the channel and using the _send test message_ feature in the edit channel dialog.
 
+The dialog asks for the SMTP server's address and port, the address notifications are sent from, and the domain OpsChain identifies itself with when it greets the server. The remaining connection settings are under _advanced options_:
+
+| Setting                               | Description                                                                                                                                                                        |
+|---------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **Authentication**                    | How OpsChain authenticates to the server — _auto_, _LOGIN_, _PLAIN_ or _CRAM-MD5_. Leave it unset for a server that accepts mail without authenticating, such as an internal relay. |
+| **User name** and **password**        | The credentials to authenticate with. Leave them empty where no authentication is configured.                                                                                      |
+| **Read timeout** and **open timeout** | How long OpsChain waits for the server to respond, and to accept a connection, in seconds.                                                                                          |
+| **Format**                            | Whether notifications sent through this channel are written as HTML or plain text.                                                                                                 |
+| **Enable start TLS**                  | Whether to upgrade the connection to TLS with `STARTTLS`. Leave it ticked unless your server does not offer `STARTTLS`, in which case OpsChain connects without it.                 |
+
+These are the settings a running change or agent uses when it sends email, as well as the settings notifications are sent with.
+
 :::warning[The default email channel is also available to action code]
 Marking a channel as the default email channel makes it available to running changes and agents as well as to notifications. Action code can send email through this server using the [`send_email`](/key-concepts/actions.md#sending-email) keyword, choosing the recipients, the content and the sender address. OpsChain does not restrict the sender address, so an action can send email that appears to come from any address.
 

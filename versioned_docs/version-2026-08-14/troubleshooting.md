@@ -206,15 +206,13 @@ Please [contact us](/support.md#how-to-contact-us) if you have any issues with t
 
 ### Updates made to properties in change "...", step "..." could not be applied
 
-The following error highlights that actions running in concurrent steps have made incompatible modifications to project and/or environment properties and OpsChain is unable to successfully apply the JSON Patch with these property updates.
+The following error highlights that actions running in concurrent steps have made incompatible modifications to the same properties and OpsChain is unable to successfully apply the JSON Patch with these property updates.
 
-```ruby
-Failed processing step: /opt/opschain/app/commands/process_step_result_command.rb:17:in `rescue in call': Failed processing step "bar" (ProcessStepResultCommand::Error)
-# ...
-rescue in apply_properties_diff!': Updates made to properties in change "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx", step "[xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx] bar" could not be applied - see change logs for more details. (ProcessStepResultCommand::Error)
-# ...
-in `remove_operation': JSON::PatchObjectOperationOnArrayException (JSON::PatchObjectOperationOnArrayException)
-# ...
+```text
+ERROR: Updates made to the environment properties in step "[xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx] bar" could not be applied.
+The error encountered applying the JSON Patch was: JSON::PatchObjectOperationOnArrayException
+# ... the JSON documents described below ...
+Failed processing step "bar" with: Updates made to properties in change "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx", step "[xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx] bar" could not be applied - see prior logs for more details.
 ```
 
 #### Solution - updates made to properties could not be applied
@@ -296,7 +294,7 @@ To do so, add `ENV BUNDLE_GEMFILE=/opt/opschain/.opschain/Gemfile` to your proje
 ...
 USER opschain
 ENV BUNDLE_GEMFILE=/opt/opschain/.opschain/Gemfile
-RUN --mount=type=secret,required=true,id=env_context_json,uid=10001,gid=10001,target=/opt/opschain/.opschain/step_context.json \
+RUN --mount=type=secret,required=true,id=env_context_zip,uid=10001,gid=10001,target=/opt/opschain/.opschain/step_context.json.zip \
     opschain-exec bundle install
 ...
 ```

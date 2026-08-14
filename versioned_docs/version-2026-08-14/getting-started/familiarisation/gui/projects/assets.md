@@ -70,6 +70,20 @@ See the [run change dialog](/getting-started/familiarisation/gui/activity.md#run
 
 An asset's available actions are read from its template version's `actions.rb`. To pick up newly added or changed actions, refresh them - either from an individual asset, or for several assets at once by selecting them in the assets table and choosing _Refresh actions_ from the _Bulk actions_ menu. The **Actions** column shows when each asset's actions were last refreshed.
 
+### When an asset's MintModel actions are unavailable
+
+The actions an asset gets from its [MintModel](/getting-started/familiarisation/gui/projects/asset_templates.md#asset-templates-with-a-mintmodel) are generated for a particular set of properties at a particular commit, so they stop being available when either of those moves. Where they are, OpsChain says which of the following it is rather than only reporting the actions as out of date:
+
+| Reason                                                                          | What to do                                                                                    |
+|---------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------|
+| The asset's properties have changed since its MintModel was generated             | Refresh the asset's actions to regenerate it against the current properties                   |
+| The asset's template version has resolved a new commit since it was generated     | Refresh the asset's actions to regenerate it against the new commit                           |
+| The MintModel has not been generated yet                                          | Refresh the asset's actions to generate it for the first time                                 |
+| The last attempt to generate the MintModel failed                                 | Address the reported generation failure, then refresh the asset's actions                     |
+| The asset's template version does not include a MintModel                         | Nothing - this asset's actions come from its `actions.rb` alone                                |
+
+Properties anywhere above the asset count here, so editing a project's or an environment's properties can take the MintModel actions of every asset beneath it out of date until they are regenerated.
+
 ## Archiving an asset
 
 Archive an asset by selecting it from the assets table and choosing _Archive_ from the _Bulk actions_ menu.

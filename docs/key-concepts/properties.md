@@ -25,6 +25,14 @@ After following this guide you should understand:
 
 Within each action, OpsChain properties are available via `OpsChain.properties` (which will behave like a [Hashie Mash](https://github.com/hashie/hashie#mash)). The values available are the result of a deep merge of the [change's](/key-concepts/overview.md#change) [Git repository](/getting-started/familiarisation/gui/projects/git_remotes.md) properties with the [project](/key-concepts/overview.md#project), [environment](/key-concepts/overview.md#environment) and [asset](/getting-started/familiarisation/gui/projects/assets.md) level properties. If a property exists at multiple levels, project values will override repository values, environment values will override project and repository values, and asset values will override all of them.
 
+When the change runs on an asset or an agent built from an [asset template](/getting-started/familiarisation/gui/projects/asset_templates.md), the template and the template version it is assigned contribute their own properties as well, between the environment and the node:
+
+```text
+repository → project → environment → template → template version → asset
+```
+
+Values set on the template are shared by every version of it, and a version overrides them for the assets using that version. See [template and template version properties](#template-and-template-version-properties).
+
 Properties can be accessed using dot or square bracket notation with string or symbol keys. These examples are equivalent:
 
 ```ruby
@@ -157,9 +165,26 @@ Only files placed directly in the template folder are loaded - property files in
 
 The template folder properties are merged after the project and environment repository properties, but before the asset repository properties. In other words, template folder properties override project and environment values, while asset specific values still override the template's. They can also be accessed on their own via `OpsChain.repository_properties_for(:template_version)`.
 
+:::note
+The template folder is resolved at the Git revision of the template version, so these repository properties belong to the template version rather than to the template. A template's own properties are stored in the database only - `OpsChain.repository_properties_for(:template)` reports an error directing you to `OpsChain.properties_for(:template)` instead.
+:::
+
 ### Database
 
 Properties stored in the database are encrypted prior to being written to disk such that they are encrypted-at-rest. Within each action, project, environment and asset properties are available via `OpsChain.properties_for(:project)`, `OpsChain.properties_for(:environment)` and `OpsChain.properties_for(:asset)` respectively. Actions can modify these properties at runtime and any changes will be persisted to the database (see [modifiable properties](#modifiable-properties) below).
+
+#### Template and template version properties
+
+An [asset template](/getting-started/familiarisation/gui/projects/asset_templates.md) and each of its versions hold their own properties, which apply to every asset and agent using them. Set a value on the template when every version of it should share the value, and on a version when only the assets assigned that version should see it.
+
+Both are edited from the template's and the template version's **Properties** tabs in the GUI, and are available to action code alongside the node properties:
+
+```ruby
+OpsChain.properties_for(:template)
+OpsChain.properties_for(:template_version)
+```
+
+They sit between the environment and the node in the merge, so an asset's own properties still override both, and a template version overrides its template.
 
 #### Editing properties
 

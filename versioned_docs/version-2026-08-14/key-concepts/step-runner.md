@@ -77,7 +77,20 @@ The build context used when building the step runner image has access to the fol
   See [image performance - reducing build context size](#image-performance---reducing-build-context-size) below for a way to exclude files from `repo.tar` that your steps don't need, to improve build performance.
   :::
 
-- `step_context_env.json` - The [environment variable properties](/key-concepts/properties.md#environment-variables) for the project and environment, along with the project and environment [context](/key-concepts/context.md) values for use by `opschain-exec`. This file will change if the environment variables in the project or environment change
+- `opschain-trust-store.tar` - The certificate authorities you have uploaded, taken from the [`opschain-trust-store` config map](/operations/maintenance/kubernetes-topology-reference.md#configuration-and-secrets). The default Dockerfile extracts these into `/etc/pki/ca-trust/source/anchors` so that your build and your steps trust them. This file will change when a certificate authority is added or removed
+
+- `step_context.json.zip` - A zip containing a `step_context.json` file with the [environment variable properties](/key-concepts/properties.md#environment-variables) of each owner contributing to the step, along with the `parents` and `parent_order` [context](/key-concepts/context.md) values, for use by `opschain-exec`. This file will change if any of those environment variable properties change
+
+- `mintpress.license` - The MintPress licence, taken from the `mintpress-licence` Kubernetes secret. It is supplied to the build as a BuildKit secret with the id `mintpress_license`, and the default Dockerfile mounts it at `/opt/opschain/.environmint/mintpress.license`. It is empty if no licence has been installed
+
+`step_context.json.zip` is supplied to the build as a [BuildKit secret](https://docs.docker.com/build/building/secrets/) with the id `env_context_zip`, rather than being copied into the image. Mount it on each `RUN` step that uses `opschain-exec`:
+
+```dockerfile
+RUN --mount=type=secret,required=true,id=env_context_zip,uid=10001,gid=10001,target=/opt/opschain/.opschain/step_context.json.zip \
+    opschain-exec <command>
+```
+
+OpsChain reads `step_context.json` from within the zip, so there is no need to extract it yourself. Without the mount, `opschain-exec` still runs the command, but none of the OpsChain environment variables will be set.
 
 The build arguments supplied to [BuildKit](https://docs.docker.com/develop/develop-images/build_enhancements/) when building the image include:
 
@@ -120,8 +133,13 @@ AWS_SECRET_ACCESS_KEY: djNLWll5RWtrbTd2NzBrOUFzRG04ZEFUQ1pZT0xMYWVsNXFwSWZFQwo=
 These environment variables will then be available to the `aws` CLI (when run via `opschain-exec`), so it can authenticate to copy the utility, for example:
 
 ```dockerfile
-RUN opschain-exec aws s3 cp s3://source-bucket-name/customer-utility /opt/opschain/customer-utility
+RUN --mount=type=secret,required=true,id=env_context_zip,uid=10001,gid=10001,target=/opt/opschain/.opschain/step_context.json.zip \
+    opschain-exec aws s3 cp s3://source-bucket-name/customer-utility /opt/opschain/customer-utility
 ```
+
+:::note
+The `--mount` line is required. It gives `opschain-exec` access to the [step context](#customising-the-dockerfile) for this `RUN` step - without it the command runs with none of the OpsChain environment variables set.
+:::
 
 More granular control over the secrets that are supplied to the image build is available by configuring the `env:build_secrets` configuration in the project or environment [properties](/key-concepts/properties.md#secrets). See [project and environment configuration](#project--environment-secret-configuration) for more information.
 
@@ -247,11 +265,11 @@ The `.git` directory itself (the full commit history) is a separate, often large
 When running the step runner, OpsChain includes:
 
 1. the project's Git repository, reset to the requested revision, in the `/opt/opschain` directory
-2. an `/opt/opschain/.opschain/step_context.json` file, containing the step's project and environment properties along with the current step's context values
+2. an `/opt/opschain/.opschain/step_context.json` file, containing the properties of each owner contributing to the step along with the current step's context values
 
 Upon completion, the step will produce an `/opt/opschain/.opschain/step_result.json` file to be processed by the API server, detailing:
 
-1. any changes to the project and environment [properties](/key-concepts/properties.md) the action has performed
+1. any changes to those [properties](/key-concepts/properties.md) the action has performed
 2. the merged set of properties used by the action
 3. any child steps to be run after this action (and their execution strategy)
 
@@ -259,11 +277,12 @@ Upon completion, the step will produce an `/opt/opschain/.opschain/step_result.j
 
 The `step_context.json` file supplied to the step includes the following sections:
 
-| JSON path                | Description                                                                                                                                                                     |
-|--------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `context`                | The step context values for the current step - see the [OpsChain context guide](/key-concepts/context.md) for more details                                                |
-| `project/properties`     | The [properties](/key-concepts/properties.md) for the project |
-| `environment/properties` | The [properties](/key-concepts/properties.md) converged for the environment |
+| JSON path               | Description                                                                                                                                                                                                                  |
+|-------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `context`               | The step context values for the current step - see the [OpsChain context guide](/key-concepts/context.md) for more details                                                                                                   |
+| `properties/<owner>`    | The [properties](/key-concepts/properties.md) converged for each owner contributing to the step, keyed by owner - `project`, `environment`, `asset`, `template`, `template_version` and `change`, as applicable to the change |
+
+The owners present in `properties`, and the order OpsChain merges them in, are listed in `context/parent_order`.
 
 A sample `step_context.json` file is available to view [here](/files/samples/step_context.json).
 
@@ -277,41 +296,43 @@ The `step_result.json` file has the following structure:
 
 ```json
 {
-  "project": {
-    "properties_diff": [
-      {
-        "op": "add",
-        "path": "/new_element",
-        "value": "test_value"
-      }
-    ]
-  },
-  "environment": {
-    "properties_diff": []
-  },
   "step": {
     "properties": {
       "opschain": {}
     }
   },
-  "steps": {
+  "properties_diffs": {
+    "project": [
+      {
+        "op": "add",
+        "path": "/new_element",
+        "value": "test_value"
+      }
+    ],
+    "environment": [],
+    "change": []
+  },
+  "child_step_definitions": {
     "children": [
       {
         "action": "sample:hello_world_1:run"
       }
     ],
-    "child_execution_strategy": null
-  }
+    "child_execution_strategy": "sequential"
+  },
+  "expected_step_tree": null
 }
 ```
 
 #### File content - step result
 
-The `project/properties_diff` and `environment/properties_diff` values contain [RFC6902](http://www.rfc-editor.org/rfc/rfc6902.txt) JSON Patch values, describing the changes to apply to the project or environment properties.
-
 The `step/properties` contains the merged set of properties applied to the action. These are linked to the step to support future investigation / debugging.
 
-The `steps/children` value contains the child steps (and execution strategy) the OpsChain workers will execute.
+The `properties_diffs` value is keyed by property owner - the same owners supplied to the step in `step_context.json`. Each value is a set of [RFC6902](http://www.rfc-editor.org/rfc/rfc6902.txt) JSON Patch operations, describing the changes to apply to that owner's properties.
+
+The `child_step_definitions` value contains the child steps (and execution strategy) the OpsChain workers will execute.
+
+The `expected_step_tree` value contains the step tree OpsChain derived from the action's definition in your `actions.rb` - its step name, description, prerequisites and children. OpsChain uses this to reconcile the running step's details and to build the change's step tree.
 
 ### Log messages for step phases
 

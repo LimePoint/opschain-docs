@@ -21,7 +21,9 @@ Configuring data cleanup definitions is critical for maintaining OpsChain's data
 
 ### Creating a data cleanup definition
 
-To create a data cleanup definition, refer to the [API documentation](https://docs.opschain.io/api-docs/#tag/Data-cleanup-definitions/). Below, we'll go over the concepts necessary to understand how they are defined and configured.
+Data cleanup definitions can be created from the **Data cleanup** section of the administration screen, where they are listed as cleanup jobs — see [data cleanup](/getting-started/familiarisation/gui/data_cleanup.md#adding-a-cleanup-job). To create one via the API, refer to the [API documentation](https://docs.opschain.io/api-docs/#tag/Data-cleanup-definitions/).
+
+Below, we'll go over the concepts necessary to understand how they are defined and configured.
 
 ### Data purge selection
 
@@ -91,7 +93,9 @@ All data types for the matching nodes are removed if no filters are provided. En
 
 ### Enabling/disabling a data cleanup definition
 
-If you'd like to disable a data cleanup definition from running, you can simply modify its `enabled` attribute to `false`. Refer to the [API documentation](https://docs.opschain.io/api-docs/#tag/Data-cleanup-definitions/) on how that can be done via the API.
+If you'd like to stop a data cleanup definition from running, disable it from its actions menu in the **Data cleanup** section of the administration screen, or disable several at once from the table's bulk actions — see [enabling and disabling a cleanup job](/getting-started/familiarisation/gui/data_cleanup.md#enabling-and-disabling-a-cleanup-job). The definition keeps its configuration and its history, and can be enabled again the same way. To do this via the API, modify its `enabled` attribute — refer to the [API documentation](https://docs.opschain.io/api-docs/#tag/Data-cleanup-definitions/).
+
+A definition with no run left to make — one that has already run and is not set to `repeat`, that has reached its `maximum_run_count`, or whose `run_at` or `end_at` has passed — is disabled by OpsChain and cannot be enabled as it stands. Give it a run it can still make, by editing its schedule, run count or end date, and it is scheduled again when saved.
 
 ## See also
 

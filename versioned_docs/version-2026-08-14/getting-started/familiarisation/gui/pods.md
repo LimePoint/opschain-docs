@@ -24,17 +24,20 @@ Each row includes:
 | **Start time**    | Timestamp for when the pod started.                                                                                         |
 | **Restart count** | How many times the pod's container has restarted. A climbing count is a sign the pod is failing and being restarted.        |
 | **Namespace**     | The Kubernetes namespace the pod sits in. Hidden by default, as every pod listed here is in the OpsChain namespace.         |
+| **Controlled by** | The Kubernetes controller that owns the pod, such as `ReplicaSet/opschain-api`. It is empty for the pods OpsChain creates itself to run changes, steps, agents, MintModel concretisation and actions generation - the pods that can be [deleted](#deleting-a-pod). |
 
 ### Buttons & links
 
-| Buttons & links | Function                                                                                                     |
-|-----------------|----------------------------------------------------------------------------------------------------------------|
-| **Search bar**  | Filter the pods listed in the table.                                                                         |
-| **State**       | Show only pods in the selected Kubernetes phases.                                                            |
-| **Pod type**    | Show only pods belonging to the selected parts of OpsChain.                                                  |
-| **Columns**     | Hide or display columns in the table.                                                                        |
-| **Refresh**     | Fetch the pods immediately rather than waiting for the next automatic refresh. The tooltip reports how long ago the pods were last fetched. |
-| **Logs**        | Open that pod's log. Requires permission to read pod logs.                                                   |
+| Buttons & links    | Function                                                                                                  |
+|--------------------|---------------------------------------------------------------------------------------------------------------|
+| **Search bar**     | Filter the pods listed in the table.                                                                      |
+| **State**          | Show only pods in the selected Kubernetes phases.                                                         |
+| **Pod type**       | Show only pods belonging to the selected parts of OpsChain.                                               |
+| **Columns**        | Hide or display columns in the table.                                                                     |
+| **Refresh**        | Fetch the pods immediately rather than waiting for the next automatic refresh. The tooltip reports how long ago the pods were last fetched. |
+| **Logs**           | Open that pod's log. Requires permission to read pod logs.                                                |
+| **Delete**         | Delete that pod. Shown only on the pods OpsChain creates itself, and requires superuser access.            |
+| **Bulk actions**   | Delete the selected pods together. See [deleting a pod](#deleting-a-pod).                                  |
 
 ## Filtering the pods listed
 
@@ -80,4 +83,22 @@ Reading a pod's log is authorised separately from listing the pods, so a user wh
 
 :::note
 The equivalent API endpoints are `GET /api/admin/pods` and `GET /api/admin/pods/{name}/logs`. A pod's whole log can also be downloaded as a text file by adding `?download=<filename>` to the logs endpoint, which is the better option for a log too large to page through in a browser. See the [API reference](pathname:///api-docs/#tag/Admin-operations).
+:::
+
+## Deleting a pod
+
+A pod can get stuck - waiting on an image that will not pull, or hanging after the work it was doing has finished. Selecting **Delete** on a row removes that pod immediately, without waiting for it to shut down gracefully, so you can clear it without shell access to the cluster.
+
+Only the pods OpsChain creates to do its own work can be deleted - the pods running changes, steps and agents, and those concretising a MintModel or generating an asset's actions. Every other pod in the namespace belongs to a Kubernetes deployment or stateful set, listed in the **Controlled by** column, and the **Delete** button is not offered on those rows at all. Deleting them would achieve nothing in any case, as Kubernetes replaces a pod it manages as soon as it is removed.
+
+:::warning
+Deleting a pod OpsChain is still waiting on fails the step or task that pod was running. Use it to clear a pod that is already stuck, not to stop work in progress - cancel the change, workflow run or background task instead.
+:::
+
+To clear several pods at once - a wedged change leaves a pod per step - tick the rows and choose **Bulk actions** → **Delete selected pods**. The confirmation says how many of the selected pods it is about to delete, and how many it is leaving alone because they cannot be deleted, so a selection that sweeps up a deployment's pods does not fail as a whole. Each pod is deleted independently and any that fail are reported individually, so one pod that has already gone does not strand the rest.
+
+:::note
+Deleting a pod requires superuser access. It cannot be granted through an authorisation rule, so a user who can otherwise administer OpsChain sees the **Delete** button disabled, with the reason, rather than discovering the restriction after confirming.
+
+The equivalent API endpoint is `DELETE /api/admin/pods/{name}`. It answers `202 Accepted`, as Kubernetes removes the pod asynchronously, and rejects a pod that is not one of OpsChain's own rather than deleting it. See the [API reference](pathname:///api-docs/#tag/Admin-operations).
 :::

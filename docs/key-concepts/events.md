@@ -207,6 +207,7 @@ Some events are throttled, meaning OpsChain records at most one of them in the s
 - `api:changes:cancel` — the change was cancelled.
 - `api:changes:abort` — the change was aborted.
 - `api:changes:retry_settings_pruned` — an incomplete change was retried and some of its settings overrides were dropped because they are no longer valid for a change. The `dropped_settings` data key lists them.
+- `warn:changes:catalog_not_refreshed` — a change was retried asking for the latest Git revision, but the actions derived from that revision were not available, so the retry ran the actions and step tree the original change ran. The `action`, `template_version` and `catalog_request_status` data keys record which action was affected and why.
 - `api:changes:destroy` — a change was deleted.
 - `api:change_listener:error` — the listener that picks up change cancellations failed.
 - `error:change_worker:delete` — the change's runner pod could not be removed after the change finished. The pod may need to be removed by hand.
@@ -307,6 +308,8 @@ Some events are throttled, meaning OpsChain records at most one of them in the s
 - `info:template_version:fetch` — the fetch of a template version's Git repository started. Its `progress` data key is updated as the fetch produces output, so this event doubles as the live fetch log.
 - `info:template_version:fetch_complete` — the fetch finished. The `success` data key records whether it worked.
 - `info:template_version:refresh_cancelled` — an in-progress actions refresh was cancelled.
+- `info:template_version:refresh_superseded` — a Git revision refresh finished after a newer refresh had replaced it, or after it was cancelled, so the revision it resolved was discarded. Nothing failed - the refresh that replaced it decides the version's revision.
+- `warn:template_version:float_refresh_failed` — a template version that [follows its Git revision](/getting-started/familiarisation/gui/projects/asset_templates.md#following-a-git-revision) could not be refreshed. The version keeps serving the commit it already had, and the reason is reported against the version until it successfully follows its revision again.
 - `error:template_version:fetch` — the template version's Git repository could not be fetched. The `fetch_output` data key holds the Git output.
 - `error:template_version:commit_verification` — the template version's Git remote and revision could not be verified.
 - `error:template_version:broken` — the template version was marked broken and cannot be used until it is corrected.

@@ -21,6 +21,24 @@ OpsChain configures a [`hostAlias`](https://kubernetes.io/docs/tasks/network/cus
 
 Setting this to `true` means this host alias will not be created. This may be necessary if you have a DNS entry for the API hostname that you want used because it needs to point to a different ingress than the OpsChain Kubernetes ingress.
 
+### agent.node_selector
+
+Default value: _{} (no selector)_
+
+Restricts the Kubernetes nodes an [agent](/getting-started/familiarisation/gui/projects/agents.md) pod may be scheduled onto. The value is a JSON object of node labels, supplied as a string:
+
+```json
+{
+  "agent": {
+    "node_selector": "{\"kubernetes.io/os\":\"linux\"}"
+  }
+}
+```
+
+When this setting is left unset, agent pods use [`runner.node_selector`](#runnernode_selector) instead. Set it to place agents on different nodes to the pods that run your changes - agents are long lived, whereas a change's pods come and go.
+
+The setting is read when the agent pod is created, so it can be configured at any level and a change takes effect the next time the agent starts. A value OpsChain cannot read as a JSON object is rejected when it is saved; where one was stored before that validation existed, the agent reports a configuration error rather than starting.
+
 ### agent.script_path
 
 Default value: _/opt/opschain/agent.sh_
@@ -674,6 +692,25 @@ Default: _opschain-runner-enterprise_
 
 The name of the runner image.
 
+### runner.node_selector
+
+Default value: _{} (no selector)_<br/>
+Scope: _global_
+
+Restricts the Kubernetes nodes the pods OpsChain creates may be scheduled onto - the change worker, step runner, agent, action generation and MintModel API pods. The value is a JSON object of node labels, supplied as a string:
+
+```json
+{
+  "runner": {
+    "node_selector": "{\"opschain.io/workload\":\"runner\"}"
+  }
+}
+```
+
+Use this to keep the pods that run your changes off the nodes hosting the OpsChain services themselves, or to confine them to nodes carrying the storage or licensing a change needs. An agent pod uses [`agent.node_selector`](#agentnode_selector) in preference to this setting where one is configured.
+
+The setting is read each time a pod is created, so a change takes effect without restarting the OpsChain API and applies to the next pod started.
+
 ### runner.repository
 
 Default: _limepoint_
@@ -718,12 +755,48 @@ This setting only applies to MintModel steps. Standard runner steps are not affe
 
 These settings modify the Kubernetes pods OpsChain creates to run your changes. They use Kubernetes field names, and are grouped by the type of pod they apply to.
 
-| Pod type        | Pod                                                                                              |
-|-----------------|--------------------------------------------------------------------------------------------------|
-| `default`       | Applied to every pod type below, and merged underneath the pod-type specific configuration         |
-| `change_worker` | The change worker pod, used when `pod_per_change_step` is `false`                                  |
-| `step_runner`   | The step runner pod, used when `pod_per_change_step` is `true`                                     |
-| `agent`         | The agent pod                                                                                      |
+| Pod type           | Pod                                                                                                |
+|--------------------|----------------------------------------------------------------------------------------------------|
+| `default`          | Applied to every pod type below, and merged underneath the pod-type specific configuration           |
+| `change_worker`    | The change worker pod, used when `pod_per_change_step` is `false`                                    |
+| `step_runner`      | The step runner pod, used when `pod_per_change_step` is `true`                                       |
+| `agent`            | The agent pod                                                                                        |
+| `generate_actions` | The pod that derives an asset's actions from its template version                                    |
+| `mintmodel_api`    | The pod that concretises an asset's MintModel                                                        |
+
+Not every setting applies to every pod type - each setting below lists the pod types it accepts, and configuring it against another is rejected rather than being silently ignored.
+
+### pod_templates.\<pod type\>.resources
+
+Default value: _not configured, except for `mintmodel_api` (see below)_<br/>
+Accepted pod types: _`change_worker`, `step_runner`, `agent`, `generate_actions`, `mintmodel_api`_
+
+The CPU and memory a pod asks the Kubernetes scheduler for, and the ceiling it may not exceed, using [Kubernetes resource quantities](https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/):
+
+```json
+{
+  "pod_templates": {
+    "step_runner": {
+      "resources": {
+        "requests": { "cpu": "500m", "memory": "1Gi" },
+        "limits": { "cpu": "2", "memory": "4Gi" }
+      }
+    }
+  }
+}
+```
+
+Only `cpu` and `memory` are accepted, under `requests`, `limits` or both. A value that is not a valid Kubernetes quantity is rejected when the settings are saved, rather than failing later when the pod is created.
+
+The right values depend on your Kubernetes nodes, your [concurrency limits](#runner-pod-concurrency-settings) and what your own step code does, so OpsChain does not set them for you. A pod type left unconfigured is created without requests or limits, which means the scheduler treats it as costing nothing and neither its CPU nor its memory is capped.
+
+The `mintmodel_api` pod is the exception - it is configured out of the box with a memory request of `256Mi` and a memory limit of `2Gi`. Raise the limit for an installation with large MintModels, or lower it to fit smaller nodes. Its Java heap is sized as a percentage of the memory limit, so removing the limit leaves the JVM sizing itself against the node's memory instead.
+
+Unlike `volumes`, `resources` can be supplied as a change level settings override, so a single large change can be given more CPU or memory without raising the limits for every other change:
+
+```bash
+opschain change create ... --settings-overrides '{"pod_templates":{"step_runner":{"resources":{"limits":{"memory":"8Gi"}}}}}'
+```
 
 ### pod_templates.\<pod type\>.volumes
 
@@ -782,7 +855,7 @@ Granting a user permission to update settings on a project, environment, asset, 
 
 OpsChain rejects host paths that would expose the node's container runtime or cluster data (such as `/var/run` and `/var/lib/rancher`), and mount paths that would shadow OpsChain's own mounts (such as `/opt/opschain`). These checks reduce the blast radius but are not a substitute for controlling who can edit settings.
 
-`pod_templates` cannot be supplied as a change level settings override, so creating a change never grants this access.
+`volumes` cannot be supplied as a change level settings override, so creating a change never grants this access.
 :::
 
 :::info
@@ -823,27 +896,15 @@ Scope: _global_
 
 The maximum number of MintModel pods — which concretise an asset's MintModel — that OpsChain will run simultaneously on a cluster.
 
-## Token settings
+## API keys supplied to your action code
 
-These settings control the short-lived API keys that OpsChain generates so that running changes and agents can reach the OpsChain API server (for example via the [`query`](/key-concepts/actions.md#querying-the-api) and [`send_email`](/key-concepts/actions.md#sending-email) keywords).
+OpsChain supplies an API key to the code it runs, so that a change, an agent, or the derivation of an asset's actions can reach the OpsChain API server - for example via the [`query`](/key-concepts/actions.md#querying-the-api) and [`send_email`](/key-concepts/actions.md#sending-email) keywords.
 
-### token.change_api_key_expiry_days
+There is nothing to configure. A key is issued automatically, carries the permissions of the user who created the change, started the agent, or triggered the actions derivation, and is revoked as soon as that work finishes.
 
-Default value: _0_ (disabled)<br/>
-Accepted values: _0–365_
-
-The number of days before the API key generated for a change's step execution context expires. When set to a positive value, OpsChain generates an API key for each change and injects it into the step context, allowing action code to query the API server with the permissions of the user that created the change.
-
-When set to `0` (the default) no key is generated, so neither [`query`](/key-concepts/actions.md#querying-the-api) nor [`send_email`](/key-concepts/actions.md#sending-email) can be used from within a change.
-
-### token.agent_api_key_expiry_days
-
-Default value: _0_ (disabled)<br/>
-Accepted values: _0–365_
-
-The number of days before the API key generated for an agent pod's context expires. When set to a positive value, OpsChain generates an API key for each agent, allowing the agent's action code to query the API server and send email with the permissions of the user that started the agent.
-
-When set to `0` (the default) no key is generated.
+:::note
+The `token.change_api_key_expiry_days` and `token.agent_api_key_expiry_days` settings previously controlled whether these keys were issued at all, and both defaulted to `0`, which disabled them. They have been removed - keys are now always issued - and are pruned from your stored settings when you upgrade.
+:::
 
 ## Vault settings
 
@@ -902,6 +963,8 @@ A JSON object containing options to use when communicating with the external vau
 - `ssl_ca_cert`: The path to the SSL certificate authority file to use. The file must be in the image used by the OpsChain API deployment.
 - `ssl_timeout`: The timeout for the SSL connection in seconds.
 - `ssl_verify`: Whether to verify the SSL certificate of the vault server. Defaults to `true`.
+
+The value is supplied as a string, and must be a JSON object. A value OpsChain cannot read as one is rejected when the settings are saved, rather than failing later when a secret is read or written.
 
 ### vault.mount_path
 
