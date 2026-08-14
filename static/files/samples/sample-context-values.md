@@ -18,7 +18,7 @@ change:
   state_timing:
     running:
       ended_at:
-      started_at: '2026-08-10T11:19:54.152485Z'
+      started_at: '2026-08-14T06:48:37.147101Z'
   state_timing_summary: {}
   notify: {}
   skip_steps: []
@@ -27,7 +27,7 @@ change:
   created_at: '2020-05-20T10:00:00.000000Z'
   started_at: '2020-05-20T10:00:05.000000Z'
   finished_at:
-  updated_at: '2026-08-10T11:19:54.389904Z'
+  updated_at: '2026-08-14T06:48:37.360685Z'
   asset_name:
   environment_name: Receivables
   project_name: Finance
@@ -50,7 +50,7 @@ step:
   state_timing:
     running:
       ended_at:
-      started_at: '2026-08-10T11:19:54.152485Z'
+      started_at: '2026-08-14T06:48:37.147101Z'
   step_sequence: 1
   step_type: standard
   description:
@@ -59,8 +59,17 @@ step:
   created_at: '2020-05-20T10:00:00.000000Z'
   started_at: '2020-05-20T10:00:05.000000Z'
   finished_at:
-  updated_at: '2026-08-10T11:19:54.389904Z'
+  updated_at: '2026-08-14T06:48:37.360685Z'
   status_code: running
+git_remotes:
+- id: '019fff07-9ca1-7c3d-b564-b98671724600'
+  name: origin
+  url: https://sanford.example/repo.git
+  public_url:
+  archived: false
+  disabled: false
+  created_at: '2026-08-14T06:48:36.764426Z'
+  updated_at: '2026-08-14T06:48:36.764426Z'
 user:
   name: mary
   groups:
@@ -77,7 +86,7 @@ parents:
     name: Finance
     description: Finance applications
     archived: false
-    created_by: armanda
+    created_by: xiao
     project_type: Standard
   environment:
     id: 530d796b-60ff-4bc6-ad09-ac3eaf1afa45
@@ -85,6 +94,6 @@ parents:
     name: Receivables
     description: RMS
     archived: false
-    created_by: ivonne
+    created_by: althea
 api_key: eyJhbGciOiJIUzI1NiJ9.example.jwt
 ```
