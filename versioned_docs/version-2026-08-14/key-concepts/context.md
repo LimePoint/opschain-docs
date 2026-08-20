@@ -121,6 +121,6 @@ end
 
 Below is an example of the values available to an action via `OpsChain.context` (formatted as YAML):
 
-import SampleContextValues from '/files/samples/sample-context-values.md'
+import SampleContextValues from '/files/samples/2026-08-14/sample-context-values.md'
 
 <SampleContextValues />

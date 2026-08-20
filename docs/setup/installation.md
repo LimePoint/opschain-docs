@@ -9,6 +9,10 @@ description: A guide to installing OpsChain.
 
 With Helm connected to DockerHub's registry and using your configured `values.yaml` and environment variables, you can install the specific OpsChain version in the desired namespace by running the following command from the same shell where you're running the other commands in previous guides:
 
+:::note[Configured `values.yaml`]
+If you do not have one yet, <a href='/files/downloads/values.yaml' download='values.yaml'>download the full `values.yaml`</a> for this version of the documentation and configure it as described in the [configuration guides](/setup/configuration/index.md).
+:::
+
 ```bash
 helm upgrade --install opschain "oci://docker.io/limepoint/opschain" --version ${OPSCHAIN_CHART_VERSION} --create-namespace -n ${KUBERNETES_NAMESPACE} -f values.yaml --wait --timeout 30m --insecure-skip-tls-verify --debug
 ```

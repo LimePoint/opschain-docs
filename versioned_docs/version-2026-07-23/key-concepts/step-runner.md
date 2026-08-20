@@ -34,10 +34,10 @@ If your resources or actions rely on external software, the image used by your p
 
 ### Creating a custom step runner Dockerfile
 
-If your Git repository contains a Dockerfile in `.opschain/Dockerfile`, this will be used to build the image for your change's step runner containers. It must be based on the default step runner image Dockerfile to ensure compatibility with OpsChain. <a href='../../../files/samples/Dockerfile' download>Download the sample Dockerfile</a>, or get it by running:
+If your Git repository contains a Dockerfile in `.opschain/Dockerfile`, this will be used to build the image for your change's step runner containers. It must be based on the default step runner image Dockerfile to ensure compatibility with OpsChain. <a href='../../../files/samples/2026-07-23/Dockerfile' download>Download the sample Dockerfile</a>, or get it by running:
 
 ```bash
-curl -L https://docs.opschain.io/files/samples/Dockerfile -o Dockerfile
+curl -L https://docs.opschain.io/files/samples/2026-07-23/Dockerfile -o Dockerfile
 ```
 
 It can also be retrieved from the OpsChain API server. (The benefit of retrieving it from the OpsChain server is that it is definitely the default Dockerfile for your version of OpsChain.) For example:
@@ -265,7 +265,7 @@ The `step_context.json` file supplied to the step includes the following section
 | `project/properties`     | The [properties](/key-concepts/properties.md) for the project |
 | `environment/properties` | The [properties](/key-concepts/properties.md) converged for the environment |
 
-A sample `step_context.json` file is available to view [here](/files/samples/step_context.json).
+A sample `step_context.json` file is available to view [here](/files/samples/2026-07-23/step_context.json).
 
 ### Step result JSON
 

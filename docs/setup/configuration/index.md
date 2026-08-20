@@ -40,6 +40,12 @@ Once you have [logged in to Helm](/setup/configuration/preparing-your-environmen
 helm show values oci://docker.io/limepoint/opschain --version ${OPSCHAIN_CHART_VERSION} > values.yaml
 ```
 
+Alternatively, <a href='/files/downloads/values.yaml' download='values.yaml'>download the full `values.yaml`</a> for this version of the documentation, or fetch it directly:
+
+```bash
+curl -L https://docs.opschain.io/files/downloads/values.yaml -o values.yaml
+```
+
 ## What to do next
 
 - Configure the [encryption and secrets](/setup/configuration/encryption-and-secrets.md) settings to secure your OpsChain installation.

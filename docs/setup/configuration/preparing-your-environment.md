@@ -7,7 +7,7 @@ description: A guide to preparing your environment to install OpsChain.
 
 ## Validate your configuration
 
-Before you proceed, please ensure you have a valid `values.yaml` file configured. Refer to the [configuration introduction](/setup/configuration/index.md) and [TLS configuration](/setup/configuration/tls/index.md) guides for more details.
+Before you proceed, please ensure you have a valid `values.yaml` file configured. Refer to the [configuration introduction](/setup/configuration/index.md) and [TLS configuration](/setup/configuration/tls/index.md) guides for more details. To start from the chart's defaults, <a href='/files/downloads/values.yaml' download='values.yaml'>download the full `values.yaml`</a> for this version of the documentation.
 
 ## Preparing your environment
 

@@ -62,6 +62,8 @@ source ~/.bash_profile
 
 Some OpsChain updates might change the settings in the `values.yaml` file. To ensure you don't lose any of your custom settings, carefully update your file, ensuring the new settings are applied and your custom settings are preserved. Refer to the [changelog](/changelog.md) for the version you're upgrading to for any new settings that need to be applied or breaking changes. If you are unsure, refer to the [configuration introduction](/setup/configuration/index.md) guide for more information.
 
+To see the settings the release ships with, <a href='/files/downloads/values.yaml' download='values.yaml'>download the full `values.yaml`</a> for this version of the documentation and compare it against your own file.
+
 :::note[OpsChain version]
 Ensure all the settings that have an image tag match the OpsChain version you're patching to, otherwise your installation will be running with outdated images.
 :::

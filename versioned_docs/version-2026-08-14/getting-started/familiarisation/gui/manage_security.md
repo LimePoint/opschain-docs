@@ -124,7 +124,14 @@ This makes the usual least-privilege shape expressible - deny `execute` on `/sec
 
 #### Writing to the vault
 
-Storing a value in the vault requires the `update` action on `/secrets`. This covers storing a text value or a file, uploading a file property with a secret path, and using the AES encryption tool. Unlike resolving a secret, it is not inherited: `update` on a node's secrets path does not permit writing, and no other path grants it.
+Storing a value in the vault requires the `update` action on a secrets path. Which path grants it depends on what you are storing:
+
+- Storing a text value or a file against a node, and uploading a file property with a secret path, is granted by `update` on the owning node's `{{node path}}/secrets`, or on any of its ancestors' secrets paths, up to `/secrets`. Someone responsible for one project can therefore be given `update` on `/projects/bank/secrets` alone, which lets them store secrets throughout that project and nowhere else.
+- The AES encryption tool requires `update` on `/secrets`. It encrypts a value without storing it against a node, so there is no narrower path that can grant it.
+
+Only the `{{node path}}/secrets` form grants writing. The `properties`, `settings` and `mintmodel` secrets paths grant nothing towards it, however they are set for resolving.
+
+Writing is not decided by the closest matching rule, as resolving is - it is permitted if any path in that chain allows it. A deny on `/projects/bank/secrets` therefore does not stop someone granted `update` on `/secrets` from writing within that project. To narrow who can write, withhold the broader grant rather than denying it further down.
 
 ### Authorisation policies
 

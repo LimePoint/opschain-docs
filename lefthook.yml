@@ -1,0 +1,4 @@
+commit-msg:
+  scripts:
+    "no_ai_coauthor.sh":
+      runner: bash

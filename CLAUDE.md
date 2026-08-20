@@ -188,3 +188,7 @@ Two objects do differ, because they are owned by Helm subcharts and so take the 
 `origin/edge` is always ahead of `master` and already contains a populated `## [unreleased]` section with other in-progress changelog entries. When a feature branch adds a new changelog entry and is rebased onto `origin/edge`, a conflict in `docs/changelog.md` is expected and normal.
 
 Resolve the conflict by inserting the branch's new entry into the existing `[unreleased]` section — do not create a second `## [unreleased]` heading and do not discard either side's entries. The resolved file should have exactly one `## [unreleased]` section containing all accumulated entries from both sides.
+
+## Authorship
+
+The engineer who prompts, reviews, tests, and commits code is the author of record — Claude is a tool, not a co-author. Never add a `Co-Authored-By: Claude` (or any AI-attribution) trailer to a commit message, and never credit Claude or any AI assistant as an author or contributor in a commit message, PR description, or code comment. This applies uniformly across MintPress, OpsChain, DriftGuard, and Solifi Connector.

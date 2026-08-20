@@ -1,0 +1,837 @@
+# Flag to stop/resume the OpsChain pods and CNPG cluster
+stopped: false
+stopDatabase: false
+
+# Alternative ConfigMap name to use for the OpsChain SSH `known_hosts` file.
+# The configMap must contain a `known_hosts` key containing the file contents to be mounted as the `.ssh/known_hosts` file.
+sshKnownHostsConfigMapRef:
+
+api:
+  replicas: 1
+  # This value must be the same as `env.OPSCHAIN_API_HOST_NAME`. It is used for TLS configuration.
+  hostName: opschain-api
+  # The OpsChain API image. Defaults to limepoint/opschain-api:<OPSCHAIN_VERSION>
+  image:
+  # Custom API certificate secret name. If `useCertManager` is false a TLS certificate must be created and referenced here. If this value is provided, a `cert-manager` certificate would not be used.
+  certificateSecretName: ""
+  # Attach a debug-toolbox sidecar to the API deployment (inherits all volume mounts)
+  debugSidecar: false
+  env:
+    ## Populate additional environment variables for the API container here. For example:
+    # - name: ENV_VAR_NAME
+    #   value: "env_var_value"
+
+apiWorker:
+  replicas: 1
+  # The OpsChain API worker image. Defaults to limepoint/opschain-api:<OPSCHAIN_VERSION>
+  image:
+  # The amount of time worker pods will wait to complete in-progress jobs when shutting down
+  terminationGracePeriodSeconds: 3600
+  # Attach a debug-toolbox sidecar to the API worker deployment (inherits all volume mounts)
+  debugSidecar: false
+  env:
+    ## Populate additional environment variables for the API worker container here. For example:
+    # - name: ENV_VAR_NAME
+    #   value: "env_var_value"
+
+mintModelStepsApi:
+  enabled: false
+  replicas: 2
+  # The OpsChain MintModel Steps API image. Defaults to limepoint/opschain-mintmodel-steps-api:<OPSCHAIN_VERSION>
+  image:
+  # Attach a debug-toolbox sidecar to the MintModel Steps API deployment (inherits all volume mounts)
+  debugSidecar: false
+  env:
+    ## Populate additional environment variables for the MintModel Steps API container here. For example:
+    # - name: ENV_VAR_NAME
+    #   value: "env_var_value"
+
+# These volumes need to be able to be used to by both the API and
+# worker pods. In most clusters, this should be achieved by using persistent
+# volumes that support the ReadWriteMany access mode. If you are using a
+# single-node cluster for testing or trialling OpsChain, it is possible that
+# your cluster will not support ReadWriteMany volumes by default, and the
+# requirement can be satisfied by using the ReadWriteOnce access mode which will
+# allow pods on the same node to share the volumes.
+sharedVolumes:
+  projectGitRepos:
+    # The default value of an empty string will disable dynamic provisioning of this volume.
+    # To enable dynamic provisioning, ensure you set a storage class and ensure
+    # the volume it will provision supports the access mode specified below.
+    storageClass: ""
+    accessMode: ReadWriteMany
+    size: 5Gi
+  stepProperties:
+    # The default value of an empty string will disable dynamic provisioning of this volume.
+    # To enable dynamic provisioning, ensure you set a storage class and ensure
+    # the volume it will provision supports the access mode specified below.
+    storageClass: ""
+    accessMode: ReadWriteMany
+    size: 1Gi
+
+kubectl:
+  # An image whose entrypoint runs kubectl. Defaults to limepoint/opschain-kubectl:<OPSCHAIN_VERSION>
+  image:
+
+buildService:
+  rootless: true
+  volume:
+    # The default value of null will use your cluster's default storage class.
+    # If you do not have a default storage class or want to use an alternative,
+    # you must ensure that the volume provisioned supports the access mode
+    # specified below.
+    storageClass: null
+    accessMode: ReadWriteOnce
+    size: 50Gi
+  # The image for the opschain-build-service deployment. Defaults to limepoint/opschain-build-service:<OPSCHAIN_VERSION> or limepoint/opschain-build-service-rootless:<OPSCHAIN_VERSION>
+  image:
+  # Custom build service certificate secret name. If `useCertManager` is false a TLS certificate must be created and referenced here. If this value is provided, a `cert-manager` certificate would not be used.
+  certificateSecretName: ""
+  env:
+    ## Populate additional environment variables for the build service container here. For example:
+    # - name: ENV_VAR_NAME
+    #   value: "env_var_value"
+  # Attach a debug-toolbox sidecar to the build service deployment (inherits all volume mounts)
+  debugSidecar: false
+
+imageRegistry:
+  # Custom image registry certificate secret name. If `useCertManager` is false a TLS certificate must be created and referenced here. If this value is provided, a `cert-manager` certificate would not be used.
+  # `.trow.ingress.tls[0].secretName` must be updated to match this value.
+  certificateSecretName: ""
+  # The command to execute to copy the runner image to the registry
+  copyCommandOverride:
+
+imageCopyJob:
+  env:
+    ## Populate additional environment variables for the runner image job container here. For example:
+    # - name: ENV_VAR_NAME
+    #   value: "env_var_value"
+
+imageWarmJob:
+  # Pre-pull the runner and MintModel API images onto a node after install/upgrade, once the runner
+  # image job has copied them into the internal registry, so the first change (and the first MintModel
+  # render, which runs an on demand `opschain-mm-*` pod) does not pay for a ~2GB pull. The runner image
+  # is the base of every image the build service produces, so a node holding its layers pulls only the
+  # layers a built step or agent image adds.
+  # The pre-pull is a Helm hook weighted to run after the runner image job, so it extends
+  # install/upgrade by the time the pulls take, and a node that cannot pull from the internal registry
+  # fails the release instead of the first change. It is skipped when `env.OPSCHAIN_VERSION` is `local`,
+  # as the runner image job does not populate the internal registry for local images.
+  # Note the pulls happen on the one node the job is scheduled onto - on a multi node cluster the
+  # remaining nodes still pull on first use.
+  enabled: true
+  # How long the pre-pulls may take before they are abandoned and the release is marked failed. Keep it
+  # below the `--timeout` used for the install/upgrade.
+  timeoutSeconds: 900
+
+ldap:
+  enabled: true
+  replicas: 1
+  volume:
+    # The default value of null will use your cluster's default storage class.
+    # If you do not have a default storage class or want to use an alternative,
+    # you must ensure that the volume provisioned supports the access mode
+    # specified below.
+    storageClass: null
+    accessMode: ReadWriteOnce
+    size: 1Gi
+  # The image for the opschain-ldap deployment. Defaults to limepoint/opschain-ldap:<OPSCHAIN_VERSION>
+  image:
+  # Attach a debug-toolbox sidecar to the LDAP deployment (inherits all volume mounts)
+  debugSidecar: false
+  env:
+    ## Populate additional environment variables for the LDAP container here. For example:
+    # - name: ENV_VAR_NAME
+    #   value: "env_var_value"
+
+db:
+  # Force the database host and port to use for the database connection - regardless of the distributed topology settings.
+  forcePgHost:
+  forcePgPort:
+
+  # Requires CNPG operator 1.27+: kubectl apply -f https://docs.opschain.io/files/downloads/cnpg-operator.yaml --server-side
+  cnpg:
+    clusterName: "opschain-db"
+    imageName:
+    primaryUpdateStrategy: "unsupervised"
+    primaryUpdateMethod: "restart"
+    disableReadOnlyServices: true
+    # Expose a headless (clusterIP: None) service targeting the primary and route the app's
+    # PGHOST/DATABASE_URL to it, so pod->DB traffic resolves straight to the primary pod IP
+    # and bypasses the ClusterIP DNAT path. Mitigates conntrack DNAT insert-race connection
+    # resets seen under bursts of simultaneously-created runner pods.
+    primaryHeadlessService:
+      enabled: false
+
+    # CNPG session-mode Pooler (PgBouncer) in front of Postgres - opt in per environment.
+    # Reduces per-connection TCP/TLS-handshake and auth overhead under connection churn; session
+    # mode (the CNPG default) is compatible with this app's LISTEN/NOTIFY and session-scoped
+    # advisory lock usage as-is. Mutually exclusive with primaryHeadlessService - do not enable both.
+    pooler:
+      enabled: false
+      instances: 2
+      image: "limepoint/opschain-pgbouncer:1.24.1"
+      imagePullPolicy: IfNotPresent
+      # How long Kubernetes waits for a PgBouncer pod to drain before killing it. CNPG forwards
+      # Kubernetes' SIGTERM to PgBouncer as SIGINT - a safe shutdown, where PgBouncer stops
+      # accepting new connections and waits for the open ones to finish. In session mode a server
+      # connection is only released when the client disconnects, so this is effectively "wait for
+      # every open session to end"; anything still connected when this expires is SIGKILLed,
+      # severing that session mid-query.
+      #
+      # This is an upper bound rather than a fixed delay - a pod that finishes draining sooner
+      # exits sooner - so a generous value costs nothing while sessions are short. A change's
+      # runner holds one session for the change's entire duration, so at the 30s default any
+      # change still running when the pooler rolls is killed. Raise it past your longest-running
+      # change to make pooler restarts invisible to running changes, keeping in mind that a
+      # session which never ends holds the pod for the full period on every roll.
+      terminationGracePeriodSeconds: 30
+      pgbouncer:
+        # PgBouncer's own defaults (default_pool_size: 20, max_client_conn: 100) are too low for
+        # OpsChain's connection volume in session mode - raise them so enabling the pooler doesn't
+        # cap concurrency below what already works without it. default_pool_size defaults to
+        # max_connections (350) minus a 50-connection reserve for admin/backup/monitoring
+        # connections that don't go through the pooler - keep the two in proportion if you change
+        # db.cnpg.postgresql.parameters.max_connections.
+        parameters:
+          default_pool_size: "300"
+          max_client_conn: "1000"
+    annotations: {}
+
+    # Number of PostgreSQL instances to spawn in this cluster. First instance is the primary, the others act as standbys.
+    instances: 1
+
+    database:
+      name: opschain
+      owner: opschain
+      # Secret where DB credentials are stored
+      secretName: opschain-db-credentials
+    storage:
+      size: 10Gi
+      # The default value of null will use your cluster's default storage class.
+      # If you do not have a default storage class or want to use an alternative,
+      # you must ensure that the volume provisioned supports the access mode
+      # specified below.
+      storageClass: null
+
+    # Service configuration for external access - must be enabled for replica clusters to work.
+    externalService:
+      enabled: false
+      nodePort: 30432
+
+    # Distributed topology configuration - all clusters must define externalClusters, referencing each other
+    replica:
+      # Set to true when this cluster should be a replica of another cluster in the topology
+      # Set to false for a primary cluster (default)
+      enabled: false
+      # clusterName of the primary cluster in the topology - defaults to clusterName
+      primary: ""
+      # clusterName of the source cluster to replicate from - defaults to primary or clusterName
+      source: ""
+
+    # External clusters in the distributed topology
+    # Define ALL clusters in the topology for proper failover/failback support
+    # This can be modified to include more clusters as needed
+    # A self reference is already included using the clusterName.
+    #
+    # Full configuration of an external cluster example:
+    # externalClusters:
+    #   - name: opschain-db-primary
+    #       connectionParameters:
+    #         host: primary.example.com
+    #         port: "5432"
+    #         user: streaming_replica
+    #         dbname: postgres
+    #         sslmode: require
+    #       password:
+    #         name: opschain-db-credentials
+    #         key: password
+    #       sslCert:
+    #         name: opschain-db-primary-cert
+    #         key: tls.crt
+    #       sslKey:
+    #         name: opschain-db-primary-cert
+    #         key: tls.key
+    #       sslRootCert:
+    #         name: opschain-db-primary-cert
+    #         key: ca.crt
+    externalClusters: []
+
+    security:
+      tls:
+        # Alternative DNS names for the automatically generated server certificates.
+        # When replicas connect to this cluster, they may use a certificate that includes the hostname used by this instance.
+        serverAltDNSNames: []
+        customCerts:
+          enabled: false
+          # Server CA certificate - generic secret containing: ca.crt
+          serverCASecret: ""
+          # Server TLS certificate - tls secret containing: tls.crt, tls.key
+          serverTLSSecret: ""
+          # Client CA certificate - generic secret containing: ca.crt
+          clientCASecret: ""
+          # Replication TLS certificate - tls secret containing: tls.crt, tls.key
+          replicationTLSSecret: ""
+      # pg_hba.conf rules for client authentication
+      pgHba:
+        # Custom rules (if provided, replaces all defaults)
+        # Example rules for known CIDRs:
+        # customRules:
+        #   - "hostssl all opschain 10.244.0.0/16 md5"
+        #   - "hostssl replication streaming_replica 203.0.113.0/24 md5"
+        #   - "host all all 0.0.0.0/0 reject"
+        customRules: []
+        # Additional CIDRs to allow - appended to defaults if customRules is empty
+        additionalCidrs: [] # e.g. ["203.0.113.0/24"]
+
+    # Variables POD_NAME, NAMESPACE and any variable starting with PG cannot be defined here
+    env: {}
+
+    postgresql:
+      parameters:
+        max_connections: "350"
+        shared_buffers: "256MB"
+        effective_cache_size: "4GB"
+        work_mem: "4MB"
+        maintenance_work_mem: "256MB"
+        max_replication_slots: "5"
+        wal_level: "replica"
+        max_wal_senders: "10"
+        # Base WAL to retain for non-slot replication clients
+        wal_keep_size: "2GB"
+        max_wal_size: "500MB"
+        # Maximum WAL retention per replication slot
+        max_slot_wal_keep_size: "2GB"
+        default_toast_compression: "lz4"
+        autovacuum_max_workers: "5"
+        autovacuum_vacuum_scale_factor: "0.05"
+        autovacuum_analyze_scale_factor: "0.02"
+        autovacuum_vacuum_cost_delay: "2ms"
+
+  # These options automate the documented pg_basebackup/pg_dump backup process using a
+  # backup utility baked into the opschain-db image.
+  #
+  # Backups only run on PRIMARY clusters. When db.cnpg.replica.enabled is true (a
+  # replica cluster in a high availability topology) all backup resources are skipped.
+  backup:
+    # Override the image used to run backups. Defaults to the opschain-db image used by
+    # the database cluster.
+    image: ""
+    # Image pull policy for the backup, recovery and init pods. Defaults to Always to ensure
+    # all deployments get the latest image.
+    # Once your nodes have the updated image you may set this to IfNotPresent to avoid the per-run registry check.
+    imagePullPolicy: Always
+    # Limit pg_basebackup throughput (physical backups only)
+    maxRate: "100M"
+    # Where backups are written. Configure the node-local volume.
+    # Remember to copy backups off the host to a safe location (for example a
+    # local-network file server) regularly. See the backup & restore guide.
+    storage:
+      size: 20Gi
+      # The default value of null will use your cluster's default storage class
+      storageClass: null
+      accessMode: ReadWriteOnce
+    # Backup retention, applied per trigger (periodic and pre-deploy are pruned
+    # independently). Set a value to 0 to disable that policy.
+    retention:
+      # Keep this many of the most recent backups.
+      count: 7
+      # Also delete backups older than this many days (0 = disabled).
+      days: 0
+    resources:
+      requests:
+        cpu: 100m
+        memory: 256Mi
+      limits:
+        memory: 1Gi
+
+    # Scheduled, recurring backups.
+    periodic:
+      enabled: true
+      # physical (pg_basebackup, matches the documented restore process) or
+      # logical (pg_dump custom format, version-portable).
+      method: physical
+      # Standard cron expression for the CronJob.
+      schedule: "0 2 * * *"
+      successfulJobsHistoryLimit: 1
+      failedJobsHistoryLimit: 1
+      # Kill a backup that runs longer than this many seconds. Prevents a hung backup
+      # from blocking every future scheduled run.
+      timeoutSeconds: 3600
+      # Still start a missed scheduled run if the controller was briefly unavailable,
+      # provided it is within this many seconds of the scheduled time.
+      startingDeadlineSeconds: 300
+
+    # Pre-deploy backup, taken automatically before a `helm upgrade` (runs as a Helm
+    # pre-upgrade hook). If it fails, the upgrade is aborted.
+    # NOTE: this requires the backup storage (above) to already exist, so enable the
+    # periodic backup (or deploy once with backups enabled) before turning this on.
+    preDeploy:
+      enabled: false
+      # logical is recommended here so the snapshot can be restored even if the upgrade
+      # changes the database schema or major version.
+      method: logical
+      # Abort the backup (and the deploy) if it runs longer than this many seconds.
+      timeoutSeconds: 1800
+
+    # Recovery helper pod for restoring from a backup in the opschain-db-backup PVC.
+    # Off by default. When enabled, deploys an idle pod (opschain-db-recovery) that
+    # mounts the backup PVC read-only, so an operator can `kubectl exec` in and run a
+    # restore. See the backup & restore guide for the full procedure.
+    recovery:
+      enabled: false
+      # Also mount the database's data volume, for a PHYSICAL restore. Only enable this
+      # while the database is hibernated (deploy with `--set stopped=true` and `--set stopDatabase=true`);
+      # otherwise the data volume is in use by the running database and the recovery
+      # pod cannot start. Note that the if recovering from scratch, you must first deploy with
+      # `--set stopDatabase=false` to allow CNPG to create the data volume and then hibernate the cluster
+      # (e.g redeploy it with `--set stopDatabase=true`).
+      # Leave false for logical restores, which require a running database to work.
+      mountDataVolume: false
+      # The database data PVC to mount when mountDataVolume is true. Defaults to
+      # "<clusterName>-1" (the first instance, as created by a fresh restore deploy).
+      dataVolumeClaim: ""
+      resources:
+        requests:
+          cpu: 50m
+          memory: 128Mi
+        limits:
+          memory: 512Mi
+
+debugToolbox:
+  # Deploy the debug toolbox as a standalone pod.
+  enabled: false
+  # The image for the debug toolbox. Defaults to limepoint/opschain-debug-toolbox:<OPSCHAIN_VERSION>
+  image:
+  env:
+  ## Populate additional environment variables for the debug toolbox container here. For example:
+  # - name: ENV_VAR_NAME
+  #   value: "env_var_value"
+
+# FUSE device plugin configuration. Only used in older Kernels that do not support overlayfs for rootless builds.
+fuseDevicePlugin:
+  enabled: false
+  version: 0.1.0
+  # The image for the fuse-device-plugin-ds deployment. Defaults to limepoint/opschain-fuse-device-plugin:<version>
+  image:
+  env:
+    ## Populate additional environment variables for the fuse device plugin container here. For example:
+    # - name: ENV_VAR_NAME
+    #   value: "env_var_value"
+
+logAggregator:
+  # The image for the opschain-log-aggregator deployment. Defaults to limepoint/opschain-log-aggregator:<OPSCHAIN_VERSION>
+  image:
+  # Attach a debug-toolbox sidecar to the log aggregator deployment (inherits all volume mounts)
+  debugSidecar: false
+  env:
+    ## Populate additional environment variables for the log aggregator container here. For example:
+    # - name: ENV_VAR_NAME
+    #   value: "env_var_value"
+  # Additional config that will be mounted into the ConfigMap for use by the log aggregator image.
+  # See https://github.com/LimePoint/opschain/blob/master/docs/operations/log_forwarding.md#configuring-your-output-plugins for more details
+  additionalOutputConfig:
+  volume:
+    # The default value of null will use your cluster's default storage class.
+    # If you do not have a default storage class or want to use an alternative,
+    # you must ensure that the volume provisioned supports the access mode
+    # specified below.
+    storageClass: null
+    accessMode: ReadWriteOnce
+    size: 1Gi
+
+# Update if you require your pods to run on specific nodes (e.g. ensuring your pods run on user node pools rather than on the system node pools in AKS)
+# See https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/ for more info
+nodeSelector: {}
+
+kong:
+  image:
+    repository: limepoint/opschain-ingress
+    pullSecrets:
+      - opschain-image-secret
+  ingressController:
+    image:
+      repository: limepoint/opschain-ingress-controller
+      tag: 2.10.4
+  nameOverride: ingress
+  proxy:
+    http:
+      containerPort: 3000
+    tls:
+      enabled: true
+      containerPort: 3443
+  admin:
+    tls:
+      parameters: []
+  containerSecurityContext:
+    allowPrivilegeEscalation: false
+
+# Config values for OpsChain's built-in image registry service
+# See https://github.com/ContainerSolutions/trow/blob/main/docs/HELM_INSTALL.md#configuration for more details
+trow:
+  image:
+    pullPolicy: IfNotPresent
+    repository: limepoint/opschain-image-registry
+    tag: 0.9.2
+  resources:
+    limits:
+      memory: 1Gi
+  trow:
+    user: opschain
+    password:
+    proxyRegistries:
+      config:
+        registries: []
+        max_size: 10GiB
+  imagePullSecrets:
+    - name: opschain-image-secret
+  nameOverride: image-registry
+  fullnameOverride: opschain-image-registry
+  service:
+    type: ClusterIP
+  volumeClaim:
+    accessModes: ["ReadWriteOnce"]
+  ingress:
+    enabled: true
+  env:
+    ## Populate additional environment variables for the trow container here. For example:
+    # - name: ENV_VAR_NAME
+    #   value: "env_var_value"
+
+# Periodic reconciliation of orphaned image tags in the local trow registry. Each cluster's CronJob targets its own local trow.
+registryReconcile:
+  enabled: true
+  # Standard cron expression for the CronJob
+  schedule: "0 3 * * *"
+  # How many completed CronJob runs to retain for observability.
+  successfulJobsHistoryLimit: 1
+  # How many failed CronJob runs to retain for observability.
+  failedJobsHistoryLimit: 2
+  env:
+    ## Populate additional environment variables for the registry reconcile container here. For example:
+    # - name: ENV_VAR_NAME
+    #   value: "env_var_value"
+  resources:
+    requests:
+      cpu: 100m
+      memory: 512Mi
+    limits:
+      memory: 1Gi
+
+rollStaleSecretVaultPods:
+  enabled: true
+  # Standard cron expression for the CronJob. Runs frequently since this is what actually
+  # rolls a pod after Reloader detects a cert-manager renewal (OnDelete StatefulSets don't
+  # roll automatically on their own).
+  schedule: "*/5 * * * *"
+  # How many completed CronJob runs to retain for observability.
+  successfulJobsHistoryLimit: 1
+  # How many failed CronJob runs to retain for observability.
+  failedJobsHistoryLimit: 2
+  resources:
+    requests:
+      cpu: 100m
+      memory: 512Mi
+    limits:
+      memory: 1Gi
+
+# Config values for OpsChain's secret vault service
+openbao:
+  fullnameOverride: opschain-secret-vault
+  global:
+    enabled: true
+    tlsDisable: false
+    imagePullSecrets:
+      - name: opschain-image-secret
+  injector:
+    enabled: false
+  server:
+    # "-" means "follow global.enabled" - the openbao subchart's `openbao.serverEnabled` helper treats
+    # an explicit `true` here as an unconditional override, so hardcoding `true` left the whole server
+    # (StatefulSet, Services, ServiceAccount, RBAC, ConfigMap, PodDisruptionBudget, test Pod) rendering
+    # even with `openbao.global.enabled: false`.
+    enabled: "-"
+    image:
+      registry: limepoint
+      repository: opschain-secret-vault
+    ingress:
+      enabled: false
+    service:
+      # Split active/standby Services so clients (and the -active address in opschain-api's
+      # SecretVaultConfig) can reach the current leader directly rather than a fixed pod. Requires
+      # serviceAccount.serviceDiscovery below (RBAC to label pods) and the service_registration
+      # "kubernetes" {} stanza in opschain.openbaoConfig (_helpers.tpl) so OpenBao actually sets the
+      # openbao-active label these Services select on - enabling this flag alone does nothing
+      # without that HCL stanza.
+      active:
+        enabled: true
+      standby:
+        enabled: true
+      annotations:
+        konghq.com/protocol: "https"
+    serviceAccount:
+      # Grants the server pod's ServiceAccount permission to label itself (get/watch/list/update/
+      # patch on pods), which OpenBao's service_registration "kubernetes" {} stanza needs to set
+      # openbao-active. Required for the active/standby Services above to have any endpoints.
+      serviceDiscovery:
+        enabled: true
+    # Watched by Reloader (see the top-level reloader: block below) - when either Secret's content
+    # changes (e.g. a cert-manager renewal), Reloader bumps an annotation here. That alone does not
+    # roll the pod, since this StatefulSet's updateStrategy is OnDelete - see the
+    # rollStaleSecretVaultPods CronJob above, which is what actually deletes/replaces the stale pod.
+    # This must be under statefulSet.annotations (-> openbao.statefulSet.annotations helper ->
+    # StatefulSet.metadata.annotations), not server.annotations (-> openbao.annotations helper ->
+    # the pod template's annotations) - Reloader watches the workload resource's own metadata, not
+    # its pod template, and silently never fires if the annotation is only on the latter.
+    statefulSet:
+      annotations:
+        secret.reloader.opschain.io/reload: "opschain-secret-vault-cert,opschain-secret-vault-external-cert"
+    dataStorage:
+      enabled: false
+    volumes:
+      - name: opschain-secret-vault-cert
+        secret:
+          secretName: opschain-secret-vault-cert
+      - name: opschain-secret-vault-seal-key
+        secret:
+          secretName: opschain-secret-vault-seal-key
+    volumeMounts:
+      - name: opschain-secret-vault-cert
+        readOnly: true
+        mountPath: /secret-vault-certs
+      - name: opschain-secret-vault-seal-key
+        readOnly: true
+        mountPath: /openbao/secrets
+        subPath: seal_key
+    extraSecretEnvironmentVars:
+      - envName: PGPASSWORD
+        secretName: opschain-db-credentials
+        secretKey: password
+      - envName: BAO_PG_CONNECTION_URL
+        secretName: opschain-secret-vault-addresses
+        secretKey: bao_pg_connection_url
+      - envName: BAO_API_ADDR
+        secretName: opschain-secret-vault-addresses
+        secretKey: bao_api_addr
+      - envName: BAO_CLUSTER_ADDR
+        secretName: opschain-secret-vault-addresses
+        secretKey: bao_cluster_addr
+    # Restart the secret vault if it seals itself, e.g. after a brief outage of the OpsChain database
+    # (its storage backend). The vault is configured with a `static` seal (see the
+    # `opschain.openbaoConfig` template helper) and auto-unsealing only happens when the vault process
+    # starts, so restarting the container is the only way to unseal it again. Without this probe a
+    # sealed vault stays sealed - and `NotReady` - indefinitely, which is only noticed later when the
+    # OpsChain API next restarts and cannot reach the vault.
+    # Disable this probe if you replace `openbao.server.ha.config` with a configuration that does not
+    # auto-unseal (e.g. a Shamir seal). A manually unsealed vault cannot recover from a restart, so it
+    # would crash loop instead of self-healing.
+    livenessProbe:
+      enabled: true
+      # `bao status` exits 0 when the vault is unsealed, 1 on error and 2 when it is sealed, so the
+      # probe fails whenever the vault is sealed or unhealthy. This is the same command the readiness
+      # probe uses.
+      execCommand:
+        - /bin/sh
+        - -ec
+        - bao status -tls-skip-verify
+      # Number of seconds after the container has started before the probe initiates. Generous enough
+      # to cover vault start up and auto-unseal, as the vault has no startup probe.
+      initialDelaySeconds: 60
+      # How often (in seconds) to perform the probe
+      periodSeconds: 30
+      # Number of seconds after which the probe times out
+      timeoutSeconds: 5
+      # When a probe fails, Kubernetes will try failureThreshold times before restarting the container.
+      # Deliberately far looser than the readiness probe (2 failures, 5 seconds apart) so that a healthy
+      # but slow vault is never restarted under load - a sealed vault is restarted after roughly three
+      # minutes.
+      failureThreshold: 6
+      # Minimum consecutive successes for the probe to be considered successful after having failed
+      successThreshold: 1
+    standalone:
+      enabled: false
+    ha:
+      enabled: true
+      # 3 (not the previous 1) so a pod being deleted/replaced - for a cert rotation or a routine
+      # upgrade - doesn't mean a full secret-vault outage. Not gated on Raft: this works with the
+      # postgresql storage backend below via ha_enabled = "true" (leader election through Postgres
+      # advisory locks), independent of replica count.
+      replicas: 3
+      config: |-
+        {{- tpl (include "opschain.openbaoConfig" .) . | nindent 8 }}
+    # openbao's own default (in its vendored values.yaml) requires one secret-vault pod per node, so
+    # a single-node cluster - a supported OpsChain install shape - could only ever schedule 1 of the
+    # 3 replicas above, leaving the other 2 Pending indefinitely and nothing to fail over to. This
+    # softens it to a preference, so all 3 replicas schedule on a single-node cluster while a
+    # multi-node cluster still spreads them one per node whenever it can.
+    affinity: |
+      podAntiAffinity:
+        preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 100
+            podAffinityTerm:
+              labelSelector:
+                matchLabels:
+                  app.kubernetes.io/name: {{ template "openbao.name" . }}
+                  app.kubernetes.io/instance: "{{ .Release.Name }}"
+                  component: server
+              topologyKey: kubernetes.io/hostname
+
+# Watches the secret-vault's TLS Secrets and rolls the StatefulSet's pod template
+# annotation on change, so a cert-manager renewal is detected without a human
+# noticing. Namespace-scoped (not watchGlobally) since this chart may be
+# installed more than once per cluster (one release per customer/environment).
+#
+# `enabled` is deliberately absent here. Chart.yaml's condition is
+# `reloader.enabled,openbao.global.enabled` and Helm uses the first path that exists, so leaving
+# `reloader.enabled` unset makes Reloader follow openbao - it has nothing to watch when the secret
+# vault isn't deployed. Set `reloader.enabled` explicitly in your own values.yaml to override.
+reloader:
+  global:
+    imagePullSecrets:
+      - name: opschain-image-secret
+  image:
+    name: limepoint/opschain-reloader
+    repository: limepoint/opschain-reloader
+    tag: 1.4.19
+  # This inner "reloader:" key is not a mistake/duplication - the top-level key here is the Chart.yaml
+  # dependency name (how Helm namespaces this subchart's values), and the subchart's own values.yaml
+  # happens to also use "reloader:" as its own top-level key internally. Everything under it is the
+  # subchart's real config.
+  reloader:
+    custom_annotations:
+      secret: secret.reloader.opschain.io/reload
+    deployment:
+      labels:
+        provider: limepoint
+        group: io.opschain.platform
+    watchGlobally: false
+    # Default (env-vars) strategy injects a STAKATER_<SECRET>_SECRET env var into every container
+    # referencing a watched Secret to force a pod template change - but the secret-vault container
+    # already defines BAO_API_ADDR/BAO_CLUSTER_ADDR from two sources (the openbao subchart itself
+    # and extraSecretEnvironmentVars above), and Kubernetes merges env entries by name: adding a
+    # third env var doesn't collide directly, but the resulting live-vs-desired diff on that
+    # container trips on the pre-existing duplicate (one value, one valueFrom) and fails the
+    # StatefulSet patch with "may not be specified when `value` is not empty" on every upgrade once
+    # Reloader has fired at least once. annotations bumps a pod-template annotation instead of
+    # touching container env at all, avoiding the collision entirely.
+    reloadStrategy: annotations
+
+secretVault:
+  # The static seal key used to unseal the secret vault.
+  unsealKey: ""
+  # The name of the secret containing the custom certificate for the default secret vault.
+  # The certificate you provide must include a DNS subjectAlternativeName that matches the value in global.secretVaultExternalHostName.
+  # By default, OpsChain will use a certificate issued automatically from the opschain-ca self-signed CA.
+  externalCertificateSecretName: ""
+  # The name of the secret containing the custom certificate for the default secret vault.
+  # By default, OpsChain will use a certificate issued automatically from the opschain-ca self-signed CA.
+  # `.openbao.server.volumes[0].secretName` must be updated to match this value.
+  internalCertificateSecretName: ""
+  # Service configuration for external access - must be enabled when in HA mode.
+  externalService:
+    enabled: false
+    nodePort: 30201
+
+## The name of the application. Defaults to the chart's name (opschain) if not provided
+nameOverride:
+
+# The contents of your MintPress licence file
+mintPressLicence:
+# The contents of your MintPress transportable key (optional)
+mintPressTransportableKey:
+# The contents of your MintPress Chef client agent key
+mintPressChefClientKey:
+
+# The address for the Vault server
+vaultAddress:
+# The method used for authentication (token, userpass, ldap)
+vaultAuthMethod:
+#  The token used for authentication (required if the authorisation method is token)
+vaultToken:
+# The username for userpass or ldap authentication
+vaultUsername:
+# The password for userpass or ldap authentication
+vaultPassword:
+# The path to the Vault mount
+vaultMountPath:
+# Flag indicating whether to encrypt values before storing them in vault (double encryption)
+vaultUseMintEncryption:
+# A hash of options to pass to the Vault client, in JSON format
+vaultClientOptions:
+
+global:
+  # The external hostname for the default secret vault. This is used to access the secret vault UI from outside the cluster.
+  # If a custom certificate is provided, it must match the hostname in the certificate.
+  # By default, OpsChain will use a certificate issued automatically from the opschain-ca self-signed CA.
+  secretVaultExternalHostName: ""
+  # The port an *external* client dials to reach `secretVaultExternalHostName` above. It builds the
+  # secret vault's BAO_API_ADDR, which is the address a standby vault pod redirects clients to, so a
+  # value that does not reach Kong takes the vault down for every client that lands on a standby -
+  # silently, since nothing verifies the address and a single-replica vault never redirects at all.
+  # Leave unset: it then follows `kong.proxy.tls.servicePort` (443 when that is itself unset), so the
+  # two cannot drift apart. Set it only when the port clients dial from outside genuinely differs
+  # from the Service port, i.e. a load balancer in front translates it - e.g. an F5 that listens on
+  # 443 and forwards to the node on 17001 needs 443 here while OPSCHAIN_INGRESS_TLS_PORT stays 17001.
+  # This is NOT the same as `env.OPSCHAIN_INGRESS_TLS_PORT`, which is the cluster-side Service port.
+  secretVaultExternalPort: ""
+  # DEPRECATED - the former name of `secretVaultExternalPort`. Still honoured (it wins when set) and
+  # warned about after install/upgrade; remove it from your values file and use the new name.
+  # ingressTlsPort: ""
+
+# Environment variables that must be defined in your application when using this chart
+env:
+  # The deterministic key to use for the OpsChain API.
+  OPSCHAIN_DETERMINISTIC_KEY:
+  # Docker Hub user and password that will be used to access the OpsChain images.
+  # Apply a change to these as its own `helm upgrade`, before the one that bumps
+  # `OPSCHAIN_VERSION`. The runner image copy runs as a pre-upgrade hook, so kubelet pulls that
+  # hook pod's own image using the `opschain-image-secret` from the *previous* release - which
+  # still holds the old credentials. Rotating and bumping the version together therefore fails
+  # the pull, and the upgrade aborts before anything is applied.
+  OPSCHAIN_DOCKER_PASSWORD:
+  OPSCHAIN_DOCKER_USER:
+  # The seed key to use for encryption of sensitive data (32 characters)
+  OPSCHAIN_ENCRYPTION_SEED_KEY:
+  # The base URL for the OpsChain GUI.
+  OPSCHAIN_GUI_BASE_URL:
+  # External hostname of the registry server that stores the runner images
+  OPSCHAIN_IMAGE_REGISTRY_HOST:
+  # The TLS port Kong's proxy Service publishes - how the cluster network, and every node's container
+  # runtime, addresses the ingress. Must equal `kong.proxy.tls.servicePort` - a fresh install refuses
+  # to proceed if they disagree, and an upgrade warns. Used to build internal-registry image
+  # references, the image pull secret's auth key, and the API address handed to agent pods, which
+  # resolve it to the ingress-proxy ClusterIP.
+  # This is NOT the port external clients dial - for that see `global.secretVaultExternalPort`.
+  OPSCHAIN_INGRESS_TLS_PORT:
+  # The key derivation salt to use for the OpsChain API.
+  OPSCHAIN_KEY_DERIVATION_SALT:
+  # The Kubernetes namespace where OpsChain is installed.
+  OPSCHAIN_KUBERNETES_NAMESPACE:
+  # The password to use for the OpsChain LDAP.
+  OPSCHAIN_LDAP_PASSWORD:
+  # Bundled OpsChain LDAP server settings (used when `ldap.enabled` is true). The API's LDAP client also seeds its bind DN / base DN from these on first install.
+  OPSCHAIN_LDAP_ADMIN: "cn=admin,dc=opschain,dc=io"
+  OPSCHAIN_LDAP_BASE_DN: "dc=opschain,dc=io"
+  OPSCHAIN_LDAP_DOMAIN: "opschain.io"
+  OPSCHAIN_LDAP_ORGANISATION: "OpsChain"
+  OPSCHAIN_LDAP_LOG_LEVEL: "1024"
+  # The primary key to use for the OpsChain API.
+  OPSCHAIN_PRIMARY_KEY:
+  # The key OpsChain will use for generating bearer tokens for authentication (64 characters)
+  OPSCHAIN_TOKEN_SECRET_KEY:
+  # OpsChain container images tag to use
+  OPSCHAIN_VERSION:
+  # The password to use for the OpsChain PostgreSQL.
+  PGPASSWORD:
+  # PostgreSQL version to use
+  POSTGRESQL_VERSION:
+  # The timezone to use throughout the OpsChain platform.
+  TZ: "Australia/Melbourne"
+  # This value must be the same as `api.hostName`. It is used for TLS configuration.
+  hostName: opschain-api
+
+# Create the examples namespace and role that will allow the opschain-runner service account to provision example project resources
+createExamplesNamespace: false
+
+# Use [cert-manager](https://cert-manager.io/) to manage certificates. If this is set to false then the `api.certificateSecretName`, `buildService.certificateSecretName`, `imageRegistry.certificateSecretName`, `secretVault.externalCertificateSecretName` and `secretVault.internalCertificateSecretName` values must be configured.
+useCertManager: true
