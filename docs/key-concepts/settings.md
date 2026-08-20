@@ -550,7 +550,7 @@ Unlike most settings, updates to `known_hosts` do not apply live to long-running
 Default value: _not configured (every active Git remote is available)_<br/>
 Scope: _global, project_
 
-An allow-list of Git remote names that OpsChain will mirror into a step for the [`git_clone` resource](/advanced/included-resource-types.md#opschain-git-clone) to check out. Only remotes whose name appears in the list are made available; an empty list makes none available.
+An allow-list of Git remote names that OpsChain will mirror into a step for the [`git_clone` resource](/advanced/resource-types/index.md#opschain-git-clone) to check out. Only remotes whose name appears in the list are made available; an empty list makes none available.
 
 ```json
 {
@@ -573,7 +573,7 @@ This setting can only be configured globally or on a project. An environment, an
 :::info[What this setting does and does not control]
 This setting controls which Git remotes OpsChain mirrors into a step — that is, which repositories a step can read **without supplying any credentials of its own**. That is the access OpsChain grants, and it is what the allow-list withholds.
 
-It is not a restriction on everything a step can reach. Action code is ordinary Ruby running in the step's container, so it can always check out any repository it has credentials for — by [supplying a `url` and credentials](/advanced/included-resource-types.md#checking-out-a-repository-that-is-not-configured-in-the-project) to the `git_clone` resource, or simply by running `git` itself. Use it to control what OpsChain hands out for free, not as a boundary around what a change can read.
+It is not a restriction on everything a step can reach. Action code is ordinary Ruby running in the step's container, so it can always check out any repository it has credentials for — by [supplying a `url` and credentials](/advanced/resource-types/index.md#checking-out-a-repository-that-is-not-configured-in-the-project) to the `git_clone` resource, or simply by running `git` itself. Use it to control what OpsChain hands out for free, not as a boundary around what a change can read.
 
 It also does not protect against someone who already has permission to edit the project's settings, since they can widen the allow-list themselves.
 :::

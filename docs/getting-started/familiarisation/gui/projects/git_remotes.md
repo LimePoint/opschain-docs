@@ -13,7 +13,7 @@ Git remotes are also the basis for [asset templates](/getting-started/familiaris
 
 The Git remotes tab inside a project allows you to connect Git repositories to your project, making them available for use in your changes and to be used as a source for asset templates.
 
-A configured Git remote can also be checked out directly into a step's working environment via the [`git_clone` resource](/advanced/included-resource-types.md#opschain-git-clone), for example to read configuration from a repository other than the one running the change. Which remotes are available for this is controlled by the [`git_remote.mountable` setting](/key-concepts/settings.md#git_remotemountable).
+A configured Git remote can also be checked out directly into a step's working environment via the [`git_clone` resource](/advanced/resource-types/index.md#opschain-git-clone), for example to read configuration from a repository other than the one running the change. Which remotes are available for this is controlled by the [`git_remote.mountable` setting](/key-concepts/settings.md#git_remotemountable).
 
 ## Understanding Git revisions
 

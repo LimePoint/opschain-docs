@@ -11,21 +11,21 @@ OpsChain should be upgraded sequentially, one version at a time. Skipping versio
 Follow the [upgrade guide](operations/upgrading.md) for more information on how to upgrade OpsChain.
 :::
 
-## [unreleased]
+## [2026-08-20]
 
-### Important breaking changes {/* #unreleased-important-breaking-changes */}
+### Important breaking changes {/* #2026-08-20-important-breaking-changes */}
 
 - A step name containing `/` is now confined to a single segment of a step's path, with the separator replaced by `_`. Previously it contributed a segment per `/`, so a step named `Deploy A/B` was indistinguishable from a step `B` nested under a step `A`. Existing changes are updated when you upgrade, but any [`skip_steps`](/key-concepts/changes.md#skipping-steps) pattern or [`starting_step`](/key-concepts/changes.md#starting-a-change-partway-through) you supply from now on must use the new form. See [change step naming](/key-concepts/actions.md#change-step-naming).
 - Two actions in the same namespace can no longer share a step name. Defining both now fails when a template's actions are derived, naming the two actions and where each was defined, rather than quietly moving one of them to a different path in the step tree. Step names are compared ignoring case, so `Install binaries` and `Install Binaries` count as the same name — rename one of any such pair before upgrading. Extending an action with `ignore_defined` no longer waives this, and cannot give the action a second step name. See [change step naming](/key-concepts/actions.md#change-step-naming).
 
-### Added {/* #unreleased-added */}
+### Added {/* #2026-08-20-added */}
 
 - The full `values.yaml` shipped with each release can now be downloaded straight from the documentation, so a new installation can start from the release's defaults and an upgrade can be compared against them without logging in to Helm first. Each version of the documentation links to the `values.yaml` of its own release. See [obtaining a full `values.yaml` from the chart](/setup/configuration/index.md#obtaining-a-full-valuesyaml-from-the-chart).
 - Action code can now run the OpsChain CLI while a change or agent is running, using the new `opschain_cli` keyword. The CLI is authenticated automatically with the change's own short-lived credentials, so an action can alter OpsChain — starting a change on another node, or updating a node's properties — with no API key stored in the project's repository. See [running the OpsChain CLI](/key-concepts/actions.md#running-the-opschain-cli).
 - A Git remote can now be fetched on its own schedule instead of following the interval set for its project. The interval can be set on a single remote or across a selection of them, and the remotes list shows which carry an override and which are inheriting one. See [`git_remote.periodic_fetch_interval`](/key-concepts/settings.md#git_remoteperiodic_fetch_interval).
 - Permission to create a secret can now be granted on a node, so a user administering one project can store secrets against it without also being able to write secrets anywhere else in the instance. The existing instance-wide grant is unchanged.
 
-### Changed {/* #unreleased-changed */}
+### Changed {/* #2026-08-20-changed */}
 
 - The port an external client dials to reach the OpsChain secret vault is now set as `global.secretVaultExternalPort`. It was previously called `global.ingressTlsPort`, which was easily confused with `OPSCHAIN_INGRESS_TLS_PORT` — a different port, despite the similar name. The old name still works, reporting a warning after each deploy, so rename it in your `values.yaml`. See [`global.secretVaultExternalPort`](/setup/configuration/additional-settings.md#globalsecretvaultexternalport).
 - A fresh install now stops with an error when `OPSCHAIN_INGRESS_TLS_PORT` and `kong.proxy.tls.servicePort` disagree, rather than leaving the mismatch to surface later as a node that cannot pull a runner image. An existing instance is upgraded rather than blocked — it has evidently been reaching Kong on the port it resolves — but the upgrade reports a warning asking you to confirm the difference is deliberate. See [`OPSCHAIN_INGRESS_TLS_PORT`](/setup/configuration/additional-settings.md#opschain_ingress_tls_port).
@@ -34,7 +34,7 @@ Follow the [upgrade guide](operations/upgrading.md) for more information on how 
 - Improved the performance of deriving a template's actions — a template declaring a large number of actions took several minutes, and now completes in well under a second.
 - Data returned by the [`query`](/key-concepts/actions.md#querying-the-api) keyword in action code can now be read with either string or symbol keys.
 
-### Fixed {/* #unreleased-fixed */}
+### Fixed {/* #2026-08-20-fixed */}
 
 - A runner image is no longer reused by a change whose base runner image may genuinely differ. OpsChain identifies the base runner by its image digest, but when that digest could not be resolved it fell back to the image's name and tag — which is the same string even when the image behind it has changed, as it does on a moving tag such as `edge`. Two changes then produced the same image content key and the second reused the first's image instead of building its own. Such a build now builds its own image rather than reusing one, and records a `warn:image_build:base_runner_digest_unavailable` event against the change or template version so the lost reuse is visible.
 - Setting `runner.image_override` is treated as a deliberate pin, so images are still reused between changes that share the same override. If you point an override at a moving tag, OpsChain will continue to reuse an image built from an earlier version of it — pin the override to a digest or an immutable tag if you need each change to rebuild. See [`runner.image_override`](/key-concepts/settings.md#runnerimage_override).
