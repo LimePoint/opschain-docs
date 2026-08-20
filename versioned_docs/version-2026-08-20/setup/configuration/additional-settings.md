@@ -106,7 +106,7 @@ The number of PgBouncer replicas to deploy for the pooler.
 
 Default value: _\{default_pool_size: "300", max_client_conn: "1000"\}_
 
-Additional PgBouncer parameters, passed through as-is. The defaults raise PgBouncer's own out-of-the-box limits (`default_pool_size: 20`, `max_client_conn: 100`), which are lower than OpsChain's typical connection volume in session mode. See the [database connection pooling guide](/advanced/database-connection-pooling.md#sizing-default_pool_size) for how to size `default_pool_size` for your deployment, and the [CNPG connection pooling documentation](https://cloudnative-pg.io/documentation/1.27/connection_pooling/) for the full list of available options.
+Additional PgBouncer parameters, passed through as-is. The defaults raise PgBouncer's own out-of-the-box limits (`default_pool_size: 20`, `max_client_conn: 100`), which are lower than OpsChain's typical connection volume in session mode. See the [database connection pooling guide](/advanced/database-connection-pooling.md#sizing-the-pool) for how to size the pool for your deployment, and the [CNPG connection pooling documentation](https://cloudnative-pg.io/docs/1.27/connection_pooling/) for the full list of available options.
 
 ## Database primary headless service
 

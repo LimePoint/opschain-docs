@@ -159,7 +159,7 @@ kubectl get secrets -n ${KUBERNETES_NAMESPACE} | grep "opschain-db"
 ```
 
 :::tip[Providing alternative DNS names]
-You can provide alternative DNS names for the CNPG-generated TLS certificates by using the `db.cnpg.security.tls.serverAltDNSNames` setting (provide values as an array of strings).
+You can provide alternative DNS names for the CNPG-generated TLS certificates by using the `db.cnpg.security.tls.serverAltDNSNames` setting (provide values as an array of strings). The names of the in-cluster services that front the database — the [connection pooler](/advanced/database-connection-pooling.md) and the [headless primary service](/setup/configuration/additional-settings.md#database-primary-headless-service) — are always included, so you do not need to list them here.
 :::
 
 If you'd like to bring your own certificates, you must create the necessary Kubernetes secrets containing the CA certificate and private key, the server certificate and private key, and the streaming replica certificate and private key. To enable custom certificates, you must set the `db.cnpg.security.tls.customCerts.enabled` setting to `true`.
@@ -175,6 +175,14 @@ Each CNPG cluster requires the following set of secrets:
   - `opschain-db-rw.<namespace>`
   - `opschain-db-rw.<namespace>.svc`
   - `opschain-db-rw.<namespace>.svc.cluster.local`
+  - `opschain-db-pooler-rw`
+  - `opschain-db-pooler-rw.<namespace>`
+  - `opschain-db-pooler-rw.<namespace>.svc`
+  - `opschain-db-pooler-rw.<namespace>.svc.cluster.local`
+  - `opschain-db-rw-headless`
+  - `opschain-db-rw-headless.<namespace>`
+  - `opschain-db-rw-headless.<namespace>.svc`
+  - `opschain-db-rw-headless.<namespace>.svc.cluster.local`
 
   where `opschain-db` is the default cluster name (`db.cnpg.clusterName` setting) from the `values.yaml` file, and `<namespace>` is the namespace where OpsChain and the database cluster are deployed. The secret name must be defined in `db.cnpg.security.tls.customCerts.serverTLSSecret`.
 
@@ -184,6 +192,12 @@ Each CNPG cluster requires the following set of secrets:
 - **Client CA Secret:**
   The CA certificate that signs the `streaming_replica` user's certificate. Specify this in `db.cnpg.security.tls.customCerts.clientCASecret`. You may use the same CA for both server and streaming replica, or provide a different CA by specifying the name of a generic secret containing the CA certificate and private key.
 
+:::warning[Include the pooler and headless service names]
+Include the `opschain-db-pooler-rw` and `opschain-db-rw-headless` names in the server certificate even if you are not currently using the [connection pooler](/advanced/database-connection-pooling.md) or the headless primary service (`db.cnpg.primaryHeadlessService.enabled`). OpsChain connects to the database through whichever of these services is enabled, and a name that is missing from the certificate fails TLS verification for every connection that uses it — which takes the instance down until the certificate is reissued. Including all of them up front lets you enable either service without replacing your certificates.
+
+Certificates that OpsChain generates itself always cover these names, so this applies only when you bring your own.
+:::
+
 ---
 
 ##### Summary table of required secrets
@@ -191,7 +205,7 @@ Each CNPG cluster requires the following set of secrets:
 | Secret purpose              | Secret type           | Required data                              | `values.yaml` setting                                            | Notes                                                                                           |
 |-----------------------------|----------------------|--------------------------------------------|------------------------------------------------------------------|-------------------------------------------------------------------------------------------------|
 | Server CA                   | Generic (`Opaque`)   | `ca.crt`, `ca.key`                         | `db.cnpg.security.tls.customCerts.serverCASecret`                | Must be the CA used to sign both server & streaming replica certificates.                       |
-| Server TLS Certificate      | TLS (`kubernetes.io/tls`) | `tls.crt`, `tls.key`                  | `db.cnpg.security.tls.customCerts.serverTLSSecret`               | SANs must include all relevant service FQDNs for the cluster.                                   |
+| Server TLS Certificate      | TLS (`kubernetes.io/tls`) | `tls.crt`, `tls.key`                  | `db.cnpg.security.tls.customCerts.serverTLSSecret`               | SANs must include all relevant service FQDNs for the cluster, including the pooler and headless services. |
 | Replication TLS Certificate | TLS (`kubernetes.io/tls`) | `ca.crt`, `tls.crt`, `tls.key`         | `db.cnpg.security.tls.customCerts.replicationTLSSecret`          | Used by external clusters to connect as `streaming_replica`.                                    |
 | Client CA                   | Generic (`Opaque`)   | `ca.crt`, `ca.key`                         | `db.cnpg.security.tls.customCerts.clientCASecret`                | May be the same as Server CA or a different CA specifically for the client (`streaming_replica`). |
 
@@ -324,7 +338,7 @@ db:
 See the [CNPG PostgreSQL parameters documentation](https://cloudnative-pg.io/documentation/1.27/postgresql_conf/) for more information about the available parameters.
 
 :::tip[Using the connection pooler? Keep `default_pool_size` in proportion]
-If you've enabled the [database connection pooling](/advanced/database-connection-pooling.md) guide's CNPG `Pooler`, it caps its own connection count via `db.cnpg.pooler.pgbouncer.parameters.default_pool_size`, sized by default against this `max_connections` value (a 50-connection reserve below it). Changing `max_connections` without adjusting `default_pool_size` to match either wastes the extra capacity you just added (the pool stays capped at the old ceiling) or erodes the reserve left for direct admin/backup/monitoring connections. See [sizing `default_pool_size`](/advanced/database-connection-pooling.md#sizing-default_pool_size) for the actionable steps.
+If you've enabled the [database connection pooling](/advanced/database-connection-pooling.md) guide's CNPG `Pooler`, it caps its own connection count via `db.cnpg.pooler.pgbouncer.parameters.default_pool_size` and `max_db_connections`, both sized against this `max_connections` value. Those limits are per PgBouncer process, and a reserve is left below `max_connections` for the connections OpsChain makes directly rather than through the pooler. Changing `max_connections` without adjusting the pool to match either wastes the capacity you just added or erodes that reserve. See [sizing the pool](/advanced/database-connection-pooling.md#sizing-the-pool) for the actionable steps.
 :::
 
 ### External cluster configuration
