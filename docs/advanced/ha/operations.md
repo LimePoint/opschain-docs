@@ -111,15 +111,23 @@ If you have more than two clusters, you must modify the `replica.primary` and `r
 Once the failover is complete, the now-replica cluster will still have a stale `demotionToken` in its status, this token can be safely ignored. The `promotionToken` can be safely removed from the now-primary cluster's `values.yaml` file as well.
 :::
 
-#### Restart the secret vault
+#### Restart the secret vault and log aggregator
 
-If you are using the OpsChain secret vault, you will need to restart its pods (in every cluster) anytime a failover is triggered, so they reconnect to the new primary database. The secret vault runs as a multi-replica StatefulSet, so restart **all** of its pods rather than a single one — delete them and let the StatefulSet recreate them against the new configuration:
+The secret vault and the log aggregator read their database connection details when they start, so they must be restarted (in every cluster) anytime a failover is triggered in order to reconnect to the new primary database.
+
+If you are using the OpsChain secret vault, restart its pods. The secret vault runs as a multi-replica StatefulSet, so restart **all** of its pods rather than a single one — delete them and let the StatefulSet recreate them against the new configuration:
 
 ```bash
 kubectl delete pod -l app.kubernetes.io/name=openbao -n ${KUBERNETES_NAMESPACE}
 ```
 
-This is necessary so that the secret vault can pick up the new primary cluster's configuration to successfully connect to it.
+Then restart the log aggregator:
+
+```bash
+kubectl rollout restart deployment/opschain-log-aggregator -n ${KUBERNETES_NAMESPACE}
+```
+
+Until it is restarted, the log aggregator keeps sending logs to the former primary database. It buffers them to its volume and retries, so nothing is lost, but change and step logs will not appear in OpsChain until the restart completes.
 
 #### Verify the failover
 
@@ -203,11 +211,12 @@ kubectl scale statefulset opschain-secret-vault --replicas=3 -n ${KUBERNETES_NAM
 
 If at any point you want to split your clusters, you can do so by simply changing the `replica.enabled` field to `false` in the `values.yaml` file of the cluster you want to split and redeploying it. The cluster will then become a standalone primary cluster with the data it had already replicated and will not replicate from any other cluster.
 
-:::info[Vault access]
-You will also need to restart the secret vault pods in the cluster you're splitting from so they pick up the new primary cluster's configuration, reconnect to it, and acquire the lock to the database. Delete the pods and let the StatefulSet recreate them:
+:::info[Reconnecting to the new primary]
+You will also need to restart the secret vault pods and the log aggregator in the cluster you're splitting from, so they pick up the new primary cluster's configuration and reconnect to it. The secret vault must also reacquire the lock to the database. Delete the secret vault pods and let the StatefulSet recreate them, then restart the log aggregator:
 
 ```bash
 kubectl delete pod -l app.kubernetes.io/name=openbao -n ${KUBERNETES_NAMESPACE}
+kubectl rollout restart deployment/opschain-log-aggregator -n ${KUBERNETES_NAMESPACE}
 ```
 
 :::
@@ -256,5 +265,6 @@ If a disaster happens and instead of promoting a replica you want to restore fro
 - Reinstall the primary cluster from the backup as described in the guide and ensure the primary cluster works as expected.
 - Once the primary is up, delete the database cluster in the replica instances and redeploy them, such that they restart the replication process from the backed up primary.
 - If you are using the OpsChain secret vault, restart its pods in every cluster after redeploying so they pick up the new primary cluster's configuration and reconnect to it — delete them (`kubectl delete pod -l app.kubernetes.io/name=openbao -n ${KUBERNETES_NAMESPACE}`) and let the StatefulSet recreate them.
+- Restart the log aggregator in every cluster after redeploying, so it reconnects to the new primary database — `kubectl rollout restart deployment/opschain-log-aggregator -n ${KUBERNETES_NAMESPACE}`.
 
 With these steps, you will be able to restore your OpsChain instance and replicas to a working state as soon as possible.

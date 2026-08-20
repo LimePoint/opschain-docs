@@ -324,7 +324,7 @@ db:
 See the [CNPG PostgreSQL parameters documentation](https://cloudnative-pg.io/documentation/1.27/postgresql_conf/) for more information about the available parameters.
 
 :::tip[Using the connection pooler? Keep `default_pool_size` in proportion]
-If you've enabled the [database connection pooling](/advanced/database-connection-pooling.md) guide's CNPG `Pooler`, it caps its own connection count via `db.cnpg.pooler.pgbouncer.parameters.default_pool_size`, sized by default against this `max_connections` value (a 50-connection reserve below it). Changing `max_connections` without adjusting `default_pool_size` to match either wastes the extra capacity you just added (the pool stays capped at the old ceiling) or erodes the reserve left for direct admin/backup/monitoring connections. See [sizing `default_pool_size`](/advanced/database-connection-pooling.md#sizing-default_pool_size) for the actionable steps.
+If you've enabled the [database connection pooling](/advanced/database-connection-pooling.md) guide's CNPG `Pooler`, it caps its own connection count via `db.cnpg.pooler.pgbouncer.parameters.default_pool_size` and `max_db_connections`, both sized against this `max_connections` value. Those limits are per PgBouncer process, and a reserve is left below `max_connections` for the connections OpsChain makes directly rather than through the pooler. Changing `max_connections` without adjusting the pool to match either wastes the capacity you just added or erodes that reserve. See [sizing the pool](/advanced/database-connection-pooling.md#sizing-the-pool) for the actionable steps.
 :::
 
 ### External cluster configuration

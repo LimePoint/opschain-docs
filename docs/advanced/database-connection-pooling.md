@@ -51,20 +51,26 @@ db:
 Do not enable this alongside [`db.cnpg.primaryHeadlessService.enabled`](/setup/configuration/additional-settings.md#database-primary-headless-service) — the two settings resolve `PGHOST` differently and are not intended to be combined. The two solve different problems: the pooler reduces per-connection setup cost, while the headless service avoids connections being dropped outright when many pods connect at once.
 :::
 
-### Sizing `default_pool_size`
+### Sizing the pool
 
-In session mode, PgBouncer assigns one backend connection to each client for the entire time it's connected — `db.cnpg.pooler.pgbouncer.parameters.default_pool_size` caps how many of those it will hand out for the `opschain`/`opschain` database/user pair. If it's set too low relative to actual concurrent usage, clients queue at the pooler for a free slot instead of reaching Postgres — reintroducing the exact contention the pooler is meant to remove, just one layer further out.
+In session mode, PgBouncer assigns one backend connection to each client for the entire time it is connected. `db.cnpg.pooler.pgbouncer.parameters.default_pool_size` caps how many of those it will hand out for the `opschain`/`opschain` database and user pair, and `max_db_connections` caps how many server connections one PgBouncer process will open. Set both to the same number.
 
-The default (`300`) is sized against the chart's default [`db.cnpg.postgresql.parameters.max_connections`](/advanced/ha/index.md#other-settings) (`350`), leaving a 50-connection reserve for connections that don't go through the pooler — CNPG's own internal/replication connections, and any direct `psql`/backup/monitoring sessions. Keep the two settings in proportion:
+Because a client holds its connection for its whole session, `default_pool_size` behaves as a floor on concurrency rather than a fraction of demand. Set it below actual concurrent usage and clients wait at the pooler for a free slot instead of reaching Postgres, reintroducing the contention the pooler is meant to remove one layer further out.
 
-- **Raising `max_connections`?** Raise `default_pool_size` by roughly the same amount, so the pool actually uses the extra capacity you added — for example, doubling `max_connections` to `700` calls for raising `default_pool_size` to around `650`, keeping the same 50-connection reserve.
-- **Lowering `max_connections`?** Lower `default_pool_size` too, by the same amount. Otherwise the pool advertises more sessions than Postgres can actually grant, and the reserve for direct connections shrinks (or goes negative).
-- **Not sure how much reserve you need?** Check how many connections are currently made directly (not through the pooler) before shrinking the reserve — run the following from inside the database pod for a rough live count:
+Two things make the arithmetic easy to get wrong.
+
+- **The limits are per PgBouncer process.** With `instances: 2`, the cluster-wide ceiling is `default_pool_size` × 2. That product is what has to fit inside `max_connections`, not `default_pool_size` on its own.
+- **Raising [`max_connections`](/advanced/ha/index.md#other-settings)?** Divide the increase by `instances` and add that to both `default_pool_size` and `max_db_connections`, so the pool uses the capacity you added.
+- **Adding pods, or raising `concurrent.runner_limit`?** Both grow the reserve. `concurrent.runner_limit` is a runtime setting, so it can be raised without a `helm upgrade` — if you raise it substantially, review the reserve as well.
+- **Running replica clusters?** Applications in a replica cluster reach this primary directly rather than through its pooler, so they add to the reserve, not to the pool.
+- **Not sure how much reserve you need?** Count the live connections that are not coming through the pooler:
 
   ```bash
   kubectl -n ${KUBERNETES_NAMESPACE} exec ${CLUSTER_NAME}-1 -c postgres -- \
     psql -U postgres -d opschain -c "select count(*) from pg_stat_activity where application_name not like 'pgbouncer%'"
   ```
+
+Changing these parameters affects the pooler only — the `Cluster` resource is untouched, so PostgreSQL is not restarted.
 
 Apply the change with `helm upgrade`, as you would for any other `values.yaml` change.
 
