@@ -37,6 +37,10 @@ For example, if you want to install the release named `2025-01-01`, the chart ve
 export OPSCHAIN_CHART_VERSION=2025.1.1
 ```
 
+:::warning[Container image version format]
+The `env.OPSCHAIN_VERSION` setting in your `values.yaml` file (see [mandatory deployment settings](/setup/configuration/encryption-and-secrets.md#mandatory-deployment-settings)) controls the container image tag and must use the original, hyphenated release name (e.g. `2025-01-01`) exactly as it appears in the [changelog](/changelog.md). This is a different format to `OPSCHAIN_CHART_VERSION` above — setting `env.OPSCHAIN_VERSION` to the dotted chart version (e.g. `2025.1.1`) will cause every OpsChain image to fail to pull.
+:::
+
 :::tip[Setup shell]
 To make life easier, you can add these two settings to your shell profile. This will allow you to use the same environment variables in subsequent sessions. For example:
 
