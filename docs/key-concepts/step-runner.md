@@ -32,6 +32,22 @@ The runner image is called `limepoint/opschain-runner` and is configured by defa
 
 If your resources or actions rely on external software, the image used by your project for its step runner containers can be modified to add extra packages or executables. The image may also be modified to optimise the performance of build steps by performing tasks as part of the step image build rather than as part of the step execution.
 
+### Custom Dockerfile locations
+
+The same rules govern where OpsChain looks for a custom Dockerfile for both step runner images and [agent images](/getting-started/familiarisation/gui/projects/agents.md#agent-images). OpsChain checks the following locations, in order, and uses the first Dockerfile it finds in your Git repository:
+
+| Priority | Location                     | When it applies                                                                                                                                                                                                                |
+| -------- | ----------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| 1        | `<template code>/Dockerfile` | An asset or agent built from an [asset template](/getting-started/familiarisation/gui/projects/asset_templates.md) or agent template — shared by every asset or agent built from that template, regardless of `repo_folder` |
+| 2        | `<repo_folder>/<dockerfile>` | Any project, environment, asset or agent with a custom [`dockerfile`](/key-concepts/settings.md#dockerfile) filename configured                                                                                              |
+| 3        | `<repo_folder>/Dockerfile`   | The default, used when neither of the above apply                                                                                                                                                                             |
+
+`repo_folder` defaults to `.opschain` and can be set per project, environment, asset or change - see the [`repo_folder`](/key-concepts/settings.md#repo_folder) setting. If none of these files exist in your repository, OpsChain falls back to its own default step runner Dockerfile.
+
+:::tip
+To use a different Dockerfile for a single environment, set [`dockerfile`](/key-concepts/settings.md#dockerfile) at that environment level to a filename such as `Dockerfile.custom`, then commit the file to `<repo_folder>/Dockerfile.custom`.
+:::
+
 ### Creating a custom step runner Dockerfile
 
 If your Git repository contains a Dockerfile in `.opschain/Dockerfile`, this will be used to build the image for your change's step runner containers. It must be based on the default step runner image Dockerfile to ensure compatibility with OpsChain. <a href='../../../files/samples/Dockerfile' download>Download the sample Dockerfile</a>, or get it by running:
@@ -62,6 +78,7 @@ git commit -m "Adding a custom Dockerfile."
 1. commits prior to this point won't use the custom Dockerfile because it is not present in the repository.
 2. if you no longer wish to use the custom Dockerfile, `.opschain/Dockerfile` can be removed from the project repository.
 3. the `.opschain` directory refers to the [OPSCHAIN_REPO_FOLDER](/setup/configuration/additional-settings.md#opschain_repo_folder) setting. If you have used a different value, use that instead.
+4. `.opschain/Dockerfile` is one of several locations OpsChain checks - see [custom Dockerfile locations](#custom-dockerfile-locations) above for the full list and the order they are checked in.
 
 :::
 

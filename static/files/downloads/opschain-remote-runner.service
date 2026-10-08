@@ -1,0 +1,18 @@
+[Unit]
+Description=OpsChain remote runner daemon
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Delegate=yes
+ExecStart=systemd-nspawn --quiet --keep-unit --kill-signal=SIGTERM --register=no --private-users=524288:65536 --private-users-ownership=map \
+  --bind=/etc/opschain-remote-runner --bind=/var/lib/opschain-remote-runner --bind=/dev/net/tun \
+  --image=/opt/opschain-remote-runner-image/simple-mode.raw --chdir=/opt/opschain-remote-runner/daemon -- /bin/bash /root_wrapper.sh
+KillMode=mixed
+TimeoutStopSec=30
+TimeoutStopFailureMode=kill
+Restart=on-failure
+RestartSec=2
+
+[Install]
+WantedBy=multi-user.target
