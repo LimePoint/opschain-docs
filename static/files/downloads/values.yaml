@@ -787,6 +787,7 @@ openbao:
     image:
       registry: limepoint
       repository: opschain-secret-vault
+      tag: 2.5.1
     resources:
       requests:
         cpu: 100m

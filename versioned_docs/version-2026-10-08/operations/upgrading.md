@@ -66,6 +66,8 @@ To see the settings the release ships with, <a href='/files/downloads/2026-10-08
 
 :::note[OpsChain version]
 Ensure all the settings that have an image tag match the OpsChain version you're patching to, otherwise your installation will be running with outdated images.
+
+The secret vault is the exception: do not set `openbao.server.image.tag`. Each OpsChain release chooses the secret vault image itself, and only changes it when the secret vault software is updated, so most upgrades leave the secret vault running. Remove the setting if your `values.yaml` contains it.
 :::
 
 ## Upgrade OpsChain

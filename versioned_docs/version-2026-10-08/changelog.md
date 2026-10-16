@@ -13,11 +13,15 @@ Follow the [upgrade guide](operations/upgrading.md) for more information on how 
 
 ## [2026-10-08]
 
-:::warning[Upgrading to this version restarts the database]
-Upgrading to this version restarts the database pod, so OpsChain cannot reach its database for a few minutes while the upgrade runs.
+:::warning[Upgrading to this version restarts the database and the secret vault]
+Upgrading to this version restarts the database and the secret vault, so plan for a short outage: OpsChain cannot reach its database for a few minutes while the upgrade runs. The database pod is replaced because it now runs with the `system-node-critical` Kubernetes priority class (see [scheduling priority](/operations/component-resources.md#scheduling-priority)), and the secret vault restarts once because its image is now versioned separately from OpsChain.
 
-To upgrade without that downtime, run more than one database instance by setting [`db.cnpg.instances`](/advanced/ha/index.md#local-replicas) and set [`db.cnpg.primaryUpdateMethod`](/advanced/ha/index.md#dbcnpgprimaryupdatemethod) to `switchover`, then deploy that change before upgrading.
+To upgrade without the database downtime, run more than one database instance by setting [`db.cnpg.instances`](/advanced/ha/index.md#local-replicas) and set [`db.cnpg.primaryUpdateMethod`](/advanced/ha/index.md#dbcnpgprimaryupdatemethod) to `switchover`, then deploy that change before upgrading.
 :::
+
+### Before upgrading {/* #2026-10-08-before-upgrading */}
+
+- If your `values.yaml` sets `openbao.server.image.tag`, remove it. The secret vault image is now chosen by the OpsChain chart and only changes when the secret vault software is updated, so later upgrades no longer restart the secret vault. Future releases do not publish a secret vault image tagged with the OpsChain version, so leaving the setting in place will stop the secret vault from starting after a later upgrade. See [update the `values.yaml` file](/operations/upgrading.md#update-the-valuesyaml-file).
 
 :::tip[Schedule a database statistics refresh after upgrading]
 
