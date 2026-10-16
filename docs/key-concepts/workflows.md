@@ -40,7 +40,7 @@ A running workflow run can be paused and resumed — see the [API reference](pat
 
 Workflow runs that have failed or been cancelled can be retried. When retrying, completed steps are not rerun — they remain in the `success` state with their original timings. Steps that were actively running when the workflow run ended are restarted from the beginning.
 
-A change or child workflow run that completed successfully is reused by the retry rather than run again, so it belongs to both the original run and the retry. Its details in the GUI list every workflow run it belongs to — see [header information](/getting-started/familiarisation/gui/activity_details.md#header-information).
+A change or child workflow run that completed successfully is reused by the retry rather than run again, so it belongs to both the original run and the retry. Its details in the GUI list every workflow run it belongs to — see [header information](/getting-started/familiarisation/gui/activity/activity_details.md#header-information).
 
 ### Skipping steps
 
@@ -73,7 +73,7 @@ On the GUI, you can add metadata to a workflow run by filling in the metadata fi
 
 ### Query workflow runs by metadata
 
-You can query workflow runs by metadata via the search field in the [activity page](/getting-started/familiarisation/gui/activity.md).
+You can query workflow runs by metadata via the search field in the [activity page](/getting-started/familiarisation/gui/activity/index.md).
 
 When querying workflow runs via the API, you can use OpsChain's [API filtering](/advanced/api-filtering.md) feature to limit the response to runs whose metadata matches a specified value, e.g.:
 

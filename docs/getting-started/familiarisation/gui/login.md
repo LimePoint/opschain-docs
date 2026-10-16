@@ -1,11 +1,11 @@
 ---
-sidebar_position: 1
+sidebar_position: 2
 description: ''
 ---
 
 # Logging in
 
-Upon opening the OpsChain GUI for the first time, you will be prompted to upload your licence file. After doing so, you will be able to log in to the GUI.
+If OpsChain does not have a valid licence installed, you are prompted to upload your licence file after you log in. Once it is uploaded, you can use the GUI - see [when no valid licence is installed](/getting-started/familiarisation/gui/administration/licence.md#when-no-valid-licence-is-installed).
 
 1. Open a web browser and navigate to the OpsChain GUI using the following URL format `https://opschain_gui_url`. You should see the following screen:
     <p align='center'>

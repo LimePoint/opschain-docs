@@ -134,7 +134,7 @@ Supply your values with `-f values.yaml` on every upgrade. `helm upgrade` reuses
 
 #### Uploading an authority to a running instance
 
-Upload the certificate in the **CA certificates** section of the system configuration page. Certificates uploaded there and certificates supplied in `values.yaml` are held alongside each other, and an upgrade leaves the uploaded ones untouched.
+Upload the certificate in the [**CA certificates**](/getting-started/familiarisation/gui/administration/system_configuration.md) section of the system configuration page. Certificates uploaded there and certificates supplied in `values.yaml` are held alongside each other, and an upgrade leaves the uploaded ones untouched.
 
 Uploading needs a running API, so it cannot be used to trust an authority the API itself needs in order to start. Supply that one in `values.yaml`.
 

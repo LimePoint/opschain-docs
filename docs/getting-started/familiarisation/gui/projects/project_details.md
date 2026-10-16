@@ -23,9 +23,10 @@ This screen manages and defines the available agents, assets, asset templates, e
 
 | Buttons & links        | Function                                                               |
 |------------------------|------------------------------------------------------------------------|
+| **Compare**            | Pins the project to compare its overview, properties and settings with another project, environment, asset or agent. |
 | **Pencil icon**        | Allows you to edit the details of the current project.                 |
 | **Bookmark icon**      | Allows you add and remove bookmarks for the project for quick access.  |
 | **Bell icon**          | Allows you to manage the project's notification settings.              |
-| **Three dots icon**    | Allows you to archive the project.                                     |
+| **Three dots icon**    | Allows you to archive (or restore) or delete the project.              |
 
 These buttons and links are available in every project, environment and asset details screens and are used to manage the respective entity.

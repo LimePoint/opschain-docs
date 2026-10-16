@@ -9,6 +9,10 @@ OpsChain agents perform long-running tasks, in contrast to [changes](/key-concep
 
 An agent runs as a Kubernetes pod on the same cluster that hosts OpsChain. Agents can be stopped to free up cluster resources and restarted later, and OpsChain provides access to each agent's logs and audit history through the GUI.
 
+<p align='center'>
+  <img alt='Project agents screen' src={require('!url-loader!../images/project-agents.png').default} className='image-border'/>
+</p>
+
 ## Where an agent runs
 
 Each agent runs at one [site](/advanced/ha/index.md). The agent's overview names it in a **Site** pill, and the agents table shows an agent that is running at another site as running, the same as one running here.
@@ -41,6 +45,10 @@ From the agent details page you can:
 - view the agent's logs
 - view the agent's audit history
 - rebuild the agent's container image
+
+<p align='center'>
+  <img alt='Agent details screen' src={require('!url-loader!../images/agent-details.png').default} className='image-border'/>
+</p>
 
 ## Creating your own agents
 

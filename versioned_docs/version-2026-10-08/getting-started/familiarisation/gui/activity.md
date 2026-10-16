@@ -117,33 +117,21 @@ Skipped steps apply to scheduled changes as well. Rerunning a change from its de
 
 #### Continuing wait steps automatically
 
-The **Automatically continue wait steps** checkbox beside the submit button decides whether the change stops at its [wait steps](/key-concepts/actions.md#wait-steps). With it ticked, a wait step that does not require approval continues by itself, and an [input step](/key-concepts/actions.md#input-steps) continues with the answers given in the [Input step arguments](#answering-input-steps-up-front) panel or the arguments' default values. See [automatically continuing wait steps](/key-concepts/actions.md#automatically-continuing-wait-steps).
+The **Automatically continue wait steps** checkbox beside the submit button decides whether the change stops at its [wait steps](/key-concepts/actions.md#wait-steps). With it ticked, a wait step that does not require approval continues by itself.
 
-The line beside the checkbox says what the change will do:
-
-| Message | Meaning |
-|---------|---------|
-| **The change will pause at wait steps until someone continues it** | The checkbox is clear. |
-| **The change will continue without pausing** | The checkbox is ticked, and every required input argument has an answer or a default value. |
-| **Will still pause for \<arguments\> - required, with no default value** | The checkbox is ticked, but the arguments named have neither an answer nor a default value, so the steps that ask for them still pause. Answer them in the **Input step arguments** panel to run without stopping. |
-
-When you choose an action with input steps, the checkbox is ticked for you if every required argument already has a value, and cleared if not. Answering an argument in the panel ticks it. Once you tick or clear it yourself, the dialog leaves it as you set it.
+[Input steps](/key-concepts/actions.md#input-steps) do not depend on the checkbox. An input step that does not require approval continues by itself once every required argument has an answer in the [Input step arguments](#answering-input-steps-up-front) panel or a default value, whether the checkbox is ticked or not. See [automatically continuing wait steps](/key-concepts/actions.md#automatically-continuing-wait-steps).
 
 #### Answering input steps up front
 
 The **Input step arguments** panel lists the arguments of every [input step](/key-concepts/actions.md#input-steps) in the chosen action's step tree, grouped by the step that asks for them. Required arguments are marked with a red `*`. An answer supplied here becomes that argument's default value when the step starts waiting, so the form the step presents opens with it already filled in.
 
-**At input steps**, at the top of the panel, is the same choice as the [Automatically continue wait steps](#continuing-wait-steps-automatically) checkbox, put in terms of the input steps:
-
-- **Continue automatically** - each input step takes the answers given here, or the arguments' defaults, and the change carries on.
-- **Pause for review** - each input step waits with the answers given here filled in, until someone continues it.
-
-If the change will still pause because a required argument has no answer and no default, the panel names the missing arguments.
+Once every required argument of an input step has an answer here or a default value, that step does not wait at all - it [continues by itself](#continuing-wait-steps-automatically) unless it requires approval. Leave a required argument unanswered to have the step stop for review.
 
 Each argument is answered with a control that suits its type:
 
 - A **boolean** argument is a switch, set to the argument's default value until you move it. Moving it back to the default clears the answer, so only a value that differs from the default is written to the property overrides. Where there is no default, either position is an answer, and the cross clears it.
 - A [**sensitive**](/key-concepts/actions.md#sensitive-input-arguments) argument is a masked field. OpsChain encrypts the answer when the change is saved; until then it is sent, and shown in the **Property overrides** editor, in the clear. A value already stored - when repeating a change or editing a schedule - shows as **Value is set** rather than being filled in, and **Replace** lets you enter a new one.
+- An [array argument with a list of valid values](/key-concepts/actions.md#selecting-several-values) is a multi-select of those values. The list is offered as suggestions, so you can also type a value that is not in it - `brisbane`, say - and choose **Add "brisbane"**. A value you add this way is sent as text. A value outside the list is flagged beside the argument, as the step will pause for it unless the list the step itself presents holds that value.
 - A date, array or hash argument, or one with a list of valid values, shows its default value under the control.
 
 Answers are written into the change's property overrides at the path each argument writes to, so the **Property overrides** panel and this one describe the same values - editing the JSON directly updates the fields here, and vice versa. Clearing an answer removes it from the property overrides, along with any object it leaves empty. A field is read only where the property overrides already hold a value that the panel cannot show - a boolean switch over a value of `"yes"`, for example - and the panel says so where the JSON cannot be parsed or where property overrides have been switched off.

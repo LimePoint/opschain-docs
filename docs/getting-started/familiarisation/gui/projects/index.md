@@ -41,7 +41,7 @@ If you don't see any project in the list, it is possible that either no projects
 |-------------------------------|----------|
 | **Bulk actions**              | When projects are selected, allows you to archive, restore or permanently delete the selected projects.   |
 | **Search**                    | Allows you to search projects by name, code and description.                        |
-| **Show archived projects**    | Toggle to show archived projects in the table. |
+| **Show archived**             | Toggle to show archived projects in the table. |
 | **Columns**                   | Hide or display columns in the table. |
 | **Create project**            | Add a new project. |
 

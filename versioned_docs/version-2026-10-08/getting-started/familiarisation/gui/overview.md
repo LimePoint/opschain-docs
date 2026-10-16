@@ -26,6 +26,28 @@ The table below lists the key areas available in this screen.
 
 The top pane also shows an **active runs** indicator, displaying the number of changes and workflow runs that are currently in flight across all projects, environments and assets you can access. Selecting it opens a list of those runs, each linking through to its [activity details](/getting-started/familiarisation/gui/activity_details.md).
 
+## The dashboard
+
+The dashboard charts the changes and workflow runs created in a time range you choose, as a grid of panels, alongside panels showing what is happening now, such as the steps waiting for your approval and the most recent activities.
+
+<p align='center'>
+  <img alt='Dashboard chart drill-down' src={require('!url-loader!./images/dashboard-drill-down.png').default} className='image-border'/>
+</p>
+
+The toolbar above the panels sets the time range - a quick range, or **From** and **To** dates - and can group the charts by hour, day, week or month, limit them to changes or workflows, and limit them to the projects you pick. The refresh button fetches the figures again, and its dropdown refreshes them automatically. On a narrow screen these controls fold into a **Filters** button.
+
+Click a segment, bar or point on a chart to list the changes and workflow runs behind it. Type in **Quick search** to filter the list, and click a run to open its [activity details](/getting-started/familiarisation/gui/activity_details.md).
+
+### Arranging the dashboard
+
+Open **Add panels** to see every panel with its description, and drag a panel onto the dashboard. Drag a panel by its title bar to move it, and by its bottom-right corner to resize it; hover over it and click the cross to remove it. The button beside **Add panels** resets the dashboard to its default layout.
+
+<p align='center'>
+  <img alt='Add panels list' src={require('!url-loader!./images/dashboard-add-panels.png').default} className='image-border'/>
+</p>
+
+The layout and the toolbar settings are saved in your browser, so the dashboard looks the same next time you open it there. On a narrower screen the panels reflow into fewer columns, and a layout you arrange at that width is kept for it.
+
 ## Downloading lists and logs
 
 The activity, projects, environments, assets and agents lists each have a **CSV** button that downloads every row matching the current filters as a CSV file. The activity download lists its changes and workflow runs oldest first, whatever sort the list is using. Each file is named after the project, environment or asset the list belongs to — `bank_dev_assets.csv` for the assets of the `dev` environment in the `bank` project, for example.

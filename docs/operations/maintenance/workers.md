@@ -49,7 +49,7 @@ kubectl scale deploy opschain-api-worker --replicas $REPLICAS
 
 ### Scaling the workers without kubectl
 
-The worker count can also be changed from the **Deployments** tab in the **System information** section of the administration screen, without cluster access. Select **Scale** on the `opschain-api-worker` row and choose the replica count — zero to stop the workers, and the original count to bring them back. See [deployments](/getting-started/familiarisation/gui/deployments.md#scaling-a-deployment).
+The worker count can also be changed from the **Deployments** tab in the **System information** section of the administration screen, without cluster access. Select **Scale** on the `opschain-api-worker` row and choose the replica count — zero to stop the workers, and the original count to bring them back. See [deployments](/getting-started/familiarisation/gui/administration/system_information/deployments.md#scaling-a-deployment).
 
 Scaling down this way is still graceful: the surplus workers finish the actions already in progress before terminating, subject to the same grace period described above. The tab's replica counts show when the last worker has exited, in place of the `kubectl wait` above.
 

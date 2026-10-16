@@ -183,7 +183,7 @@ Properties stored in the database are encrypted prior to being written to disk s
 
 An [asset template](/getting-started/familiarisation/gui/projects/asset_templates.md) and each of its versions hold their own properties, which apply to every asset and agent using them. Set a value on the template when every version of it should share the value, and on a version when only the assets assigned that version should see it.
 
-Both are edited from the template's and the template version's **Properties** tabs in the GUI, and are available to action code alongside the node properties:
+Both are edited from the [template's](/getting-started/familiarisation/gui/projects/asset_templates.md#template-properties-and-settings) and the [template version's](/getting-started/familiarisation/gui/projects/asset_templates.md#viewing-a-template-version) **Properties** tabs in the GUI, and are available to action code alongside the node properties:
 
 ```ruby
 OpsChain.properties_for(:template)
@@ -196,7 +196,7 @@ They sit between the environment and the node in the merge, so an asset's own pr
 
 A [change](/key-concepts/overview.md#change) carries its own set of properties, supplied when the change is created and applying to that change alone. The target's stored properties are left untouched, so an override is a way to run a change with a different value without editing - and having to restore - the project, environment or asset it runs against.
 
-Supply them from the **Property overrides** panel of the GUI's [run change dialog](/getting-started/familiarisation/gui/activity.md#run-change), or with the CLI's `--property-overrides` flag:
+Supply them from the **Property overrides** panel of the GUI's [run change dialog](/getting-started/familiarisation/gui/activity/index.md#run-change), or with the CLI's `--property-overrides` flag:
 
 ```bash
 opschain changes create \
@@ -206,7 +206,7 @@ opschain changes create \
   --property-overrides '{"deploy":{"dry_run":true}}'
 ```
 
-The overrides are merged after every other level, so a value set here wins over the asset, template version, template, environment, project and repository values for the same key - see [OpsChain properties](#opschain-properties) for the full merge order. They are a property level like any other, so the [`opschain` key](#opschain-properties) behaves as it does elsewhere - setting `opschain.env` in a change's overrides supplies [environment variables](#environment-variables) to that change only, which is what the run change dialog's [**Environment variables** panel](/getting-started/familiarisation/gui/activity.md#setting-environment-variables) writes for you.
+The overrides are merged after every other level, so a value set here wins over the asset, template version, template, environment, project and repository values for the same key - see [OpsChain properties](#opschain-properties) for the full merge order. They are a property level like any other, so the [`opschain` key](#opschain-properties) behaves as it does elsewhere - setting `opschain.env` in a change's overrides supplies [environment variables](#environment-variables) to that change only, which is what the run change dialog's [**Environment variables** panel](/getting-started/familiarisation/gui/activity/index.md#setting-environment-variables) writes for you.
 
 Within an action, the overrides are available on their own via:
 
@@ -225,7 +225,7 @@ Unlike a change's [settings overrides](/key-concepts/settings.md), which are fix
 
 #### Workflow run property overrides
 
-A [workflow run](/key-concepts/overview.md#workflow-run) also accepts property overrides when it is created, from the **Property overrides** panel of the GUI's [run workflow dialog](/getting-started/familiarisation/gui/activity.md#run-workflow) or the `--property-overrides` flag of `opschain workflows runs create`. They serve a different purpose to a change's overrides: apart from the [`opschain` key](#opschain-properties), which the run passes on to the changes it creates, they are values for the workflow definition's own variables and are not merged into the properties the run's changes see.
+A [workflow run](/key-concepts/overview.md#workflow-run) also accepts property overrides when it is created, from the **Property overrides** panel of the GUI's [run workflow dialog](/getting-started/familiarisation/gui/activity/index.md#run-workflow) or the `--property-overrides` flag of `opschain workflows runs create`. They serve a different purpose to a change's overrides: apart from the [`opschain` key](#opschain-properties), which the run passes on to the changes it creates, they are values for the workflow definition's own variables and are not merged into the properties the run's changes see.
 
 A workflow definition can reference property values as `{{variable}}` placeholders - in a step's target, action, name, or its own property overrides. When the run is created, each placeholder is resolved by looking its dotted path up in the database properties of the project the workflow belongs to, deep merged with the overrides supplied for the run. A workflow like:
 
@@ -252,7 +252,7 @@ Because the placeholders are resolved once, when the run is created, a workflow 
 
 The [`opschain` key](#opschain-properties) is the exception to all of this. The run merges that key of its overrides into the property overrides of every change its change steps create, and into every child workflow run its workflow steps start, so a value set once on the run applies to everything the run does. A child run merges it on in turn, so it reaches a change however deeply the workflows are nested.
 
-The step's own `property_overrides` are merged over the run's, so a step that sets a key wins for that key and anything it leaves alone still comes from the run. This is what makes the run workflow dialog's [**Environment variables** panel](/getting-started/familiarisation/gui/activity.md#setting-environment-variables) work: it writes `opschain.env`, and every change the run creates runs with those variables.
+The step's own `property_overrides` are merged over the run's, so a step that sets a key wins for that key and anything it leaves alone still comes from the run. This is what makes the run workflow dialog's [**Environment variables** panel](/getting-started/familiarisation/gui/activity/index.md#setting-environment-variables) work: it writes `opschain.env`, and every change the run creates runs with those variables.
 
 For a child workflow run the inherited `opschain` values are also in scope as `{{variable}}` sources when that child's version resolves its placeholders, alongside the overrides supplied for the child step itself.
 
@@ -279,7 +279,7 @@ and supply it when the run is created:
 { "credentials": { "db_password": "s3cr3t" } }
 ```
 
-OpsChain encrypts `credentials.db_password` in the run's own overrides before they are stored, then resolves the steps, so the change is created with the encrypted value and the plaintext is not kept on the run. The same applies to a [scheduled workflow](/getting-started/familiarisation/gui/scheduled_activities.md), on the values supplied when it is created or updated.
+OpsChain encrypts `credentials.db_password` in the run's own overrides before they are stored, then resolves the steps, so the change is created with the encrypted value and the plaintext is not kept on the run. The same applies to a [scheduled workflow](/getting-started/familiarisation/gui/activity/scheduled_activities.md), on the values supplied when it is created or updated.
 
 The placeholder must be the entire value. One embedded in a longer string cannot be encrypted, and the run is rejected:
 

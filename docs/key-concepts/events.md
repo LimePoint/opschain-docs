@@ -38,7 +38,7 @@ Further down we present a [list of the event types created by OpsChain](#system-
 
 ## Viewing events
 
-You can view events in the OpsChain web UI by navigating to the [audit history page](/getting-started/familiarisation/gui/audit_history.md).
+You can view events in the OpsChain web UI by navigating to the [audit history page](/getting-started/familiarisation/gui/audit_history.md). Click an event there to open its [details page](/getting-started/familiarisation/gui/audit_history.md#view-the-details-of-an-event), which shows its message, progress logs and data.
 
 On the API, the OpsChain `api/events` endpoint can be queried to see events in the OpsChain system.
 
@@ -209,7 +209,6 @@ Some events are throttled, meaning OpsChain records at most one of them in the s
 - `audit:changes:pause` — a user [paused](/key-concepts/changes.md#pausing-and-resuming-a-change) a running change. The `message` data key holds the reason given, if any.
 - `audit:changes:resume` — a user resumed a paused change. The `message` data key holds the reason given, if any.
 - `api:changes:retry_settings_pruned` — an incomplete change was retried and some of its settings overrides were dropped because they are no longer valid for a change. The `dropped_settings` data key lists them.
-- `warn:changes:catalog_not_refreshed` — a change was retried asking for the latest Git revision, but the actions derived from that revision were not available, so the retry ran the actions and step tree the original change ran. The `action`, `template_version` and `catalog_request_status` data keys record which action was affected and why.
 - `api:changes:destroy` — a change was deleted.
 - `api:change_listener:error` — the listener that picks up change cancellations failed.
 - `error:change_worker:delete` — the change's runner pod could not be removed after the change finished. The pod may need to be removed by hand.
@@ -285,7 +284,7 @@ Some events are throttled, meaning OpsChain records at most one of them in the s
 - `error:scheduled_changes:git_sha` — the Git SHA for a scheduled change could not be resolved, so no change was created.
 - `error:scheduled_workflows:workflow_run_creation` — a scheduled workflow could not create its workflow run.
 - `warning:scheduled_activity:skipped` — a scheduled change or workflow was skipped because one it created earlier was still running and it does not allow parallel execution. Throttled to one event per hour.
-- `warning:scheduled_changes:commit_file_patterns` — a scheduled change with [commit file patterns](/getting-started/familiarisation/gui/scheduled_activities.md#limiting-a-scheduled-change-to-particular-files) either could not evaluate them, in which case it created its change anyway, or reached the end of its schedule without them ever being satisfied. Throttled to one event per hour.
+- `warning:scheduled_changes:commit_file_patterns` — a scheduled change with [commit file patterns](/getting-started/familiarisation/gui/activity/scheduled_activities.md#limiting-a-scheduled-change-to-particular-files) either could not evaluate them, in which case it created its change anyway, or reached the end of its schedule without them ever being satisfied. Throttled to one event per hour.
 
 #### Projects, environments and assets
 
@@ -425,7 +424,7 @@ Some events are throttled, meaning OpsChain records at most one of them in the s
 - `info:data_cleanup:events` — a data cleaning rule removed old events.
 - `info:data_cleanup:jobs` — a data cleaning rule removed old job history.
 - `info:data_cleanup:agent_images` — a data cleaning rule removed unused agent images.
-- `info:data_cleanup:node_background_tasks` — a data cleaning rule removed superseded [node background tasks](/getting-started/familiarisation/gui/background_tasks.md) and their logs.
+- `info:data_cleanup:node_background_tasks` — a data cleaning rule removed superseded [node background tasks](/getting-started/familiarisation/gui/administration/system_information/background_tasks.md) and their logs.
 - `info:data_cleanup:statistics` — a data cleaning rule refreshed the database's [query planner statistics](/operations/maintenance/data-cleaning.md#refreshing-database-statistics). The `analyzed_tables` data key lists each table analysed with its estimated row count before and after, and is empty when nothing was stale. The `skipped_reason` data key is set instead when another site was already refreshing them.
 - `error:data_cleanup:activities` — removing finished changes and workflow runs failed.
 - `error:data_cleanup:events` — removing old events failed.
@@ -450,7 +449,7 @@ Some events are throttled, meaning OpsChain records at most one of them in the s
 
 #### Sites and database clusters
 
-- `info:database_cluster:registered` — a [site's database cluster](/advanced/ha/index.md#terminology) reported itself for the first time and now appears on the [database screen](/getting-started/familiarisation/gui/database.md).
+- `info:database_cluster:registered` — a [site's database cluster](/advanced/ha/index.md#terminology) reported itself for the first time and now appears on the [database screen](/getting-started/familiarisation/gui/administration/system_information/database.md).
 - `info:database_cluster:role_changed` — a site's database cluster changed between primary and replica, so a failover is visible in the audit history.
 - `info:site:cordoned` — a site was [cordoned](/advanced/ha/operations.md#cordoning-a-site), so no new work starts there. The `cluster_name` and `cordon_reason` data keys give the site and the reason given, and the event records who cordoned it.
 - `info:site:uncordoned` — a cordoned site was uncordoned and takes new work again.

@@ -61,7 +61,7 @@ vi metrics-server.yaml
 kubectl apply -f metrics-server.yaml
 ```
 
-Installing the metrics server is optional, but it is recommended if you want to see some of your node's metrics in the OpsChain UI.
+Installing the metrics server is optional, but it is recommended if you want to see some of your node's metrics in the OpsChain UI - see the [nodes](/getting-started/familiarisation/gui/administration/system_information/index.md#nodes) tab of the system information screen.
 
 ## What to do next
 

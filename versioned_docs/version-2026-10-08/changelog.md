@@ -58,7 +58,7 @@ kubectl get node -o jsonpath='{range .items[*]}{.metadata.name}{"  capacity="}{.
 - Search has been rebuilt. Press <kbd>Ctrl</kbd>+<kbd>L</kbd> (<kbd>⌘</kbd>+<kbd>L</kbd> on a Mac) anywhere in the GUI to find pages, resources, steps and activity, open a pasted ID, or run a command. See [search](/getting-started/familiarisation/gui/search.md).
 - It is now possible to find every change that ran a particular step, however deep in the step tree it ran, by the step's action or name. See [searching by step](/getting-started/familiarisation/gui/search.md#searching-by-step).
 - A change or workflow run can now be scheduled to run once on a date and time you pick, from the run dialog's new **Schedule** panel, which also holds the other options for a scheduled change. See [scheduling the change](/getting-started/familiarisation/gui/activity.md#scheduling-the-change).
-- **Automatically continue wait steps** has moved beside the run change dialog's submit button, and now says whether the change will run through its wait steps or which required input arguments will still stop it. See [continuing wait steps automatically](/getting-started/familiarisation/gui/activity.md#continuing-wait-steps-automatically).
+- An input step now continues by itself whenever every input argument already has a value, so **Automatically continue wait steps**, now beside the run change dialog's submit button, applies only to plain wait steps. When a wait step cannot continue automatically, the change log names every reason. See [automatically continuing wait steps](/key-concepts/actions.md#automatically-continuing-wait-steps).
 - The **Input step arguments** panel now marks required arguments, answers boolean arguments with a switch that starts at the argument's default, and shows each argument's default value. See [answering input steps up front](/getting-started/familiarisation/gui/activity.md#answering-input-steps-up-front).
 - An input argument can now be declared `type: :sensitive` for a password, token or other secret. Its value is encrypted when it is supplied, hidden from events, and masked in the GUI. See [sensitive input arguments](/key-concepts/actions.md#sensitive-input-arguments).
 - It is now possible to exclude property layers from the inherited properties view, a change's properties and a step's properties, to see where a value comes from. See [inherited properties](/getting-started/familiarisation/gui/projects/properties_and_settings.md#inherited-properties).
@@ -88,7 +88,7 @@ kubectl get node -o jsonpath='{range .items[*]}{.metadata.name}{"  capacity="}{.
 - A change waiting for a free runner slot now says so in its log, including how many pods are running and how many are waiting.
 - The events Kubernetes recorded against a pod are now written to the step log whenever a pod fails to start.
 - Improved the performance of loading a change with a deeply nested step tree, listing steps through [`GET /api/steps`](pathname:///api-docs/#tag/Steps), listing and downloading changes, listing events, and loading an asset's template version history or the property versions of a node with a long history.
-- Improved the performance of filtering the activities list by status - the running activities view in particular, which could take over ten seconds on an instance with a large change history.
+- Improved the performance of listing activities on an instance with a large change history, and of filtering them by status - the running activities view in particular could take over ten seconds.
 - Reduced the database load of OpsChain's periodic check for stuck changes, which no longer makes a query per active change and running step every 15 seconds.
 - A new [Longhorn storage](/advanced/longhorn-storage.md) guide has been added, covering how to install Longhorn as OpsChain's storage backend on self-hosted K3s so persistent volume capacity requests are genuinely enforced, instead of relying on `local-path`'s unenforced defaults.
 - An action can now include an approval step, which only the users and LDAP group members named on it can approve or reject. See [approval steps](/key-concepts/actions.md#approval-steps).
@@ -115,6 +115,11 @@ kubectl get node -o jsonpath='{range .items[*]}{.metadata.name}{"  capacity="}{.
 - Listing the changes, nodes, activities or log lines of a project, environment, asset, change or step that does not exist, or that the user cannot see, through the API now returns a not-found error rather than an empty list.
 - A change's support bundle can now be downloaded from the change's page in the GUI, and OpsChain now builds it on the server rather than the CLI assembling it, so the GUI and the CLI produce the same bundle. See [downloading a support bundle](/getting-started/familiarisation/gui/activity_details.md#downloading-a-support-bundle).
 - Notification options supplied when creating or retrying a change or workflow run, or saving a scheduled activity, are now checked. An unknown event, an unknown user or a malformed email address is rejected instead of being accepted and never sending anything. See [subscribing to events](/operations/notifications.md#subscribing-to-events).
+- The dashboard now has its figures calculated by the server rather than downloading every activity in the time range, and adds key metrics compared with the previous period, new panels, filters and auto-refresh. Layouts and filters saved for the previous dashboard are not carried over. See [the dashboard](/getting-started/familiarisation/gui/overview.md#the-dashboard).
+- An array input argument can now declare `valid_values`, and is answered by picking any number of them. A required input argument can no longer be answered with an empty array, hash or string. See [selecting several values](/key-concepts/actions.md#selecting-several-values).
+- Setting `OPSCHAIN_LOG_SOURCE` now prefixes each log line with the action and method that wrote it, and at debug level also logs each method an action enters and leaves. See [show where each log line came from](/key-concepts/actions.md#show-where-each-log-line-came-from).
+- A `git_clone` resource can now name the project Git remote it checks out with `git_remote`, so one Git remote can be checked out more than once. See [checking out one Git remote more than once](/advanced/resource-types/index.md#checking-out-one-git-remote-more-than-once).
+- Pushing a `git_clone` checkout to a `push_branch` that already exists now adds the checkout's commits to that branch rather than failing, and a step can now push or call `commit_to_repo` more than once. See [pushing to another branch](/advanced/resource-types/index.md#pushing-to-another-branch).
 
 ### Bug fixes {/* #2026-10-08-bug-fixes */}
 
@@ -182,6 +187,15 @@ kubectl get node -o jsonpath='{range .items[*]}{.metadata.name}{"  capacity="}{.
 - Fixed an issue where the templates list rejected `exclude_archived_nodes`, although the API reference lists it.
 - Fixed an issue where an API path nesting a node type under a parent that cannot hold it, such as agents under an environment, was accepted rather than returning not found.
 - Fixed an issue where a step log could print a pod's "is being created" message twice in a row.
+- Fixed an issue where a change waiting for change-level approval held a runner slot and an idle change worker pod for as long as the approvers took, delaying other changes. The change is now built once it is approved.
+- Fixed an issue where a change could stay pending indefinitely, holding every newer change behind it.
+- Fixed an issue where retrying a change waited, or asked for input, again at a wait step that had already been continued, and where a retry could hang if an earlier retry was cancelled before its steps started.
+- Fixed an issue where an action using `git_clone` or artefacts without requiring them failed with `NoMethodError` when each step ran in its own pod or on a remote runner.
+- Fixed an issue where a `git_clone` declared with a symbol name, such as `git_clone :my_repo`, failed with `No git remote named "my_repo" is available to this step`.
+- Fixed an issue where an asset's actions offered the `git_clone` resource's `push` action to run on its own.
+- Fixed an issue where an agent, change or MintModel render whose settings or properties could not be resolved could not clean up its pod, so stopping such an agent failed and left its pod running.
+- Fixed an issue where creating a template through the API without a `template_type` was refused, rather than creating an asset template.
+- Fixed an issue where the secrets API reported a secret held in a project, environment, asset or change setting as not existing when its value matched the system configuration's.
 
 ## [2026-09-14]
 

@@ -341,6 +341,6 @@ Take care when nesting workflows - it is possible to create a workflow that indi
 
 ## What to do next
 
-- Schedule your workflow to run automatically using a [scheduled activity](/getting-started/familiarisation/gui/scheduled_activities.md).
+- Schedule your workflow to run automatically using a [scheduled activity](/getting-started/familiarisation/gui/activity/scheduled_activities.md).
 - Dive deeper into the [workflow editor page](/getting-started/familiarisation/gui/workflows.md).
 - See more advanced features of resource types in our [actions reference guide](/key-concepts/actions.md).

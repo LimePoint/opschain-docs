@@ -61,7 +61,7 @@ Due to security risks, we strongly recommend keeping the number of users with su
 
 OpsChain needs the licence file (`opschain.lic`) you received from LimePoint before it accepts any work. Until it is uploaded, the API rejects every request except `opschain info`.
 
-To upload it, open the OpsChain GUI - see [accessing the OpsChain GUI](#accessing-the-opschain-gui) for its address - and log in with the user you created above. The first time the GUI is opened it asks for the licence file; once it is uploaded you can use OpsChain from both the GUI and the CLI.
+To upload it, open the OpsChain GUI - see [accessing the OpsChain GUI](#accessing-the-opschain-gui) for its address - and log in with the user you created above. The first time the GUI is opened it asks for the licence file; once it is uploaded you can use OpsChain from both the GUI and the CLI. A renewed licence is uploaded later from the [licence](/getting-started/familiarisation/gui/administration/licence.md) section of the administration screen.
 
 ### Configuring the OpsChain CLI
 
@@ -185,11 +185,11 @@ From the **Data cleanup** section of the administration screen, select **Add cle
 - is named for what it does, such as `refresh database statistics`;
 - has no resource paths and none of the deletion options ticked — the refresh covers every table in the instance, so it needs neither;
 - has **Refresh database statistics** ticked; and
-- runs daily on a [cron schedule](/getting-started/familiarisation/gui/scheduled_activities.md#setting-a-schedule), repeatedly, at a time your instance is quiet.
+- runs daily on a [cron schedule](/getting-started/familiarisation/gui/activity/scheduled_activities.md#setting-a-schedule), repeatedly, at a time your instance is quiet.
 
 To create the same job through the API, set `analyze_statistics`, `repeat` and `cron_schedule` on a data cleanup definition — refer to the [API documentation](https://docs.opschain.io/api-docs/#tag/Data-cleanup-definitions/).
 
-A newly installed instance has no statistics for its own tables until data starts arriving, and an instance restored from a backup has none at all, so the first runs of this job are the ones that matter most. See [refreshing database statistics](/operations/maintenance/data-cleaning.md#refreshing-database-statistics) for what it analyses and when, and [query planner statistics](/getting-started/familiarisation/gui/database.md#query-planner-statistics) for how to check it is keeping up.
+A newly installed instance has no statistics for its own tables until data starts arriving, and an instance restored from a backup has none at all, so the first runs of this job are the ones that matter most. See [refreshing database statistics](/operations/maintenance/data-cleaning.md#refreshing-database-statistics) for what it analyses and when, and [query planner statistics](/getting-started/familiarisation/gui/administration/system_information/database.md#query-planner-statistics) for how to check it is keeping up.
 
 :::tip[Purging old data]
 Once you know how long your installation needs to keep its activities, events and job history, schedule the purges too. The [data cleaning](/operations/maintenance/data-cleaning.md) guide covers what a definition can remove, how it selects the nodes it applies to, and how to preview a job before enabling it.

@@ -155,7 +155,7 @@ Where `<cluster-name>` is the name of the cluster.
 
 And, finally, you can verify via the OpsChain instance that writes are working by creating a change or modifying a project's properties via the UI.
 
-The [Topology section](/getting-started/familiarisation/gui/database.md#topology) of the Database tab in the OpsChain GUI shows the same picture without leaving OpsChain: which site's database cluster now holds the data, how far behind each replica is, and whether each site is running work. OpsChain also records an `info:database_cluster:role_changed` event for the site that took over.
+The [Topology section](/getting-started/familiarisation/gui/administration/system_information/database.md#topology) of the Database tab in the OpsChain GUI shows the same picture without leaving OpsChain: which site's database cluster now holds the data, how far behind each replica is, and whether each site is running work. OpsChain also records an `info:database_cluster:role_changed` event for the site that took over.
 
 ### Failback
 
@@ -167,7 +167,7 @@ If you already haven't done so, remove the `promotionToken` field from the `valu
 
 Cordoning a site stops new work from starting there, while everything already running there finishes normally. Use it to keep work off a site you are about to maintain, test or retire, without stopping its API or its database.
 
-To cordon a site, open the **Database** tab of the administration screen, select **Cordon** on the site's card in the [**Topology**](/getting-started/familiarisation/gui/database.md#topology) section, optionally give a reason, and confirm. Select **Uncordon** on the same card to let the site take new work again. Cordoning and uncordoning need the `update` permission on the `/admin/clusters/cordon` [authorisation path](/getting-started/familiarisation/gui/manage_security.md#administration-sub-paths), which a rule granting `update` on `/admin` also gives. To do it through the API instead, send `PATCH /api/admin/clusters/<site>` with `cordoned` set to `true` or `false` — see the [API reference](pathname:///api-docs/#tag/Admin-operations).
+To cordon a site, open the **Database** tab of the administration screen, select **Cordon** on the site's card in the [**Topology**](/getting-started/familiarisation/gui/administration/system_information/database.md#topology) section, optionally give a reason, and confirm. Select **Uncordon** on the same card to let the site take new work again. Cordoning and uncordoning need the `update` permission on the `/admin/clusters/cordon` [authorisation path](/getting-started/familiarisation/gui/manage_security.md#administration-sub-paths), which a rule granting `update` on `/admin` also gives. To do it through the API instead, send `PATCH /api/admin/clusters/<site>` with `cordoned` set to `true` or `false` — see the [API reference](pathname:///api-docs/#tag/Admin-operations).
 
 While a site is cordoned:
 
@@ -196,7 +196,7 @@ Ensure that the source cluster can be reached from the new cluster at all times.
 
 Check the [external service setting](/advanced/ha/index.md#external-service) section for more information on how to configure the external service for the new cluster.
 
-A new site registers itself once it starts, so it appears in the [Topology section](/getting-started/familiarisation/gui/database.md#topology) of the Database tab on its own within a minute or two of being deployed.
+A new site registers itself once it starts, so it appears in the [Topology section](/getting-started/familiarisation/gui/administration/system_information/database.md#topology) of the Database tab on its own within a minute or two of being deployed.
 :::
 
 ### Recovering a replica cluster

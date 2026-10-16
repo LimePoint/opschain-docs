@@ -778,7 +778,7 @@ A hash of options to pass to the vault client, in JSON format. See [`vault.clien
 
 ## Post-install system configuration
 
-When starting OpsChain for the first time, most of the settings above are stored in OpsChain's database and can be updated at any time via the OpsChain GUI or API. See the [API documentation](https://docs.opschain.io/api-docs#tag/System-configuration) for more details.
+When starting OpsChain for the first time, most of the settings above are stored in OpsChain's database and can be updated at any time via the OpsChain GUI - on the [system configuration](/getting-started/familiarisation/gui/administration/system_configuration.md) page - or API. See the [API documentation](https://docs.opschain.io/api-docs#tag/System-configuration) for more details.
 
 ### Settings managed by the deployment
 

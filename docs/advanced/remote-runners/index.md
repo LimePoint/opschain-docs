@@ -34,7 +34,9 @@ A target either serves the whole OpsChain instance or is owned by a project, env
 - A target with no owning resource serves every change in the instance. Only a superuser can create one.
 - A target owned by a node serves changes on that node and on every node below it. For example, a target owned by a project serves changes on the project, its environments and their assets.
 
-{/* TODO(scope paths): document a target's scope paths once the GUI create/edit forms support them. A target with scope paths serves changes on or beneath any of them instead of its owning node's subtree. */}
+A target owned by a node can instead be limited to **scope paths**: projects, environments or assets beneath its owning node. It then serves changes on or beneath any of those paths, instead of everything beneath its owning node. Set them in the **Scope** section of the target's page in the GUI. Removing every scope path makes the target serve its owning node's whole subtree again. A global target has no scope paths.
+
+![A target's scope, limited to one asset](../images/remote-runner-targets-details-scope.png)
 
 If **any** target serves a change's node, that change runs remotely, whether or not the target is connected. When no target that serves the node is live, the work waits until one is: OpsChain never falls back to running it in its own cluster. Creating a target with no owning resource therefore sends every change in the instance to remote runners.
 
@@ -49,7 +51,7 @@ When a target claims work, OpsChain records an `info:remote_runner_assignment:cl
 
 ## Managing targets
 
-Remote runner targets are listed under **Administration > Remote runners** in the OpsChain GUI. Everything on this page can also be done through the API: see the [remote runner targets API](pathname:///api-docs/#tag/Remote-runner-targets).
+Remote runner targets are listed under **Administration > Remote runners** in the OpsChain GUI. See [remote runners](/getting-started/familiarisation/gui/administration/remote_runners.md) for a guide to its screens. Everything on this page can also be done through the API: see the [remote runner targets API](pathname:///api-docs/#tag/Remote-runner-targets).
 
 ![Remote runner targets list](../images/remote-runner-targets-list.png)
 
@@ -103,11 +105,9 @@ Three settings control how a target works. Each has an instance-wide default in 
 | `poll_interval`          | `3`     | How often, in seconds, the daemon polls OpsChain for new work.                                                                          |
 | `zstd_compression_level` | `3`     | How hard OpsChain compresses its responses to the daemon, from `1` to `19`. Higher levels save bandwidth at the cost of CPU in OpsChain. |
 
-A target's page lets you edit its description, `max_concurrent_steps` and `poll_interval`. Leave a value empty to use the instance-wide default:
+A target's page lets you edit its description and all three settings. Leave a value empty to use the instance-wide default:
 
 ![Remote runner target settings](../images/remote-runner-targets-details-settings.png)
-
-`zstd_compression_level` is not editable in the GUI. To set it for one target, update the settings document that the target's `settings` relationship links to, through the [settings API](pathname:///api-docs/#tag/Settings).
 
 The daemon picks up a change to any of these settings on its next poll, without a restart.
 
@@ -178,7 +178,8 @@ A release that changes the protocol version says so in its [changelog](/changelo
 ## Limitations
 
 - **Resource limits are not enforced.** OpsChain sends the [`pod_templates.<pod type>.resources`](/key-concepts/settings.md#pod_templatespod-typeresources) limits for `step_runner` (or `change_worker`, for a change run in one container) to the daemon, but in this preview the daemon does not apply them, in either packaging mode. A step's log says `resource limits are not enforced for this step because cgroup delegation is not in effect on this target`.
-- **Only resource limits are taken from the pod settings.** Settings that only make sense for a Kubernetes pod, such as [`pod_templates.<pod type>.volumes`](/key-concepts/settings.md#pod_templatespod-typevolumes) and node selectors, have no effect on a remote container.
+- **Only resource limits are taken from the pod settings.** Settings that only make sense for a Kubernetes pod, such as [`pod_templates.<pod type>.volumes`](/key-concepts/settings.md#pod_templatespod-typevolumes), [`pod_templates.<pod type>.security_context`](/key-concepts/settings.md#pod_templatespod-typesecurity_context) and node selectors, have no effect on a remote container. A remote container does not run with the `run_as_group` or `supplemental_groups` configured for the pod.
+- **Finished containers are always removed.** The daemon deletes a container once its work finishes, so [`remove_change_worker_pod`](/key-concepts/settings.md#remove_change_worker_pod) set to `false` does not keep a failed change's or step's container for inspection. [`log_step_pod_events`](/key-concepts/settings.md#log_step_pod_events) adds nothing for remote work either, since there is no Kubernetes pod to report on. Use the [daemon's log](#troubleshooting) and the change log instead.
 - **Secret vault writes** are not supported remotely. See [secrets](#secrets).
 - **No executor pooling.** Remote work always gets a container of its own. See [which changes run remotely](#which-changes-run-remotely).
 - **A started change stays on its target.** A change run in one container is not moved to another target if its target is lost; it fails. See [liveness and lost targets](#liveness-and-lost-targets).

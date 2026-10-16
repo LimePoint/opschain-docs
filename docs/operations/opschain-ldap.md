@@ -113,7 +113,7 @@ The setting will only be applied after redeploying OpsChain. In high-availabilit
 
 See the [configuring OpsChain](/setup/configuration/additional-settings.md#ldapad-settings) guide for details of the LDAP settings that can be adjusted to enable the use of an external LDAP server. Update the [system configuration settings](/setup/configuration/additional-settings.md#post-install-system-configuration) with the relevant LDAP options to override the default values.
 
-The settings that describe how OpsChain connects to LDAP (host, port, base DN, admin, password, attribute mappings, etc.) are editable and apply live across all clusters as soon as they are saved — no OpsChain API restart is required. The bundled OpsChain LDAP server's domain, organisation and log level are managed by the deployment and can only be changed in your `values.yaml` file.
+The settings that describe how OpsChain connects to LDAP (host, port, base DN, admin, password, attribute mappings, etc.) are editable and apply live across all clusters as soon as they are saved — no OpsChain API restart is required. You can edit them in the GUI from the [LDAP config](/getting-started/familiarisation/gui/administration/system_configuration.md) section of the system configuration page. The bundled OpsChain LDAP server's domain, organisation and log level are managed by the deployment and can only be changed in your `values.yaml` file.
 
 :::info
 An example [Active Directory configuration](#example-active-directory-configuration) appears at the end of this document.

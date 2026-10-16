@@ -40,7 +40,7 @@ To have a secret that OpsChain will read from, we'll create a secret named `mana
 We'll also create another secret named `managed_server/web_server` with the credentials to access a private Gem repository. This secret will only contain a key for the `github_token`.
 
 :::tip[Storing secrets from within OpsChain]
-Rather than using the secret vault UI directly, you can store secret values and files in the secret vault from within OpsChain itself. Open **Secret management** from the user preferences menu (area D on the [overview](/getting-started/familiarisation/gui/overview.md) screen) and use its **Store** tab to write a text value or a file to a vault path. The same capability is available through the API.
+Rather than using the secret vault UI directly, you can store secret values and files in the secret vault from within OpsChain itself. Select **Secret management** from the user menu at the right of the [top bar](/getting-started/familiarisation/gui/overview.md#the-top-bar), and on its **Secret vault** tab choose **Store** to write a text value or a file to a vault path. The same capability is available through the API.
 :::
 
 :::note[Secret data]

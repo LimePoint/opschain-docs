@@ -53,7 +53,7 @@ Asset templates that are in use by an agent or an asset cannot be archived.
 
 | Buttons & links               | Function                                                               |
 |-------------------------------|------------------------------------------------------------------------|
-| **Bulk actions**              | Allows you to archive, restore or permanently delete multiple asset templates, or fetch the revision for the newest version of each selected template. |
+| **Bulk actions**              | Allows you to add a new version to each selected template, archive, restore or permanently delete multiple asset templates, or fetch the revision for the newest version of each selected template. |
 | **Search bar**                | Filter the contents of the table based on these criteria.              |
 | **Show archived**             | Toggle to show archived asset templates in the table.                  |
 | **Columns**                   | Hide or display columns in the table.                                  |
@@ -81,7 +81,7 @@ Clicking on a specific asset template row will open its details page, where you 
 - Editing the asset template name and description
 - Adding, editing and archiving its asset template versions
 - Editing the template's properties and settings
-- Enabling/disabling the asset template
+- Updating its Git remote, archiving or restoring it, and deleting it from the three dots menu
 
 ### Template properties and settings
 
@@ -105,7 +105,7 @@ A template version's Git revision can be re-fetched at any time — for example,
 
 Revisions can also be fetched in bulk: select rows in the template versions table and choose _Fetch revision_ from the _Bulk actions_ menu, or select rows in the templates table and choose _Fetch revision for newest version_ to re-fetch the newest version of each selected template. Both offer a force option to re-fetch versions that are currently in use, and report each failure individually alongside a summary of the successes.
 
-While a fetch is in progress the version is shown as initializing. If the fetch is interrupted before it finishes — for example by the worker running it being restarted — OpsChain detects the stalled fetch and re-attempts it, so the version resolves back to ready or is marked broken rather than staying stuck. An in-progress fetch can also be cancelled through the API's `cancel_refresh` endpoint, which returns the version to the revision it had previously resolved, or marks it broken if it has none.
+While a fetch is in progress the version is shown as initializing. If the fetch is interrupted before it finishes — for example by the worker running it being restarted — OpsChain detects the stalled fetch and re-attempts it, so the version resolves back to ready or is marked broken rather than staying stuck. An in-progress fetch can also be cancelled with the **Cancel fetch** button, which returns the version to the revision it had previously resolved, or marks it broken if it has none.
 
 You can only update a template version if no assets are using it. If you have a version being used by multiple assets, it is recommended to create a new template version instead and promote each asset as needed.
 
@@ -139,11 +139,12 @@ Each row includes:
 
 | Column              | Description                                                                                                              |
 |---------------------|--------------------------------------------------------------------------------------------------------------------------|
-| **Lock icon**       | Allows you to lock the version. This will ensure that it does not float to newer Git revisions until it is unlocked.     |
+| **Lock icon**       | Lock or unlock the version. A locked version cannot be modified until it is unlocked. A version that [follows its Git revision](#following-a-git-revision) cannot be locked. |
 | **Waves icon**      | Whether the version [follows its Git revision](#following-a-git-revision), and the control to switch that on or off. Where the last automatic refresh failed, the reason is shown here. |
 | **Version**         | The version number or identifier for the asset template.                                                                 |
 | **Description**     | Provides a short summary or purpose of the template version.                                                             |
 | **Assets**          | Shows the assets that are using this template version.                                                                   |
+| **Git remote**      | The Git remote the template version fetches from.                                                                        |
 | **State**           | The current status of the template version, such as whether it’s ready for use or has issues.                            |
 | **Git revision**    | The specific Git commit or revision that this template version points to.                                                |
 | **Created at**      | Timestamp for when the template version was created.                                                                     |
@@ -154,7 +155,7 @@ Each row includes:
 
 | Buttons & links               | Function                                                               |
 |-------------------------------|------------------------------------------------------------------------|
-| **Bulk actions**              | Allows you to archive, restore or [delete](#deleting-template-versions) multiple asset template versions, fetch their Git revision in bulk, or turn [following a Git revision](#following-a-git-revision) on or off for the selected versions. |
+| **Bulk actions**              | Allows you to archive, restore, lock, unlock or [delete](#deleting-template-versions) multiple asset template versions, fetch their Git revision in bulk, or turn [following a Git revision](#following-a-git-revision) on or off for the selected versions. |
 | **Search bar**                | Filter the contents of the table based on these criteria.              |
 | **Show archived**             | Toggle to show archived template versions in the table.                |
 | **Columns**                   | Hide or display columns in the table.                                  |
@@ -163,6 +164,23 @@ Each row includes:
 :::note
 Asset template versions that are in use by an agent or an asset cannot be archived.
 :::
+
+### Viewing a template version
+
+Click a row in the template versions table to open that version's page. Its header shows:
+
+<p align='center'>
+  <img alt='Template version page' src={require('!url-loader!../images/template-version-details.png').default} className='image-border'/>
+</p>
+
+| Card                                           | Description                                                                                                                                                                                                                                                    |
+|------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **State**                                      | The version's state - for example ready, initializing or broken. Hover over a broken state to see the error from the last fetch.                                                                                                                               |
+| **Git revision** or **Git revision (floating)** | The Git revision and short commit SHA the version resolved to. The label reads **Git revision (floating)** when the version [follows its Git revision](#following-a-git-revision). While a fetch is running, the card shows its progress instead. |
+
+The header's buttons and its three dots menu fetch the revision or cancel a fetch, switch [following the Git revision](#following-a-git-revision) on or off, lock, archive or [delete](#deleting-template-versions) the version, and edit its description.
+
+The **Linked assets** tab (**Linked agents** for an agent template) lists what is assigned this version. The **Properties** and **Settings** tabs hold the version's own values - see [template properties and settings](#template-properties-and-settings).
 
 ### Editing the asset template
 
@@ -188,7 +206,7 @@ To add or update an existing template version, follow these steps:
 1. Click on the _Add template version_ button.
 2. Fill in the mandatory fields in the dialog, including the version and the Git revision.
 3. If the version matches an existing template version, a warning message will appear that the version already exists. If it is not in use by an asset, submiting the form will update the existing version.
-4. Click the _Create template version_ button.
+4. Click the _Add template version_ button.
 
 ### Documented template actions
 
@@ -222,7 +240,7 @@ We suggest not naming any actions in the `actions.rb` file with a name that matc
 
 ## Archiving asset templates and template versions
 
-Archive one or more asset templates - or individual template versions - by selecting them in their respective table and choosing _Archive_ from the _Bulk actions_ menu.
+Archive one or more asset templates - or individual template versions - by selecting them in their respective table and choosing _Archive templates_ or _Archive template versions_ from the _Bulk actions_ menu.
 
 - Archived asset templates cannot be used to create new assets.
 - Archived asset template versions cannot be assigned to assets.
@@ -230,7 +248,7 @@ Archive one or more asset templates - or individual template versions - by selec
 
 ## Deleting asset templates
 
-Delete an asset template from its actions menu, or delete several at once by selecting them in the templates table and choosing _Delete_ from the _Bulk actions_ menu.
+Delete an asset template from its actions menu, or delete several at once by selecting them in the templates table and choosing _Delete templates_ from the _Bulk actions_ menu.
 
 :::warning
 Deleting an asset template is permanent and irreversible. A template that is still assigned to a node or referenced by a change cannot be deleted - archive it instead.

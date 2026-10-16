@@ -472,7 +472,7 @@ One consequence: there is no way to empty a run list through this resource type.
 
 The `git_clone` resource type checks a Git repository out into a directory inside the step's working environment. It is loaded before your `actions.rb` is read, so it needs no `require` of its own.
 
-Most often the repository is one of the project's configured [Git remotes](/getting-started/familiarisation/gui/projects/git_remotes.md), referred to by the name the remote was given in OpsChain. OpsChain checks these out from its own server-side mirror of the remote, so no credentials are needed and the checkout is fast — it never has to talk to the actual remote over the network:
+Most often the repository is one of the project's configured [Git remotes](/getting-started/familiarisation/gui/projects/git_remotes.md), referred to by the name the remote was given in OpsChain. By default the resource's name is the remote's name; set [`git_remote`](#checking-out-one-git-remote-more-than-once) to give the resource a different name, for example to check one remote out more than once. OpsChain checks these out from its own server-side mirror of the remote, so no credentials are needed and the checkout is fast — it never has to talk to the actual remote over the network:
 
 ```ruby
 git_clone 'app-config' do
@@ -505,12 +505,13 @@ The `git_clone` resource type accepts the following properties:
 | `tag`                  |                                 | The tag to check out. An annotated tag is checked out at the commit it points to. A tag is checked out with a detached `HEAD`.                                                                                                                                                                                                                                                                                             |
 | `commit`               |                                 | The commit to check out, as a full 40-character SHA — an abbreviated SHA is rejected. A commit is checked out with a detached `HEAD`.                                                                                                                                                                                                                                                                                      |
 | `clone_during_dry_run` | `false`                         | Whether to check the repository out when OpsChain loads your actions to *discover* them rather than to run a step — see [when the repository is checked out](#when-the-repository-is-checked-out). Set this to `true` if the repository holds YAML or similar configuration that your actions need in order to build the actions or the step tree.                                                                         |
+| `git_remote` | The resource name | The name of the project [Git remote](/getting-started/familiarisation/gui/projects/git_remotes.md) to check out. Set it to check out one Git remote more than once - see [checking out one Git remote more than once](#checking-out-one-git-remote-more-than-once). The remote must be available to the step under the [`git_remote.mountable`](/key-concepts/settings.md#git_remotemountable) setting. Cannot be combined with `url`. |
 | `url`                  |                                 | The URL of a repository that is **not** one of the project's Git remotes. See [checking out a repository that is not configured in the project](#checking-out-a-repository-that-is-not-configured-in-the-project). Supplying this means OpsChain fetches from the real remote rather than from a mirror, so any credentials the repository needs must be supplied too.                                                     |
 | `user`                 |                                 | Username to authenticate an HTTPS `url` with. Not needed for a public repository.                                                                                                                                                                                                                                                                                                                                          |
 | `password`             |                                 | Password or personal access token to authenticate an HTTPS `url` with.                                                                                                                                                                                                                                                                                                                                                     |
 | `ssh_key`              |                                 | The **contents** of the private key to authenticate an SSH `url` with — not a path to a key file. Store the key in an [OpsChain property](/key-concepts/properties.md) and read it back, rather than committing it to your Git repository.                                                                                                                                                                                 |
 | `passphrase`           |                                 | The passphrase for `ssh_key`, if it has one.                                                                                                                                                                                                                                                                                                                                                                               |
-| `push_branch` | The checked out `branch` | The branch the [`push` action](#pushing-changes) pushes to. Defaults to the checked out `branch`; required to push a `tag` or `commit` checkout. A branch other than the checked out one is created by the push, and must not already exist. |
+| `push_branch` | The checked out `branch` | The branch the [`push` action](#pushing-changes) pushes to. Defaults to the checked out `branch`; required to push a `tag` or `commit` checkout. A branch other than the checked out one is created if it does not exist, and otherwise has the checkout's changes added to it - see [pushing to another branch](#pushing-to-another-branch). |
 | `create_branch_from` |  | A branch, tag or commit to create `branch` from when `branch` does not exist yet - see [creating a branch](#creating-a-branch). Only valid with `branch`, and only for one of the project's Git remotes. |
 | `commit_user_name` |  | The author name for commits made in the checkout. Set it, with `commit_user_email`, before committing in the checkout: OpsChain configures no commit identity of its own, and [`commit_to_repo`](#committing-changes-with-commit_to_repo) refuses to commit without both. |
 | `commit_user_email` |  | The author email address for commits made in the checkout. |
@@ -545,6 +546,30 @@ end
 
 Name the resource something your project repository does not already contain, or set `path` to a location outside `/opt/opschain`.
 :::
+
+#### Checking out one Git remote more than once
+
+Set `git_remote` to check out the same project Git remote at several branches, tags or commits. Give each resource its own name, and name the remote in `git_remote`:
+
+```ruby
+git_clone :config_main do
+  git_remote 'app-config'
+  branch 'main'
+end
+
+git_clone :config_release do
+  git_remote 'app-config'
+  tag 'v1.2.3'
+end
+```
+
+Each resource checks out into its own directory - `/opt/opschain/<resource name>` by default, so `/opt/opschain/config_main` and `/opt/opschain/config_release` here - or into its own `path`. Both checkouts read from OpsChain's one mirror of `app-config`, so the second costs no extra network fetch.
+
+Refer to each checkout by its **resource** name, not the remote's name: `push_git_clone :config_main`, `commit_to_repo :config_release` and `git_clone_path(:config_main)`.
+
+Two resources that push to the same branch behave like any two pushers. When the branch is one the second resource checked out, the second push is rejected once the first has moved it, as described in [pushing changes](#pushing-changes). When it is a `push_branch` the second resource did not check out, its changes are added on top of the first push's - see [pushing to another branch](#pushing-to-another-branch). Two resources may not share a directory, even when they check out the same remote - see [idempotent checkouts](#idempotent-checkouts).
+
+If no Git remote of that name is available to the step, the step fails with `No git remote named "app-config" (from the "git_remote" property of the "config_main" git_clone) is available to this step`, followed by the names of the Git remotes that are available.
 
 ### When the repository is checked out
 
@@ -653,12 +678,48 @@ end
 Keep these rules in mind:
 
 - **Push in the same action as the commit.** The checkout is reset to the mirror's tip whenever the resource is declared again - which happens for every step - so commits that have not been pushed by the end of the action are lost, even in a change that runs all its steps in one pod.
-- **Pushes only fast-forward or create.** Pushing to the checked out branch succeeds only if the branch has not moved on the remote since it was checked out, and only if the new commits descend from the commit that was checked out. Pushing to a different `push_branch` creates that branch, and fails if it already exists. A push that would overwrite someone else's commits fails with an error saying it was rejected - nothing is ever force pushed.
+- **The checked out branch only fast-forwards.** Pushing to the checked out branch succeeds only if the branch has not moved on the remote since it was checked out, and only if the new commits descend from the commit that was checked out. A push that would overwrite someone else's commits fails with an error saying it was rejected - nothing is ever force pushed. Pushing to a different `push_branch` follows the rules in [pushing to another branch](#pushing-to-another-branch).
+- **Push as often as you like.** An action can push more than once, and can call `commit_to_repo` more than once: each push sends only the commits made since the previous one.
 - **Only for the project's Git remotes.** A `git_clone` with a `url` already has the credentials it needs, so `push` raises an error rather than going through OpsChain - push with `git` directly instead.
 - **The artefact size limit applies.** The new commits are sent to OpsChain as a Git bundle, which may not exceed the [artefact size limit](/key-concepts/artefacts.md#size-limit).
 - **Pushing needs the `execute` action** on the project's [`/git_remotes` path](/getting-started/familiarisation/gui/manage_security.md#resource-paths), as the user who created the change, started the agent or triggered the action generation doing the push.
 
-Running `push` with no new commits does nothing to the checked out branch, so running the `push` action on its own is harmless. When `push_branch` names another branch, though, it creates that branch at the checked out commit.
+Running `push` with no new commits does nothing to a branch that already exists, so running the `push` action on its own is harmless. When `push_branch` names another branch that does not exist yet, though, it creates that branch at the checked out commit.
+
+#### Pushing to another branch
+
+When `push_branch` names a branch other than the checked out one - always the case for a `tag` or `commit` checkout - what the push does depends on that branch:
+
+- **It does not exist.** The push creates it, with the checkout's commits on top of the checked out commit.
+- **The checkout's commits already build on it.** When the branch's latest commit is an ancestor of the checkout's - the checked out commit, say, or one of its ancestors - the push fast-forwards the branch to the checkout's commits, unchanged.
+- **It has commits the checkout does not.** The push adds the checkout's commits on top of the branch's own, one new commit for each of them. Only the files a commit changed - added, modified or deleted - relative to the commit before it are applied; every other file on the branch is left as the branch has it. So what lands on the branch is the checkout's *changes*, compared with the commit that was checked out, not a copy of the whole checkout.
+
+For example, to check out a release tag, generate a deployment manifest from it and record the manifest on a long-lived `deployments` branch:
+
+```ruby
+git_clone :release do
+  git_remote 'app-config'
+  tag 'v1.2.3'
+  push_branch 'deployments'
+  commit_user_name 'Release bot'
+  commit_user_email 'release-bot@example.com'
+end
+
+action :record_deployment do
+  commit_to_repo :release, message: 'Deploy v1.2.3' do |repo_path|
+    File.write(repo_path.join('deployed/manifest.yaml'), manifest.to_yaml)
+  end
+end
+```
+
+Only `deployed/manifest.yaml` is written to `deployments`; the rest of that branch - including any file v1.2.3 has a different version of - is untouched. A file the checkout changes is written as the checkout has it, though, replacing whatever the branch held at that path.
+
+Keep these points in mind:
+
+- **The branch keeps its history.** Nothing is force pushed: the new commits are added after the branch's latest commit. Each keeps its original author and message. Its committer is the resource's `commit_user_name` and `commit_user_email` when both are set, or else the original committer and date.
+- **Merge commits are flattened.** A merge commit in the checkout becomes one ordinary commit, carrying the changes the merge made relative to its first parent. The commits merged in are not pushed separately.
+- **A clashing path fails the push.** If a change cannot be applied because a path is a file on one side and a directory on the other, the push fails with an error such as `Cannot apply the changes to deployments: 'config/app.yaml' appears as both a file and as a directory`, and the branch is not changed.
+- **A branch that moves during the push is retried.** If another pusher moves the branch while OpsChain is pushing to it, the push is attempted again against the branch's new latest commit, up to three times in all, before failing with the error saying it was rejected.
 
 ### Committing changes with `commit_to_repo`
 
@@ -736,7 +797,7 @@ The branch is created as the resource is declared, so it is created during [acti
 
 ### Checking out a repository that is not configured in the project
 
-Supply a `url` instead of naming one of the project's Git remotes. There is no mirror for such a repository, so OpsChain fetches from the real remote over the network and you must supply whatever credentials it needs. Keep those in [OpsChain properties](/key-concepts/properties.md) rather than in your Git repository:
+Supply a `url` instead of naming one of the project's Git remotes. `url` and `git_remote` cannot both be set. There is no mirror for such a repository, so OpsChain fetches from the real remote over the network and you must supply whatever credentials it needs. Keep those in [OpsChain properties](/key-concepts/properties.md) rather than in your Git repository:
 
 ```ruby
 # a public repository needs no credentials
@@ -789,7 +850,7 @@ If that refresh fails, because the remote is unreachable for example, OpsChain r
 Checking out a repository is idempotent. OpsChain leaves the target directory untouched when it already holds a checkout at the commit the requested branch, tag or commit currently resolves to, and in the same form: on the requested branch for a `branch`, or detached for a `tag` or `commit`. Otherwise OpsChain checks it out again — when the branch or tag has moved on, when a previous checkout was interrupted partway through, or when an earlier step checked the same commit out by a different branch, tag or commit.
 
 :::note
-Two `git_clone` resources in the same step that target the same directory with different configuration (for example, a different branch, tag or commit) raise a clear error, rather than one silently overwriting the other.
+Two `git_clone` resources in the same step that target the same directory with different configuration (for example, a different branch, tag, commit, Git remote or `url`) raise a clear error, rather than one silently overwriting the other. Two resources may check out the same Git remote as long as they target different directories.
 :::
 
 ### Current limitations

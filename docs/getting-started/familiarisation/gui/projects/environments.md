@@ -12,7 +12,7 @@ Environments are used to organise changes and assets within a project.
 To view all environments within a project:
 
 1. [Log in](/getting-started/familiarisation/gui/login.md) to the GUI.
-2. Click on _projects_ on the navigation bar on the left side.
+2. Click on _projects_ in the navigation bar.
 3. Navigate to your desired project.
 4. Click on the _environments_ tab to display the list of environments.
 
@@ -42,13 +42,13 @@ Just as with projects, if you don't see any environment in the list, it is possi
 
 ### Managing environments in the table
 
-- Use checkboxes to select multiple environments for bulk operations (archiving or restoring).
+- Use checkboxes to select multiple environments for bulk operations (archiving, restoring or deleting).
 - Click on a column heading to sort the contents of the table.
 - Click on an environment's row to navigate to its detailed view.
 
 #### Archiving an environment
 
-Archive an environment by selecting it from the environments table and choosing _Archive_ from the _Bulk actions_ menu.
+Archive an environment by selecting it from the environments table and choosing _Archive environments_ from the _Bulk actions_ menu.
 
 Archiving an environment:
 
@@ -95,23 +95,27 @@ You can view the details of an environment by clicking on its row.
   <img alt='Environment details screen' src={require('!url-loader!../images/environment-details.png').default} className='image-border'/>
 </p>
 
-This screen displays the changes, scheduled activities, assets, artefacts, properties and settings specific to this particular environment and its child assets.
+This screen displays the changes, scheduled activities, assets, artifacts, audit history, properties and settings specific to this particular environment and its child assets.
 
 ### Activity tab
 
-Lists the changes that have been deployed in this environment. Refer to the [activities list](/getting-started/familiarisation/gui/activity.md#understanding-the-activity-screen) for a detailed description of this table's contents.
+Lists the changes that have been deployed in this environment. Refer to the [activities list](/getting-started/familiarisation/gui/activity/index.md#understanding-the-activity-screen) for a detailed description of this table's contents.
 
-### Scheduled activities tab
+### Scheduled activity tab
 
-This tab lists the scheduled activities defined for this environment. Refer to the [scheduled activity details](/getting-started/familiarisation/gui/scheduled_activities.md#scheduled-activity-details) for a detailed description of this table's contents.
+This tab lists the scheduled activities defined for this environment. Refer to the [scheduled activity details](/getting-started/familiarisation/gui/activity/scheduled_activities.md#scheduled-activity-details) for a detailed description of this table's contents.
 
 ### Assets tab
 
 This tab lists the assets available for this environment. Refer to the [assets page](/getting-started/familiarisation/gui/projects/assets.md) for a detailed description of this table's contents.
 
-### Artefacts tab
+### Artifacts tab
 
-This tab lists the latest version of each [artefact](/key-concepts/artefacts.md) stored against this environment, and is where you upload one by hand or open an artefact's version history. It works as it does for an asset - see [artefacts](/getting-started/familiarisation/gui/projects/assets.md#artefacts) for the columns, filters, upload dialog and versions page.
+This tab lists the latest version of each [artifact](/key-concepts/artifacts.md) stored against this environment, and is where you upload one by hand or open an artifact's version history. It works as it does for an asset - see [artifacts](/getting-started/familiarisation/gui/projects/assets.md#artifacts) for the columns, filters, upload dialog and versions page.
+
+### Audit history tab
+
+This tab lists the most recent audit events for this environment. Refer to [node & agent audit history](/getting-started/familiarisation/gui/audit_history.md#node--agent-audit-history) for a description of this table's contents.
 
 ### Properties tab
 
