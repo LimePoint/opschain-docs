@@ -5,7 +5,7 @@ description: Altering project, environment, agent and asset specific settings.
 
 # Settings
 
-To help with customizing OpsChain to your needs, a number of settings can be configured at the global, project, environment, asset and change levels, each overriding the previous one. When a _default value_ is mentioned, it usually refers to the value automatically assigned to the global settings, which serve as a fallback and can be configured via the [system configuration](/getting-started/familiarisation/gui/administration/system_configuration.md) page in the GUI or at installation time, as described in the [configuration guide](/setup/configuration/index.md). Settings are stored in JSON format and the ones deemed sensitive (e.g. password, tokens) are automatically encrypted when saved.
+To help with customizing OpsChain to your needs, a number of settings can be configured at the global, project, environment, asset and change levels, each overriding the previous one. When a _default value_ is mentioned, it usually refers to the value automatically assigned to the global settings, which serve as a fallback and can be configured via the system configuration page in the GUI or at installation time, as described in the [configuration guide](/setup/configuration/index.md). Settings are stored in JSON format and the ones deemed sensitive (e.g. password, tokens) are automatically encrypted when saved.
 
 Changes to these settings apply live across all clusters in a [high availability deployment](/advanced/ha/index.md) — there is no need to restart the OpsChain API for an updated setting to take effect.
 
@@ -97,8 +97,6 @@ Each `opschain-api` pod runs a fixed number of worker processes to handle incomi
 
 These settings let OpsChain automatically grow or shrink the number of worker processes in each pod in response to this queuing, within a configured minimum and maximum, instead of relying solely on a fixed count. Every autoscaling decision is recorded as an [event](/key-concepts/events.md), whether or not the worker count is actually changed.
 
-You can also change these settings in the GUI - see [system configuration](/getting-started/familiarisation/gui/administration/system_configuration.md).
-
 ### api_autoscaler.mode
 
 Default value: _active_<br/>
@@ -144,41 +142,41 @@ When the API pod reaches its memory limit, every worker process in the pod is st
 A `warn:api_autoscaler:worker_killed_memory` event usually means one request needed more memory than the pod could spare. If they recur, give the API more room: raise its memory limit (`api.resources.limits.memory` — see [changing the values](/operations/component-resources.md#changing-the-values)), lower [`api_autoscaler.max_workers`](#api_autoscalermax_workers), or run fewer threads in each worker by setting the `RAILS_MAX_THREADS` environment variable (default `5`) in `api.env`, since each thread is one more request that can be using memory at the same time.
 :::
 
-## Artifact settings
+## Artefact settings
 
-These settings control the [artifacts](/key-concepts/artifacts.md) your actions store.
+These settings control the [artefacts](/key-concepts/artefacts.md) your actions store.
 
-### artifact.compression
+### artefact.compression
 
 Default value: _zstd_<br/>
 Accepted values: _zstd, disabled_<br/>
 Scope: _global only_
 
-Whether OpsChain compresses an artifact's content as it stores it. Changing it affects only artifacts stored afterwards; an artifact already stored reads back correctly whatever it was stored with. See [compression](/key-concepts/artifacts.md#compression).
+Whether OpsChain compresses an artefact's content as it stores it. Changing it affects only artefacts stored afterwards; an artefact already stored reads back correctly whatever it was stored with. See [compression](/key-concepts/artefacts.md#compression).
 
-### artifact.compression_level
+### artefact.compression_level
 
 Default value: _3_<br/>
 Accepted values: _1 to 22_<br/>
 Scope: _global only_
 
-The zstd compression level. A higher level spends more CPU time storing an artifact for a smaller stored size.
+The zstd compression level. A higher level spends more CPU time storing an artefact for a smaller stored size.
 
-### artifact.hard_max_file_size
+### artefact.hard_max_file_size
 
 Default value: _2Gi_<br/>
 Accepted values: _any Kubernetes memory quantity_<br/>
 Scope: _global only_
 
-The largest artifact the instance accepts. [`artifact.max_file_size`](#artifactmax_file_size) cannot be raised past it at any level.
+The largest artefact the instance accepts. [`artefact.max_file_size`](#artefactmax_file_size) cannot be raised past it at any level.
 
-### artifact.max_file_size
+### artefact.max_file_size
 
 Default value: _500Mi_<br/>
-Accepted values: _any Kubernetes memory quantity, up to `artifact.hard_max_file_size`_<br/>
+Accepted values: _any Kubernetes memory quantity, up to `artefact.hard_max_file_size`_<br/>
 Scope: _global, change_
 
-The largest artifact an action may store. It can be overridden only for an individual change, not for a project, environment or asset. See [size limit](/key-concepts/artifacts.md#size-limit).
+The largest artefact an action may store. It can be overridden only for an individual change, not for a project, environment or asset. See [size limit](/key-concepts/artefacts.md#size-limit).
 
 ## Change and workflow execution settings
 
@@ -616,7 +614,7 @@ Scope: _global, project, environment, asset, change_
 How OpsChain keeps one unit of work's filesystem writes (an action-generation request's or a change's) away from other work in the same pod. Has no effect unless [`executor_pool.enabled`](#executor_poolenabled) is `true`.
 
 - `change`: each change, or action-generation request, gets its own view of the filesystem. A change's own steps share that view.
-- `request`: every individual step gets a fresh view. A file written by one step, including a stage's or combo action's child steps, is not visible to later steps of the same change. A change's top-level `actions.rb` code runs before each step gets its own view, so it is isolated per change rather than per step. To pass files between steps, use [artifacts](/key-concepts/artifacts.md).
+- `request`: every individual step gets a fresh view. A file written by one step, including a stage's or combo action's child steps, is not visible to later steps of the same change. A change's top-level `actions.rb` code runs before each step gets its own view, so it is isolated per change rather than per step. To pass files between steps, use [artefacts](/key-concepts/artefacts.md).
 - `never`: no filesystem isolation at all. Every unit of work in a pod, including work started by other users, can read and overwrite the files that other work in it writes or has left behind. OpsChain shares a pod between changes only when their `opschain.files` are the same.
 
 `change` and `request` guard against accidental interference between trusted `actions.rb`, not against hostile code: work sharing a pod runs as the same operating system user under every scope.
@@ -682,11 +680,11 @@ Scope: _global_
 
 The longest, in seconds, that OpsChain will wait for exclusive access to its copy of a Git remote's repository.
 
-Only one operation works with a given repository at a time. This setting bounds every wait for it, whichever operation is waiting: fetching the remote, building the repository tarball sent to a step runner, and walking a commit range to evaluate a scheduled change's [commit file patterns](/getting-started/familiarisation/gui/activity/scheduled_activities.md#limiting-a-scheduled-change-to-particular-files). An operation that reaches the timeout fails with a message naming the Git remote and the project or environment it belongs to.
+Only one operation works with a given repository at a time. This setting bounds every wait for it, whichever operation is waiting: fetching the remote, building the repository tarball sent to a step runner, and walking a commit range to evaluate a scheduled change's [commit file patterns](/getting-started/familiarisation/gui/scheduled_activities.md#limiting-a-scheduled-change-to-particular-files). An operation that reaches the timeout fails with a message naming the Git remote and the project or environment it belongs to.
 
 Most waits end well within the timeout, because the operation holding the repository is a fetch that takes seconds. The timeout applies when the holder cannot finish — a Git server that has stopped responding, or a network path that has gone away without closing the connection. A waiting operation occupies an OpsChain background worker until it either gets the repository or times out, so this setting also caps how long one unreachable Git remote can tie up capacity that other work needs.
 
-A scheduled change whose commit file patterns hit this timeout is still created and run, as described in [when the patterns cannot be evaluated](/getting-started/familiarisation/gui/activity/scheduled_activities.md#when-the-patterns-cannot-be-evaluated).
+A scheduled change whose commit file patterns hit this timeout is still created and run, as described in [when the patterns cannot be evaluated](/getting-started/familiarisation/gui/scheduled_activities.md#when-the-patterns-cannot-be-evaluated).
 
 Raise this if you have very large repositories whose fetch or tarball takes longer than the default and legitimate work is failing with the timeout. Lower it to give up on an unresponsive Git server sooner. See also [`git_remote.ssh.connect_timeout`](#git_remotesshconnect_timeout) and the two `server_alive` settings, which bound the underlying SSH connection rather than the wait for the repository.
 
@@ -833,8 +831,6 @@ Together with [`git_remote.ssh.server_alive_interval`](#git_remotesshserver_aliv
 
 OpsChain builds a container image before running each change step. On busy clusters, many image builds can be triggered simultaneously, competing for build service resources. The image build throttle limits how many builds run at the same time, queuing excess requests and starting them as running builds complete.
 
-You can also change the global values of these settings in the GUI - see [system configuration](/getting-started/familiarisation/gui/administration/system_configuration.md).
-
 When a build is submitted, OpsChain checks whether a concurrency slot is available. If one is free, the build starts immediately. If all slots are occupied, the build waits and re-checks after a configurable delay. Queued builds are started in the order they were submitted (FIFO).
 
 ### build_service.max_concurrent_image_builds
@@ -920,7 +916,7 @@ One of `disabled`, `enabled` or `superuser_override`. Setting it to `enabled` st
 
 ## Notifications
 
-Refer to [notifications](/operations/notifications.md) for the notifications configuration. Global notification channels are managed on the [system configuration](/getting-started/familiarisation/gui/administration/system_configuration.md) page.
+Refer to [notifications](/operations/notifications.md) for the notifications configuration.
 
 ## Pod template settings
 
@@ -1030,79 +1026,11 @@ OpsChain rejects host paths that would expose the node's container runtime or cl
 :::
 
 :::info
-The runner container runs as user ID `10001`. Kubernetes `fsGroup` does not apply to host path volumes, so the directory on the node must be readable - and writable, if `read_only` is `false` - by user ID `10001`, or by a group the pod is given through [`security_context`](#pod_templatespod-typesecurity_context). If the mount appears but its contents cannot be read, check the directory's ownership and permissions on the node.
+The runner container runs as user ID `10001`. Kubernetes `fsGroup` does not apply to host path volumes, so the directory on the node must be readable - and writable, if `read_only` is `false` - by user ID `10001`. If the mount appears but its contents cannot be read, check the directory's ownership and permissions on the node.
 
 Host paths are node local. In a multi-node cluster the directory must exist, with the correct ownership, on every node a runner pod may be scheduled onto - and on every cluster, in a multi-cluster deployment. Use `runner.node_selector` to restrict where runner pods are scheduled.
 
 The `host_path.path` directory must already exist on the Kubernetes node before the change runs. OpsChain does not create it, so that a mistyped path fails immediately rather than silently mounting an empty directory. (The `mount_path` inside the pod is created by Kubernetes and does not need to exist beforehand.)
-:::
-
-### pod_templates.\<pod type\>.security_context
-
-Default value: _none (the pod runs with OpsChain's own group IDs)_<br/>
-Accepted pod types: _`default`, `change_worker`, `step_runner`, `agent`_
-
-Adds group IDs to the runner pod, so it can read and write a [host volume](#pod_templatespod-typevolumes) whose files belong to one of your own users without that directory being world-accessible.
-
-The runner runs as user ID `10001` and group ID `10001`. A directory mounted from the Kubernetes node normally belongs to a user and group of your own, so the runner can only use it if it is open to everyone, and the files the runner writes there belong to a group your users are not in. `security_context` puts the runner in your group instead.
-
-| Key                   | Description                                                                                                                                            |
-|-----------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `run_as_group`        | The pod's primary group ID. Files and directories the runner creates are given this group, wherever it creates them. Must be `1` or greater            |
-| `supplemental_groups` | Further group IDs the pod is a member of, for directories owned by other groups. Up to 8 group IDs, each `1` or greater, with no repeats               |
-
-Both keys are optional, and no other keys are accepted. This example mounts `/data/stage` read-write and runs the pod with the group that owns it, `1001`, plus membership of a second group, `2000`:
-
-```json
-{
-  "pod_templates": {
-    "default": {
-      "volumes": {
-        "data-stage": {
-          "host_path": { "path": "/data/stage" },
-          "mount_path": "/data/stage",
-          "read_only": false
-        }
-      },
-      "security_context": {
-        "run_as_group": 1001,
-        "supplemental_groups": [2000]
-      }
-    }
-  }
-}
-```
-
-OpsChain keeps its own group IDs as supplementary groups, so the runner still reaches everything in its image:
-
-|                                             | Without `security_context` | With the example above                 |
-|---------------------------------------------|----------------------------|----------------------------------------|
-| User ID                                     | `10001`                    | `10001`                                |
-| Primary group ID                            | `10001`                    | `1001`                                 |
-| Supplementary group IDs                     | OpsChain's own             | OpsChain's own, `10001` and `2000`     |
-| Group applied to Kubernetes managed volumes | `10001`                    | `10001`                                |
-
-On the Kubernetes node, give the group access to each directory the runner should use, and remove access for everyone else:
-
-```bash
-chgrp -R 1001 /data/stage
-chmod -R g+rwX,o-rwx /data/stage
-```
-
-With the directories owned by group `1001` and mode `0770`, the runner can read and write them, and the files it creates are owned by user ID `10001` and group ID `1001`. Because `run_as_group` sets the group of new files, the directories do not need the setgid bit. Setting it (`chmod g+s`) does no harm, and keeps the group consistent when other users write there too.
-
-Like `volumes`, `security_context` is accepted only on the three pods that execute your changes, plus `default`. A pod type's own `security_context` is merged over the one under `default`, key by key. A list replaces the inherited list rather than adding to it, so a `step_runner.supplemental_groups` of `[3000]` over a `default.supplemental_groups` of `[2000]` adds the step runner pod to group `3000` but not `2000`, while it still inherits `default.run_as_group`.
-
-`security_context` cannot be supplied as a change level settings override, so creating a change never changes the groups its pods run with.
-
-`security_context` applies only to Kubernetes pods. A change or step that runs on a [remote runner](/advanced/remote-runners/index.md) target does not get these groups.
-
-A group ID of `0` is rejected, because membership of the root group would give the runner access to every root-group file on the mounted volumes and in its image. The limit of 8 supplementary groups exists for NFS: a mount using the default `sys` security flavour sends at most 16 group IDs with each request and the server ignores any beyond that, so access to the later groups fails with a permission error. Eight leaves room for the primary group and OpsChain's own.
-
-:::note[What security_context does not change]
-The runner's user ID stays `10001`, so the files it creates are owned by user ID `10001`, not by your own user. Tools that check who owns a file, or that change the ownership of files they create, still fail - SSH's checks on private keys, for example. Where the owner matters, map the runner's user ID to your own on the storage, such as an NFS export that squashes every user to it, or have the action write the files over SSH as that user.
-
-Your users cannot modify files the runner creates unless the action allows it. The runner's umask is `022`, so new files are created with mode `0644` and new directories with `0755`: the group can read them but not write to them. If your own users need to change these files, call `File.umask(0o007)` in the action before it writes them, or set default ACLs on the directory (inherited ACLs on NFSv4) so new files are group-writable whatever the umask.
 :::
 
 ## Remote runner settings
@@ -1237,8 +1165,6 @@ This setting only applies to MintModel steps. Standard runner steps are not affe
 OpsChain runs each change worker, step runner, actions refresh and MintModel concretisation in its own Kubernetes pod. On busy clusters this can create more pods than the cluster can comfortably schedule at once. These settings cap how many runner, actions-refresh and MintModel pods OpsChain will run concurrently on a cluster. When a cap is reached, further pods wait and are admitted as running pods complete.
 
 Each cap is enforced independently. A pool never borrows another pool's unused capacity, so a limit always means exactly what it says: reaching the actions-refresh cap makes further actions-refresh pods wait even while runner slots sit idle. The combined number of running pods therefore never exceeds the sum of the three limits.
-
-You can also change these settings in the GUI - see [system configuration](/getting-started/familiarisation/gui/administration/system_configuration.md).
 
 Each cap multiplied by that pool's [per-pod memory limit](#pod_templatespod-typeresources) is what your server has to hold. See the [infrastructure requirements](/setup/installing_k3s.md#infrastructure-requirements) for the arithmetic, and raise the node's [reserved memory](/setup/installing_k3s.md#reserving-resources-for-the-node) by 25 MiB for every pod a raised cap allows.
 

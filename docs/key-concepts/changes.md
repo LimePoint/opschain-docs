@@ -25,7 +25,7 @@ OpsChain changes can be created via the OpsChain CLI, GUI, or by directly POSTin
 - The OpsChain [action](/key-concepts/actions.md) to execute
 
 :::tip[Creating changes]
-For more information on using the GUI to create a change, see [creating a new change](/getting-started/familiarisation/gui/activity/index.md#run-change). To create several changes at once, see [run bulk changes](/getting-started/familiarisation/gui/activity/bulk_run_change.md).
+For more information on using the GUI to create a change, see [creating a new change](/getting-started/familiarisation/gui/activity.md#run-change).
 
 To learn how to create changes via the API, see OpsChain's API reference by accessing the API documentation on the OpsChain host with your browser (e.g. `http://<host>/api-docs`).
 :::
@@ -88,7 +88,7 @@ The change's step tree opens with an approval step as its root, and the action y
 
 While a change is held at an approval step — this one, or one declared in its actions — it reports the `waiting_for_approval` status. The change still reports the action you requested. The activities list, the change's action and the [authorisation rules](/getting-started/familiarisation/gui/manage_security.md#authorisation-rule-actions) that govern who can run it are unaffected by the approval step sitting above it.
 
-Approve and reject from the change page's buttons, from the approval tab of [manage activity](/getting-started/familiarisation/gui/activity/manage_activity.md), or via `POST /api/steps/{id}/approve` and `POST /api/steps/{id}/reject`.
+Approve and reject from the change page's buttons, from the approval tab of [manage activity](/getting-started/familiarisation/gui/manage_activity.md), or via `POST /api/steps/{id}/approve` and `POST /api/steps/{id}/reject`.
 
 A change can carry two gates: this one, configured by an administrator in the settings, and an [approval step](/key-concepts/actions.md#approval-steps) declared in your `actions.rb` for the action itself. The change stops at each in turn, and the two approver lists are kept separate — someone named in the setting cannot approve the declared step unless they are named there too.
 
@@ -131,7 +131,7 @@ A change's [settings](/key-concepts/settings.md) overrides are fixed when it is 
 :::note[NOTES]
 
 1. When OpsChain retries a change, it will retry it using the code from the resolved Git SHA stored with the original change, so a retry reproduces the code the original change ran rather than picking up later commits. To run the latest code instead, ask for the Git revision to be re-resolved when retrying (`refresh_sha`) — for a change on an asset this also moves the retry onto the asset's current template version.
-2. The logs for the original change are not included on the new change. However, they can still be seen in the original change page, which the new change's [**Original change**](/getting-started/familiarisation/gui/activity/activity_details.md#header-information) link opens.
+2. The logs for the original change are not included on the new change. However, they can still be seen in the original change page.
 3. A retried change runs with the settings the original change resolved, so the values it ran with do not move underneath it. Settings that did not exist when the original ran are resolved from the current settings, as are the settings that determine where a change is built and deployed and the [`requires_approval_from`](/key-concepts/settings.md#requires_approval_from) approval requirements — a retry cannot target a deployment target that has moved, skip an approval requirement added since, or keep demanding approval from an approver who has since been removed.
 4. Override settings copied from the original change that are no longer valid change level settings are dropped, and the dropped settings are recorded in the change's events.
 5. A retried change asks for its approvals again — both the change level gate and any [approval step](/key-concepts/actions.md#approval-steps) in the tree that had not already been approved. Steps that completed successfully are not rerun, so an approval step that was approved and whose children finished is not presented again.
@@ -148,7 +148,7 @@ The `skip_steps` mask is carried forward automatically on retry — previously-s
 [Approval steps](/key-concepts/actions.md#approval-steps) are always exempt from skipping — a step with `requires_approval_from` set will run regardless of any matching pattern. Creating or retrying a change where `skip_steps` would skip the root step is rejected with a validation error.
 :::
 
-In the GUI, **Mark steps to skip** in the [run change dialog](/getting-started/familiarisation/gui/activity/index.md#marking-steps-to-skip) opens the chosen action's step tree and turns the steps you tick into patterns for you. It is available when starting a change, when scheduling one, and when retrying or rerunning one — a rerun opens with the previous run's selection already ticked.
+In the GUI, **Mark steps to skip** in the [run change dialog](/getting-started/familiarisation/gui/activity.md#marking-steps-to-skip) opens the chosen action's step tree and turns the steps you tick into patterns for you. It is available when starting a change, when scheduling one, and when retrying or rerunning one — a rerun opens with the previous run's selection already ticked.
 
 :::tip
 The same `skip_steps` feature is available on workflow runs. See [skipping steps](/key-concepts/workflows.md#skipping-steps) for more information.
@@ -162,7 +162,7 @@ When a change's step tree is known up front — a templated or asset change whos
 
 If `starting_step` names an `actions.rb` action that collides with a same-named MintModel action, the `actions.rb` action's own precedence still applies even though it is now the root step of the change — see [name collisions between `actions.rb` and MintModel actions](/key-concepts/actions.md#name-collisions-between-actionsrb-and-mintmodel-actions).
 
-In the GUI, this is available from a non-root step's play button in an asset's action tree via _Run \<action\> from here_ — see [running an activity](/getting-started/familiarisation/gui/activity/index.md#run-change).
+In the GUI, this is available from a non-root step's play button in an asset's action tree via _Run \<action\> from here_ — see [running an activity](/getting-started/familiarisation/gui/activity.md#run-change).
 
 :::note
 A change started partway through an action tree cannot be scheduled.
@@ -194,7 +194,7 @@ To add metadata to a change via the CLI, see the [changes CLI guide](/getting-st
 
 ### Query changes by metadata
 
-You can query changes by metadata via the search field in the [activity page](/getting-started/familiarisation/gui/activity/index.md).
+You can query changes by metadata via the search field in the [activity page](/getting-started/familiarisation/gui/activity.md).
 
 When querying changes via the change API, you can use OpsChain's [API filtering](/advanced/api-filtering.md) feature to limit the response to changes whose metadata matches the value we specified in the metadata, e.g.:
 
@@ -218,9 +218,9 @@ OpsChain adds its own entries under the `opschain` key of a change's metadata, w
 |-----|---------------|
 | `parent_change_id` | The change was created by another change's action through the OpsChain API, with that change's [API key](/key-concepts/context.md#api-key). Holds the ID of the change that created it. |
 | `asset_action` | A change on an asset [starts partway through an action](#starting-a-change-partway-through). Holds the name of the action the starting step belongs to. |
-| `commit_file_patterns` | A scheduled change was created because [commit file patterns](/getting-started/familiarisation/gui/activity/scheduled_activities.md#seeing-why-a-change-ran) matched. |
+| `commit_file_patterns` | A scheduled change was created because [commit file patterns](/getting-started/familiarisation/gui/scheduled_activities.md#seeing-why-a-change-ran) matched. |
 
-The [activity details](/getting-started/familiarisation/gui/activity/activity_details.md#header-information) screen links to the parent change and to the asset action.
+The [activity details](/getting-started/familiarisation/gui/activity_details.md#header-information) screen links to the parent change and to the asset action.
 
 ### Using metadata in actions
 

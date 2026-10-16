@@ -9,11 +9,7 @@ Search finds the pages and tabs of the GUI, your projects, environments, assets,
 
 ## Opening the search dialog
 
-Select **Search…** in the top bar, or press <kbd>Ctrl</kbd>+<kbd>L</kbd> (<kbd>⌘</kbd>+<kbd>L</kbd> on a Mac) from anywhere in the GUI. <kbd>/</kbd> also opens it while you are not typing in a field or editor. Press <kbd>Ctrl</kbd>+<kbd>L</kbd> again, or <kbd>Esc</kbd>, to close it.
-
-<p align='center'>
-  <img alt='Search dialog' src={require('!url-loader!./images/search-dialog.png').default} className='image-border'/>
-</p>
+Select **Search…** in the top pane, or press <kbd>Ctrl</kbd>+<kbd>L</kbd> (<kbd>⌘</kbd>+<kbd>L</kbd> on a Mac) from anywhere in the GUI. <kbd>/</kbd> also opens it while you are not typing in a field or editor. Press <kbd>Ctrl</kbd>+<kbd>L</kbd> again, or <kbd>Esc</kbd>, to close it.
 
 Before you type anything, the dialog lists what applies to the page you are on, the resources you opened recently, shortcuts to the activity, approval, scheduled activity and audit history screens, and a handful of commands.
 
@@ -39,10 +35,6 @@ The examples below use an ABC project with a `dev` environment, a `web` asset te
 #### Resources and their tabs
 
 Type a resource's name or code to open it, or follow it with the name of a tab to go straight to that tab. A resource is matched on its name, its code and its path, so `abc dev` finds the `dev` environment of ABC rather than every environment called `dev`.
-
-<p align='center'>
-  <img alt='Searching for a project tab' src={require('!url-loader!./images/search-resource-tab.png').default} className='image-border'/>
-</p>
 
 | Search | Opens |
 |--------|-------|
@@ -71,16 +63,15 @@ Pasting a template's ID opens that template.
 | `cron` | The scheduled activity screen. |
 | `who changed` | The audit history screen. |
 | `alerts` | Your notification subscriptions. |
-| `bulk` | The [run bulk changes](/getting-started/familiarisation/gui/activity/bulk_run_change.md) screen. |
-| `runners` | The [remote runners](/getting-started/familiarisation/gui/administration/remote_runners.md) screen. |
+| `bulk` | The bulk run changes screen. |
 
 Superusers also find the administration and security screens and the sections of the system configuration page, by their names or by the settings they hold:
 
 | Search | Opens |
 |--------|-------|
-| `pods`, `queues`, `database` | That tab of the [system information](/getting-started/familiarisation/gui/administration/system_information/index.md) screen. |
+| `pods`, `queues`, `database` | That tab of the system information screen. |
 | `purge` or `retention` | The data cleanup screen. `new cleanup job` adds a job. |
-| `license` | The [licence](/getting-started/familiarisation/gui/administration/licence.md) screen. |
+| `license` | The licence screen. |
 | `users`, `groups`, `rbac` | The security screens. |
 | `ldap` | The LDAP configuration. |
 | `slack` or `email` | The notification settings. |
@@ -94,10 +85,6 @@ Superusers also find the administration and security screens and the sections of
 #### Activity
 
 A phrase built from statuses, times, kinds of activity and users becomes a filter on the full search page. Words such as `my`, `this`, `by` and `show` can be left in.
-
-<p align='center'>
-  <img alt='Searching for failed activity' src={require('!url-loader!./images/search-activity.png').default} className='image-border'/>
-</p>
 
 | Search | Finds |
 |--------|-------|
@@ -161,7 +148,7 @@ The **Steps** tab finds the changes that ran a given step, however deep in the c
 
 The match against changes is exact, ignoring case, so a step filter of `deploy` does not find a change whose only matching step is `deploy_app`. Only changes you are permitted to see are listed.
 
-The **Search by step** link above the [activity table](/getting-started/familiarisation/gui/activity/index.md#buttons--links) opens the same search.
+The **Search by step** link above the [activity table](/getting-started/familiarisation/gui/activity.md#buttons--links) opens the same search.
 
 ## The full search page
 

@@ -13,9 +13,9 @@ This tab lists the changes and workflows that have been executed for the project
   <img alt='Project details screen' src={require('!url-loader!../images/project-details.png').default} className='image-border'/>
 </p>
 
-Refer to the [activities list](/getting-started/familiarisation/gui/activity/index.md#understanding-the-activity-screen) for a detailed description of this table's contents.
+Refer to the [activities list](/getting-started/familiarisation/gui/activity.md#understanding-the-activity-screen) for a detailed description of this table's contents.
 
-## Scheduled activity
+## Scheduled activities
 
 This tab lists the scheduled activities defined for the project only.
 
@@ -23,4 +23,4 @@ This tab lists the scheduled activities defined for the project only.
   <img alt='Project scheduled activities screen' src={require('!url-loader!../images/project-scheduled-activities.png').default} className='image-border'/>
 </p>
 
-Refer to the [scheduled activity details](/getting-started/familiarisation/gui/activity/scheduled_activities.md#scheduled-activity-details) for a detailed description of this table's contents.
+Refer to the [scheduled activity details](/getting-started/familiarisation/gui/scheduled_activities.md#scheduled-activity-details) for a detailed description of this table's contents.

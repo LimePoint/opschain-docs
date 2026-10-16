@@ -2007,8 +2007,7 @@ expects. Combine it with `--step` or `--all` the same way as a plain continue.
 itself, so the **server** releases each wait step (other than an approval step) as the change hits
 it — you don't need `--wait-for-completion` and you don't need to stay attached. On `retry` the flag
 is applied by the CLI and needs `-w` (see §11.9). A change created
-without the flag sits at `waiting` at each plain wait step until it's continued. An input step
-doesn't need the flag: it continues by itself once every required argument has a value.
+without the flag sits at `waiting` until it's continued.
 
 For a change that is **already running** and was created without the flag, `changes attach
 --auto-continue-wait-steps` continues its wait steps from the client side while you're attached:

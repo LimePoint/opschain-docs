@@ -1,5 +1,5 @@
 ---
-sidebar_position: 4
+sidebar_position: 11
 description: ''
 ---
 
@@ -9,10 +9,10 @@ description: ''
 
 Some of the work OpsChain performs does not belong to a change or a workflow run, and instead runs in the background against a node — refreshing an asset's available actions, concretising an asset's MintModel, building an agent's image, and starting or stopping an agent.
 
-Each of these tasks is visible on the node it belongs to, but that is only useful if you already know which node to look at. The **Background tasks** tab, in the [**System information**](/getting-started/familiarisation/gui/administration/system_information/index.md) section of the administration screen, lists every background task currently running or queued across all projects, environments, assets and agents in one place. It refreshes automatically while you watch it.
+Each of these tasks is visible on the node it belongs to, but that is only useful if you already know which node to look at. The **Background tasks** tab, in the **System information** section of the administration screen, lists every background task currently running or queued across all projects, environments, assets and agents in one place. It refreshes automatically while you watch it.
 
 <p align='center'>
-  <img alt='Background tasks screen' src={require('!url-loader!../../images/admin-background-tasks.png').default} className='image-border'/>
+  <img alt='Background tasks screen' src={require('!url-loader!./images/admin-background-tasks.png').default} className='image-border'/>
 </p>
 
 Only tasks that have not yet finished are listed, so an empty table means nothing is currently running. A task disappears from the list as soon as it succeeds, fails or is cancelled — the history of a node's completed tasks remains available on the node itself.
@@ -54,7 +54,7 @@ Tick the checkbox beside each task you want to stop, then choose **Bulk actions*
 The confirmation lists every task it is about to cancel, by task type and owning node, so you can check the selection before committing to it. Only a task that is still initialising or running can be cancelled, so a selected task that has finished in the meantime is left out of the list rather than being reported as a failure.
 
 <p align='center'>
-  <img alt='Cancelling several background tasks at once' src={require('!url-loader!../../images/admin-background-tasks-bulk-cancel.png').default} className='image-border'/>
+  <img alt='Cancelling several background tasks at once' src={require('!url-loader!./images/admin-background-tasks-bulk-cancel.png').default} className='image-border'/>
 </p>
 
 The tasks listed are fixed at the moment the confirmation opens, so a task completing in the background while you read it cannot change what gets cancelled. Each task is cancelled individually, and if some fail the confirmation reports how many of the selected tasks could not be cancelled, along with the reasons — the ones that succeeded stay cancelled.

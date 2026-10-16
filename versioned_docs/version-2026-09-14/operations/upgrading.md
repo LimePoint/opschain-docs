@@ -139,7 +139,7 @@ Treat the topology's OpsChain instances as a single application. Do not leave so
 7. Verify every database cluster is healthy and replicating (`kubectl get cluster <cluster-name> -n ${KUBERNETES_NAMESPACE}`), confirm the [version info](/getting-started/familiarisation/gui/version_info.md), and make a small write — create a change or edit a project's properties — to confirm the primary is serving.
 
 :::tip[Minimising database downtime]
-Upgrading the primary cluster might restart its database instance in some scenarios, which briefly interrupts the database. If you run more than one database instance in the primary cluster (via [`db.cnpg.primary.replicas`](/advanced/ha/index.md#local-replicas)), set [`db.cnpg.primaryUpdateMethod`](/advanced/ha/index.md#dbcnpgprimaryupdatemethod) to `switchover` to reduce that interruption.
+Upgrading the primary cluster might restart its database instance in some scenarios, which briefly interrupts the database. If you run more than one database instance in the primary cluster (via [`db.cnpg.instances`](/advanced/ha/index.md#local-replicas)), set [`db.cnpg.primaryUpdateMethod`](/advanced/ha/index.md#dbcnpgprimaryupdatemethod) to `switchover` to reduce that interruption.
 :::
 
 If `opschain-api` does not become ready and the upgrade times out while you are using the OpsChain secret vault, see [`helm upgrade` fails with `context deadline exceeded`](/troubleshooting.md#helm-upgrade-fails-with-context-deadline-exceeded).

@@ -1,5 +1,5 @@
 ---
-sidebar_position: 3
+sidebar_position: 6
 description: ''
 ---
 
@@ -22,16 +22,16 @@ A table view is presented upon accessing the scheduled activity screen. This vie
 ### Scheduled activity details
 
 <p align='center'>
-  <img alt='Scheduled activity screen' src={require('!url-loader!../images/scheduled-activity.png').default} className='image-border'/>
+  <img alt='Scheduled activity screen' src={require('!url-loader!./images/scheduled-activity.png').default} className='image-border'/>
 </p>
 
 Each row includes:
 
 | Column              | Description                                                                                                                    |
 |---------------------|--------------------------------------------------------------------------------------------------------------------------------|
-| **Target**          | Indicates the project, environment or asset against which the activity is scheduled to run.                                    |
-| **Type**            | Indicates how the schedule is triggered, either **Scheduled** or **Commit dependent** (via a new commit).                       |
-| **Action**          | The action a scheduled change runs, or the code of the workflow a scheduled workflow run runs.                                  |
+| **Target**          | Indicates the project or environment against which the activity is scheduled to run.                                           |
+| **Type**            | Indicates how the schedule is triggered, either by a scheduled run or via a new commit.                                        |
+| **Action**          | The action that will be executed.                                                                                              |
 | **Next run at**     | Timestamp for when the activity is next scheduled to run.                                                                      |
 | **Repeats**         | Whether the scheduled activity is recurring or will run only once.                                                             |
 | **Enabled**         | Whether the scheduled activity is enabled or not (e.g. because its parent has been archived).                                  |
@@ -42,12 +42,9 @@ Each row includes:
 
 | Buttons & links               | Function                                                               |
 |-------------------------------|------------------------------------------------------------------------|
-| **Bulk actions**              | Enable, disable or delete multiple scheduled activities.               |
+| **Bulk actions**              | Perform operations on multiple scheduled activities, such as deletion. |
 | **Search bar**                | Filter the contents of the table based on these criteria.              |
-| **Filters**                   | Filter by status, type, trigger, repeat, who scheduled it and next run. Filters that do not fit on the toolbar move under **More**, which also holds date, Git revision and metadata filters. |
 | **Columns**                   | Hide or display columns in the table.                                  |
-
-Click a row to open the scheduled activity's [details page](#viewing-a-scheduled-activity).
 
 ## Triggering on new commits only
 
@@ -71,7 +68,7 @@ As more commits are added to the Git repository, new changes will be created. Sc
 
 A scheduled change that triggers on new commits only creates a change for every new commit, whatever that commit touched. Commit file patterns narrow it to commits that changed the files you care about, so a schedule that deploys can ignore a commit that only edited documentation.
 
-Patterns are set under **Run only when matching files have changed** in the **Schedule** panel of the [run change dialog](/getting-started/familiarisation/gui/activity/index.md#scheduling-the-change), as a row per glob with a **Negate** column and a match mode of ALL or ANY. Over the API they are supplied as `commit_file_patterns` when creating or updating a scheduled change:
+Patterns are set under **Run only when matching files have changed** in the **Schedule** panel of the [run change dialog](/getting-started/familiarisation/gui/activity.md#scheduling-the-change), as a row per glob with a **Negate** column and a match mode of ALL or ANY. Over the API they are supplied as `commit_file_patterns` when creating or updating a scheduled change:
 
 ```bash
 curl --fail --user {{username}}:{{password}} http://<host>/api/scheduled_activities -H 'content-type: application/vnd.api+json' \
@@ -141,9 +138,9 @@ A schedule whose patterns are never satisfied creates no change. If it reaches t
 
 ## Setting a schedule
 
-A scheduled change or workflow run runs either **Once**, on a date and time you pick, or **Repeating**, on a cron schedule. A one-off schedule is picked from a calendar, a time in your browser's local time zone and a list of suggestions such as _Tomorrow, 9:00 am_, and is removed once it has run - see [scheduling the change](/getting-started/familiarisation/gui/activity/index.md#scheduling-the-change). Over the API, it is a scheduled activity created with `run_at` rather than `cron_schedule`.
+A scheduled change or workflow run runs either **Once**, on a date and time you pick, or **Repeating**, on a cron schedule. A one-off schedule is picked from a calendar, a time in your browser's local time zone and a list of suggestions such as _Tomorrow, 9:00 am_, and is removed once it has run - see [scheduling the change](/getting-started/familiarisation/gui/activity.md#scheduling-the-change). Over the API, it is a scheduled activity created with `run_at` rather than `cron_schedule`.
 
-Everywhere OpsChain asks for a repeating schedule — the run change and run workflow dialogs, a scheduled activity you are editing, and a [cleanup job](/getting-started/familiarisation/gui/administration/data_cleanup.md) — the schedule is set the same way. There are three ways to arrive at one, and they all edit the same cron expression, so you can start with one and finish with another.
+Everywhere OpsChain asks for a repeating schedule — the run change and run workflow dialogs, a scheduled activity you are editing, and a [cleanup job](/getting-started/familiarisation/gui/data_cleanup.md) — the schedule is set the same way. There are three ways to arrive at one, and they all edit the same cron expression, so you can start with one and finish with another.
 
 - **Pick a common schedule.** The dropdown lists the schedules most often wanted, from every minute up to the first day of the month. Choosing one fills in the rest of the editor.
 - **Build one.** The builder reads as a sentence — every _N_ minutes or hours, or daily, weekly or monthly at a time you choose. A weekly schedule takes any combination of days.
@@ -157,23 +154,13 @@ An invalid expression is reported in the form, and on the schedule's header and 
 
 ## Creating and deleting a scheduled activity
 
-Scheduled changes and workflow runs are created from the **Schedule** panel of the [run dialog](/getting-started/familiarisation/gui/activity/index.md#scheduling-the-change): turn on **Schedule change** (or **Schedule workflow**), then choose **Once** or **Repeating** and set the schedule. For a scheduled change, the same panel holds **New commits only** and the [commit file patterns](#limiting-a-scheduled-change-to-particular-files).
+Scheduled changes and workflow runs are created from the **Schedule** panel of the [run dialog](/getting-started/familiarisation/gui/activity.md#scheduling-the-change): turn on **Schedule change** (or **Schedule workflow**), then choose **Once** or **Repeating** and set the schedule. For a scheduled change, the same panel holds **New commits only** and the [commit file patterns](#limiting-a-scheduled-change-to-particular-files).
 
 To delete one or more scheduled activities, select the rows you wish to remove using the checkboxes, then choose _delete selected_ from the _bulk actions_ drop down.
 
-## Viewing a scheduled activity
-
-Click a row in the scheduled activity table to open that scheduled activity's details page. The header names what the schedule runs and who created it, and summarises when it next runs, whether it repeats and whether it needs [new commits](#triggering-on-new-commits-only). From the header you can [edit the schedule](#editing-a-scheduled-activity), view the metadata it passes to each activity it creates, and enable, disable or delete it.
-
-<p align='center'>
-  <img alt='Scheduled activity page' src={require('!url-loader!../images/scheduled-activity-details.png').default} className='image-border'/>
-</p>
-
-Below the header, the page lists the changes or workflow runs the schedule has created, in the same table as the [activity screen](/getting-started/familiarisation/gui/activity/index.md#understanding-the-activity-screen).
-
 ## Editing a scheduled activity
 
-Open a scheduled activity from the table and select the pencil button (**Edit schedule**). The form uses the same panels as the [run change dialog](/getting-started/familiarisation/gui/activity/index.md#run-change), so everything the schedule carries can be changed in place.
+Open a scheduled activity from the table and choose **Edit schedule**. The form uses the same panels as the [run change dialog](/getting-started/familiarisation/gui/activity.md#run-change), so everything the schedule carries can be changed in place.
 
 What the schedule runs is a read-only summary — the project, environment, asset, action, Git remote and revision, or the workflow and version for a scheduled workflow run. To run something else, create a new scheduled activity.
 
@@ -182,13 +169,13 @@ Everything else is editable:
 | Setting | Scheduled change | Scheduled workflow run |
 |---------|:----------------:|:----------------------:|
 | [Schedule](#setting-a-schedule) - **Once** or **Repeating** - and **Run once** | ✓ | ✓ |
-| Property overrides, and the [environment variables](/getting-started/familiarisation/gui/activity/index.md#setting-environment-variables) within them | ✓ | ✓ |
+| Property overrides, and the [environment variables](/getting-started/familiarisation/gui/activity.md#setting-environment-variables) within them | ✓ | ✓ |
 | Notify and metadata | ✓ | ✓ |
 | Settings overrides | ✓ | |
-| [**Automatically continue wait steps**](/getting-started/familiarisation/gui/activity/index.md#continuing-wait-steps-automatically) | ✓ | |
-| [Input step arguments](/getting-started/familiarisation/gui/activity/index.md#answering-input-steps-up-front) | ✓ | |
+| [**Automatically continue wait steps**](/getting-started/familiarisation/gui/activity.md#continuing-wait-steps-automatically) | ✓ | |
+| [Input step arguments](/getting-started/familiarisation/gui/activity.md#answering-input-steps-up-front) | ✓ | |
 | **New commits only** and [commit file patterns](#limiting-a-scheduled-change-to-particular-files) | ✓ | |
-| [Steps to skip](/getting-started/familiarisation/gui/activity/index.md#marking-steps-to-skip) | ✓ | |
+| [Steps to skip](/getting-started/familiarisation/gui/activity.md#marking-steps-to-skip) | ✓ | |
 
 Steps to skip and input step arguments appear only where the scheduled action resolves to a step tree that has them.
 

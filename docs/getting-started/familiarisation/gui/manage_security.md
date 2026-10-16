@@ -1,5 +1,5 @@
 ---
-sidebar_position: 7
+sidebar_position: 10
 description: ''
 ---
 
@@ -17,7 +17,7 @@ OpsChain provides a granular, top-down authorisation model for each of its resou
 
 This model is built on two core concepts:
 
-- **Authorisation rules** define _what_ action (`read`, `update`, `execute`, `delete`) is allowed or denied on a specific resource _path_.
+- **Authorisation rules** define _what_ action (`read`, `update`, `execute`) is allowed or denied on a specific resource _path_.
 - **Authorisation policies** link the rules to users and groups, defining _who_ the permissions apply to.
 
 :::note
@@ -82,9 +82,9 @@ Aside from resource-specific paths, you can also secure these top-level paths, w
 
 Some of the operations under `/admin` can be secured individually, so that access to see part of the instance's state does not have to carry the ability to act on it, or to read what it contains:
 
-- `/admin/pods` - `read` allows [listing the pods](/getting-started/familiarisation/gui/administration/system_information/pods.md) running in the OpsChain namespace.
+- `/admin/pods` - `read` allows [listing the pods](/getting-started/familiarisation/gui/pods.md) running in the OpsChain namespace.
 - `/admin/pods/logs` - `read` allows opening an individual pod's log. A pod's log is whatever the process wrote - on a change pod, the output of a change - where the listing is only names and states, so an instance can hand out the pod list without handing out its contents.
-- `/admin/deployments` - `read` allows [listing the deployments](/getting-started/familiarisation/gui/administration/system_information/deployments.md) making up the instance.
+- `/admin/deployments` - `read` allows [listing the deployments](/getting-started/familiarisation/gui/deployments.md) making up the instance.
 - `/admin/deployments/restart` - `update` allows performing a rolling restart of a deployment.
 - `/admin/deployments/scale` - `update` allows changing the number of replicas a deployment runs.
 - `/admin/clusters/cordon` - `update` allows [cordoning and uncordoning a site](/advanced/ha/operations.md#cordoning-a-site) of a high availability topology.
@@ -162,7 +162,7 @@ OpsChain provides two special policies that can be applied to any user, at any m
 
 This policy provides full permissions to all resources within OpsChain. This policy is the recommended approach when provisioning OpsChain for the first time. We refer to users with this policy as **superusers**. This policy trumps all other policies, except the [block user access policy](#block-user-access-policy).
 
-To make an existing user a superuser, add them to the superuser policy from its [_Assignments_ tab](#managing-policy-assignments).
+To make an existing user a superuser, assign them to the superuser policy from the [_Users_ tab](#users).
 
 The superuser policy cannot be assigned to everyone — an assignment with neither a user nor a group — because that would give every user full access. Assign it to specific users or groups instead.
 
@@ -172,7 +172,7 @@ It is recommended to keep the number of users with superuser access as minimal a
 
 #### Block user access policy
 
-This policy blocks access to all resources within OpsChain. This policy is the recommended approach when you want to fully block access to OpsChain for certain users. This policy can be applied from its [_Assignments_ tab](#managing-policy-assignments). This policy trumps all other policies, including the [superuser policy](#superuser-policy).
+This policy blocks access to all resources within OpsChain. This policy is the recommended approach when you want to fully block access to OpsChain for certain users. This policy can be applied from the [_Users_ tab](#users). This policy trumps all other policies, including the [superuser policy](#superuser-policy).
 
 The block user access policy cannot be assigned to everyone, because that would lock out every user, superusers included, and leave nobody able to remove the assignment. Assign it to specific users or groups instead.
 
@@ -201,11 +201,7 @@ Each row includes:
 |-------------------------------|-----------------------------------------------------------|
 | **Search bar**                | Filter the contents of the table based on these criteria. |
 | **Columns**                   | Hide or display columns in the table.                     |
-| **Bulk actions**              | Delete the selected policies, after confirming.           |
 | **Create policy**             | Create a new security policy.                             |
-| **Refresh LDAP**              | Refresh the LDAP directory cache. Superuser only.         |
-
-Select a policy to open it on its **Rules** and **Assignments** tabs, described below.
 
 ### Creating a security policy
 
@@ -221,15 +217,13 @@ To create a new policy, follow these steps:
 
 ### Managing policy rules
 
-Once you've created a security policy, you can begin adding rules to it from its _Rules_ tab. Available resource paths are listed on the right side of the screen. To add a path to the policy, hover over the desired path and click the _Add to policy_ button. The selected path will then appear on the left side of the screen, where you can configure its **Read**, **Update**, **Execute** and **Delete** permissions.
+Once you've created a security policy, you can begin adding rules to it. Available resource paths are listed on the right side of the screen. To add a path to the policy, hover over the desired path and click the _Add to policy_ button. The selected path will then appear on the left side of the screen, where you can configure its `read`, `update`, and `execute` permissions.
 
 <p align='center'>
   <img alt='Manage policy rules screen' src={require('!url-loader!./images/manage-policy-rules.png').default} className='image-border'/>
 </p>
 
 You can add custom path rules by clicking on the _Add custom path_ button.
-
-Your edits are not saved until you click **Apply changes**. **Discard changes** reverts them.
 
 ### Managing policy assignments
 
@@ -257,12 +251,12 @@ To remove a user or group from the policy, follow these steps:
 
 1. Select the assignments in the table.
 2. Click on the _Bulk actions_ dropdown.
-3. Select the _Remove selected assignees_ option.
+3. Select the _Remove assignees_ option.
 4. Click on the _Remove_ button to confirm the removal of the assignments from the policy.
 
 ## Users
 
-This tab contains the users and the policies that are assigned to them. It is read-only - to change a user's policies, edit the policy's [assignments](#managing-policy-assignments).
+This tab contains the users and the policies that are assigned to them.
 
 <p align='center'>
   <img alt='Manage security users screen' src={require('!url-loader!./images/manage-security-users.png').default} className='image-border'/>
@@ -271,7 +265,6 @@ This tab contains the users and the policies that are assigned to them. It is re
 | Column              | Description                                                               |
 |---------------------|---------------------------------------------------------------------------|
 | **Username**        | The name or identifier of the user.                                       |
-| **Email**           | The user's email address.                                                 |
 | **Policies**        | Security policies currently assigned to the user.                         |
 | **Auth provider**   | The authentication source used to validate the user's identity.           |
 | **Groups**          | List of LDAP groups that this user belongs to.                            |

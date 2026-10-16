@@ -59,7 +59,7 @@ See the [asset templates guide](/getting-started/familiarisation/gui/projects/as
 
 Asset template versions refer to a specific Git revision of an asset template, be that a branch, a tag or a commit SHA.
 
-See the [asset template versions guide](/getting-started/familiarisation/gui/projects/asset_templates.md#about-asset-template-versions) for more information. A version's page in the GUI lists the assets or agents using it - see [viewing a template version](/getting-started/familiarisation/gui/projects/asset_templates.md#viewing-a-template-version).
+See the [asset template versions guide](/getting-started/familiarisation/gui/projects/asset_templates.md#about-asset-template-versions) for more information.
 
 ## Properties
 
@@ -107,7 +107,7 @@ Both changes and workflow runs can be scheduled to run on a future date and conf
 
 In particular, scheduled changes can also be configured to only create a change when there are updates to a Git repository.
 
-See the [scheduled activities](/getting-started/familiarisation/gui/activity/scheduled_activities.md) guide for instructions on how to create a scheduled change or a scheduled workflow run.
+See the [scheduled activities](/getting-started/familiarisation/gui/scheduled_activities.md) guide for instructions on how to create a scheduled change or a scheduled workflow run.
 
 ## Actions
 

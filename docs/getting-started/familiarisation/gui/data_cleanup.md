@@ -1,5 +1,5 @@
 ---
-sidebar_position: 3
+sidebar_position: 14
 description: Add, schedule, enable, disable and delete the cleanup jobs that remove old activities, events and job history.
 ---
 
@@ -31,16 +31,11 @@ Each row includes:
 | **Checkboxes**       | Select one or more jobs to act on together. The number selected is shown at the bottom of the table. |
 | **Bulk actions**     | Act on every selected job at once. Enabled once at least one job is selected.                        |
 | **Add cleanup job**  | Create a new cleanup job.                                                                            |
+| **Actions menu (⋮)** | Enable, disable or delete the job on that row.                                                       |
 
 ## Adding a cleanup job
 
-Select **Add cleanup job** and give the job a name, the resource paths it applies to, the items it removes and a schedule — run it once now, once at a later time, or repeatedly on a [cron schedule](/getting-started/familiarisation/gui/activity/scheduled_activities.md#setting-a-schedule). Before saving, **Preview items for deletion** reports what the job would remove if it ran against the current data, so a job can be checked before it is scheduled rather than after it has run. It lists the activities the job would remove only while **Delete activities (change and workflow runs)** is ticked.
-
-<p align='center'>
-  <img alt='New cleanup job form' src={require('!url-loader!../images/data-cleanup-create.png').default} className='image-border'/>
-</p>
-
-Each resource path picks a project, environment, asset or agent, and whether the job covers **Resource only**, **Resource and all children** or **Children only**. See [node selection](/operations/maintenance/data-cleaning.md#node-selection) for what each matches.
+Select **Add cleanup job** and give the job a name, the resource paths it applies to, the items it removes and a schedule — run it once now, once at a later time, or repeatedly on a [cron schedule](/getting-started/familiarisation/gui/scheduled_activities.md#setting-a-schedule). Before saving, **Preview items for deletion** reports what the job would remove if it ran against the current data, so a job can be checked before it is scheduled rather than after it has run.
 
 ### What a cleanup job can remove
 
@@ -52,32 +47,32 @@ A job removes only what you tick, and each option has its own filters. An option
 | **Delete audit history** | [Events](/key-concepts/events.md). |
 | **Delete job history** | The records of the background jobs OpsChain has run. |
 | **Delete agent images** | Agent container images that are no longer referenced, from the internal registry — see [container image cleanup](/operations/maintenance/container-image-cleanup.md). |
-| **Delete superseded background tasks** | Finished [background tasks](/getting-started/familiarisation/gui/administration/system_information/background_tasks.md) that a newer task of the same kind has replaced, and their logs. |
-| **Delete old artifact versions** | The files of [artifact](/key-concepts/artifacts.md) versions that fall outside their size tier's retention - see [artifact retention](#artifact-retention). |
+| **Delete superseded background tasks** | Finished [background tasks](/getting-started/familiarisation/gui/background_tasks.md) that a newer task of the same kind has replaced, and their logs. |
+| **Delete old artefact versions** | The files of [artefact](/key-concepts/artefacts.md) versions that fall outside their size tier's retention - see [artefact retention](#artefact-retention). |
 
 **Delete agent images** only removes the image of a build that has finished, so an image a running build is still pushing is left alone. Its filters are checked when the job is saved rather than when it runs, so a filter OpsChain cannot apply is refused with the reason — a job saved with such a filter before this was checked has to have it corrected before the job can be saved again.
 
 Superseded background tasks are worth a note, because an errored MintModel generation can hold a large volume of render logs and nothing else removes them. A task counts as superseded only when a newer task of the same kind exists against the same template version history record — a new record is created whenever a resource's template version or commit changes, so tasks recorded against an earlier record are kept. Tasks that are still needed are kept whatever the filters say: the latest successful action generation, tasks a change or a running agent still references, and agent image build tasks whose image is still in the registry. Those last ones are only removed once **Delete agent images** has removed the image, so tick both to reap them together.
 
-### Artifact retention
+### Artefact retention
 
-**Delete old artifact versions** keeps a longer history of small artifacts than of large ones. Ticking it opens the **Artifact retention** table, a row per size tier:
+**Delete old artefact versions** keeps a longer history of small artefacts than of large ones. Ticking it opens the **Artefact retention** table, a row per size tier:
 
 | Column | Description |
 |--------|-------------|
-| **Artifact size** | **Up to** a size in KiB, MiB or GiB. The last row can instead be a catch-all for anything larger than every other tier. |
-| **Keep newest versions** | How many of the newest versions of each artifact to keep. |
+| **Artefact size** | **Up to** a size in KiB, MiB or GiB. The last row can instead be a catch-all for anything larger than every other tier. |
+| **Keep newest versions** | How many of the newest versions of each artefact to keep. |
 | **Keep newer than (days)** | How many days to keep any version, however many newer versions there are. |
 
 <p align='center'>
-  <img alt='Artifact retention tiers' src={require('!url-loader!../images/artifact-data-cleanup.png').default} className='image-border'/>
+  <img alt='Artefact retention tiers' src={require('!url-loader!./images/artefact-data-cleanup.png').default} className='image-border'/>
 </p>
 
-Each artifact version falls into the first tier its size fits within. A version is deleted only once it is outside both its tier's newest versions and its tier's number of days. The table starts with two tiers - artifacts up to 10 MiB keep 20 versions or 90 days, and anything larger keeps 1 version or 7 days - which **Add tier** and **Add catch-all tier** extend.
+Each artefact version falls into the first tier its size fits within. A version is deleted only once it is outside both its tier's newest versions and its tier's number of days. The table starts with two tiers - artefacts up to 10 MiB keep 20 versions or 90 days, and anything larger keeps 1 version or 7 days - which **Add tier** and **Add catch-all tier** extend.
 
-Every count must be filled in - enter `0` to keep none - and the tier sizes must increase from one row to the next. Without a catch-all tier, an artifact larger than every tier is never deleted. A deleted version stays listed, marked as purged; see [retention](/key-concepts/artifacts.md#retention) and [size-tiered artifact retention](/operations/maintenance/data-cleaning.md#size-tiered-artifact-retention).
+Every count must be filled in - enter `0` to keep none - and the tier sizes must increase from one row to the next. Without a catch-all tier, an artefact larger than every tier is never deleted. A deleted version stays listed, marked as purged; see [retention](/key-concepts/artefacts.md#retention) and [size-tiered artefact retention](/operations/maintenance/data-cleaning.md#size-tiered-artefact-retention).
 
-**Preview items for deletion** includes an **Artifacts** panel once every tier is complete. It lists, for each tier, how many artifact versions and how much storage the job would remove from its resource paths if it ran now, with the total for all tiers in the panel's heading.
+**Preview items for deletion** includes an **Artefacts** panel once every tier is complete. It lists, for each tier, how many artefact versions and how much storage the job would remove from its resource paths if it ran now, with the total for all tiers in the panel's heading.
 
 ### Refreshing database statistics
 
@@ -85,7 +80,7 @@ A job can also tick **Refresh database statistics**, which refreshes the statist
 
 This option removes nothing, and it covers every table in the instance — the job's resource paths and filters do not apply to it. Only tables whose statistics have actually gone stale are analysed, at most twenty five on any one run, and the tables stay readable and writable throughout. It runs after any deletions the same job makes.
 
-See [refreshing database statistics](/operations/maintenance/data-cleaning.md#refreshing-database-statistics) for how a table is judged stale, and the **Database** screen's [query planner statistics](/getting-started/familiarisation/gui/administration/system_information/database.md#query-planner-statistics) for how fresh each table's statistics are now.
+See [refreshing database statistics](/operations/maintenance/data-cleaning.md#refreshing-database-statistics) for how a table is judged stale, and the **Database** screen's [query planner statistics](/getting-started/familiarisation/gui/database.md#query-planner-statistics) for how fresh each table's statistics are now.
 
 :::caution
 Removing an activity destroys everything recorded with it, including its events, logs and steps. Preview a new job before enabling it, and be careful with resource paths ending in `%` — they match a node and every node beneath it.
@@ -93,19 +88,15 @@ Removing an activity destroys everything recorded with it, including its events,
 
 ## Reviewing what a cleanup job has removed
 
-Select a job to open it. The **Cleanup job runs** tab lists each time the job has run, what kind of data each run removed, how many items it removed and the filters that run applied, so you can confirm a job is removing what you intended. The job's own card summarises the filters set against each of its options. The **View/edit job details** tab shows the job's configuration and is where it is changed. Its actions menu (⋮) enables, disables or deletes the job.
-
-<p align='center'>
-  <img alt='Cleanup job page' src={require('!url-loader!../images/data-cleanup-job-details.png').default} className='image-border'/>
-</p>
+Select a job to open it. The **Cleanup job runs** tab lists each time the job has run, what kind of data each run removed, how many items it removed and the filters that run applied, so you can confirm a job is removing what you intended. The job's own card summarises the filters set against each of its options. The **View/edit job details** tab shows the job's configuration and is where it is changed.
 
 A job that has already run and has no run left to make can still be edited. Give it a new schedule - a later run time, or a cron schedule - and it is scheduled again when saved. Each entry in **Cleanup job runs** keeps the filters that run applied, so editing the job does not change the record of what it removed.
 
 ## Enabling and disabling a cleanup job
 
-Open the job and choose **Disable cleanup job** from its actions menu (⋮) to stop it running. The job keeps its configuration and its history, and can be enabled again from the same menu.
+Choose **Disable cleanup job** from a job's actions menu to stop it running. The job keeps its configuration and its history, and can be enabled again from the same menu.
 
-**Enable cleanup job** is unavailable for a job that has no run left to make, and the reason is given as a tooltip on the menu item:
+**Enable** is unavailable for a job that has no run left to make, and the reason is given as a tooltip on the menu item:
 
 | Reason                                                | What to do                                                                       |
 |-------------------------------------------------------|-------------------------------------------------------------------------------------|

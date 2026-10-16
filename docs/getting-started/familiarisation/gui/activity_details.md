@@ -1,5 +1,5 @@
 ---
-sidebar_position: 2
+sidebar_position: 6
 description: ''
 ---
 
@@ -11,13 +11,13 @@ The activity details screen is a critical component of OpsChain, providing in-de
 
 To view the details of a particular change or workflow run:
 
-1. Access the list of activity by selecting the _activity_ option in the navigation bar.
+1. Access the list of activity by selecting the _activity_ option in the left sidebar.
 2. Click on a specific activity row in the table to open the details screen.
 
 ## Understanding the activity details screen
 
 <p align='center'>
-  <img alt='Activity details screen' src={require('!url-loader!../images/activity-details.png').default} className='image-border'/>
+  <img alt='Activity details screen' src={require('!url-loader!./images/activity-details.png').default} className='image-border'/>
 </p>
 
 The activity details screen is divided into several sections, providing a comprehensive overview of the activity's lifecycle.
@@ -27,7 +27,7 @@ While a change or workflow run is open, the browser tab's title and icon also re
 ### Header information
 
 <p align='center'>
-  <img alt='Activity header details screen' src={require('!url-loader!../images/activity-header-details.png').default} className='image-border'/>
+  <img alt='Activity header details screen' src={require('!url-loader!./images/activity-header-details.png').default} className='image-border'/>
 </p>
 
 From left to right:
@@ -37,27 +37,15 @@ From left to right:
 | **Status icon**                   | An icon representing the activity's status.     |
 | **Action name**                   | The name of the action being executed.          |
 | **Started by**                    | The name of the user that initiated the action. |
+| **Site**                          | The site that the activity is running on.       |
 | **Site**                          | The OpsChain site the change ran at and reads `-` until the change starts. |
 | **Status**                        | The current status of the activity. |
-| **Waiting in queue**              | Shown when the activity is waiting behind other activities in the queue. Select it to list those activities in order. |
-| **Blocked by change**             | Shown when other changes are blocking the activity. Select it to list them. |
-| **Timing information**            | The creation, start and finish times, and how long the activity has been running or took in total. Select them to open the [timing breakdown](#timing-breakdown). |
+| **Blocked by queue**              | If the activity is blocked by other items in the queue, a dropdown will be shown with the name of the activities that are blocking it. |
+| **Timing information**            | Displays the relevant timing information for the activity, including the creation date and all the status transitions such as when the activity started running, when it has finished, etc. |
 | **Git reference**                 | Shows the Git reference associated with the activity, including the remote, revision, and the SHA it resolved to. If the activity is for a templated asset, it will show the template version name used in the change. |
 | **Ran as part of change**         | Shown when the change was created by another change's action, through the API. Links to the change that created it. |
 | **Ran as part of workflow**       | Shown when the activity ran as a step of a workflow run. Links to that run. When a [retried workflow run](/key-concepts/workflows.md#retrying-workflow-runs) reused the change or child workflow run, this reads **Part of workflow runs** and lists every run it belongs to, with the run it actually ran in highlighted. |
 | **Asset action**                  | Shown for a change on an asset that [started partway through an action](/key-concepts/changes.md#starting-a-change-partway-through). Links to that action on the asset's [actions tab](/getting-started/familiarisation/gui/projects/assets.md#the-assets-action-tree). |
-| **Original change**               | Shown on a change created by [retrying](#retrying-a-change) another change. Links to the change that was retried. |
-| **Source event**                  | Shown when the change was started by a [notification subscription](/operations/notifications.md#notification-loops). Links to the [event](/getting-started/familiarisation/gui/audit_history.md#view-the-details-of-an-event) that started it. |
-
-**Collapse details**, at the right of the header, folds the header down to a single line. Your choice is remembered in the browser.
-
-#### Timing breakdown
-
-Select the timing information in the header to see where the time went: execution time (running the change, waiting for approval, and steps waiting for user interaction), system time (OpsChain's own work, image builds and, on a [remote runner](/advanced/remote-runners/index.md), preparing the steps), and each state the change passed through with its duration.
-
-<p align='center'>
-  <img alt='Change timing breakdown' src={require('!url-loader!../images/activity-timing.png').default} className='image-border'/>
-</p>
 
 ### Change activity tabs
 
@@ -70,8 +58,7 @@ For changes, available tabs include:
 - the change's settings
 - the change's MintModel, if any was used
 - the change's metadata, if any was added
-- the change's [notification targets](#notifications), if any were set
-- the change's artifacts
+- the change's artefacts
 - the change's audit history
 
 The step tree, swim lane and change logs tabs are three different views of the same activity. The step tree opens by default; use the view settings menu (the cog next to the tabs) to choose which view opens first when you view a change or workflow run - your choice is remembered in the browser.
@@ -90,12 +77,12 @@ The swim lane view groups the activity's steps into a handful of columns - or _l
 
 Within a lane, steps are grouped under their parent (wrapper) step, and each lane has its own status filter so you can narrow a busy lane down to a particular status. A search box lets you find a step by its name or action across every lane. The same step actions available in the step tree - opening logs, continuing, approving and so on - are available from each card.
 
-Use the **Show wrapper steps** toggle to include or exclude wrapper steps (steps that exist only to group their children). This preference is remembered separately for changes and workflow runs.
+Use the **show/hide wrapper steps** toggle to include or exclude wrapper steps (steps that exist only to group their children). This preference is remembered separately for changes and workflow runs.
 
 #### Step tree
 
 <p align='center'>
-  <img alt='Step tree screen' src={require('!url-loader!../images/activity-step-tree.png').default} className='image-border'/>
+  <img alt='Step tree screen' src={require('!url-loader!./images/activity-step-tree.png').default} className='image-border'/>
 </p>
 
 The step tree tab visualises the following:
@@ -147,7 +134,6 @@ Steps transition between status as they execute. The table below lists the statu
 | **Running**      | Whilst a step is actively executing, it is in the _running_ state.                                                                                                                               |
 | **Error**        | If the step fails, it transitions to the _error_ state.                                                                                                                                          |
 | **Success**      | If the step succeeds, it transitions to the _success_ state.                                                                                                                                     |
-| **Cancelled**    | The step was stopped because a user cancelled the change or workflow run. See [change and step lifecycle](/key-concepts/changes.md#change--step-lifecycle). |
 | **Skipped**      | If the step is skipped either because it was successfully run previously or was marked for skipping during a change retry.                                                                                                                                     |
 | **Removed**      | If the step is removed on another action's execution, it is marked as _removed_.                                                                                                                                   |
 
@@ -155,10 +141,8 @@ When a change or workflow includes wait steps or approval steps, the following a
 
 | Status                              | Description                                                                                                                                                                              |
 |-------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| **Waiting for manual continuation** | The step requires a user to manually continue the step, using the **Continue** button on the step. |
-| **Waiting for approval**            | The step requires approval from a user or member of the appropriate LDAP group to continue the change/workflow. The step shows **Approve** and **Reject** buttons for the approver. |
-| **Approved**                        | An approver approved the step, and the change/workflow carries on. |
-| **Continued**                       | A user continued the step, and the change/workflow carries on. |
+| **Waiting for manual continuation** | The step requires a user to manually continue the step, using the continue option in the step's "triple dot" menu.                                                                       |
+| **Waiting for approval**            | The step requires approval from a user or member of the appropriate LDAP group to continue the change/workflow. The step's "triple dot" menu provides approve and reject options for the approver. |
 | **Rejected**                        | An approver rejected the step rather than approving it. The step and any steps beneath it are aborted. A workflow run reports _rejected_ when any of its steps was rejected. A change reports _rejected_ when the step rejected was its own [approval step](/key-concepts/changes.md#approving-a-change) — rejecting an [approval step](/key-concepts/actions.md#approval-steps) further down the tree fails that step's parent, so the change ends in _error_. |
 
 :::info
@@ -188,7 +172,7 @@ The same view, controls and search are used for the [workflow run tree](#workflo
 #### Change logs
 
 <p align='center'>
-  <img alt='Change logs screen' src={require('!url-loader!../images/activity-change-log.png').default} className='image-border'/>
+  <img alt='Change logs screen' src={require('!url-loader!./images/activity-change-log.png').default} className='image-border'/>
 </p>
 
 The change logs tab contains detailed logs related to a change. Access this tab to review comprehensive log information that can help in troubleshooting and understanding the change's impact.
@@ -198,15 +182,15 @@ You can toggle the `System logs` option to show or hide OpsChain-specific logs, 
 #### Step logs
 
 <p align='center'>
-  <img alt='Step log screen' src={require('!url-loader!../images/activity-step-log.png').default} className='image-border'/>
+  <img alt='Step log screen' src={require('!url-loader!./images/activity-step-log.png').default} className='image-border'/>
 </p>
 
-To view the log for a specific step, click the **Logs** button on the step. This will then display the step logs for that particular step and its children. You can disable children logs by toggling the `Include child logs` checkbox. You can also toggle the `Status logs` option to show or hide the pod status logs for that step.
+To view the log for a specific step, click on the icon to the right of the step name. This will then display the step logs for that particular step and its children. You can disable children logs by toggling the `Include child logs` checkbox. You can also toggle the `Status logs` option to show or hide the pod status logs for that step.
 
-Where the step stored any [artifacts](/key-concepts/artifacts.md), **Artifacts published by this step** lists them, each with a download button. Where it loaded any, **Artifacts loaded by this step** lists each version it loaded, with when that version was created and when the step loaded it. A version the step loaded more than once is listed once per load.
+Where the step stored any [artefacts](/key-concepts/artefacts.md), **Artefacts published by this step** lists them, each with a download button. Where it loaded any, **Artefacts loaded by this step** lists each version it loaded, with when that version was created and when the step loaded it. A version the step loaded more than once is listed once per load.
 
 <p align='center'>
-  <img alt='Step details with published and loaded artifacts' src={require('!url-loader!../images/artifact-step-dialog.png').default} className='image-border'/>
+  <img alt='Step details with published and loaded artefacts' src={require('!url-loader!./images/artefact-step-dialog.png').default} className='image-border'/>
 </p>
 
 **Show properties** opens a panel beside the log holding the properties that step ran with. Pick **Initial step properties** or **Final step properties** to see them as they were before and after the step, and narrow the converge from the sources panel as you would on the [properties tab](#properties). The sources panel starts collapsed here, because it shares the dialog's width with the log - expand it from the rail on the right.
@@ -214,10 +198,6 @@ Where the step stored any [artifacts](/key-concepts/artifacts.md), **Artifacts p
 #### Metadata
 
 The metadata tab displays the metadata that the change ran with.
-
-#### Notifications
-
-The notifications tab appears when the change was started with notification targets, and lists the events and recipients that were set. Targets are set in the **Notify** panel when you [run a change](/getting-started/familiarisation/gui/activity/index.md#run-change) - see [subscribing to events](/operations/notifications.md#subscribing-to-events) for how notifications are delivered.
 
 #### Properties
 
@@ -237,24 +217,24 @@ The settings tab displays the settings overrides that the change ran with, conve
 
 The MintModel tab displays the MintModel that was used to run the change. You can read more about MintModel changes in the [MintModel asset templates guide](/getting-started/familiarisation/gui/projects/asset_templates.md#asset-templates-with-a-mintmodel).
 
-#### Artifacts
+#### Artefacts
 
-The artifacts tab has two views, switched with the buttons above the list. Each button shows how many rows its view holds.
+The artefacts tab has two views, switched with the buttons above the list. Each button shows how many rows its view holds.
 
-- **Published** (the default) lists the [artifacts](/key-concepts/artifacts.md) the change's steps stored, with the step that stored each one, its code, file name, size and labels, and when it was stored. The tab heading shows how many there are.
-- **Loaded** lists every artifact version the change's steps [loaded](/key-concepts/artifacts.md#loading-an-artifact), with the step that loaded it, its code, file name, size and labels, when that version was created, and when it was loaded. This is the record of exactly what the change used. Every load is listed, so a version loaded twice appears twice. Loads made with the [`artifact` resource types](/advanced/resource-types/index.md#opschain-artifacts) are listed too.
+- **Published** (the default) lists the [artefacts](/key-concepts/artefacts.md) the change's steps stored, with the step that stored each one, its code, file name, size and labels, and when it was stored. The tab heading shows how many there are.
+- **Loaded** lists every artefact version the change's steps [loaded](/key-concepts/artefacts.md#loading-an-artefact), with the step that loaded it, its code, file name, size and labels, when that version was created, and when it was loaded. This is the record of exactly what the change used. Every load is listed, so a version loaded twice appears twice. Loads made with the [`artefact` resource types](/advanced/resource-types/index.md#opschain-artefacts) are listed too.
 
-In either view, select an artifact's code to open its [versions page](/getting-started/familiarisation/gui/projects/assets.md#artifact-versions). The list loads more rows as you scroll.
+In either view, select an artefact's code to open its [versions page](/getting-started/familiarisation/gui/projects/assets.md#artefact-versions). The list loads more rows as you scroll.
 
 <p align='center'>
-  <img alt='Change artifacts tab, published view' src={require('!url-loader!../images/artifact-change-tab.png').default} className='image-border'/>
+  <img alt='Change artefacts tab, published view' src={require('!url-loader!./images/artefact-change-tab.png').default} className='image-border'/>
 </p>
 
 <p align='center'>
-  <img alt='Change artifacts tab, loaded view' src={require('!url-loader!../images/artifact-change-loaded.png').default} className='image-border'/>
+  <img alt='Change artefacts tab, loaded view' src={require('!url-loader!./images/artefact-change-loaded.png').default} className='image-border'/>
 </p>
 
-Select the download button on a row to save the artifact's file. The file is streamed straight to disk by the browser, so a large artifact can be downloaded without holding it in the page. A version that [retention](/key-concepts/artifacts.md#retention) has purged is still listed, but its download button is disabled.
+Select the download button on a row to save the artefact's file. The file is streamed straight to disk by the browser, so a large artefact can be downloaded without holding it in the page. A version that [retention](/key-concepts/artefacts.md#retention) has purged is still listed, but its download button is disabled.
 
 #### Audit history
 
@@ -262,16 +242,14 @@ The audit history tab shows the [events](/key-concepts/events.md) raised for the
 
 ### Managing changes
 
-Depending on the status of the change, you will see some of the following buttons.
+Depending on the status of the change, you will see either an _approve_, _reject_, _cancel_, _pause_, _resume_, _retry_, or _watch_ button.
 
 | Button             | Description                                                                                                                                                                                      |
 |--------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| **Approve change/Reject change** | Visible when a change is waiting for approval.                                                                                                                                     |
-| **Continue change** | Visible when a change is waiting to be continued. Where the waiting step asks for input arguments, it opens the form to provide them.                                                           |
-| **Pause change/Resume change** | **Pause change** is visible while a change is active, and **Resume change** once it has been paused. Either asks for an optional reason. See [pausing and resuming a change](#pausing-and-resuming-a-change). |
-| **Cancel change**  | Visible until the change finishes. Clicking this will halt the execution of the change.                                                                                                          |
-| **Repeat change**  | Shown once a change has finished. Opens the run change dialog to start a new change - see [repeating a change](#repeating-a-change). For a project or environment change, its dropdown repeats the change against the same commit SHA. |
-| **Retry change**   | Shown once a change has finished in any status other than success - see [retrying a change](#retrying-a-change). Its dropdown retries against the latest commit for the Git revision instead. |
+| **Approve/reject** | Visible when a change requires human approval before it runs.                                                                                                                                    |
+| **Cancel**         | Visible when a change is currently running. Clicking this will halt the execution of the change.                                                                                                 |
+| **Pause/resume**   | **Pause** is visible while a change is running, and **Resume** once it has been paused. Either asks for an optional reason. See [pausing and resuming a change](#pausing-and-resuming-a-change). |
+| **Retry**          | Shown if a change has failed, allowing you to attempt to re-execute the change.                                                                                                                  |
 | **Watch (bell)**   | Visible while a change or workflow run is active. Click to receive a browser desktop notification when the run completes. See [browser notifications](#browser-notifications) for setup details. |
 
 The _approve_, _reject_, _cancel_, _pause_ and _resume_ buttons require permission to [execute](/getting-started/familiarisation/gui/manage_security.md#authorisation-rule-actions) the change's action.
@@ -282,7 +260,7 @@ If a change is cancelled, all finalised steps (i.e. in the success or error stat
 
 #### Pausing and resuming a change
 
-Pausing lets the steps that are already running or queued finish, but starts no further steps until the change is resumed, when it carries on from where it stopped. While a change is paused its status carries a **Pausing** marker, which becomes **Paused** once everything that was running has finished. Hover over the marker to see who paused the change and when. The same marker is shown on the [activity table](/getting-started/familiarisation/gui/activity/index.md#activity-details), and workflow runs are paused and resumed the same way.
+Pausing lets the steps that are already running or queued finish, but starts no further steps until the change is resumed, when it carries on from where it stopped. While a change is paused its status carries a **Pausing** marker, which becomes **Paused** once everything that was running has finished. Hover over the marker to see who paused the change and when. The same marker is shown on the [activity table](/getting-started/familiarisation/gui/activity.md#activity-details), and workflow runs are paused and resumed the same way.
 
 See [pausing and resuming a change](/key-concepts/changes.md#pausing-and-resuming-a-change) for the full behaviour.
 
@@ -294,7 +272,7 @@ See [retrying changes](/key-concepts/changes.md#retrying-changes) for the full s
 
 #### Repeating a change
 
-When you repeat a change, OpsChain starts a fresh change using the same properties, settings and Git revision. When repeating a change for an asset, the new change will use the asset's current template version. Whether the change [continued its wait steps automatically](/getting-started/familiarisation/gui/activity/index.md#continuing-wait-steps-automatically) and whether it was built without cache are carried over into the repeat dialog, where you can adjust them before running.
+When you repeat a change, OpsChain starts a fresh change using the same properties, settings and Git revision. When repeating a change for an asset, the new change will use the asset's current template version. Whether the change [continued its wait steps automatically](/getting-started/familiarisation/gui/activity.md#continuing-wait-steps-automatically) and whether it was built without cache are carried over into the repeat dialog, where you can adjust them before running.
 
 #### Downloading a support bundle
 
@@ -319,7 +297,7 @@ OpsChain can show a browser desktop notification when a watched change or workfl
 To set up browser notifications:
 
 1. Open the user menu (top right) and select _notification preferences_.
-2. In the **Browser notifications** section, click **Setup browser (requests permission)** to grant the browser the required permission, then tick **Enable browser notifications**.
+2. In the _browser notifications_ section, enable the toggle and click _request permission_ to grant the browser the required permission.
 
 Once enabled, a bell icon appears in the actions bar of any active change or workflow run. Click it to start watching that run — the bell turns highlighted to confirm. Click again to stop watching. When the run completes, a notification pops up with a link back to the details page.
 
@@ -339,10 +317,10 @@ Enable the _auto-watch active runs_ option in Notification preferences to automa
 
 ### Workflow run details
 
-For a workflow run, the [swim lane](#swim-lane) and step tree are shown in the same style as for a change, and the step tree is shown in the same style as the [change step tree](#step-tree). Its buttons work as their [change equivalents](#managing-changes) do. A retried run links to its **Original workflow run**, and a run started by a notification subscription shows its **Source event**, as a change does.
+For a workflow run, the [swim lane](#swim-lane) and step tree are shown in the same style as for a change, and the step tree is shown in the same style as the [change step tree](#step-tree).
 
 <p align='center'>
-  <img alt='Workflow run tree' src={require('!url-loader!../images/activity-workflow.png').default} className='image-border'/>
+  <img alt='Workflow run tree' src={require('!url-loader!./images/activity-workflow.png').default} className='image-border'/>
 </p>
 
 A workflow run also has an **Audit history** tab, listing the [events](/key-concepts/events.md) raised by the run, its steps, and the changes it started and their steps. It uses the same table and filters as the change [audit history](#audit-history) tab, scoped to the run.

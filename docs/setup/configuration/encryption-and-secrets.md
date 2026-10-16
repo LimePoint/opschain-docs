@@ -45,7 +45,7 @@ The settings that secure your OpsChain installation. These settings are located 
 | OPSCHAIN_ENCRYPTION_SEED_KEY | The key OpsChain will use for seeding the encryption of sensitive data, and for deriving the [MintPress transportable key](#mintpress-transportable-key) | 32 characters |
 | OPSCHAIN_KEY_DERIVATION_SALT    | The key OpsChain will use for generating its cryptography keys | 32 characters |
 | OPSCHAIN_PRIMARY_KEY    | The primary key OpsChain will use for encryption | 32 characters  |
-| OPSCHAIN_TOKEN_SECRET_KEY | The key OpsChain will use for generating bearer tokens for authentication, and from which it derives the key that signs artifact links. Changing it invalidates existing bearer tokens and artifact links | 64 characters |
+| OPSCHAIN_TOKEN_SECRET_KEY | The key OpsChain will use for generating bearer tokens for authentication, and from which it derives the key that signs artefact links. Changing it invalidates existing bearer tokens and artefact links | 64 characters |
 
 :::danger
 Modifying any of these settings after installation will result in data loss.
@@ -65,13 +65,6 @@ base64 -w0 ~/.limepoint/localKey
 ```
 
 If the value of `mintPressTransportableKey` is not a key MintPress can use, OpsChain derives the key from `OPSCHAIN_ENCRYPTION_SEED_KEY` instead, and the `opschain-transportable-key` job log records that the supplied key was replaced.
-
-You must set at least one of `OPSCHAIN_ENCRYPTION_SEED_KEY` and `mintPressTransportableKey`; `helm install` and `helm upgrade` fail if neither is set. In [high availability mode](/advanced/ha/index.md), set `OPSCHAIN_ENCRYPTION_SEED_KEY`. If you set only `mintPressTransportableKey`, it is not a key MintPress can use, and OpsChain does not already have a usable key, the `opschain-transportable-key` job fails, because there is no `OPSCHAIN_ENCRYPTION_SEED_KEY` to derive a key from.
-
-If your `values.yaml` file sets neither, set `OPSCHAIN_ENCRYPTION_SEED_KEY` before you upgrade. If you previously set it and later removed it, restore the original value, otherwise use a new value:
-
-- if your installation already has a usable transportable key, OpsChain keeps that key
-- otherwise, OpsChain derives a new key from `OPSCHAIN_ENCRYPTION_SEED_KEY`
 
 Once the key has been created, it does not change:
 

@@ -90,7 +90,7 @@ OpsChain creates these pods directly while it works. They are not created by a d
 
 Building a runner or agent image does not create a pod — image builds run inside the `opschain-build-service` pod.
 
-These pods can be seen in the GUI as well as with `kubectl`, including after they have finished. See [pods](/getting-started/familiarisation/gui/administration/system_information/pods.md).
+These pods can be seen in the GUI as well as with `kubectl`, including after they have finished. See [pods](/getting-started/familiarisation/gui/pods.md).
 
 ## Services
 

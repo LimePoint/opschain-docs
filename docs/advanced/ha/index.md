@@ -33,7 +33,7 @@ Every site shares the same data, so any site's GUI or API can see and act on eve
 
 A site can be [cordoned](/advanced/ha/operations.md#cordoning-a-site) to stop new work from starting there while what is already running finishes.
 
-Each site's Kubernetes resources — its [pods](/getting-started/familiarisation/gui/administration/system_information/pods.md), [deployments](/getting-started/familiarisation/gui/administration/system_information/deployments.md) and their events — can only be inspected from the site that holds them.
+Each site's Kubernetes resources — its [pods](/getting-started/familiarisation/gui/pods.md), [deployments](/getting-started/familiarisation/gui/deployments.md) and their events — can only be inspected from the site that holds them.
 
 ## Prerequisites
 

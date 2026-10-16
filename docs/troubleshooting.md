@@ -187,7 +187,7 @@ If you would like to view the logs of a single service, include the service name
 
 #### Expired / invalid licence
 
-If your licence file is invalid or has expired when you attempt to start the OpsChain containers, the `opschain-api` will be _unhealthy_ and the service logs will include a message reflecting the licence state (to upload a new licence from the GUI, see [licence](/getting-started/familiarisation/gui/administration/licence.md)):
+If your licence file is invalid or has expired when you attempt to start the OpsChain containers, the `opschain-api` will be _unhealthy_ and the service logs will include a message reflecting the licence state:
 
 ```text
 OpsChain licence file (opschain.lic) has expired.

@@ -1,6 +1,5 @@
 [Unit]
 Description=OpsChain remote runner daemon
-Documentation=https://docs.opschain.io/docs/advanced/remote-runners/setup
 After=network-online.target
 Wants=network-online.target
 

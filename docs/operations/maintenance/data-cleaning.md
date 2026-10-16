@@ -22,7 +22,7 @@ Configuring data cleanup definitions is critical for maintaining OpsChain's data
 
 ### Creating a data cleanup definition
 
-Data cleanup definitions can be created from the **Data cleanup** section of the administration screen, where they are listed as cleanup jobs — see [data cleanup](/getting-started/familiarisation/gui/administration/data_cleanup.md#adding-a-cleanup-job). To create one via the API, refer to the [API documentation](https://docs.opschain.io/api-docs/#tag/Data-cleanup-definitions/).
+Data cleanup definitions can be created from the **Data cleanup** section of the administration screen, where they are listed as cleanup jobs — see [data cleanup](/getting-started/familiarisation/gui/data_cleanup.md#adding-a-cleanup-job). To create one via the API, refer to the [API documentation](https://docs.opschain.io/api-docs/#tag/Data-cleanup-definitions/).
 
 Below, we'll go over the concepts necessary to understand how they are defined and configured.
 
@@ -37,17 +37,17 @@ The data that a single data cleanup definition will purge is configured through 
 | `purge_jobs` | The records of the background jobs OpsChain has run. |
 | `purge_agent_images` | Unreferenced agent container images, from the internal registry. |
 | `purge_node_background_tasks` | Finished node background tasks that a newer task of the same kind has replaced, and their logs. |
-| `purge_artifacts` | [Artifacts](/key-concepts/artifacts.md) that fall outside their retention rule. |
+| `purge_artefacts` | [Artefacts](/key-concepts/artefacts.md) that fall outside their retention rule. |
 
 `purge_node_background_tasks` covers action generation, MintModel concretisation, agent image build, and agent start and stop tasks. Nothing else removes these, and an errored MintModel concretisation can carry a large volume of render logs, so an instance that has been running for a while can hold a lot of them.
 
-### Size-tiered artifact retention
+### Size-tiered artefact retention
 
-`purge_artifacts` is configured differently from the other purge attributes above: instead of an API filter, it takes a `size_tiers` array, because a sensible retention rule for an artifact usually depends on its own size — keep many versions of a small config artifact, but only the last one or two of a large build artifact. Each tier is an object with an `up_to` size, and the same `keep_versions`/`keep_days` pair a plain retention rule would use:
+`purge_artefacts` is configured differently from the other purge attributes above: instead of an API filter, it takes a `size_tiers` array, because a sensible retention rule for an artefact usually depends on its own size — keep many versions of a small config artefact, but only the last one or two of a large build artefact. Each tier is an object with an `up_to` size, and the same `keep_versions`/`keep_days` pair a plain retention rule would use:
 
 ```json
 {
-  "artifacts": {
+  "artefacts": {
     "size_tiers": [
       { "up_to": "10Mi", "keep_versions": 20, "keep_days": 90 },
       { "up_to": "200Mi", "keep_versions": 5, "keep_days": 30 },
@@ -57,13 +57,13 @@ The data that a single data cleanup definition will purge is configured through 
 }
 ```
 
-In the GUI, tick **Delete old artifact versions** on a [cleanup job](/getting-started/familiarisation/gui/administration/data_cleanup.md#what-a-cleanup-job-can-remove) and set the tiers in its **Artifact retention** table.
+In the GUI, tick **Delete old artefact versions** on a [cleanup job](/getting-started/familiarisation/gui/data_cleanup.md#what-a-cleanup-job-can-remove) and set the tiers in its **Artefact retention** table.
 
-Every artifact version is matched to the smallest tier whose `up_to` is still at least its own size, so the tiers above keep 20 versions (or 90 days) of anything up to 10Mi, 5 versions (or 30 days) of anything up to 200Mi, and only the single most recent version (kept for at most 7 days) of anything larger. Give the last tier an `up_to` of `null` as a catch-all for artifacts larger than every other tier - without one, artifacts above the largest `up_to` are not matched by any tier and so are never purged. A version is removed only once it falls outside both its tier's `keep_versions` and `keep_days`, the same rule a flat, untiered retention setting uses.
+Every artefact version is matched to the smallest tier whose `up_to` is still at least its own size, so the tiers above keep 20 versions (or 90 days) of anything up to 10Mi, 5 versions (or 30 days) of anything up to 200Mi, and only the single most recent version (kept for at most 7 days) of anything larger. Give the last tier an `up_to` of `null` as a catch-all for artefacts larger than every other tier - without one, artefacts above the largest `up_to` are not matched by any tier and so are never purged. A version is removed only once it falls outside both its tier's `keep_versions` and `keep_days`, the same rule a flat, untiered retention setting uses.
 
-A definition with `purge_artifacts` set to `true` must include `size_tiers`. One without them is rejected.
+A definition with `purge_artefacts` set to `true` must include `size_tiers`. One without them is rejected.
 
-To check a retention rule before saving it, send the definition's `node_paths` and `filters` to `POST /api/data_cleanup_definitions/artifacts_preview`. Nothing is removed. The response's `meta.tiers` gives, for each tier, the number of artifact versions and bytes a purge would remove now, and `meta.totals` gives the sum. See the [API reference](pathname:///api-docs/#tag/Data-cleanup-definitions) for the request format.
+To check a retention rule before saving it, send the definition's `node_paths` and `filters` to `POST /api/data_cleanup_definitions/artefacts_preview`. Nothing is removed. The response's `meta.tiers` gives, for each tier, the number of artefact versions and bytes a purge would remove now, and `meta.totals` gives the sum. See the [API reference](pathname:///api-docs/#tag/Data-cleanup-definitions) for the request format.
 
 A task counts as superseded only when a newer task of the same kind exists against the same template version history record. A new record is created whenever the resource's template version or resolved commit changes, so tasks recorded against an earlier record are kept. Tasks that are still needed are kept regardless of the filters — the latest successful action generation for a template version history, tasks still referenced by a change or a running agent, and agent image build tasks whose image is still in the registry. Enable `purge_agent_images` over the same node paths to remove the image first, so the build task becomes reapable.
 
@@ -90,7 +90,7 @@ A few things follow from this being a database-wide operation rather than a purg
 - nothing is deleted or changed, and the tables stay readable and writable throughout; and
 - only one refresh runs at a time across a high availability deployment. A run that finds another site already refreshing records that it was skipped rather than waiting.
 
-Each run records an [`info:data_cleanup:statistics`](/key-concepts/events.md) event listing the tables it analysed with their estimated row count before and after, so the effect of a run can be seen without querying the database. The **Database** administration screen reports how fresh each table's statistics are — see [query planner statistics](/getting-started/familiarisation/gui/administration/system_information/database.md#query-planner-statistics).
+Each run records an [`info:data_cleanup:statistics`](/key-concepts/events.md) event listing the tables it analysed with their estimated row count before and after, so the effect of a run can be seen without querying the database. The **Database** administration screen reports how fresh each table's statistics are — see [query planner statistics](/getting-started/familiarisation/gui/database.md#query-planner-statistics).
 
 :::tip[Give the refresh its own definition]
 Because it ignores node paths and filters, and removes nothing, the refresh is best configured as a definition of its own — no node paths, `analyze_statistics` set, `repeat` set, and a `cron_schedule` that runs it daily. It is then scheduled independently of whatever you purge, and stays in place unchanged as your retention rules change.
@@ -100,11 +100,11 @@ Because it ignores node paths and filters, and removes nothing, the refresh is b
 
 Data cleanup definitions can be configured to run on a cron schedule via the `cron_schedule` attribute. You can also specify how many times the definition should run, via the `maximum_run_count` attribute, or up until when it should run, via the `end_at` attribute. For the definition to be run more than once, always set the `repeat` attribute to `true`.
 
-If you'd like to run a data purge in an ad-hoc way, you could instead provide the `run_at` attribute with a timestamp for when it should run and the `repeat` attribute set to `false`. The GUI's **Run now**, **Run later** and **Run on a schedule** options set these attributes for you - see [choosing when a job runs](/getting-started/familiarisation/gui/administration/data_cleanup.md#adding-a-cleanup-job).
+If you'd like to run a data purge in an ad-hoc way, you could instead provide the `run_at` attribute with a timestamp for when it should run and the `repeat` attribute set to `false`.
 
 ### Node selection
 
-To define what needs to be purged, data cleanup definitions use a list of node selection paths. These paths can either be an exact path to a specific node (e.g., `/projects/demo`), or a path ending with a `%` wildcard to match the node and all of its descendants (e.g., `/projects/demo%`). The latter format is specially useful when creating data cleanup definitions for all child nodes of a type for a project, including ones that are yet to be created. In the GUI, the scope dropdown on each [resource path](/getting-started/familiarisation/gui/administration/data_cleanup.md#adding-a-cleanup-job) builds these paths for you.
+To define what needs to be purged, data cleanup definitions use a list of node selection paths. These paths can either be an exact path to a specific node (e.g., `/projects/demo`), or a path ending with a `%` wildcard to match the node and all of its descendants (e.g., `/projects/demo%`). The latter format is specially useful when creating data cleanup definitions for all child nodes of a type for a project, including ones that are yet to be created.
 
 There are some rules for how the paths must be defined. Each node path:
 
@@ -161,7 +161,7 @@ All data types for the matching nodes are removed if no filters are provided. En
 
 ### Enabling/disabling a data cleanup definition
 
-If you'd like to stop a data cleanup definition from running, disable it from its actions menu in the **Data cleanup** section of the administration screen, or disable several at once from the table's bulk actions — see [enabling and disabling a cleanup job](/getting-started/familiarisation/gui/administration/data_cleanup.md#enabling-and-disabling-a-cleanup-job). The definition keeps its configuration and its history, and can be enabled again the same way. To do this via the API, modify its `enabled` attribute — refer to the [API documentation](https://docs.opschain.io/api-docs/#tag/Data-cleanup-definitions/).
+If you'd like to stop a data cleanup definition from running, disable it from its actions menu in the **Data cleanup** section of the administration screen, or disable several at once from the table's bulk actions — see [enabling and disabling a cleanup job](/getting-started/familiarisation/gui/data_cleanup.md#enabling-and-disabling-a-cleanup-job). The definition keeps its configuration and its history, and can be enabled again the same way. To do this via the API, modify its `enabled` attribute — refer to the [API documentation](https://docs.opschain.io/api-docs/#tag/Data-cleanup-definitions/).
 
 A definition with no run left to make — one that has already run and is not set to `repeat`, that has reached its `maximum_run_count`, or whose `run_at` or `end_at` has passed — is disabled by OpsChain and cannot be enabled as it stands. Give it a run it can still make, by editing its schedule, run count or end date, and it is scheduled again when saved.
 

@@ -1,5 +1,5 @@
 ---
-sidebar_position: 6
+sidebar_position: 7
 description: ''
 ---
 
@@ -180,7 +180,6 @@ Calls a previously published workflow as a child of the current one.
 
 | Property             | Required | Description                                                           |
 |----------------------|----------|-----------------------------------------------------------------------|
-| `type`               | yes | `workflow`.                                                                 |
 | `target`             | yes | The OpsChain path of the workflow to run, e.g. `/projects/hello_world/workflows/backup-environment`. |
 | `version`            | no | The version of the child workflow to run. If omitted, the latest published version is used. |
 | `name`               | no | A human-readable name for the step.                                         |

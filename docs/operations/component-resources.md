@@ -104,7 +104,7 @@ Because the override chain reaches down to a single change, anyone who can creat
 { "resource_limits": { "max_pod_memory": "8Gi" } }
 ```
 
-Both `requests.memory` and `limits.memory` are checked against it wherever they are set — global, project, environment, asset or change — and a write that exceeds it is rejected, naming the maximum value allowed. Unlike `pod_templates`, it cannot be set on a project, environment, asset or change. Raise it deliberately, in the global settings, once you are satisfied the servers can carry it. In the GUI, it is the **Max pod memory** field of the [runner pod limits](/getting-started/familiarisation/gui/administration/system_configuration.md) section.
+Both `requests.memory` and `limits.memory` are checked against it wherever they are set — global, project, environment, asset or change — and a write that exceeds it is rejected, naming the maximum value allowed. Unlike `pod_templates`, it cannot be set on a project, environment, asset or change. Raise it deliberately, in the global settings, once you are satisfied the servers can carry it.
 
 :::note
 

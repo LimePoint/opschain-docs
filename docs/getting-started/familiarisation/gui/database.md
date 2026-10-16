@@ -1,15 +1,11 @@
 ---
-sidebar_position: 5
+sidebar_position: 14
 description: ''
 ---
 
 # Database
 
-The **Database** tab, in the [**System information**](/getting-started/familiarisation/gui/administration/system_information/index.md) section of the administration screen, describes the database behind your OpsChain instance: the database clusters of every site in the deployment, and the state of the database the API you are connected to is using.
-
-<p align='center'>
-  <img alt='Database screen' src={require('!url-loader!../../images/system-information-database.png').default} className='image-border'/>
-</p>
+The **Database** tab, in the **System information** section of the administration screen, describes the database behind your OpsChain instance: the database clusters of every site in the deployment, and the state of the database the API you are connected to is using.
 
 ## Topology
 
@@ -61,7 +57,7 @@ The gear icon on the right of a site's card opens the configuration recorded for
 - **Compare a site against itself over time.** OpsChain keeps a history of each site's recorded configuration, so you can see what changed between deploys and when. This is useful when troubleshooting an issue that began after an upgrade.
 
 :::tip
-The name of the site you are currently connected to is shown in the [version info dialog](/getting-started/familiarisation/gui/administration/version_info.md).
+The name of the site you are currently connected to is shown in the [version info dialog](/getting-started/familiarisation/gui/version_info.md).
 :::
 
 ## Database settings
@@ -95,6 +91,6 @@ The database chooses how to run every query from statistics it gathers about eac
 | **Table**                        | The name of the table.                                                                                                           |
 | **Rows**                         | The number of rows the planner believes the table holds. Shown as `—` for a table that has never been analysed, which has no estimate. |
 | **Modifications since analyze**  | How many rows have been inserted, updated or deleted since the table was last analysed. A large number against a table the planner last looked at long ago is what to look for. |
-| **Last analysed**                | When the table was last analysed, whether by the database itself or by a cleanup job. **Never** means its statistics have never been gathered. |
+| **Last analyzed**                | When the table was last analysed, whether by the database itself or by a cleanup job. **Never** means its statistics have never been gathered. |
 
 To bring them up to date, schedule a cleanup job with **Refresh database statistics** enabled — see [refreshing database statistics](/operations/maintenance/data-cleaning.md#refreshing-database-statistics).

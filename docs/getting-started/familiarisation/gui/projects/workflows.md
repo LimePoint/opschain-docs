@@ -21,7 +21,7 @@ Refer to the [workflow list](/getting-started/familiarisation/gui/workflows.md#w
 
 Clicking on any workflow in the workflows list will open the workflow details page. From here you can run the workflow, schedule it, browse its run history, view its definition, and edit it.
 
-If you'd like to edit the workflow, click **Open in editor** at the top of the page, which will take you to the [workflow editor](/getting-started/familiarisation/gui/workflows.md#workflow-editor).
+If you'd like to edit the workflow, you can do so by clicking the pencil icon by the workflow name, which will take you to the [workflow editor](/getting-started/familiarisation/gui/workflows.md#workflow-editor).
 
 ### Running and scheduling a workflow
 
@@ -33,7 +33,7 @@ By default, OpsChain will only allow a single instance of each workflow to be ru
 
 ### Runs
 
-The _runs_ tab lists each time the workflow has been run. Clicking on a run takes you to the [workflow run details](/getting-started/familiarisation/gui/activity/activity_details.md#workflow-run-details), where you can inspect each step of the run.
+The _runs_ tab lists each time the workflow has been run. Clicking on a run takes you to the [workflow run details](/getting-started/familiarisation/gui/activity_details.md#workflow-run-details), where you can inspect each step of the run.
 
 If all the workflow's steps complete successfully, the workflow run is marked as successful. If a workflow step errors or is cancelled, the remaining steps in the workflow run will not execute and the workflow run is marked as errored or cancelled, depending on the status of the step that ended the run.
 
@@ -50,26 +50,24 @@ Each row includes:
 | **Scheduled**       | Whether the workflow run was triggered by a scheduled run or manually by a user.   |
 | **Started by**      | The user who initiated the workflow run.                                           |
 | **Last updated**    | Timestamp for when the workflow run was last updated - its last status transition. |
-| **Metadata**        | The `comments` value from the workflow run's metadata.                             |
+| **Metadata**        | Additional metadata attached to this workflow run.                                 |
 
 #### Buttons & links
 
 | Buttons & links               | Function                                                               |
 |-------------------------------|------------------------------------------------------------------------|
-| **Bulk actions**              | When runs are selected, allows you to cancel them.                     |
 | **Search bar**                | Filter the contents of the table based on these criteria.              |
-| **Filters**                   | Filter by version, user, status, schedule, paused state and last update. Filters that do not fit on the toolbar move under **More**, which also holds date, Git remote, Git revision and metadata filters. |
 | **Columns**                   | Hide or display columns in the table.                                  |
 
 ### Scheduled activity
 
-The _scheduled activity_ tab lists every schedule defined for this workflow, enabling you to track, review, and manage its upcoming runs. To remove a schedule, click on the checkboxes for the schedules you wish to remove, then select _Delete selected_ from the _Bulk actions_ menu.
+The _scheduled activity_ tab lists every schedule defined for this workflow, enabling you to track, review, and manage its upcoming runs. To remove a schedule, click on the checkboxes for the schedules you wish to remove, then select _delete selected_ from the _bulk operations_ drop down.
 
 <p align='center'>
   <img alt='Project workflow scheduled activities' src={require('!url-loader!../images/project-workflow-scheduled-activity.png').default} className='image-border'/>
 </p>
 
-Refer to the [scheduled activity details](/getting-started/familiarisation/gui/activity/scheduled_activities.md#scheduled-activity-details) for a detailed description of this table's contents.
+Refer to the [scheduled activity details](/getting-started/familiarisation/gui/scheduled_activities.md#scheduled-activity-details) for a detailed description of this table's contents.
 
 ### Overview
 
@@ -88,7 +86,7 @@ The _overview_ tab displays the workflow in both tree and YAML or JSON formats, 
 | **Pencil icon**               | Allows you to edit the workflow name and description.                                 |
 | **Bell icon**                 | Allows you configure notifications for this workflow.                                 |
 | **Three dots icon**           | Allows you to archive the workflow, delete all draft versions or delete the workflow. |
-| **Bulk actions**              | Allows you to archive, restore or delete multiple workflow versions.                  |
+| **Bulk actions**              | Allows you to archive or restore multiple workflow versions.                          |
 | **Search bar**                | Filter for a specific workflow version.                                               |
 | **Left and right arrows**     | Navigate between workflow versions.                                                   |
 

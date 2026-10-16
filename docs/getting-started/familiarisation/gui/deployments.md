@@ -1,5 +1,5 @@
 ---
-sidebar_position: 3
+sidebar_position: 13
 description: ''
 ---
 
@@ -7,13 +7,9 @@ description: ''
 
 ## Understanding the deployments screen
 
-The [pods](/getting-started/familiarisation/gui/administration/system_information/pods.md) tab answers what is running right now. It cannot answer whether that is what is *meant* to be running — a deployment missing half its pods looks much like one that was only ever asked for half as many.
+The [pods](/getting-started/familiarisation/gui/pods.md) tab answers what is running right now. It cannot answer whether that is what is *meant* to be running — a deployment missing half its pods looks much like one that was only ever asked for half as many.
 
-The **Deployments** tab, in the [**System information**](/getting-started/familiarisation/gui/administration/system_information/index.md) section of the administration screen, lists every Kubernetes deployment making up your OpsChain instance, along with what each was asked for and how far Kubernetes has got towards it. A deployment can also be restarted or scaled from here, so recovering a wedged or saturated instance no longer requires `kubectl` access to the cluster. The tab refreshes automatically every ten seconds.
-
-<p align='center'>
-  <img alt='Deployments screen' src={require('!url-loader!../../images/system-information-deployments.png').default} className='image-border'/>
-</p>
+The **Deployments** tab, in the **System information** section of the administration screen, lists every Kubernetes deployment making up your OpsChain instance, along with what each was asked for and how far Kubernetes has got towards it. A deployment can also be restarted or scaled from here, so recovering a wedged or saturated instance no longer requires `kubectl` access to the cluster. The tab refreshes automatically every ten seconds.
 
 :::info
 This screen shows the deployments at the site whose OpsChain API you are connected to. A site is one OpsChain deployment — an API, its workers and its own database cluster. In a high availability deployment each site runs its own deployments, so connecting to another site's API shows that site's deployments instead.
@@ -53,7 +49,7 @@ Each row includes:
 
 The four replica counts are shown separately rather than collapsed into a single ratio, because which of them diverge is what tells you whether a rollout is progressing or stuck.
 
-During a healthy rollout, **Up-to-date** climbs towards the requested count and **Ready** follows it. A rollout where **Up-to-date** has reached the requested count but **Ready** has not is one where the new pods are starting but failing their health probes — the [pods](/getting-started/familiarisation/gui/administration/system_information/pods.md) tab will show them restarting. A deployment whose **Observed generation** sits below its generation is one the Kubernetes controller has not yet acted on at all.
+During a healthy rollout, **Up-to-date** climbs towards the requested count and **Ready** follows it. A rollout where **Up-to-date** has reached the requested count but **Ready** has not is one where the new pods are starting but failing their health probes — the [pods](/getting-started/familiarisation/gui/pods.md) tab will show them restarting. A deployment whose **Observed generation** sits below its generation is one the Kubernetes controller has not yet acted on at all.
 
 ## Restarting a deployment
 

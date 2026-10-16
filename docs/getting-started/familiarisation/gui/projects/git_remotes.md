@@ -48,7 +48,7 @@ The Git remote is tested when you create the Git remote and, if your SSH key is 
 If the Git host you are connecting to is not already in the trusted `known_hosts` list, the connection test fails and the remote is not added. Rather than editing the global configuration in advance, superusers can tick the **Add repository host to trusted hosts** option when [creating the Git remote](#creating-a-git-remote). OpsChain then scans the host's SSH key and adds it to the [`known_hosts` setting](/key-concepts/settings.md#known_hosts) before testing the connection, so the new remote can be added straight away.
 
 :::note
-The **Add repository host to trusted hosts** option appears only when the Git remote URL is an SSH-style URL (for example `git@github.com:my-org/my-repo.git`), and only superusers can tick it - it is disabled for everyone else. Trusting a host accepts whichever SSH host key the host presents at the time (trust on first use), so only enable it for hosts you recognise. The trusted key is stored in the global `known_hosts` setting and is therefore available to all subsequent Git remotes.
+The **Add repository host to trusted hosts** option only appears for superusers, and only when the Git remote URL is an SSH-style URL (for example `git@github.com:my-org/my-repo.git`). Trusting a host accepts whichever SSH host key the host presents at the time (trust on first use), so only enable it for hosts you recognise. The trusted key is stored in the global `known_hosts` setting and is therefore available to all subsequent Git remotes.
 :::
 
 ## Project Git remotes list
@@ -61,12 +61,12 @@ Each row includes:
 
 | Column              | Description                                                                    |
 |---------------------|--------------------------------------------------------------------------------|
-| **Pencil icon**     | Opens a dialog to update the Git remote name, URL and credentials.             |
 | **Name**            | The name assigned to the Git remote.                                           |
 | **URL**             | The Git repository URL that the Git remote points to.                          |
 | **Credentials**     | Whether the Git remote authenticates over SSH or HTTPS, or has no credentials. |
 | **Fetch interval**  | How often the Git remote is fetched in the background.                         |
 | **Archived**        | Whether the Git remote is archived or active.                                  |
+| **Edit git remote** | Opens a dialog to update the Git remote name, URL and credentials.             |
 
 ## Buttons & links
 
@@ -77,11 +77,11 @@ Each row includes:
 | **Columns**        | Hide or display columns in the table.                                           |
 | **Add Git remote** | Opens a dialog to create a new Git remote.                                      |
 
-Adding and editing a Git remote need permission to update the project's Git remotes. Without it, **Add Git remote** and the pencil icon on each row are disabled.
+Adding and editing a Git remote need permission to update the project's Git remotes. Without it, **Add Git remote** and the edit button on each row are disabled.
 
 ## Archiving a Git remote
 
-Archive one or more Git remotes by selecting them in the Git remotes table and choosing _Archive Git remotes_ from the _Bulk actions_ menu.
+Archive one or more Git remotes by selecting them in the Git remotes table and choosing _Archive_ from the _Bulk actions_ menu.
 
 - Archived Git remotes cannot be used to create new changes, asset templates or scheduled changes.
 - Existing changes, asset templates and audit history that reference the archived Git remote remain accessible.
@@ -100,12 +100,12 @@ To create a new Git remote, follow these steps:
 3. Add the credentials to access the Git repository, either user and password or an SSH key (and its passphrase if it requires one).
 4. (Optional) Set a _public commit URL_ to control the links OpsChain generates to individual commits. See [linking to commits](#linking-to-commits) for details.
 5. (Optional) Turn on _Override the background fetch interval_ to fetch this Git remote on its own schedule rather than its project's. See [fetch interval](#fetch-interval) for details.
-6. (Optional, superusers only) If you are connecting to an SSH host that is not yet trusted, tick _Add repository host to trusted hosts_ to scan and trust the host's SSH key. See [trusting a new host](#trusting-a-new-host) for details.
-7. Click the _Add Git remote_ button. If successful, the new Git remote will appear on the Git remotes list of the project.
+6. (Optional, superusers only) If you are connecting to an SSH host that is not yet trusted, tick _Trust host_ to scan and trust the host's SSH key. See [trusting a new host](#trusting-a-new-host) for details.
+7. Click the _Add git remote_ button. If successful, the new Git remote will appear on the Git remotes list of the project.
 
 ## Editing a Git remote
 
-To edit an existing Git remote, click the pencil icon on its row in the Git remotes list. You can update the name, the URL, the [public commit URL](#linking-to-commits), the [fetch interval](#fetch-interval) and the credentials without recreating the remote — for example, to rotate credentials, switch the URL between HTTPS and SSH, or change the port.
+To edit an existing Git remote, click the _Edit git remote_ action on its row in the Git remotes list. You can update the name, the URL, the [public commit URL](#linking-to-commits), the [fetch interval](#fetch-interval) and the credentials without recreating the remote — for example, to rotate credentials, switch the URL between HTTPS and SSH, or change the port.
 
 When changing the URL, keep the following in mind:
 
@@ -120,11 +120,11 @@ A single Git remote can also depart from that. Turn on _Override the background 
 
 The interval is entered in hours and minutes, and must be between one minute and one day. The Git remotes list shows each remote's interval, naming the inherited value in muted text where the remote has no override of its own.
 
-To change several remotes at once, select them in the Git remotes list and use the _Bulk actions_ menu. _Override the fetch interval_ applies one interval to everything selected, and _Use the project's fetch interval_ returns the selected remotes to their project's interval.
+To change several remotes at once, select them in the Git remotes list and use the _Bulk actions_ menu. _Override_ applies one interval to everything selected, and _Use project interval_ returns the selected remotes to their project's interval.
 
 ## Linking to commits
 
-Wherever OpsChain displays a commit SHA — for example in the [activity](/getting-started/familiarisation/gui/activity/index.md) and image build logs — it can turn the SHA into a link that opens the commit in your Git host's web interface.
+Wherever OpsChain displays a commit SHA — for example in the [activity](/getting-started/familiarisation/gui/activity.md) and image build logs — it can turn the SHA into a link that opens the commit in your Git host's web interface.
 
 By default OpsChain derives these links automatically from the remote's URL for recognised hosts (such as GitHub, GitLab and Bitbucket). If your repository is hosted elsewhere, or the derived link is incorrect, set a _public commit URL_ on the Git remote. This is the prefix OpsChain uses to build commit links: the commit SHA is appended to the end of it, so a public commit URL of `https://github.com/my-org/my-repo/commit` produces links of the form `https://github.com/my-org/my-repo/commit/<sha>`.
 

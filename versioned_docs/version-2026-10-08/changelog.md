@@ -13,6 +13,12 @@ Follow the [upgrade guide](operations/upgrading.md) for more information on how 
 
 ## [2026-10-08]
 
+:::warning[Upgrading to this version restarts the database]
+Upgrading to this version restarts the database pod, so OpsChain cannot reach its database for a few minutes while the upgrade runs.
+
+To upgrade without that downtime, run more than one database instance by setting [`db.cnpg.instances`](/advanced/ha/index.md#local-replicas) and set [`db.cnpg.primaryUpdateMethod`](/advanced/ha/index.md#dbcnpgprimaryupdatemethod) to `switchover`, then deploy that change before upgrading.
+:::
+
 :::tip[Schedule a database statistics refresh after upgrading]
 
 A data cleanup job can now keep the statistics the database's query planner works from up to date, and no installation has one configured yet.

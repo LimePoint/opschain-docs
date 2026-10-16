@@ -287,7 +287,7 @@ If we now look at the `Compare versions` section inside the `Properties` tab for
 
 ![Properties tab](./images/managed-server-action-properties-compare.png)
 
-To make our life simpler, let's schedule the `backup` action to run on a regular basis using a [scheduled activity](/getting-started/familiarisation/gui/activity/scheduled_activities.md). Using OpsChain's UI, we can quickly configure the action to run every day at 10am, for example.
+To make our life simpler, let's schedule the `backup` action to run on a regular basis using a [scheduled activity](/getting-started/familiarisation/gui/scheduled_activities.md). Using OpsChain's UI, we can quickly configure the action to run every day at 10am, for example.
 
 ![Scheduled activity dialog](./images/managed-server-scheduled-backup.png)
 

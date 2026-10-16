@@ -1,5 +1,5 @@
 ---
-sidebar_position: 2
+sidebar_position: 12
 description: ''
 ---
 
@@ -9,11 +9,7 @@ description: ''
 
 OpsChain runs its work across a number of Kubernetes pods — the API and its workers, the pods that run each change and step, the pods that refresh an asset's actions or concretise its MintModel, the image build service, the database, and the supporting services such as the secret vault and the log aggregator.
 
-The **Pods** tab, in the [**System information**](/getting-started/familiarisation/gui/administration/system_information/index.md) section of the administration screen, lists every pod in the OpsChain namespace in one place, so you can see what is running without reaching for `kubectl`. It refreshes automatically every ten seconds while you watch it.
-
-<p align='center'>
-  <img alt='Pods screen' src={require('!url-loader!../../images/system-information-pods.png').default} className='image-border'/>
-</p>
+The **Pods** tab, in the **System information** section of the administration screen, lists every pod in the OpsChain namespace in one place, so you can see what is running without reaching for `kubectl`. It refreshes automatically every ten seconds while you watch it.
 
 :::info
 This screen shows the pods at the site whose OpsChain API you are connected to. A site is one OpsChain deployment — an API, its workers and its own database cluster. In a high availability deployment each site runs its own pods, so connecting to another site's API shows that site's pods instead.

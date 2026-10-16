@@ -558,7 +558,7 @@ An OpsChain wait step can only be added as part of a step's child steps, for exa
 action :do_something, steps: [:do_something_before_waiting, OpsChain.wait_step, :do_something_else_after_waiting]
 ```
 
-Another useful scenario for wait steps is when a [scheduled change](/getting-started/familiarisation/gui/activity/scheduled_activities.md) is used to create a change automatically, but a team member should then allow the change to proceed manually. To achieve this the OpsChain wait step can be used as the first child step of an action:
+Another useful scenario for wait steps is when a [scheduled change](/getting-started/familiarisation/gui/scheduled_activities.md) is used to create a change automatically, but a team member should then allow the change to proceed manually. To achieve this the OpsChain wait step can be used as the first child step of an action:
 
 ```ruby
 action :do_something, steps: [:do_something_after] do
@@ -608,18 +608,18 @@ The `step_name` argument can also be included when creating timed wait steps, fo
 
 ### Automatically continuing wait steps
 
-A change can be configured to continue its wait steps automatically, rather than pausing for a user. This is useful when you want the structure of a wait step in a change (for example so it can optionally be paused), but do not always need manual intervention. With this option enabled, a wait step that does not require approval continues automatically.
+A change can be configured to continue its wait steps automatically, rather than pausing for a user. This is useful when you want the structure of a wait step in a change (for example so it can optionally be paused), but do not always need manual intervention.
 
-An [input step](#input-steps) does not need the option. It continues automatically, whether or not the change was created with it, when:
+When a change is created with this option enabled, a wait step continues automatically only when:
 
 - it does not require approval, and
 - every required input argument has a value — a `default_value`, or one [supplied with the change](#answering-input-arguments-when-starting-a-change). An optional argument that nobody answered does not hold the step up.
 
-Wait steps that require approval, plain wait steps on a change without the option, and input steps still missing a required value pause and wait for a user. Each automatically continued step is recorded in the change's audit history, with the reason it was continued.
+Wait steps that require approval, or that are still missing a required value, pause and wait for a user. Each automatically continued step is recorded in the change's audit history.
 
-Where a step could not be continued automatically, the reason is written to the change log immediately above the line reporting that the step is waiting. A value that could not be applied to the change's properties, or a refused transition, is always logged. An input step held up by required arguments with no value is explained only when the change was created with the option, and the log then names every reason the step could not continue — including any supplied values that would not have been accepted.
+Where a step was eligible but could not be continued — a required argument with no value, a value that could not be applied to the change's properties, or a refused transition — the reason is written to the change log immediately above the line reporting that the step is waiting.
 
-The option can be set when running, scheduling, or repeating a change from the GUI — see the [run change dialog](/getting-started/familiarisation/gui/activity/index.md#run-change).
+The option can be set when running, scheduling, or repeating a change from the GUI — see the [run change dialog](/getting-started/familiarisation/gui/activity.md#run-change).
 
 ### Nesting child steps under a wait step
 
@@ -665,14 +665,14 @@ Each input argument can accept the following options:
 
 | Parameter       | Description                                                                                                                                                                                                                                                                             | Default                                                                  |
 |-----------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------|
-| `default_value` | The default value to be displayed to the user for the input argument. It is converted to the argument's `type` and, if `valid_values` are supplied, it must be one of them - or, for an `:array` argument, every element must be one of them. It is replaced by a value [supplied when the change is started](#answering-input-arguments-when-starting-a-change).                                                                                                             | nil                                                                      |
+| `default_value` | The default value to be displayed to the user for the input argument. It is converted to the argument's `type` and, if `valid_values` are supplied, it must be one of them. It is replaced by a value [supplied when the change is started](#answering-input-arguments-when-starting-a-change).                                                                                                             | nil                                                                      |
 | `description`   | A description to be displayed to the user for the input argument.                                                                                                                                                                                                                       | nil                                                                      |
 | `gui_name`      | The name to be displayed to the user for the input argument.                                                                                                                                                                                                                            | The argument's name in title case (e.g. "Server name" for `server_name`) |
 | `overwrite`     | Whether the value provided by the user may replace a value already configured on the project, environment, asset or template version at the specified `path`. Left `false`, the user can still supply the value that is already stored — only a value that would *change* it is rejected — and can always replace a value [supplied when the change was started](#answering-input-arguments-when-starting-a-change).                                                                                                                                  | false                                                                    |
 | `path`          | The path in the change override properties that the value will be nested under, by the argument's name. E.g. in the example above, if the user supplied 'db1' for the `server_name` argument, OpsChain will update the change override properties to include `{ database: { server: { server_name: 'db1' } } }`. | `/` (the root path)                                                      |
-| `required`      | Whether the user must provide a value for the input argument before they can submit the form to continue the change. An empty array or hash, or a blank string, does not count as a value, but `false` does. Only required arguments hold up a step that is [continuing automatically](#automatically-continuing-wait-steps).                                                                                                                                                                    | true                                                                     |
+| `required`      | Whether the user must provide a value for the input argument before they can submit the form to continue the change. Only required arguments hold up a step that is [continuing automatically](#automatically-continuing-wait-steps).                                                                                                                                                                    | true                                                                     |
 | `type`          | The data type of the input argument. Available options are :boolean, :date, :float, :integer, :string, :array, :hash, :sensitive. See [sensitive input arguments](#sensitive-input-arguments) for the :sensitive type.                                                                   | `:string`                                                                |
-| `valid_values`  | The list of values the user can select from for the input argument, displayed as a list of choices rather than a free text field. For the :array type, the user can select any number of the values. Available for the :array, :boolean, :date, :float, :integer and :string types.                                                                           | nil                                                                      |
+| `valid_values`  | The list of values the user can select from for the input argument, displayed as a list of choices rather than a free text field. Only available for the :boolean, :date, :float, :integer and :string types.                                                                           | nil                                                                      |
 
 The input arguments must be supplied as an array. Each element of the array is either an argument name, or a hash of argument names and their options. In the example above, the `comments` argument assumes default values for the various parameters. e.g.
 
@@ -696,8 +696,7 @@ action :deploy,
       input_arguments: [
         target: { path: '/deploy', gui_name: 'Target environment', valid_values: %w[development test production], default_value: 'test' },
         replicas: { path: '/deploy', type: :integer, valid_values: [1, 2, 4, 8] },
-        cutover_date: { path: '/deploy', type: :date, valid_values: ['2026-06-30', '2026-09-30'], required: false },
-        regions: { path: '/deploy', type: :array, valid_values: %w[sydney melbourne perth], default_value: %w[sydney] }
+        cutover_date: { path: '/deploy', type: :date, valid_values: ['2026-06-30', '2026-09-30'], required: false }
       ]
     ),
     :deploy_application
@@ -707,22 +706,9 @@ action :deploy,
 Valid values:
 
 - must be supplied as a non empty array
-- can only be supplied for the `:array`, `:boolean`, `:date`, `:float`, `:integer` and `:string` types — the `:hash` and [`:sensitive`](#sensitive-input-arguments) types do not support them
-- are converted to the argument's `type`, with any duplicates removed — e.g. `valid_values: ['1', 1, 2]` for an `:integer` argument becomes `[1, 2]`. An `:array` argument's values are not converted — see [selecting several values](#selecting-several-values)
+- can only be supplied for the `:boolean`, `:date`, `:float`, `:integer` and `:string` types — the `:array`, `:hash` and [`:sensitive`](#sensitive-input-arguments) types do not support them
+- are converted to the argument's `type`, with any duplicates removed — e.g. `valid_values: ['1', 1, 2]` for an `:integer` argument becomes `[1, 2]`
 - must include the argument's `default_value`, if one is supplied
-
-#### Selecting several values
-
-An `:array` argument with `valid_values` lets the user select any number of the listed values. In the example above, `regions` is presented with `sydney` already selected, and the user can add `melbourne`, `perth`, or both.
-
-The valid values of an `:array` argument are the elements the array may hold, and they work differently from those of the other types:
-
-- each value must be a string, number or boolean — a Ruby symbol is accepted and becomes a string, so `%i[sydney melbourne]` is equivalent to `%w[sydney melbourne]`. Arrays, hashes and `nil` are rejected
-- values are kept as written rather than converted to a type, so a list can mix types, e.g. `[1, 2, 'all']`
-- two values that display the same are rejected, as the user could not tell them apart — e.g. `[1, '1']`, `[true, 'true']`, `[1, 1.0]` or `['a', ' a']`
-- every element of the `default_value` must be one of the values
-
-When the step is continued, each element of the submitted array must be one of the valid values, compared by type as well as value — `1` and `'1'` are different values, while `2` and `2.0` are the same. The step reports every element that is not one of them. Any duplicate elements are removed, so selecting a value twice records it once. An `:array` argument without `valid_values` keeps its duplicates.
 
 ### Input argument value conversion
 
@@ -775,7 +761,7 @@ For the `server_name` argument in the [example above](#input-steps), whose `path
 { "database": { "server": { "server_name": "db1" } } }
 ```
 
-Answering every required argument this way lets a change run through its input steps without stopping — an input step that does not require approval [continues automatically](#automatically-continuing-wait-steps) once every required argument has a value.
+Answering every required argument this way, and creating the change with [automatic continuation of wait steps](#automatically-continuing-wait-steps) enabled, lets a change run through its input steps without stopping.
 
 A [sensitive argument](#sensitive-input-arguments) can be answered this way too. A change that knows its steps as it is created — a change against an asset, or one created from a template — encrypts the value as part of creating the change. A change against a project or environment reads its steps from your repository as it runs, so the value you supply is stored unencrypted until the change reaches the input step. OpsChain encrypts it at that point, encrypts the earlier property versions holding it, and masks it in the event recording the change's creation.
 
@@ -791,7 +777,7 @@ An input step is allowed to replace a value the change itself supplied, whatever
 
 The change's property overrides are not the only way an argument gets a value. An input step earlier in the same change writes its answers to those same properties, so it can answer a later step's argument. Retrying a change carries the overrides across, including the answers its input steps merged in, so the retried change continues those steps on the answers already given rather than asking for them again.
 
-In the GUI, the run change dialog's **Input step arguments** panel lists the arguments of every input step in the chosen action and writes the answers into the change's property overrides for you — see [answering input steps up front](/getting-started/familiarisation/gui/activity/index.md#answering-input-steps-up-front).
+In the GUI, the run change dialog's **Input step arguments** panel lists the arguments of every input step in the chosen action and writes the answers into the change's property overrides for you — see [answering input steps up front](/getting-started/familiarisation/gui/activity.md#answering-input-steps-up-front).
 
 ### Nesting child steps under an input step
 
@@ -831,7 +817,7 @@ action :deploy, steps: [
 
 The change pauses at the "Production sign-off" step once `build` completes. `deploy_application` starts when the step is approved. If the step is rejected, the change ends and `deploy_application` never runs.
 
-Approvers respond from the GUI — the step's "triple dot" menu in the change's step tree, or the approval tab of [manage activity](/getting-started/familiarisation/gui/activity/manage_activity.md) — or via the API's `POST /api/steps/{id}/approve` and `POST /api/steps/{id}/reject` endpoints.
+Approvers respond from the GUI — the step's "triple dot" menu in the change's step tree, or the approval tab of [manage activity](/getting-started/familiarisation/gui/manage_activity.md) — or via the API's `POST /api/steps/{id}/approve` and `POST /api/steps/{id}/reject` endpoints.
 
 :::caution
 OpsChain approval steps use the `opschain_wait_step_{{unique id}}` naming convention, the same as [wait steps](#wait-steps) - do not use this naming convention in your steps unless you intend to create one.
@@ -970,7 +956,7 @@ When `wait:`, `input_arguments:` or `requires_approval_from:` is used, `OpsChain
 With none of `wait:`, `input_arguments:` or `requires_approval_from:` (i.e. `ignore_failure:` alone), `OpsChain.step` still creates a separate wrapper step around the wrapped action, named the same way; subsequent calls with the same action name and options append an incrementing suffix (`Run "Shutdown" ignoring failures 2`, etc.).
 
 :::info
-To store a build artifact for a later action or change to load - including one running on a different site in a highly available deployment - see [artifacts](/key-concepts/artifacts.md).
+To store a build artefact for a later action or change to load - including one running on a different site in a highly available deployment - see [artefacts](/key-concepts/artefacts.md).
 :::
 
 ## Defining resource types & resources
@@ -1354,7 +1340,7 @@ end
 
 A description can be omitted when you only want the options — `desc step_name: 'Send a postcard'` is valid.
 
-An action defined without a `desc` is described by its own method name, so `internal_action` above is listed and offered in the GUI as `internal_action`.
+An action defined without a `desc` is described by its own method name, so `internal_action` above is listed and offered in the GUI as `internal_action`. `desc` therefore controls how an action reads to a user, not whether they see it — to keep an action runnable but out of the listings, leave it out of the resource type's [`available_actions:`](#available-actions).
 
 :::note
 Because `desc` applies to the next method defined, it must be immediately followed by a method definition. A `property`, a `not_actions`, an `include`, `prepend` or `extend`, or a second `desc` between the two is an error, raised as the class is defined, rather than the description quietly attaching itself to a later method:
@@ -1369,41 +1355,6 @@ A `desc` written above a `def self.` class method has nothing it can annotate, a
 
 The description is `desc`'s first argument rather than a keyword, so write `desc 'Deploy the server'` and not `desc description: 'Deploy the server'`.
 :::
-
-##### Hiding a controller action from the action list
-
-Some actions only make sense as part of another action, and should not be offered for a user to run on their own. Declare them with `desc listed: false`:
-
-```ruby
-class RepositoryController < OpsChain::Dsl::BaseController
-  desc 'Commit the changes and push them to the remote'
-  def publish
-    ...
-    run_action("#{resource_name}:push")
-  end
-
-  desc listed: false
-  def push
-    ...
-  end
-end
-```
-
-`push` is left out of the asset's actions in the GUI and the API, and out of `opschain-action -T`, but it is still an action: another action can run it with [`run_action`](#running-other-actions-within-another-action) or name it as a [prerequisite](#prerequisite-actions).
-
-`listed: false` combines with the other `desc` options, e.g. `desc listed: false, ignore_failure: true`. It does not take a description, because an unlisted action's description is never shown, and OpsChain raises an error for one:
-
-```text
-Unable to describe an action that is not listed - remove the description or the listed: false option
-```
-
-Omitting the `desc` does not hide an action, and neither does `desc nil` — a `nil` description is an error, so a description held in a variable that turns out to be `nil` does not silently list the action under its method name:
-
-```text
-Unable to use a nil description - to keep an action runnable but leave it out of the action list use desc listed: false
-```
-
-To hide an action on one resource rather than on every resource of the type, leave it out of that resource's [`available_actions:`](#available-actions) instead.
 
 ##### Excluding a public method from the actions
 
@@ -1427,8 +1378,6 @@ end
 `not_actions` takes any number of method names and can appear anywhere in the class body — before or after the methods it names — except directly below a `desc`, which has to annotate a method. Its exclusions are inherited by subclasses.
 
 Making the method `private` has the same effect on the action list, so reach for `not_actions` when the method has to stay public — because another controller, a [resource type action](#accessing-the-controller) or a test calls it.
-
-A method excluded with `not_actions` is not an action at all, so `run_action` and prerequisites cannot reach it either. To keep an action runnable but out of the action list, [declare it with `desc listed: false`](#hiding-a-controller-action-from-the-action-list) instead.
 
 ##### The OpsChain keywords in a controller
 
@@ -2413,97 +2362,9 @@ The OpsChain logger supports the following log levels:
 Each log level is more severe than the last, so `DEBUG` is the least severe and `FATAL` is the most severe.
 :::
 
-### Set the log level for a change
-
-The `OPSCHAIN_LOG_LEVEL` environment variable sets the level the OpsChain logger starts at. Set it to `debug`, `info`, `warn`, `error` or `fatal`, in either case. The level is `info` when the variable is not set or holds any other value.
-
-Set it under `opschain.env`, as you would any other [environment variable](/key-concepts/properties.md#environment-variables):
-
-```json
-{
-  "opschain": {
-    "env": {
-      "OPSCHAIN_LOG_LEVEL": "debug"
-    }
-  }
-}
-```
-
-Where you set it decides which changes it applies to:
-
-- In the properties of a project, environment or asset, it applies to every change run against that node and the nodes below it.
-- In a change's [property overrides](/key-concepts/properties.md#change-property-overrides), it applies to that change alone. Use the GUI's [**Environment variables** panel](/getting-started/familiarisation/gui/activity/index.md#setting-environment-variables), or the CLI's `--property-overrides` flag:
-
-```bash
-opschain changes create \
-  -E dev \
-  -A web_server \
-  -a deploy \
-  --property-overrides '{"opschain":{"env":{"OPSCHAIN_LOG_LEVEL":"debug"}}}'
-```
-
-Setting `log.level` in your `actions.rb` replaces the starting level for the rest of the step.
-
-### Show where each log line came from
-
-Set the `OPSCHAIN_LOG_SOURCE` environment variable to `true` to prefix each line written by the OpsChain logger with the action that was running and the method that wrote it:
-
-```text
-[deploy_app | actions.rb:45] Starting the deployment
-[web:deploy | DeployController#deploy] Deploying web-01
-[web:deploy | AuditTrail#record] Recorded the deployment of web-01
-```
-
-Set it in the same places as `OPSCHAIN_LOG_LEVEL`: in a project, environment or asset's properties, or in a change's property overrides to turn it on for one change. It is off by default. `true`, `yes` or `1`, in any case, turn it on; any other value leaves it off.
-
-```bash
-opschain changes create \
-  -E dev \
-  -A web_server \
-  -a deploy \
-  --property-overrides '{"opschain":{"env":{"OPSCHAIN_LOG_SOURCE":"true"}}}'
-```
-
-The prefix takes these forms:
-
-- `[web:deploy | DeployController#deploy]` - logged in an instance method, in your `actions.rb` or project code.
-- `[web:deploy | AuditTrail.record]` - logged in a class or module method.
-- `[deploy_app | actions.rb:45]` - logged directly in an action block, or in a block outside any method. The prefix names the file and line.
-- `[actions.rb:8]` - logged at the top level of `actions.rb` while it loads, outside any action.
-- `[web:deploy]` - logged by code outside your repository, such as a gem or code in `vendor/`.
-
-A line logged inside a block or a child thread is credited to the method the block is written in. If you pass a program name to the logger, it replaces the method part of the prefix:
-
-```ruby
-log.info('audit') { 'Recorded the deployment' } # [web:deploy | audit] Recorded the deployment
-```
-
-Only the OpsChain logger's lines are prefixed. Output from `puts` and from commands your actions run appears as it is.
-
-#### Trace the methods an action calls
-
-When `OPSCHAIN_LOG_SOURCE` is `true` and `OPSCHAIN_LOG_LEVEL` is `debug`, OpsChain also logs a line each time an action enters and leaves one of your methods:
-
-```text
-[web:deploy | DeployController#deploy] --> ENTER
-[web:deploy | DeployController#deploy] Deploying web-01
-[web:deploy | AuditTrail#record] --> ENTER
-[web:deploy | AuditTrail#record] Recorded the deployment of web-01
-[web:deploy | AuditTrail#record] <-- EXIT
-[web:deploy | DeployController#deploy] <-- EXIT
-```
-
-Only methods defined in your repository are traced. Methods in OpsChain, in gems and in `vendor/` are not, and neither is `initialize`, so creating an object adds no lines. Tracing starts when an action begins, so the methods `actions.rb` calls while it loads are not traced, nor are methods run in a thread the action starts.
-
-Every method call adds two lines, so a traced change's log can grow large. Turn tracing on for a single change with its property overrides rather than for a whole project or environment:
-
-```bash
-opschain changes create \
-  -E dev \
-  -A web_server \
-  -a deploy \
-  --property-overrides '{"opschain":{"env":{"OPSCHAIN_LOG_LEVEL":"debug","OPSCHAIN_LOG_SOURCE":"true"}}}'
-```
+:::tip[Change log levels]
+The OpsChain logger's default log level can be configured via the `OPSCHAIN_LOG_LEVEL` environment variable using OpsChain's [properties](/key-concepts/properties.md#environment-variables).
+:::
 
 ## OpsChain secret vault
 

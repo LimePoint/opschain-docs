@@ -96,7 +96,7 @@ The `kubectl` command can be used to see the upgrade progress:
 kubectl get deployments.apps/opschain-api -n ${KUBERNETES_NAMESPACE}
 ```
 
-The upgrade will be complete when the `READY` column of the `opschain-api` deployment is set to `1/1`. You can verify the current OpsChain version in the [version info](/getting-started/familiarisation/gui/administration/version_info.md) section of the GUI.
+The upgrade will be complete when the `READY` column of the `opschain-api` deployment is set to `1/1`. You can verify the current OpsChain version in the [version info](/getting-started/familiarisation/gui/version_info.md) section of the GUI.
 
 ## Upgrading a high availability topology
 
@@ -136,17 +136,17 @@ Treat the topology's OpsChain instances as a single application. Do not leave so
 
 6. [Update the runner image version](#update-the-runner-image-version) in each cluster if it hasn't rolled automatically.
 
-7. Verify every database cluster is healthy and replicating (`kubectl get cluster <cluster-name> -n ${KUBERNETES_NAMESPACE}`), confirm the [version info](/getting-started/familiarisation/gui/administration/version_info.md), and make a small write — create a change or edit a project's properties — to confirm the primary is serving.
+7. Verify every database cluster is healthy and replicating (`kubectl get cluster <cluster-name> -n ${KUBERNETES_NAMESPACE}`), confirm the [version info](/getting-started/familiarisation/gui/version_info.md), and make a small write — create a change or edit a project's properties — to confirm the primary is serving.
 
 :::tip[Minimising database downtime]
-Upgrading the primary cluster might restart its database instance in some scenarios, which briefly interrupts the database. If you run more than one database instance in the primary cluster (via [`db.cnpg.primary.replicas`](/advanced/ha/index.md#local-replicas)), set [`db.cnpg.primaryUpdateMethod`](/advanced/ha/index.md#dbcnpgprimaryupdatemethod) to `switchover` to reduce that interruption.
+Upgrading the primary cluster might restart its database instance in some scenarios, which briefly interrupts the database. If you run more than one database instance in the primary cluster (via [`db.cnpg.instances`](/advanced/ha/index.md#local-replicas)), set [`db.cnpg.primaryUpdateMethod`](/advanced/ha/index.md#dbcnpgprimaryupdatemethod) to `switchover` to reduce that interruption.
 :::
 
 If `opschain-api` does not become ready and the upgrade times out while you are using the OpsChain secret vault, see [`helm upgrade` fails with `context deadline exceeded`](/troubleshooting.md#helm-upgrade-fails-with-context-deadline-exceeded).
 
 ## Update the runner image version
 
-After a successful patch, you may want to update your runner image version to the same version as OpsChain. This can be done via [system configuration](/setup/configuration/additional-settings.md#post-install-system-configuration), changing the **Runner image tag** in its [runner config](/getting-started/familiarisation/gui/administration/system_configuration.md) section to the version you're patching to.
+After a successful patch, you may want to update your runner image version to the same version as OpsChain. This can be done via [system configuration](/setup/configuration/additional-settings.md#post-install-system-configuration), modifying the `Resolved image` tag to the version you're patching to.
 
 ## Old images in the OpsChain registry
 

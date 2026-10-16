@@ -23,7 +23,6 @@ Every action-generation request uses the pool once it is enabled. A change uses 
 - [`pod_per_change_step`](/key-concepts/settings.md#pod_per_change_step) is `false`, so the whole change runs in one pod
 - [`image_reuse.enabled`](/key-concepts/settings.md#image_reuseenabled) is `true`, so the image a pod was started from can be matched reliably
 - [`runner.reuse_actions_rb`](/key-concepts/settings.md#runnerreuse_actions_rb) is `true`
-- no [remote runner](/advanced/remote-runners/index.md) target serves the change's project, environment or asset. A change that runs remotely never uses a pooled pod, even while the target is offline. Action-generation requests always run in OpsChain's own cluster, so they still use the pool.
 
 A change chooses its pod when its first step runs, and keeps that pod until it finishes, even if any of the settings on this page change partway through.
 
@@ -68,7 +67,7 @@ With `never`, changes and action-generation requests started by different users 
 
 While `executor_pool.enabled` is `true`, isolation applies to pooled action-generation pods and to every change pod in the same projects, environments and assets, whether or not that change shares its pod. A change therefore sees the same filesystem behaviour whichever pod it lands in.
 
-To pass a file from one step to a later one, store it as an [artifact](/key-concepts/artifacts.md) and load it in the later step, whatever the scope. Don't rely on a change's steps sharing a filesystem, even under `change`: if the change's pod is replaced partway through, for example during an upgrade or while OpsChain is in maintenance mode, anything written to the old pod's filesystem is gone. A shared filesystem is fine for something you can afford to lose and rebuild, such as a cache.
+To pass a file from one step to a later one, store it as an [artefact](/key-concepts/artefacts.md) and load it in the later step, whatever the scope. Don't rely on a change's steps sharing a filesystem, even under `change`: if the change's pod is replaced partway through, for example during an upgrade or while OpsChain is in maintenance mode, anything written to the old pod's filesystem is gone. A shared filesystem is fine for something you can afford to lose and rebuild, such as a cache.
 
 ### What isolation discards
 
@@ -133,15 +132,6 @@ A pooled pod is idle when no action-generation request is running in it and no u
 Set [`executor_pool.keep_alive`](/key-concepts/settings.md#executor_poolkeep_alive) to `true` for a project, environment or asset whose action generation or changes must always start fast, to keep its idle pods running indefinitely. Those pods keep their memory and CPU reservations the whole time.
 
 Separately, each change in a pooled pod has its own action server. One that has run no step for [`runner.action_server_idle_timeout`](/key-concepts/settings.md#runneraction_server_idle_timeout) (10 minutes by default), such as a change waiting for approval, is stopped and started again when that change's next step runs. The pod itself keeps running.
-
-### Changing the settings while pods are running
-
-Changing the executor pool settings never alters a pod that is already running:
-
-- Turning the pool off, or changing [`executor_pool.filesystem_isolation_scope`](/key-concepts/settings.md#executor_poolfilesystem_isolation_scope), [`executor_pool.sharing_scope`](/key-concepts/settings.md#executor_poolsharing_scope) or [`executor_pool.separate_creators`](/key-concepts/settings.md#executor_poolseparate_creators), applies to new work straight away: it starts a pod of its own, or a pooled pod started under the new settings. Pods started under the old settings, with their [security context](#pod-security-context), keep running the work already in them, take on nothing new, and are torn down by the rules above once idle.
-- `executor_pool.idle_timeout`, `executor_pool.keep_alive` and `executor_pool.max_idle_slots` also apply to pods that are already running.
-
-To remove the old pods sooner, delete them with `kubectl -n opschain delete pod <pod name>` once no change is running in them. Deleting a pooled pod fails every unfinished change in it (see [running changes in a pooled pod](#running-changes-in-a-pooled-pod)).
 
 ## Running changes in a pooled pod
 

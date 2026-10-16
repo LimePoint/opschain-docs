@@ -87,12 +87,19 @@ chmod 2775 /limepoint/backups
 
 To extract the backups from the PVC, you can either copy it directly from the volume or use the recovery helper pod.
 
-1. Copying directly from the volume: the volume is a directory on the host, so you can copy it as regular files. This is the most efficient option and is easy to schedule (for example a cron job that copies to a file server on your local network):
+1. Copying directly from the volume: the volume is a directory on the host, so you can copy it as regular files. This is the most efficient option and is easy to schedule (for example a cron job that copies to a file server on your local network).
+
+   :::warning[Privileged access required]
+   You must run the commands below as sudo or root user. The volume's directory and the backup files in it are readable only by root and the database's own user.
+   :::
+
+   The last command gives the `opschain` group read access to the copies, so the installation user can use them later, for example to copy a backup into the recovery helper pod:
 
    ```bash
    VOL=$(kubectl -n ${KUBERNETES_NAMESPACE} get pvc opschain-db-backup -o jsonpath='{.spec.volumeName}')
    DIR=$(kubectl get pv "$VOL" -o jsonpath='{.spec.local.path}')
    cp -r "$DIR/"/* /limepoint/backups/
+   chmod -R g+rX /limepoint/backups
    ```
 
 2. Using the recovery helper pod: enable the recovery helper (`db.backup.recovery.enabled: true`), which mounts the backup volume read-only, redeploy with the configuration change and then copy the backups out of it:
@@ -106,10 +113,10 @@ To extract the backups from the PVC, you can either copy it directly from the vo
 
 When `db.backup.periodic.enabled` is `true`, a `CronJob` named `opschain-db-backup` runs on the configured `schedule` (a standard cron expression). Older backups are pruned according to `db.backup.retention`.
 
-You can trigger a backup at any time without waiting for the schedule. The `$(date +%Y%m%d_%H%M%S)` suffix gives each run a unique name so repeated runs never clash:
+You can trigger a backup at any time without waiting for the schedule. The `$(date +%Y%m%d-%H%M%S)` suffix gives each run a unique name so repeated runs never clash:
 
 ```bash
-kubectl create job --from=cronjob/opschain-db-backup opschain-db-backup-manual-$(date +%Y%m%d_%H%M%S) -n ${KUBERNETES_NAMESPACE}
+kubectl create job --from=cronjob/opschain-db-backup opschain-db-backup-manual-$(date +%Y%m%d-%H%M%S) -n ${KUBERNETES_NAMESPACE}
 ```
 
 Manually created jobs are not owned by the `CronJob`, so its history limits do not remove them. Delete a manual job (which also removes its pod) by name once it has completed:
@@ -173,6 +180,10 @@ If you're restoring from a backup in a high availability setup, check the [extra
 :::
 
 Then, do a regular installation of OpsChain as described in the [installation](/setup/installation.md) guide, but with the additional `--set stopped=true` and `--set stopDatabase=true` flags in the Helm command, as described in the [deploy OpsChain in stopped mode](/advanced/ha/operations.md#deploy-opschain-in-stopped-mode) and [hibernating the database](/advanced/ha/operations.md#hibernating-the-database) sections.
+
+:::warning[Leave out `--wait` while OpsChain is stopped]
+Remove the `--wait` flag from the Helm command for every deploy in this guide that uses `--set stopped=true`. While OpsChain is stopped, the volumes of its stopped components are never attached and the secret vault cannot become ready, so Helm waits for the full `--timeout` and then marks the release as failed. Follow progress with `kubectl get pods -n ${KUBERNETES_NAMESPACE}` instead. Once OpsChain is started again, use `--wait` as usual.
+:::
 
 :::info[OpsChain version]
 You may try to restore the backup to a newer version of OpsChain, but beware of breaking changes between the versions. It's recommended to first restore the backup to the same version of OpsChain as the backup was created with and then upgrade to the latest version.
@@ -342,7 +353,7 @@ db:
       mountDataVolume: false
 ```
 
-Then deploy with the application stopped using the `--set stopped=true` flag.
+Then deploy with the application stopped using the `--set stopped=true` flag, without the `--wait` flag, as Helm cannot finish waiting while OpsChain is stopped.
 
 This starts the database but keeps the API and workers scaled to zero, so CloudNativePG bootstraps an empty `opschain` database and brings up the recovery helper pod. If the cluster already contains data, first remove it (see the [uninstall](/operations/uninstall/index.md#remove-the-opschain-containers-and-data) guide) and redeploy, so a fresh, empty database is created.
 

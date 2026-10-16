@@ -17,7 +17,7 @@ A set of properties can be specified against projects, environments, agents and 
 When editing the properties, you can use the [secret vault](/key-concepts/properties.md#secrets) format to tell OpsChain to fetch the value from the configured secret vault.
 :::
 
-The properties editor provides JSON schema autocomplete and inline validation — suggesting keys and values and flagging invalid keys as you type — matching the settings editor. This applies to the current properties editor and the property overrides editors in the [run change](/getting-started/familiarisation/gui/activity/index.md#run-change) and run workflow dialogs.
+The properties editor provides JSON schema autocomplete and inline validation — suggesting keys and values and flagging invalid keys as you type — matching the settings editor. This applies to the current properties editor and the property overrides editors in the [run change](/getting-started/familiarisation/gui/activity.md#run-change) and run workflow dialogs.
 
 ### Inherited properties
 
@@ -47,7 +47,7 @@ Comparing two versions lists the layers twice, under **Left sources** and **Righ
 
 Additions are shown in green and removals in red, judged against whichever side is newer - the newer side carries a **Newer** badge. Choosing an older version on the right therefore shows what it lacks in red, rather than treating the left side as the original. **Swap sides** exchanges the two versions.
 
-The same colours, badge and **Swap sides** button are used wherever two versions are compared: a template or template version's properties and settings, an asset's MintModel versions, an asset's inherited properties at two points in time, and the stages of a [change's properties](/getting-started/familiarisation/gui/activity/activity_details.md#properties).
+The same colours, badge and **Swap sides** button are used wherever two versions are compared: a template or template version's properties and settings, an asset's MintModel versions, an asset's inherited properties at two points in time, and the stages of a [change's properties](/getting-started/familiarisation/gui/activity_details.md#properties).
 
 ### Editor shortcuts
 
@@ -70,14 +70,12 @@ Similar to properties, the settings tab allows you to specify configuration opti
 
 The most commonly used settings are presented as dedicated form fields - grouped into sections such as node defaults, image reuse, build settings, runner pod concurrency and API worker autoscaling - with a description for each option. The raw JSON advanced editor remains available for any setting not surfaced as a field.
 
-The global settings that projects, environments, agents and assets inherit are edited on the [system configuration](/getting-started/familiarisation/gui/administration/system_configuration.md) page.
-
 <p align='center'>
   <img alt='Project settings screen' src={require('!url-loader!../images/project-settings.png').default} className='image-border'/>
 </p>
 
 :::tip[Override settings]
-When creating a change, you can override the settings used only for that change. See the [run change page](/getting-started/familiarisation/gui/activity/index.md#run-change) for more information.
+When creating a change, you can override the settings used only for that change. See the [run change page](/getting-started/familiarisation/gui/activity.md#run-change) for more information.
 :::
 
 ### Buttons & links
